@@ -2,6 +2,7 @@ import 'package:doctopia_doctors/firebase_options.dart';
 import 'package:doctopia_doctors/localization/app_localizations.dart';
 import 'package:doctopia_doctors/providers/_px_main.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
+import 'package:doctopia_doctors/providers/px_theme.dart';
 import 'package:doctopia_doctors/routes/routes.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
@@ -55,8 +56,8 @@ class MyApp extends StatelessWidget {
               darkScheme = darkColorScheme;
             }
 
-            return Consumer<PxLocale>(
-              builder: (context, l, c) {
+            return Consumer2<PxLocale, PxTheme>(
+              builder: (context, l, t, c) {
                 return MaterialApp.router(
                   //OPTIONS
                   debugShowCheckedModeBanner: false,
@@ -72,6 +73,7 @@ class MyApp extends StatelessWidget {
                     colorScheme: darkScheme,
                     extensions: [darkCustomColors],
                   ),
+                  themeMode: t.mode,
                   //ROUTER
                   routeInformationProvider: router.routeInformationProvider,
                   routeInformationParser: router.routeInformationParser,
