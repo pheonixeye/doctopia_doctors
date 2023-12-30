@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "266247700931",
+    "project_id": "doctopia-954fd",
+    "storage_bucket": "doctopia-954fd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:266247700931:android:2cd3d625e019433a0e3d76",
+        "android_client_info": {
+          "package_name": "drkaz.dev.doctopia_doctors"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATwsBAQKbx69R9hthxZo7owLydtCKLNiw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
