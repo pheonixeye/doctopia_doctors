@@ -13,6 +13,7 @@ _$DocumentsImpl _$$DocumentsImplFromJson(Map<String, dynamic> json) =>
       permit_cert: json['permit_cert'] as String,
       specialist_cert: json['specialist_cert'] as String,
       consultant_cert: json['consultant_cert'] as String,
+      avatar: json['avatar'] as String,
     );
 
 Map<String, dynamic> _$$DocumentsImplToJson(_$DocumentsImpl instance) =>
@@ -22,4 +23,5 @@ Map<String, dynamic> _$$DocumentsImplToJson(_$DocumentsImpl instance) =>
       'permit_cert': instance.permit_cert,
       'specialist_cert': instance.specialist_cert,
       'consultant_cert': instance.consultant_cert,
+      'avatar': instance.avatar,
     };

@@ -10,7 +10,7 @@ class Servers {
   static Servers get instance => const Servers._();
 
   static final List<Server> _servers = [
-    Server.test(),
+    Server.dev(),
     Server.production(),
   ];
 
@@ -28,9 +28,9 @@ class Server {
     required this.serverClient,
   });
 
-  factory Server.test() {
+  factory Server.dev() {
     return Server._(
-      name: 'Test-Cloud',
+      name: 'Dev-Local',
       clientClient:
           clientSDK.Client(endPoint: ENV.TEST_ENDPOINT, selfSigned: true)
               .setProject(ENV.TEST_PROJECT_ID)

@@ -22,8 +22,9 @@ class Clinic with _$Clinic {
     required String address_ar,
     required String location_link,
     required String attendance,
-    required List<String> schedule,
-    required List<String> clinic_photos,
+    required int fees,
+    required int discount,
+    required List<String> off_dates,
   }) = _Clinic;
 
   factory Clinic.fromJson(Map<String, Object?> json) => _$ClinicFromJson(json);

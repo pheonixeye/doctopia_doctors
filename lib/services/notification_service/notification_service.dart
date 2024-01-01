@@ -1,5 +1,5 @@
 import 'package:doctopia_doctors/firebase_options.dart';
-import 'package:doctopia_doctors/models/appointment.dart';
+import 'package:doctopia_doctors/models/clinic_visit/clinic_visit.dart';
 import 'package:doctopia_doctors/services/local_database_service/database_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -55,7 +55,7 @@ Future<void> setupFlutterNotifications() async {
 
 void showFlutterNotification(RemoteMessage message) {
   RemoteNotification? notification = message.notification;
-  final Appointment appointment = Appointment.fromNotification(message.data);
+  final ClinicVisit appointment = ClinicVisit.fromJson(message.data);
   AndroidNotification? android = message.notification?.android;
   if (notification != null && android != null && !kIsWeb) {
     flutterLocalNotificationsPlugin.show(
@@ -70,7 +70,8 @@ void showFlutterNotification(RemoteMessage message) {
           icon: 'ic_launcher',
           visibility: NotificationVisibility.public,
           category: AndroidNotificationCategory.message,
-          styleInformation: BigTextStyleInformation(appointment.toSMS()),
+          styleInformation:
+              BigTextStyleInformation(appointment.toJson().toString()),
         ),
       ),
     );
@@ -81,7 +82,7 @@ void showFlutterNotification(RemoteMessage message) {
 /// Initialize the [FlutterLocalNotificationsPlugin] package.
 late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
-Future<void> _sideEffects(Appointment appointment) async {
+Future<void> _sideEffects(ClinicVisit appointment) async {
   final db = DbIo();
   await db.saveToDb(appointment);
   // await sendSMS(

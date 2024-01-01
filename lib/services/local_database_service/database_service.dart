@@ -1,4 +1,4 @@
-import 'package:doctopia_doctors/models/appointment.dart';
+import 'package:doctopia_doctors/models/clinic_visit/clinic_visit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sembast/sembast.dart';
@@ -15,8 +15,8 @@ class DbIo extends ChangeNotifier {
     _store = StoreRef<int, Map<String, dynamic>>.main();
   }
 
-  List<Appointment> _appointments = [];
-  List<Appointment> get appointments => _appointments;
+  List<ClinicVisit> _appointments = [];
+  List<ClinicVisit> get appointments => _appointments;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -37,7 +37,7 @@ class DbIo extends ChangeNotifier {
     return db;
   }
 
-  Future<void> saveToDb(Appointment appointment) async {
+  Future<void> saveToDb(ClinicVisit appointment) async {
     _isLoading = true;
     notifyListeners();
     await _store.add(
@@ -69,7 +69,7 @@ class DbIo extends ChangeNotifier {
           ],
         ));
     _appointments = data.map((e) {
-      return Appointment.fromJson(e.value);
+      return ClinicVisit.fromJson(e.value);
     }).toList();
     notifyListeners();
     _isLoading = false;

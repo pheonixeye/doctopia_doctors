@@ -25,6 +25,7 @@ mixin _$Documents {
   String get permit_cert => throw _privateConstructorUsedError;
   String get specialist_cert => throw _privateConstructorUsedError;
   String get consultant_cert => throw _privateConstructorUsedError;
+  String get avatar => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -42,7 +43,8 @@ abstract class $DocumentsCopyWith<$Res> {
       String synd_card,
       String permit_cert,
       String specialist_cert,
-      String consultant_cert});
+      String consultant_cert,
+      String avatar});
 }
 
 /// @nodoc
@@ -63,6 +65,7 @@ class _$DocumentsCopyWithImpl<$Res, $Val extends Documents>
     Object? permit_cert = null,
     Object? specialist_cert = null,
     Object? consultant_cert = null,
+    Object? avatar = null,
   }) {
     return _then(_value.copyWith(
       docid: null == docid
@@ -85,6 +88,10 @@ class _$DocumentsCopyWithImpl<$Res, $Val extends Documents>
           ? _value.consultant_cert
           : consultant_cert // ignore: cast_nullable_to_non_nullable
               as String,
+      avatar: null == avatar
+          ? _value.avatar
+          : avatar // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -102,7 +109,8 @@ abstract class _$$DocumentsImplCopyWith<$Res>
       String synd_card,
       String permit_cert,
       String specialist_cert,
-      String consultant_cert});
+      String consultant_cert,
+      String avatar});
 }
 
 /// @nodoc
@@ -121,6 +129,7 @@ class __$$DocumentsImplCopyWithImpl<$Res>
     Object? permit_cert = null,
     Object? specialist_cert = null,
     Object? consultant_cert = null,
+    Object? avatar = null,
   }) {
     return _then(_$DocumentsImpl(
       docid: null == docid
@@ -143,6 +152,10 @@ class __$$DocumentsImplCopyWithImpl<$Res>
           ? _value.consultant_cert
           : consultant_cert // ignore: cast_nullable_to_non_nullable
               as String,
+      avatar: null == avatar
+          ? _value.avatar
+          : avatar // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -155,7 +168,8 @@ class _$DocumentsImpl with DiagnosticableTreeMixin implements _Documents {
       required this.synd_card,
       required this.permit_cert,
       required this.specialist_cert,
-      required this.consultant_cert});
+      required this.consultant_cert,
+      required this.avatar});
 
   factory _$DocumentsImpl.fromJson(Map<String, dynamic> json) =>
       _$$DocumentsImplFromJson(json);
@@ -170,10 +184,12 @@ class _$DocumentsImpl with DiagnosticableTreeMixin implements _Documents {
   final String specialist_cert;
   @override
   final String consultant_cert;
+  @override
+  final String avatar;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Documents(docid: $docid, synd_card: $synd_card, permit_cert: $permit_cert, specialist_cert: $specialist_cert, consultant_cert: $consultant_cert)';
+    return 'Documents(docid: $docid, synd_card: $synd_card, permit_cert: $permit_cert, specialist_cert: $specialist_cert, consultant_cert: $consultant_cert, avatar: $avatar)';
   }
 
   @override
@@ -185,7 +201,8 @@ class _$DocumentsImpl with DiagnosticableTreeMixin implements _Documents {
       ..add(DiagnosticsProperty('synd_card', synd_card))
       ..add(DiagnosticsProperty('permit_cert', permit_cert))
       ..add(DiagnosticsProperty('specialist_cert', specialist_cert))
-      ..add(DiagnosticsProperty('consultant_cert', consultant_cert));
+      ..add(DiagnosticsProperty('consultant_cert', consultant_cert))
+      ..add(DiagnosticsProperty('avatar', avatar));
   }
 
   @override
@@ -201,13 +218,14 @@ class _$DocumentsImpl with DiagnosticableTreeMixin implements _Documents {
             (identical(other.specialist_cert, specialist_cert) ||
                 other.specialist_cert == specialist_cert) &&
             (identical(other.consultant_cert, consultant_cert) ||
-                other.consultant_cert == consultant_cert));
+                other.consultant_cert == consultant_cert) &&
+            (identical(other.avatar, avatar) || other.avatar == avatar));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, docid, synd_card, permit_cert,
-      specialist_cert, consultant_cert);
+      specialist_cert, consultant_cert, avatar);
 
   @JsonKey(ignore: true)
   @override
@@ -229,7 +247,8 @@ abstract class _Documents implements Documents {
       required final String synd_card,
       required final String permit_cert,
       required final String specialist_cert,
-      required final String consultant_cert}) = _$DocumentsImpl;
+      required final String consultant_cert,
+      required final String avatar}) = _$DocumentsImpl;
 
   factory _Documents.fromJson(Map<String, dynamic> json) =
       _$DocumentsImpl.fromJson;
@@ -244,6 +263,8 @@ abstract class _Documents implements Documents {
   String get specialist_cert;
   @override
   String get consultant_cert;
+  @override
+  String get avatar;
   @override
   @JsonKey(ignore: true)
   _$$DocumentsImplCopyWith<_$DocumentsImpl> get copyWith =>

@@ -13,6 +13,7 @@ class Documents with _$Documents {
     required String permit_cert,
     required String specialist_cert,
     required String consultant_cert,
+    required String avatar,
   }) = _Documents;
 
   factory Documents.fromJson(Map<String, Object?> json) =>
