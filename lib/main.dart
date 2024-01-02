@@ -4,9 +4,11 @@ import 'package:doctopia_doctors/providers/_px_main.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_theme.dart';
 import 'package:doctopia_doctors/routes/routes.dart';
+import 'package:doctopia_doctors/theme/app_theme.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'theme/color_schemes.g.dart';
@@ -58,20 +60,27 @@ class MyApp extends StatelessWidget {
 
             return Consumer2<PxLocale, PxTheme>(
               builder: (context, l, t, c) {
+                final isEnglish = l.locale == const Locale('en');
+                final textTheme = isEnglish
+                    ? GoogleFonts.notoSansTextTheme()
+                    : GoogleFonts.notoSansArabicTextTheme();
                 return MaterialApp.router(
                   //OPTIONS
                   debugShowCheckedModeBanner: false,
                   title: 'Doctopia',
                   //THEMES
-                  theme: ThemeData(
-                    useMaterial3: true,
+                  theme: AppTheme.theme(
                     colorScheme: lightScheme,
                     extensions: [lightCustomColors],
+                    textTheme: textTheme,
                   ),
-                  darkTheme: ThemeData(
-                    useMaterial3: true,
+                  darkTheme: AppTheme.theme(
                     colorScheme: darkScheme,
                     extensions: [darkCustomColors],
+                    textTheme: textTheme.apply(
+                      displayColor: Colors.white,
+                      bodyColor: Colors.white,
+                    ),
                   ),
                   themeMode: t.mode,
                   //ROUTER
