@@ -24,13 +24,13 @@ class _LoadingScreenState extends State<LoadingScreen>
       vsync: this,
       duration: _spinnerDuration,
     );
-    _navigateToLoginScreen();
+    _navigateToHomePage();
   }
 
-  void _navigateToLoginScreen() async {
+  void _navigateToHomePage() async {
     await Future.delayed(_loadingDuration);
     if (mounted) {
-      GoRouter.of(context).goNamed(RoutePage.loginPage().name);
+      GoRouter.of(context).goNamed(RoutePage.homePage().name);
     }
   }
 
@@ -49,12 +49,13 @@ class _LoadingScreenState extends State<LoadingScreen>
             ),
             SpinKitPumpingHeart(
               color: const Color(0xffFE7800),
-              size: 50.0,
+              size: 75.0,
               controller: _controller,
             ),
             const Gap(20),
             const Spacer(),
             const Text('version 0.0.1'),
+            const Gap(8),
           ],
         ),
       ),

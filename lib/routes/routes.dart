@@ -13,6 +13,15 @@ final GoRouter router = GoRouter(
       },
       routes: [
         GoRoute(
+          path: RoutePage.homePage().path,
+          name: RoutePage.homePage().name,
+          builder: (context, state) {
+            return RoutePage.homePage(
+              key: state.pageKey,
+            ).page;
+          },
+        ),
+        GoRoute(
           path: RoutePage.registerPageBasic().path,
           name: RoutePage.registerPageBasic().name,
           builder: (context, state) {
@@ -26,15 +35,6 @@ final GoRouter router = GoRouter(
           name: RoutePage.loginPage().name,
           builder: (context, state) {
             return RoutePage.loginPage(
-              key: state.pageKey,
-            ).page;
-          },
-        ),
-        GoRoute(
-          path: RoutePage.homePage().path,
-          name: RoutePage.homePage().name,
-          builder: (context, state) {
-            return RoutePage.homePage(
               key: state.pageKey,
             ).page;
           },

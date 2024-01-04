@@ -1,13 +1,12 @@
 import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
-import 'package:doctopia_doctors/models/city.dart';
-import 'package:doctopia_doctors/models/governorate.dart';
-import 'package:doctopia_doctors/models/speciality.dart';
-import 'package:doctopia_doctors/providers/px_gov.dart';
-import 'package:doctopia_doctors/providers/px_locale.dart';
+import 'package:doctopia_doctors/models/page_ref/page_ref.dart';
+import 'package:doctopia_doctors/pages/homepage/widgets/sidebar_btn.dart';
+import 'package:doctopia_doctors/pages/widgets/floating_buttons.dart';
 import 'package:doctopia_doctors/providers/px_theme.dart';
+import 'package:doctopia_doctors/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:gap/gap.dart';
+import 'package:sidebarx/sidebarx.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,162 +15,160 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  Governorate? _gov;
-  City? _city;
-  Speciality? _spec;
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
+  late final SidebarXController _xController;
+  late final AnimationController _animationController;
+  late final Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _xController = SidebarXController(
+      selectedIndex: 0,
+      extended: false,
+    );
+    _animationController = AnimationController(
+      vsync: this,
+      lowerBound: 0.0,
+      upperBound: 1.0,
+      duration: const Duration(seconds: 2),
+    );
+    _animation = Animation.fromValueListenable(_animationController);
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _xController.dispose();
+    _animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 2,
         title: Text(context.t.doctopia),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              context.t.hi,
-            ),
-            Card(
-              elevation: 10,
-              child: Consumer2<PxGov, PxLocale>(
-                builder: (context, g, l, c) {
-                  final isEnglish = l.locale == const Locale('en');
-                  while (g.govs == null) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  return DropdownButton<Governorate>(
-                    hint: const Center(
-                      child: Text('Select Governorate...'),
-                    ),
-                    items: g.govs?.map((e) {
-                      return DropdownMenuItem<Governorate>(
-                        alignment: Alignment.center,
-                        value: e,
-                        child: Text(isEnglish
-                            ? e.governorate_name_en
-                            : e.governorate_name_ar),
-                      );
-                    }).toList(),
-                    isExpanded: true,
-                    underline: Container(
-                      height: 2,
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                    ),
-                    value: _gov,
-                    onChanged: (val) {
-                      setState(() {
-                        _gov = val;
-                        _city = null;
-                      });
-                    },
-                  );
-                },
-              ),
-            ),
-            const Gap(20),
-            Card(
-              elevation: 10,
-              child: Consumer<PxLocale>(
-                builder: (context, l, c) {
-                  final isEnglish = l.locale == const Locale('en');
-                  while (_gov == null) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  return DropdownButton<City>(
-                    hint: const Center(
-                      child: Text('Select City...'),
-                    ),
-                    items: _gov == null
-                        ? []
-                        : _gov?.cities.map((e) {
-                            return DropdownMenuItem<City>(
-                              alignment: Alignment.center,
-                              value: e,
-                              child: Text(
-                                  isEnglish ? e.city_name_en : e.city_name_ar),
-                            );
-                          }).toList(),
-                    isExpanded: true,
-                    underline: Container(
-                      height: 2,
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                    ),
-                    value: _city,
-                    onChanged: (val) {
-                      setState(() {
-                        _city = val;
-                      });
-                    },
-                  );
-                },
-              ),
-            ),
-            const Gap(20),
-            Card(
-              elevation: 10,
-              child: Consumer<PxLocale>(
-                builder: (context, l, c) {
-                  final isEnglish = l.locale == const Locale('en');
-
-                  return DropdownButton<Speciality>(
-                    hint: const Center(
-                      child: Text('Select Speciality...'),
-                    ),
-                    items: Speciality.list.map((e) {
-                      return DropdownMenuItem<Speciality>(
-                        alignment: Alignment.center,
-                        value: e,
-                        child: Text(isEnglish ? e.en : e.ar),
-                      );
-                    }).toList(),
-                    isExpanded: true,
-                    underline: Container(
-                      height: 2,
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                    ),
-                    value: _spec,
-                    onChanged: (val) {
-                      setState(() {
-                        _spec = val;
-                      });
-                    },
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            onPressed: () {
-              context.read<PxLocale>().changeLocale();
+      drawer: Consumer<PxTheme>(
+        builder: (context, t, c) {
+          bool isDarkMode = t.mode == ThemeMode.dark;
+          return SidebarX(
+            controller: _xController,
+            items: SidebarPageRef.pages.map((e) {
+              return SidebarXItem(
+                  label: e.name,
+                  icon: e.icon,
+                  onTap: () {
+                    setState(() {
+                      if (!_animationController.isCompleted) {
+                        _animationController.forward();
+                      } else {
+                        _animationController.reset();
+                        _animationController.forward();
+                      }
+                      _xController.selectIndex(SidebarPageRef.pages.indexOf(e));
+                      if (_xController.extended) {
+                        _xController.setExtended(false);
+                      }
+                    });
+                    Scaffold.of(context).closeDrawer();
+                  });
+            }).toList(),
+            headerBuilder: (context, extended) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 30.0),
+                child: Card(
+                  child: extended
+                      ? const SizedBox(
+                          width: 250,
+                          height: 150,
+                          child: GridTile(
+                            footer: Text(
+                              'Dr. Kareem Zaher',
+                              textAlign: TextAlign.center,
+                            ),
+                            child: CircleAvatar(
+                              radius: 35,
+                              child: Icon(Icons.person),
+                            ),
+                          ),
+                        )
+                      : const CircleAvatar(
+                          radius: 35,
+                          child: Icon(Icons.person),
+                        ),
+                ),
+              );
             },
-            tooltip: 'Locale',
-            heroTag: 'locale',
-            child: const Icon(Icons.language),
-          ),
-          const Gap(20),
-          FloatingActionButton(
-            onPressed: () {
-              context.read<PxTheme>().setThemeMode();
+            headerDivider: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 5,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+            ),
+            footerBuilder: (context, extended) {
+              return Column(
+                children: [
+                  SidebarXBtn(
+                    isDarkMode: isDarkMode,
+                    expanded: extended,
+                    onPressed: () {},
+                    icon: const Icon(Icons.share),
+                    labelOrTag: 'Share',
+                  ),
+                  SidebarXBtn(
+                    isDarkMode: isDarkMode,
+                    expanded: extended,
+                    onPressed: () {},
+                    icon: const Icon(Icons.logout),
+                    labelOrTag: 'Logout',
+                  ),
+                  SidebarXBtn(
+                    isDarkMode: isDarkMode,
+                    expanded: extended,
+                    onPressed: () {},
+                    icon: const Icon(Icons.info),
+                    labelOrTag: 'About',
+                  ),
+                ],
+              );
             },
-            tooltip: 'Theme',
-            heroTag: 'theme',
-            child: const Icon(Icons.theater_comedy),
-          ),
-        ],
+            theme: isDarkMode
+                ? AppTheme.sidebarXthemeRegularDark(context)
+                : AppTheme.sidebarXthemeRegularLight(context),
+            extendedTheme: isDarkMode
+                ? AppTheme.sidebarXthemeExtendedDark(context)
+                : AppTheme.sidebarXthemeExtendedLight(context),
+            toggleButtonBuilder: (context, extended) {
+              return FloatingActionButton.small(
+                backgroundColor: isDarkMode ? Colors.grey : Colors.white,
+                child: Icon(extended
+                    ? Icons.arrow_back_ios_new
+                    : Icons.arrow_forward_ios),
+                onPressed: () {
+                  setState(() {
+                    _xController.setExtended(!extended);
+                  });
+                },
+              );
+            },
+          );
+        },
       ),
+      body: AnimatedBuilder(
+        animation: _animationController,
+        child: SidebarPageRef.pages[_xController.selectedIndex].page,
+        builder: (context, child) {
+          return FadeTransition(
+            opacity: _animation,
+            child: child,
+          );
+        },
+      ),
+      floatingActionButton: const FloatingButtons(),
     );
   }
 }
