@@ -71,7 +71,6 @@ class Doctor extends Equatable {
 
   Map<String, dynamic> toJson() {
     return {
-      r'$id': id,
       'synd_id': synd_id,
       "joined_at": joined_at,
       'name_en': name_en,

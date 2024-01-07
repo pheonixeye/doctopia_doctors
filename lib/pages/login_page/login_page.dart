@@ -12,6 +12,7 @@ class Loginpage extends StatefulWidget {
 class _LoginpageState extends State<Loginpage> {
   final _formKey = GlobalKey<FormState>();
   bool rememberMe = false;
+  bool obscure = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +41,19 @@ class _LoginpageState extends State<Loginpage> {
                         labelText: "Syndicate Id",
                         hintText: "######",
                         border: OutlineInputBorder(),
+                        suffix: SizedBox(
+                          height: 24,
+                        ),
                       ),
+                      keyboardType: TextInputType.number,
+                      maxLength: 6,
+                      onChanged: (value) {},
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Kindly Enter Syndicate Id Number.";
+                        }
+                        return null;
+                      },
                     ),
                   ),
                 ],
@@ -56,11 +69,33 @@ class _LoginpageState extends State<Loginpage> {
                   const Gap(10),
                   Expanded(
                     child: TextFormField(
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: "Password",
                         hintText: "******",
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
+                        suffix: SizedBox(
+                          height: 32,
+                          child: FloatingActionButton.small(
+                            heroTag: 'obscure-password',
+                            onPressed: () {
+                              setState(() {
+                                obscure = !obscure;
+                              });
+                            },
+                            child: const Icon(Icons.remove_red_eye),
+                          ),
+                        ),
                       ),
+                      obscureText: obscure,
+                      obscuringCharacter: "*",
+                      keyboardType: TextInputType.visiblePassword,
+                      onChanged: (value) {},
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Kindly Enter Password.";
+                        }
+                        return null;
+                      },
                     ),
                   ),
                 ],
@@ -80,7 +115,9 @@ class _LoginpageState extends State<Loginpage> {
             ElevatedButton.icon(
               icon: const Icon(Icons.login),
               label: const Text('Login'),
-              onPressed: () {},
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {}
+              },
             ),
             const Gap(10),
             ElevatedButton.icon(

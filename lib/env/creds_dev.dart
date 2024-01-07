@@ -1,26 +1,25 @@
-// ignore_for_file: constant_identifier_names
+// ignore_for_file: constant_identifier_names, non_constant_identifier_names
 
-class CREDS {
-  static const String ENDPOINT = 'http://localhost:4567/v1';
+import 'package:doctopia_doctors/env/creds.dart';
+
+class CREDSDEV implements CREDS {
+  @override
+  String ENDPOINT = 'http://localhost:4567/v1';
   //-------------------------------------------------------------------//
-  static const String PROJECT = '6592d477367f9542e185';
+  @override
+  String PROJECT = '65971012f07082d8ab5b';
   //-------------------------------------------------------------------//
-  static const String DATABASE_MAIN = '6592d5175683283bcf3b';
-  static const String DATABASE_VISITS = '6592dcd55c1f9b3f2063';
-  static const String DATABASE_INVOICES = '6592eaa8acbec043a1d0';
+  //FORMAT(DATABASE_DATABASE-NAME)
+  @override
+  String DATABASE_CONSTANTS = '659712fb491b78a6a3eb';
   //-------------------------------------------------------------------//
-  static const String COLLECTION_MAIN_DOCTORS = '6592d9a2849486b82c11';
-  static const String COLLECTION_MAIN_CLINICS = '6592d9a971942e028c1a';
-  static const String COLLECTION_MAIN_DOCTOR_DOCUMENTS = '6592d9c790005054c79f';
-  static const String COLLECTION_MAIN_DOCTOR_REVIEWS = '6592f1174ed7e4e5e3ef';
-  static const String COLLECTION_MAIN_CLINIC_IMAGES = '6592d9ee770327f00501';
-  static const String COLLECTION_MAIN_CLINIC_SCHEDULE = '6592ecacb26b81f38b86';
+  //FORMAT(COLLECTION_COLLECTION-NAME_DATABASE-NAME)
+  @override
+  String COLLECTION_SPECIALITIES_CONSTANTS = "6597143473d5a3144e13";
   //-------------------------------------------------------------------//
-  static const String BUCKET_DOCTOR_INVOICES = '6592eb15824bb3f153c3';
-  static const String BUCKET_CLINIC_IMAGES = '6592db47e72d8e4a134a';
-  static const String BUCKET_DOCTOR_DOCUMENTS = '6592db3140cb25ff36d7';
   //-------------------------------------------------------------------//
-  static const String API_KEY =
-      '9e67ed190470bf230cc6e78ba506f40d1654ec17b7fae28eb599ee8990b69fb56ca5a0624e19be6d397a165ab9cc0ced07920771a40caf071a697fd0c5a6b5588bf22678aa0f9c24ca49a19e727283be0a3477bca29cc30610b5e23fe42292f97f9c475d924955283e2f11926901fece659d1e5c7f99ebbea030ffc877e2b825';
+  @override
+  String API_KEY =
+      '48496acdfd3010e4f526a886d288cf33fa4352d9368d58e4128c62547a4543b6aeb733f01b446ed9c48243a10e6102f8f42a78508c18520da1837bd6e2be8749a8d2d27937113da0c04952d0a44ae5108ffd505888b33fe6277697534e1cec65160299c2d2343c7b693289668afd270712ddffede50be992c2e8fc19c3e7872b';
   //-------------------------------------------------------------------//
 }

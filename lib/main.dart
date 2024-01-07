@@ -1,3 +1,4 @@
+import 'package:doctopia_doctors/env/env.dart';
 import 'package:doctopia_doctors/firebase_options.dart';
 import 'package:doctopia_doctors/localization/app_localizations.dart';
 import 'package:doctopia_doctors/providers/_px_main.dart';
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: providers,
+      providers: providers(ENV('dev')),
       builder: (context, child) {
         return DynamicColorBuilder(
           builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {

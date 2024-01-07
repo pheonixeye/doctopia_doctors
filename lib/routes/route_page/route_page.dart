@@ -28,7 +28,7 @@ class RoutePage {
   factory RoutePage.homePage({Key? key}) {
     return RoutePage(
       name: 'home_page',
-      path: 'home_page',
+      path: '/home_page',
       page: HomePage(
         key: key,
       ),

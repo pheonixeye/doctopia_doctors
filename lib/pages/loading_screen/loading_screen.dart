@@ -78,6 +78,6 @@ class _LoadingScreenState extends State<LoadingScreen>
       await GoRouter.of(context)
           .pushReplacementNamed(RoutePage.homePage().name);
     });
-    print('loading screen afterFirstLayout');
+    // print('loading screen afterFirstLayout');
   }
 }
