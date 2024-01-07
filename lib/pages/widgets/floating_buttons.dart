@@ -16,15 +16,15 @@ class FloatingButtons extends StatelessWidget {
           heroTag: 'theme',
           child: const Icon(Icons.theater_comedy),
           onPressed: () {
-            context.read<PxTheme>().setThemeMode();
+            context.read<PxTheme>().changeThemeMode();
           },
         ),
         const Gap(10),
         FloatingActionButton(
           heroTag: 'language',
           child: const Icon(Icons.language),
-          onPressed: () {
-            context.read<PxLocale>().changeLocale();
+          onPressed: () async {
+            await context.read<PxLocale>().changeLocale();
           },
         ),
       ],

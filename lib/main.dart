@@ -28,6 +28,7 @@ Future<void> main() async {
   if (!kIsWeb) {
     await setupFlutterNotifications();
   }
+
   runApp(const MyApp());
 }
 

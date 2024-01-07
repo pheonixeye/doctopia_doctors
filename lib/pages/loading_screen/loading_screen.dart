@@ -1,9 +1,16 @@
+import 'dart:async';
+
 import 'package:doctopia_doctors/assets/assets.dart';
+import 'package:doctopia_doctors/providers/px_locale.dart';
+import 'package:doctopia_doctors/providers/px_theme.dart';
 import 'package:doctopia_doctors/routes/route_page/route_page.dart';
+import 'package:doctopia_doctors/services/local_database_service/local_database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:after_layout/after_layout.dart';
+import 'package:provider/provider.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key});
@@ -13,25 +20,23 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AfterLayoutMixin {
   late final AnimationController _controller;
-  static const _loadingDuration = Duration(seconds: 4);
   static const _spinnerDuration = Duration(seconds: 1);
   @override
   void initState() {
     super.initState();
+    // print('loading screen initState');
     _controller = AnimationController(
       vsync: this,
       duration: _spinnerDuration,
     );
-    _navigateToHomePage();
   }
 
-  void _navigateToHomePage() async {
-    await Future.delayed(_loadingDuration);
-    if (mounted) {
-      GoRouter.of(context).goNamed(RoutePage.homePage().name);
-    }
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -43,10 +48,7 @@ class _LoadingScreenState extends State<LoadingScreen>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Spacer(),
-            Hero(
-              tag: 'logo',
-              child: Image.asset(AppAssets.logo),
-            ),
+            Image.asset(AppAssets.logo),
             SpinKitPumpingHeart(
               color: const Color(0xffFE7800),
               size: 75.0,
@@ -60,5 +62,22 @@ class _LoadingScreenState extends State<LoadingScreen>
         ),
       ),
     );
+  }
+
+  @override
+  FutureOr<void> afterFirstLayout(BuildContext context) async {
+    await Future.wait([
+      context.read<PxLocalDatabase>().fetchLanguageFromDb(),
+      context.read<PxLocalDatabase>().fetchThemeFromDb(),
+    ]).whenComplete(() async {
+      await Future.wait([
+        context.read<PxLocale>().setLocaleFromLocalDb(),
+        context.read<PxTheme>().setThemeModeFromDb(),
+      ]);
+    }).whenComplete(() async {
+      await GoRouter.of(context)
+          .pushReplacementNamed(RoutePage.homePage().name);
+    });
+    print('loading screen afterFirstLayout');
   }
 }

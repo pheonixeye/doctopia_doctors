@@ -1,6 +1,6 @@
 import 'package:doctopia_doctors/firebase_options.dart';
 import 'package:doctopia_doctors/models/clinic_visit/clinic_visit.dart';
-import 'package:doctopia_doctors/services/local_database_service/database_service.dart';
+// import 'package:doctopia_doctors/services/local_database_service/local_database_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -83,8 +83,8 @@ void showFlutterNotification(RemoteMessage message) {
 late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
 Future<void> _sideEffects(ClinicVisit appointment) async {
-  final db = DbIo();
-  await db.saveToDb(appointment);
+  // final db = PxLocalDatabase();
+  // await db.saveAppointmentToDb(appointment);
   // await sendSMS(
   //   appointment.phone,
   //   appointment.toSMS(),

@@ -20,24 +20,26 @@ final GoRouter router = GoRouter(
               key: state.pageKey,
             ).page;
           },
-        ),
-        GoRoute(
-          path: RoutePage.registerPageBasic().path,
-          name: RoutePage.registerPageBasic().name,
-          builder: (context, state) {
-            return RoutePage.registerPageBasic(
-              key: state.pageKey,
-            ).page;
-          },
-        ),
-        GoRoute(
-          path: RoutePage.loginPage().path,
-          name: RoutePage.loginPage().name,
-          builder: (context, state) {
-            return RoutePage.loginPage(
-              key: state.pageKey,
-            ).page;
-          },
+          routes: [
+            GoRoute(
+              path: RoutePage.registerPageBasic().path,
+              name: RoutePage.registerPageBasic().name,
+              builder: (context, state) {
+                return RoutePage.registerPageBasic(
+                  key: state.pageKey,
+                ).page;
+              },
+            ),
+            GoRoute(
+              path: RoutePage.loginPage().path,
+              name: RoutePage.loginPage().name,
+              builder: (context, state) {
+                return RoutePage.loginPage(
+                  key: state.pageKey,
+                ).page;
+              },
+            ),
+          ],
         ),
       ],
     ),

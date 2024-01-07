@@ -10,6 +10,10 @@ class RegisterPageBasic extends StatefulWidget {
 class _RegisterPageBasicState extends State<RegisterPageBasic> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      child: Center(
+        child: Text('register_page_basic'),
+      ),
+    );
   }
 }

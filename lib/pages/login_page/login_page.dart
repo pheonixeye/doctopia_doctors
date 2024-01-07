@@ -1,5 +1,4 @@
 import 'package:doctopia_doctors/assets/assets.dart';
-import 'package:doctopia_doctors/pages/widgets/floating_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -12,6 +11,7 @@ class Loginpage extends StatefulWidget {
 
 class _LoginpageState extends State<Loginpage> {
   final _formKey = GlobalKey<FormState>();
+  bool rememberMe = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,10 +24,7 @@ class _LoginpageState extends State<Loginpage> {
             SizedBox(
               width: 150,
               height: 150,
-              child: Hero(
-                tag: 'logo',
-                child: Image.asset(AppAssets.icon),
-              ),
+              child: Image.asset(AppAssets.icon),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -69,23 +66,32 @@ class _LoginpageState extends State<Loginpage> {
                 ],
               ),
             ),
-            ElevatedButton(
-              onPressed: () {},
-              child: const Text('Login'),
-            ),
             CheckboxListTile(
               title: const Text('Remember me'),
-              value: false,
-              onChanged: (v) {},
+              value: rememberMe,
+              onChanged: (v) {
+                setState(() {
+                  rememberMe = v!;
+                });
+                //TODO: save syndId into local storage
+              },
             ),
-            ElevatedButton(
+            const Gap(10),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.login),
+              label: const Text('Login'),
               onPressed: () {},
-              child: const Text('Register'),
             ),
+            const Gap(10),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.lock_reset),
+              label: const Text('Forgot Password'),
+              onPressed: () {},
+            ),
+            const Gap(10),
           ],
         ),
       ),
-      floatingActionButton: const FloatingButtons(),
     );
   }
 }

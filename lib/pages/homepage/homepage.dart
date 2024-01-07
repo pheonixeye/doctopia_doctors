@@ -1,5 +1,6 @@
 import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/models/page_ref/page_ref.dart';
+import 'package:doctopia_doctors/pages/homepage/widgets/drag_account_notifier.dart';
 import 'package:doctopia_doctors/pages/homepage/widgets/sidebar_btn.dart';
 import 'package:doctopia_doctors/pages/widgets/floating_buttons.dart';
 import 'package:doctopia_doctors/providers/px_theme.dart';
@@ -35,7 +36,9 @@ class _HomePageState extends State<HomePage>
       duration: const Duration(seconds: 2),
     );
     _animation = Animation.fromValueListenable(_animationController);
-    _animationController.forward();
+    if (_animationController.isDismissed) {
+      _animationController.forward();
+    }
   }
 
   @override
@@ -56,7 +59,7 @@ class _HomePageState extends State<HomePage>
           bool isDarkMode = t.mode == ThemeMode.dark;
           return SidebarX(
             controller: _xController,
-            items: SidebarPageRef.pages.map((e) {
+            items: SidebarPageRef.loggedInPages.map((e) {
               return SidebarXItem(
                   label: e.name,
                   icon: e.icon,
@@ -68,7 +71,8 @@ class _HomePageState extends State<HomePage>
                         _animationController.reset();
                         _animationController.forward();
                       }
-                      _xController.selectIndex(SidebarPageRef.pages.indexOf(e));
+                      _xController
+                          .selectIndex(SidebarPageRef.loggedInPages.indexOf(e));
                       if (_xController.extended) {
                         _xController.setExtended(false);
                       }
@@ -158,15 +162,22 @@ class _HomePageState extends State<HomePage>
           );
         },
       ),
-      body: AnimatedBuilder(
-        animation: _animationController,
-        child: SidebarPageRef.pages[_xController.selectedIndex].page,
-        builder: (context, child) {
-          return FadeTransition(
-            opacity: _animation,
-            child: child,
-          );
-        },
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          AnimatedBuilder(
+            animation: _animationController,
+            child:
+                SidebarPageRef.loggedInPages[_xController.selectedIndex].page,
+            builder: (context, child) {
+              return FadeTransition(
+                opacity: _animation,
+                child: child,
+              );
+            },
+          ),
+          const AccountStateNotifier(),
+        ],
       ),
       floatingActionButton: const FloatingButtons(),
     );

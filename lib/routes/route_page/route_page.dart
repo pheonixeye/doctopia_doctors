@@ -53,10 +53,10 @@ class RoutePage {
     );
   }
 
-  static final List<RoutePage> list = [
-    RoutePage.loadingScreen(),
-    RoutePage.registerPageBasic(),
-    RoutePage.homePage(),
-    RoutePage.loginPage(),
-  ];
+  // static final List<RoutePage> list = [
+  //   RoutePage.loadingScreen(),
+  //   RoutePage.registerPageBasic(),
+  //   RoutePage.homePage(),
+  //   RoutePage.loginPage(),
+  // ];
 }

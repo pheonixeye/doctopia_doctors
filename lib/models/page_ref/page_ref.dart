@@ -1,3 +1,4 @@
+import 'package:doctopia_doctors/pages/homepage/pages/bookings_page/bookings_page.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/clinics_page/clinics_page.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/invoices_page/invoices_page.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/news_feed_page/news_feed_page.dart';
@@ -14,6 +15,13 @@ class SidebarPageRef extends Equatable {
       name: 'Feed',
       page: NewsFeedPage(),
       icon: Icons.newspaper,
+    );
+  }
+  factory SidebarPageRef.bookings() {
+    return const SidebarPageRef(
+      name: 'Bookings',
+      page: BookingsPage(),
+      icon: Icons.calendar_month_outlined,
     );
   }
   factory SidebarPageRef.clinics() {
@@ -64,12 +72,23 @@ class SidebarPageRef extends Equatable {
     required this.icon,
   });
 
-  static final List<SidebarPageRef> pages = [
+  static final List<SidebarPageRef> loggedInPages = [
     SidebarPageRef.newsFeed(),
+    SidebarPageRef.bookings(),
     SidebarPageRef.profile(),
     SidebarPageRef.clinics(),
     SidebarPageRef.notifications(),
     SidebarPageRef.invoices(),
+    SidebarPageRef.settings(),
+  ];
+
+  static final List<SidebarPageRef> loggedOutPages = [
+    SidebarPageRef.newsFeed(),
+    // SidebarPageRef.bookings(),
+    // SidebarPageRef.profile(),
+    // SidebarPageRef.clinics(),
+    // SidebarPageRef.notifications(),
+    // SidebarPageRef.invoices(),
     SidebarPageRef.settings(),
   ];
 

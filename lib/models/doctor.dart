@@ -20,6 +20,8 @@ class Doctor extends Equatable {
   final List<String> titles_ar;
   final String about_en;
   final String about_ar;
+  final String degree_en;
+  final String degree_ar;
 
   const Doctor({
     required this.id,
@@ -39,6 +41,8 @@ class Doctor extends Equatable {
     required this.titles_ar,
     required this.about_en,
     required this.about_ar,
+    required this.degree_en,
+    required this.degree_ar,
   });
 
   factory Doctor.fromJson(Map<String, dynamic> json) {
@@ -60,6 +64,8 @@ class Doctor extends Equatable {
       titles_ar: json['titles_ar'],
       about_en: json['about_en'],
       about_ar: json['about_ar'],
+      degree_en: json['degree_en'],
+      degree_ar: json['degree_ar'],
     );
   }
 
@@ -82,6 +88,8 @@ class Doctor extends Equatable {
       'titles_ar': titles_ar,
       "about_en": about_en,
       "about_ar": about_ar,
+      "degree_en": degree_en,
+      "degree_ar": degree_ar,
     };
   }
 
@@ -103,6 +111,8 @@ class Doctor extends Equatable {
     List<String>? titles_ar,
     String? about_en,
     String? about_ar,
+    String? degree_en,
+    String? degree_ar,
   }) {
     return Doctor(
       id: id ?? this.id,
@@ -122,6 +132,8 @@ class Doctor extends Equatable {
       titles_ar: titles_ar ?? this.titles_ar,
       about_en: about_en ?? this.about_en,
       about_ar: about_ar ?? this.about_ar,
+      degree_en: degree_en ?? this.degree_en,
+      degree_ar: degree_ar ?? this.degree_ar,
     );
   }
 
@@ -144,5 +156,7 @@ class Doctor extends Equatable {
         titles_ar,
         about_en,
         about_ar,
+        degree_en,
+        degree_ar,
       ];
 }
