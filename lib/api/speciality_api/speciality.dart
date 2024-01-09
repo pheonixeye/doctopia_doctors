@@ -12,7 +12,7 @@ class HxSpeciality {
     required this.env,
   }) {
     server = Server.main(env.env);
-    db = Databases(server.clientClient);
+    db = Databases(server.clientAPI);
   }
 
   Future<List<Speciality>> fetchSpecialities() async {
@@ -20,6 +20,9 @@ class HxSpeciality {
       final res = await db.listDocuments(
         databaseId: env.creds.DATABASE_CONSTANTS,
         collectionId: env.creds.COLLECTION_SPECIALITIES_CONSTANTS,
+        queries: [
+          Query.limit(100),
+        ],
       );
       // print(res.documents.first.toMap().toString());
 

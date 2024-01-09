@@ -2,6 +2,7 @@ import 'package:doctopia_doctors/pages/homepage/homepage.dart';
 import 'package:doctopia_doctors/pages/loading_screen/loading_screen.dart';
 import 'package:doctopia_doctors/pages/login_page/login_page.dart';
 import 'package:doctopia_doctors/pages/register_page_basic/register_page_basic.dart';
+import 'package:doctopia_doctors/pages/register_page_password/register_page_password.dart';
 import 'package:flutter/widgets.dart';
 
 class RoutePage {
@@ -39,6 +40,16 @@ class RoutePage {
       name: 'register_page_basic',
       path: 'register_page_basic',
       page: RegisterPageBasic(
+        key: key,
+      ),
+    );
+  }
+
+  factory RoutePage.registerPagePassword({Key? key}) {
+    return RoutePage(
+      name: 'register_page_password',
+      path: 'register_page_password',
+      page: RegisterPagePassword(
         key: key,
       ),
     );

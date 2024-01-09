@@ -1,8 +1,12 @@
 import 'package:doctopia_doctors/assets/assets.dart';
 import 'package:doctopia_doctors/pages/register_page_basic/widgets/degree_selector.dart';
 import 'package:doctopia_doctors/pages/register_page_basic/widgets/speciality_selector.dart';
+import 'package:doctopia_doctors/providers/px_doctor_make.dart';
+import 'package:doctopia_doctors/routes/route_page/route_page.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class RegisterPageBasic extends StatefulWidget {
   const RegisterPageBasic({super.key});
@@ -23,10 +27,13 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
           padding: const EdgeInsets.all(8),
           shrinkWrap: true,
           children: [
-            SizedBox(
-              width: 150,
-              height: 150,
-              child: Image.asset(AppAssets.icon),
+            Hero(
+              tag: 'logo',
+              child: SizedBox(
+                width: 150,
+                height: 150,
+                child: Image.asset(AppAssets.icon),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -48,7 +55,11 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                       ),
                       keyboardType: TextInputType.number,
                       maxLength: 6,
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        context.read<PxDoctorMake>().setDoctor(
+                              synd_id: int.parse(value),
+                            );
+                      },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Kindly Enter Syndicate Id Number.";
@@ -79,7 +90,11 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                         ),
                       ),
                       keyboardType: TextInputType.name,
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        context.read<PxDoctorMake>().setDoctor(
+                              name_en: value.trim().toLowerCase(),
+                            );
+                      },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Kindly Enter English Name.";
@@ -110,7 +125,11 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                         ),
                       ),
                       keyboardType: TextInputType.name,
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        context.read<PxDoctorMake>().setDoctor(
+                              name_ar: value.trim().toLowerCase(),
+                            );
+                      },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Kindly Enter Arabic Name.";
@@ -142,7 +161,11 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                       ),
                       maxLength: 11,
                       keyboardType: TextInputType.phone,
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        context.read<PxDoctorMake>().setDoctor(
+                              personal_phone: value.trim().toLowerCase(),
+                            );
+                      },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Kindly Enter Personal Mobile Number.";
@@ -174,7 +197,11 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                       ),
                       keyboardType: TextInputType.phone,
                       maxLength: 11,
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        context.read<PxDoctorMake>().setDoctor(
+                              assistant_phone: value.trim().toLowerCase(),
+                            );
+                      },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Kindly Enter Assisstant Mobile Number.";
@@ -205,7 +232,11 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                         ),
                       ),
                       keyboardType: TextInputType.emailAddress,
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        context.read<PxDoctorMake>().setDoctor(
+                              email: value.trim().toLowerCase(),
+                            );
+                      },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Kindly Enter Email Address.";
@@ -226,7 +257,18 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
               icon: const Icon(Icons.arrow_forward_ios),
               label: const Text('Next'),
               onPressed: () async {
-                if (_formKey.currentState!.validate()) {}
+                if (_formKey.currentState!.validate()) {
+                  GoRouter.of(context)
+                      .goNamed(RoutePage.registerPagePassword().name);
+                }
+              },
+            ),
+            const Gap(10),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.arrow_back_ios),
+              label: const Text('Back'),
+              onPressed: () async {
+                GoRouter.of(context).pop();
               },
             ),
             const Gap(10),

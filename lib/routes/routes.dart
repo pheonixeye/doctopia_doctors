@@ -42,6 +42,18 @@ final GoRouter router = GoRouter(
           },
         ),
         GoRoute(
+          path: RoutePage.registerPagePassword().path,
+          name: RoutePage.registerPagePassword().name,
+          pageBuilder: (context, state) {
+            return CustomTransitionPage(
+              transitionDuration: const Duration(milliseconds: 500),
+              name: RoutePage.registerPagePassword().name,
+              transitionsBuilder: slideTransitionBuilder,
+              child: RoutePage.registerPagePassword().page,
+            );
+          },
+        ),
+        GoRoute(
           path: RoutePage.loginPage().path,
           name: RoutePage.loginPage().name,
           pageBuilder: (context, state) {

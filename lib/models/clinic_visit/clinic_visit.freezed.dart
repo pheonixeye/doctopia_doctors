@@ -26,6 +26,8 @@ mixin _$ClinicVisit {
   String get doc_id => throw _privateConstructorUsedError;
   String get clinic_id => throw _privateConstructorUsedError;
   String get date => throw _privateConstructorUsedError;
+  String get type => throw _privateConstructorUsedError;
+  bool get attended => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -45,7 +47,9 @@ abstract class $ClinicVisitCopyWith<$Res> {
       String pt_phone,
       String doc_id,
       String clinic_id,
-      String date});
+      String date,
+      String type,
+      bool attended});
 }
 
 /// @nodoc
@@ -67,6 +71,8 @@ class _$ClinicVisitCopyWithImpl<$Res, $Val extends ClinicVisit>
     Object? doc_id = null,
     Object? clinic_id = null,
     Object? date = null,
+    Object? type = null,
+    Object? attended = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -93,6 +99,14 @@ class _$ClinicVisitCopyWithImpl<$Res, $Val extends ClinicVisit>
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
+      attended: null == attended
+          ? _value.attended
+          : attended // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -111,7 +125,9 @@ abstract class _$$ClinicVisitImplCopyWith<$Res>
       String pt_phone,
       String doc_id,
       String clinic_id,
-      String date});
+      String date,
+      String type,
+      bool attended});
 }
 
 /// @nodoc
@@ -131,6 +147,8 @@ class __$$ClinicVisitImplCopyWithImpl<$Res>
     Object? doc_id = null,
     Object? clinic_id = null,
     Object? date = null,
+    Object? type = null,
+    Object? attended = null,
   }) {
     return _then(_$ClinicVisitImpl(
       id: null == id
@@ -157,6 +175,14 @@ class __$$ClinicVisitImplCopyWithImpl<$Res>
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
+      attended: null == attended
+          ? _value.attended
+          : attended // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -170,7 +196,9 @@ class _$ClinicVisitImpl with DiagnosticableTreeMixin implements _ClinicVisit {
       required this.pt_phone,
       required this.doc_id,
       required this.clinic_id,
-      required this.date});
+      required this.date,
+      required this.type,
+      required this.attended});
 
   factory _$ClinicVisitImpl.fromJson(Map<String, dynamic> json) =>
       _$$ClinicVisitImplFromJson(json);
@@ -187,10 +215,14 @@ class _$ClinicVisitImpl with DiagnosticableTreeMixin implements _ClinicVisit {
   final String clinic_id;
   @override
   final String date;
+  @override
+  final String type;
+  @override
+  final bool attended;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ClinicVisit(id: $id, pt_name: $pt_name, pt_phone: $pt_phone, doc_id: $doc_id, clinic_id: $clinic_id, date: $date)';
+    return 'ClinicVisit(id: $id, pt_name: $pt_name, pt_phone: $pt_phone, doc_id: $doc_id, clinic_id: $clinic_id, date: $date, type: $type, attended: $attended)';
   }
 
   @override
@@ -203,7 +235,9 @@ class _$ClinicVisitImpl with DiagnosticableTreeMixin implements _ClinicVisit {
       ..add(DiagnosticsProperty('pt_phone', pt_phone))
       ..add(DiagnosticsProperty('doc_id', doc_id))
       ..add(DiagnosticsProperty('clinic_id', clinic_id))
-      ..add(DiagnosticsProperty('date', date));
+      ..add(DiagnosticsProperty('date', date))
+      ..add(DiagnosticsProperty('type', type))
+      ..add(DiagnosticsProperty('attended', attended));
   }
 
   @override
@@ -218,13 +252,16 @@ class _$ClinicVisitImpl with DiagnosticableTreeMixin implements _ClinicVisit {
             (identical(other.doc_id, doc_id) || other.doc_id == doc_id) &&
             (identical(other.clinic_id, clinic_id) ||
                 other.clinic_id == clinic_id) &&
-            (identical(other.date, date) || other.date == date));
+            (identical(other.date, date) || other.date == date) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.attended, attended) ||
+                other.attended == attended));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, pt_name, pt_phone, doc_id, clinic_id, date);
+  int get hashCode => Object.hash(runtimeType, id, pt_name, pt_phone, doc_id,
+      clinic_id, date, type, attended);
 
   @JsonKey(ignore: true)
   @override
@@ -247,7 +284,9 @@ abstract class _ClinicVisit implements ClinicVisit {
       required final String pt_phone,
       required final String doc_id,
       required final String clinic_id,
-      required final String date}) = _$ClinicVisitImpl;
+      required final String date,
+      required final String type,
+      required final bool attended}) = _$ClinicVisitImpl;
 
   factory _ClinicVisit.fromJson(Map<String, dynamic> json) =
       _$ClinicVisitImpl.fromJson;
@@ -264,6 +303,10 @@ abstract class _ClinicVisit implements ClinicVisit {
   String get clinic_id;
   @override
   String get date;
+  @override
+  String get type;
+  @override
+  bool get attended;
   @override
   @JsonKey(ignore: true)
   _$$ClinicVisitImplCopyWith<_$ClinicVisitImpl> get copyWith =>

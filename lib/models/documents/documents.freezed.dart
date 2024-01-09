@@ -14,12 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-Documents _$DocumentsFromJson(Map<String, dynamic> json) {
-  return _Documents.fromJson(json);
+DoctorDocuments _$DoctorDocumentsFromJson(Map<String, dynamic> json) {
+  return _DoctorDocuments.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Documents {
+mixin _$DoctorDocuments {
   String get docid => throw _privateConstructorUsedError;
   String get synd_card => throw _privateConstructorUsedError;
   String get permit_cert => throw _privateConstructorUsedError;
@@ -29,14 +29,15 @@ mixin _$Documents {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $DocumentsCopyWith<Documents> get copyWith =>
+  $DoctorDocumentsCopyWith<DoctorDocuments> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $DocumentsCopyWith<$Res> {
-  factory $DocumentsCopyWith(Documents value, $Res Function(Documents) then) =
-      _$DocumentsCopyWithImpl<$Res, Documents>;
+abstract class $DoctorDocumentsCopyWith<$Res> {
+  factory $DoctorDocumentsCopyWith(
+          DoctorDocuments value, $Res Function(DoctorDocuments) then) =
+      _$DoctorDocumentsCopyWithImpl<$Res, DoctorDocuments>;
   @useResult
   $Res call(
       {String docid,
@@ -48,9 +49,9 @@ abstract class $DocumentsCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$DocumentsCopyWithImpl<$Res, $Val extends Documents>
-    implements $DocumentsCopyWith<$Res> {
-  _$DocumentsCopyWithImpl(this._value, this._then);
+class _$DoctorDocumentsCopyWithImpl<$Res, $Val extends DoctorDocuments>
+    implements $DoctorDocumentsCopyWith<$Res> {
+  _$DoctorDocumentsCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -97,11 +98,11 @@ class _$DocumentsCopyWithImpl<$Res, $Val extends Documents>
 }
 
 /// @nodoc
-abstract class _$$DocumentsImplCopyWith<$Res>
-    implements $DocumentsCopyWith<$Res> {
-  factory _$$DocumentsImplCopyWith(
-          _$DocumentsImpl value, $Res Function(_$DocumentsImpl) then) =
-      __$$DocumentsImplCopyWithImpl<$Res>;
+abstract class _$$DoctorDocumentsImplCopyWith<$Res>
+    implements $DoctorDocumentsCopyWith<$Res> {
+  factory _$$DoctorDocumentsImplCopyWith(_$DoctorDocumentsImpl value,
+          $Res Function(_$DoctorDocumentsImpl) then) =
+      __$$DoctorDocumentsImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -114,11 +115,11 @@ abstract class _$$DocumentsImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$DocumentsImplCopyWithImpl<$Res>
-    extends _$DocumentsCopyWithImpl<$Res, _$DocumentsImpl>
-    implements _$$DocumentsImplCopyWith<$Res> {
-  __$$DocumentsImplCopyWithImpl(
-      _$DocumentsImpl _value, $Res Function(_$DocumentsImpl) _then)
+class __$$DoctorDocumentsImplCopyWithImpl<$Res>
+    extends _$DoctorDocumentsCopyWithImpl<$Res, _$DoctorDocumentsImpl>
+    implements _$$DoctorDocumentsImplCopyWith<$Res> {
+  __$$DoctorDocumentsImplCopyWithImpl(
+      _$DoctorDocumentsImpl _value, $Res Function(_$DoctorDocumentsImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -131,7 +132,7 @@ class __$$DocumentsImplCopyWithImpl<$Res>
     Object? consultant_cert = null,
     Object? avatar = null,
   }) {
-    return _then(_$DocumentsImpl(
+    return _then(_$DoctorDocumentsImpl(
       docid: null == docid
           ? _value.docid
           : docid // ignore: cast_nullable_to_non_nullable
@@ -162,8 +163,10 @@ class __$$DocumentsImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$DocumentsImpl with DiagnosticableTreeMixin implements _Documents {
-  const _$DocumentsImpl(
+class _$DoctorDocumentsImpl
+    with DiagnosticableTreeMixin
+    implements _DoctorDocuments {
+  const _$DoctorDocumentsImpl(
       {required this.docid,
       required this.synd_card,
       required this.permit_cert,
@@ -171,8 +174,8 @@ class _$DocumentsImpl with DiagnosticableTreeMixin implements _Documents {
       required this.consultant_cert,
       required this.avatar});
 
-  factory _$DocumentsImpl.fromJson(Map<String, dynamic> json) =>
-      _$$DocumentsImplFromJson(json);
+  factory _$DoctorDocumentsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$DoctorDocumentsImplFromJson(json);
 
   @override
   final String docid;
@@ -189,14 +192,14 @@ class _$DocumentsImpl with DiagnosticableTreeMixin implements _Documents {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Documents(docid: $docid, synd_card: $synd_card, permit_cert: $permit_cert, specialist_cert: $specialist_cert, consultant_cert: $consultant_cert, avatar: $avatar)';
+    return 'DoctorDocuments(docid: $docid, synd_card: $synd_card, permit_cert: $permit_cert, specialist_cert: $specialist_cert, consultant_cert: $consultant_cert, avatar: $avatar)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'Documents'))
+      ..add(DiagnosticsProperty('type', 'DoctorDocuments'))
       ..add(DiagnosticsProperty('docid', docid))
       ..add(DiagnosticsProperty('synd_card', synd_card))
       ..add(DiagnosticsProperty('permit_cert', permit_cert))
@@ -209,7 +212,7 @@ class _$DocumentsImpl with DiagnosticableTreeMixin implements _Documents {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DocumentsImpl &&
+            other is _$DoctorDocumentsImpl &&
             (identical(other.docid, docid) || other.docid == docid) &&
             (identical(other.synd_card, synd_card) ||
                 other.synd_card == synd_card) &&
@@ -230,28 +233,29 @@ class _$DocumentsImpl with DiagnosticableTreeMixin implements _Documents {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$DocumentsImplCopyWith<_$DocumentsImpl> get copyWith =>
-      __$$DocumentsImplCopyWithImpl<_$DocumentsImpl>(this, _$identity);
+  _$$DoctorDocumentsImplCopyWith<_$DoctorDocumentsImpl> get copyWith =>
+      __$$DoctorDocumentsImplCopyWithImpl<_$DoctorDocumentsImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$DocumentsImplToJson(
+    return _$$DoctorDocumentsImplToJson(
       this,
     );
   }
 }
 
-abstract class _Documents implements Documents {
-  const factory _Documents(
+abstract class _DoctorDocuments implements DoctorDocuments {
+  const factory _DoctorDocuments(
       {required final String docid,
       required final String synd_card,
       required final String permit_cert,
       required final String specialist_cert,
       required final String consultant_cert,
-      required final String avatar}) = _$DocumentsImpl;
+      required final String avatar}) = _$DoctorDocumentsImpl;
 
-  factory _Documents.fromJson(Map<String, dynamic> json) =
-      _$DocumentsImpl.fromJson;
+  factory _DoctorDocuments.fromJson(Map<String, dynamic> json) =
+      _$DoctorDocumentsImpl.fromJson;
 
   @override
   String get docid;
@@ -267,6 +271,6 @@ abstract class _Documents implements Documents {
   String get avatar;
   @override
   @JsonKey(ignore: true)
-  _$$DocumentsImplCopyWith<_$DocumentsImpl> get copyWith =>
+  _$$DoctorDocumentsImplCopyWith<_$DoctorDocumentsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

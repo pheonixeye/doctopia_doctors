@@ -14,6 +14,8 @@ _$ClinicVisitImpl _$$ClinicVisitImplFromJson(Map<String, dynamic> json) =>
       doc_id: json['doc_id'] as String,
       clinic_id: json['clinic_id'] as String,
       date: json['date'] as String,
+      type: json['type'] as String,
+      attended: json['attended'] as bool,
     );
 
 Map<String, dynamic> _$$ClinicVisitImplToJson(_$ClinicVisitImpl instance) =>
@@ -24,4 +26,6 @@ Map<String, dynamic> _$$ClinicVisitImplToJson(_$ClinicVisitImpl instance) =>
       'doc_id': instance.doc_id,
       'clinic_id': instance.clinic_id,
       'date': instance.date,
+      'type': instance.type,
+      'attended': instance.attended,
     };

@@ -12,24 +12,24 @@ class Servers {
 
 class Server {
   final String name;
-  final clientSDK.Client clientClient;
-  final serverSDK.Client serverClient;
+  final clientSDK.Client clientAPI;
+  final serverSDK.Client serverAPI;
 
   const Server._({
     required this.name,
-    required this.clientClient,
-    required this.serverClient,
+    required this.clientAPI,
+    required this.serverAPI,
   });
 
   factory Server.main(String environment) {
     final env = ENV(environment);
     return Server._(
       name: environment,
-      clientClient:
+      clientAPI:
           clientSDK.Client(endPoint: env.creds.ENDPOINT, selfSigned: true)
               .setProject(env.creds.PROJECT)
               .addHeader("X-RateLimit-Limit", "5000"),
-      serverClient:
+      serverAPI:
           serverSDK.Client(endPoint: env.creds.ENDPOINT, selfSigned: true)
               .setProject(env.creds.PROJECT)
               .setKey(env.creds.API_KEY),

@@ -71,7 +71,7 @@ class _LoginpageState extends State<Loginpage> {
                     child: TextFormField(
                       decoration: InputDecoration(
                         labelText: "Password",
-                        hintText: "******",
+                        hintText: "********",
                         border: const OutlineInputBorder(),
                         suffix: SizedBox(
                           height: 32,

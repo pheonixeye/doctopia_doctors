@@ -1,4 +1,6 @@
-class Degree {
+import 'package:equatable/equatable.dart';
+
+class Degree extends Equatable {
   final String en;
   final String ar;
 
@@ -12,4 +14,7 @@ class Degree {
     Degree(en: 'Specialist', ar: 'اخصائي'),
     Degree(en: 'Consultant', ar: 'استشاري'),
   ];
+
+  @override
+  List<Object?> get props => [en, ar];
 }

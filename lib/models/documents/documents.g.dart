@@ -6,8 +6,9 @@ part of 'documents.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$DocumentsImpl _$$DocumentsImplFromJson(Map<String, dynamic> json) =>
-    _$DocumentsImpl(
+_$DoctorDocumentsImpl _$$DoctorDocumentsImplFromJson(
+        Map<String, dynamic> json) =>
+    _$DoctorDocumentsImpl(
       docid: json['docid'] as String,
       synd_card: json['synd_card'] as String,
       permit_cert: json['permit_cert'] as String,
@@ -16,7 +17,8 @@ _$DocumentsImpl _$$DocumentsImplFromJson(Map<String, dynamic> json) =>
       avatar: json['avatar'] as String,
     );
 
-Map<String, dynamic> _$$DocumentsImplToJson(_$DocumentsImpl instance) =>
+Map<String, dynamic> _$$DoctorDocumentsImplToJson(
+        _$DoctorDocumentsImpl instance) =>
     <String, dynamic>{
       'docid': instance.docid,
       'synd_card': instance.synd_card,

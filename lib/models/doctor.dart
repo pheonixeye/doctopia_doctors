@@ -1,9 +1,9 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:doctopia_doctors/functions/list_d_list_s.dart';
 import 'package:equatable/equatable.dart';
 
 class Doctor extends Equatable {
-  final String id;
   final int synd_id;
   final String joined_at;
   final String name_en;
@@ -24,7 +24,6 @@ class Doctor extends Equatable {
   final String degree_ar;
 
   const Doctor({
-    required this.id,
     required this.synd_id,
     required this.joined_at,
     required this.name_en,
@@ -45,9 +44,52 @@ class Doctor extends Equatable {
     required this.degree_ar,
   });
 
+  static const Map<String, Type> scheme = {
+    'synd_id': int,
+    "joined_at": String,
+    'name_en': String,
+    'name_ar': String,
+    'personal_phone': String,
+    'assistant_phone': String,
+    'email': String,
+    'salt': String,
+    'password': String,
+    'speciality_en': String,
+    'speciality_ar': String,
+    'published': bool,
+    'titles_en': List<String>,
+    'titles_ar': List<String>,
+    "about_en": String,
+    "about_ar": String,
+    "degree_en": String,
+    "degree_ar": String,
+  };
+
+  factory Doctor.initial() {
+    return Doctor(
+      synd_id: 0,
+      name_en: '',
+      name_ar: '',
+      personal_phone: '',
+      assistant_phone: '',
+      email: '',
+      salt: '',
+      password: '',
+      speciality_en: '',
+      speciality_ar: '',
+      about_en: '',
+      about_ar: '',
+      degree_en: '',
+      degree_ar: '',
+      joined_at: DateTime.now().toIso8601String(),
+      published: false,
+      titles_en: const <String>[],
+      titles_ar: const <String>[],
+    );
+  }
+
   factory Doctor.fromJson(Map<String, dynamic> json) {
     return Doctor(
-      id: json[r'$id'],
       synd_id: json['synd_id'],
       joined_at: json['joined_at'],
       name_en: json['name_en'],
@@ -60,8 +102,8 @@ class Doctor extends Equatable {
       speciality_en: json['speciality_en'],
       speciality_ar: json['speciality_ar'],
       published: json['published'],
-      titles_en: json['titles_en'],
-      titles_ar: json['titles_ar'],
+      titles_en: stringListFns(json['titles_en']),
+      titles_ar: stringListFns(json['titles_ar']),
       about_en: json['about_en'],
       about_ar: json['about_ar'],
       degree_en: json['degree_en'],
@@ -93,7 +135,6 @@ class Doctor extends Equatable {
   }
 
   Doctor copyWith({
-    String? id,
     int? synd_id,
     String? joined_at,
     String? name_en,
@@ -114,7 +155,6 @@ class Doctor extends Equatable {
     String? degree_ar,
   }) {
     return Doctor(
-      id: id ?? this.id,
       synd_id: synd_id ?? this.synd_id,
       joined_at: joined_at ?? this.joined_at,
       name_en: name_en ?? this.name_en,
@@ -138,7 +178,6 @@ class Doctor extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
         synd_id,
         joined_at,
         name_en,

@@ -1,24 +1,16 @@
 import 'package:doctopia_doctors/models/speciality.dart';
+import 'package:doctopia_doctors/providers/px_doctor_make.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_specialities.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SpecialitySelector extends StatefulWidget {
+class SpecialitySelector extends StatelessWidget {
   const SpecialitySelector({super.key});
 
   @override
-  State<SpecialitySelector> createState() => _SpecialitySelectorState();
-}
-
-class _SpecialitySelectorState extends State<SpecialitySelector> {
-  Speciality? _speciality;
-  @override
   Widget build(BuildContext context) {
     return ListTile(
-      // leading: const CircleAvatar(
-      //   child: Text('^'),
-      // ),
       title: const Text('Select Speciality'),
       subtitle: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -46,11 +38,15 @@ class _SpecialitySelectorState extends State<SpecialitySelector> {
                     ),
                   );
                 }).toList(),
-                value: _speciality,
+                // value: Speciality(
+                //   en: context.read<PxDoctorMake>().doctor.speciality_en,
+                //   ar: context.read<PxDoctorMake>().doctor.speciality_ar,
+                // ),
                 onChanged: (value) {
-                  setState(() {
-                    _speciality = value;
-                  });
+                  context.read<PxDoctorMake>().setDoctor(
+                        speciality_en: value?.en,
+                        speciality_ar: value?.ar,
+                      );
                 },
               );
             },

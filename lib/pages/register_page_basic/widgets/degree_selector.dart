@@ -1,23 +1,15 @@
 import 'package:doctopia_doctors/models/degree/degree.dart';
+import 'package:doctopia_doctors/providers/px_doctor_make.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class DegreeSelector extends StatefulWidget {
+class DegreeSelector extends StatelessWidget {
   const DegreeSelector({super.key});
 
   @override
-  State<DegreeSelector> createState() => _DegreeSelectorState();
-}
-
-class _DegreeSelectorState extends State<DegreeSelector> {
-  Degree? _degree;
-  @override
   Widget build(BuildContext context) {
     return ListTile(
-      // leading: const CircleAvatar(
-      //   child: Text('^'),
-      // ),
       title: const Text('Select Degree'),
       subtitle: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -42,11 +34,15 @@ class _DegreeSelectorState extends State<DegreeSelector> {
                     child: Text(isEnglish ? e.en : e.ar),
                   );
                 }).toList(),
-                value: _degree,
+                // value: Degree(
+                //   en: context.read<PxDoctorMake>().doctor.degree_en,
+                //   ar: context.read<PxDoctorMake>().doctor.degree_ar,
+                // ),
                 onChanged: (value) {
-                  setState(() {
-                    _degree = value;
-                  });
+                  context.read<PxDoctorMake>().setDoctor(
+                        degree_en: value?.en,
+                        degree_ar: value?.ar,
+                      );
                 },
               );
             },
