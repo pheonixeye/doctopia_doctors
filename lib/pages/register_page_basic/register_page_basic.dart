@@ -1,7 +1,7 @@
 import 'package:doctopia_doctors/assets/assets.dart';
 import 'package:doctopia_doctors/pages/register_page_basic/widgets/degree_selector.dart';
 import 'package:doctopia_doctors/pages/register_page_basic/widgets/speciality_selector.dart';
-import 'package:doctopia_doctors/providers/px_doctor_make.dart';
+import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/routes/route_page/route_page.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -56,7 +56,7 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                       keyboardType: TextInputType.number,
                       maxLength: 6,
                       onChanged: (value) {
-                        context.read<PxDoctorMake>().setDoctor(
+                        context.read<PxDoctor>().setDoctor(
                               synd_id: int.parse(value),
                             );
                       },
@@ -91,7 +91,7 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                       ),
                       keyboardType: TextInputType.name,
                       onChanged: (value) {
-                        context.read<PxDoctorMake>().setDoctor(
+                        context.read<PxDoctor>().setDoctor(
                               name_en: value.trim().toLowerCase(),
                             );
                       },
@@ -126,7 +126,7 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                       ),
                       keyboardType: TextInputType.name,
                       onChanged: (value) {
-                        context.read<PxDoctorMake>().setDoctor(
+                        context.read<PxDoctor>().setDoctor(
                               name_ar: value.trim().toLowerCase(),
                             );
                       },
@@ -162,7 +162,7 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                       maxLength: 11,
                       keyboardType: TextInputType.phone,
                       onChanged: (value) {
-                        context.read<PxDoctorMake>().setDoctor(
+                        context.read<PxDoctor>().setDoctor(
                               personal_phone: value.trim().toLowerCase(),
                             );
                       },
@@ -198,7 +198,7 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                       keyboardType: TextInputType.phone,
                       maxLength: 11,
                       onChanged: (value) {
-                        context.read<PxDoctorMake>().setDoctor(
+                        context.read<PxDoctor>().setDoctor(
                               assistant_phone: value.trim().toLowerCase(),
                             );
                       },
@@ -233,7 +233,7 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                       ),
                       keyboardType: TextInputType.emailAddress,
                       onChanged: (value) {
-                        context.read<PxDoctorMake>().setDoctor(
+                        context.read<PxDoctor>().setDoctor(
                               email: value.trim().toLowerCase(),
                             );
                       },

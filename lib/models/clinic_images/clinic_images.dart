@@ -14,4 +14,11 @@ class ClinicImages with _$ClinicImages {
 
   factory ClinicImages.fromJson(Map<String, Object?> json) =>
       _$ClinicImagesFromJson(json);
+
+  factory ClinicImages.initial() {
+    return const ClinicImages(
+      clinic_id: '',
+      images: [],
+    );
+  }
 }

@@ -1,5 +1,5 @@
 import 'package:doctopia_doctors/models/speciality.dart';
-import 'package:doctopia_doctors/providers/px_doctor_make.dart';
+import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_specialities.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +43,7 @@ class SpecialitySelector extends StatelessWidget {
                 //   ar: context.read<PxDoctorMake>().doctor.speciality_ar,
                 // ),
                 onChanged: (value) {
-                  context.read<PxDoctorMake>().setDoctor(
+                  context.read<PxDoctor>().setDoctor(
                         speciality_en: value?.en,
                         speciality_ar: value?.ar,
                       );

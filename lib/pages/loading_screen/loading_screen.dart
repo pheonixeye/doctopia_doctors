@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:doctopia_doctors/assets/assets.dart';
+import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_theme.dart';
 import 'package:doctopia_doctors/routes/route_page/route_page.dart';
@@ -41,24 +42,27 @@ class _LoadingScreenState extends State<LoadingScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Spacer(),
-            Image.asset(AppAssets.logo),
-            SpinKitPumpingHeart(
-              color: const Color(0xffFE7800),
-              size: 75.0,
-              controller: _controller,
-            ),
-            const Gap(20),
-            const Spacer(),
-            const Text('version 0.0.1'),
-            const Gap(8),
-          ],
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Spacer(),
+              Image.asset(AppAssets.logo),
+              SpinKitPumpingHeart(
+                color: const Color(0xffFE7800),
+                size: 75.0,
+                controller: _controller,
+              ),
+              const Gap(20),
+              const Spacer(),
+              const Text('version 0.0.1'),
+              const Gap(8),
+            ],
+          ),
         ),
       ),
     );
@@ -69,10 +73,19 @@ class _LoadingScreenState extends State<LoadingScreen>
     await Future.wait([
       context.read<PxLocalDatabase>().fetchLanguageFromDb(),
       context.read<PxLocalDatabase>().fetchThemeFromDb(),
+      context.read<PxLocalDatabase>().fetchDocIdFromDb(),
     ]).whenComplete(() async {
       await Future.wait([
         context.read<PxLocale>().setLocaleFromLocalDb(),
         context.read<PxTheme>().setThemeModeFromDb(),
+        //* check if local storage has a doctor model then login
+        (context.read<PxLocalDatabase>().password != null &&
+                context.read<PxLocalDatabase>().syndId != null)
+            ? context.read<PxDoctor>().fetchDoctor(
+                  synd_id: context.read<PxLocalDatabase>().syndId!,
+                  password: context.read<PxLocalDatabase>().password!,
+                )
+            : Future.delayed(const Duration(milliseconds: 1)),
       ]);
     }).whenComplete(() async {
       await GoRouter.of(context)

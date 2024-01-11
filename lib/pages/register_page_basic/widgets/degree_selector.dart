@@ -1,5 +1,5 @@
 import 'package:doctopia_doctors/models/degree/degree.dart';
-import 'package:doctopia_doctors/providers/px_doctor_make.dart';
+import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +39,7 @@ class DegreeSelector extends StatelessWidget {
                 //   ar: context.read<PxDoctorMake>().doctor.degree_ar,
                 // ),
                 onChanged: (value) {
-                  context.read<PxDoctorMake>().setDoctor(
+                  context.read<PxDoctor>().setDoctor(
                         degree_en: value?.en,
                         degree_ar: value?.ar,
                       );

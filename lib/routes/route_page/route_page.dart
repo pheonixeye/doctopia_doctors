@@ -3,6 +3,7 @@ import 'package:doctopia_doctors/pages/loading_screen/loading_screen.dart';
 import 'package:doctopia_doctors/pages/login_page/login_page.dart';
 import 'package:doctopia_doctors/pages/register_page_basic/register_page_basic.dart';
 import 'package:doctopia_doctors/pages/register_page_password/register_page_password.dart';
+import 'package:doctopia_doctors/pages/token_validation_page/token_validation_page.dart';
 import 'package:flutter/widgets.dart';
 
 class RoutePage {
@@ -45,12 +46,16 @@ class RoutePage {
     );
   }
 
-  factory RoutePage.registerPagePassword({Key? key}) {
+  factory RoutePage.registerPagePassword({
+    Key? key,
+    bool isRegister = true,
+  }) {
     return RoutePage(
       name: 'register_page_password',
       path: 'register_page_password',
       page: RegisterPagePassword(
         key: key,
+        isRegister: isRegister,
       ),
     );
   }
@@ -59,6 +64,16 @@ class RoutePage {
       name: 'login_page',
       path: 'login_page',
       page: Loginpage(
+        key: key,
+      ),
+    );
+  }
+
+  factory RoutePage.tokenValidationPage({Key? key}) {
+    return RoutePage(
+      name: 'token_validation',
+      path: 'token_validation',
+      page: TokenValidationPage(
         key: key,
       ),
     );

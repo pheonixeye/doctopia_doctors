@@ -1,15 +1,19 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:doctopia_doctors/api/doctor_api/hx_doctor.dart';
-import 'package:doctopia_doctors/models/doctor.dart';
+import 'package:doctopia_doctors/functions/password_hash_fns.dart';
+import 'package:doctopia_doctors/models/doctor/doctor.dart';
 import 'package:flutter/material.dart';
 
-class PxDoctorMake extends ChangeNotifier {
+class PxDoctor extends ChangeNotifier {
   final HxDoctor doctorService;
-  PxDoctorMake({required this.doctorService});
+  PxDoctor({required this.doctorService});
 
   Doctor _doctor = Doctor.initial();
   Doctor get doctor => _doctor;
+
+  bool _isLoggedIn = false;
+  bool get isLoggedIn => _isLoggedIn;
 
   void setDoctor({
     int? synd_id,
@@ -56,10 +60,54 @@ class PxDoctorMake extends ChangeNotifier {
 
   Future<Doctor> createDoctor() async {
     try {
-      final doc = await doctorService.createDoctor(doctor);
+      final doc = await doctorService.createDoctor(doctor: doctor);
       return doc;
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<Doctor> fetchDoctor({
+    required int synd_id,
+    required String password,
+  }) async {
+    try {
+      final serverResult =
+          await doctorService.fetchDoctorBySyndId(synd_id: synd_id);
+
+      final digest = retrievePassword(password, serverResult.salt);
+
+      if (digest != serverResult.password) {
+        throw WrongPasswordException(
+          message: 'Wrong id / password combination.',
+        );
+      } else {
+        _doctor = serverResult;
+        _isLoggedIn = true;
+        notifyListeners();
+        return serverResult;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Doctor> updateDoctor() async {
+    try {
+      final doc = await doctorService.updateDoctor(
+        update: doctor,
+      );
+      _doctor = doc;
+      notifyListeners();
+      return doc;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  void logout() {
+    _isLoggedIn = false;
+    _doctor = Doctor.initial();
+    notifyListeners();
   }
 }

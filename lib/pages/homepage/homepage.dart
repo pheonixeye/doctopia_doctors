@@ -1,8 +1,11 @@
 import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/models/page_ref/page_ref.dart';
 import 'package:doctopia_doctors/pages/homepage/widgets/drag_account_notifier.dart';
+import 'package:doctopia_doctors/pages/homepage/widgets/drag_account_publish_notifier.dart';
 import 'package:doctopia_doctors/pages/homepage/widgets/sidebar_btn.dart';
 import 'package:doctopia_doctors/pages/widgets/floating_buttons.dart';
+import 'package:doctopia_doctors/providers/px_doctor.dart';
+import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_theme.dart';
 import 'package:doctopia_doctors/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -83,26 +86,33 @@ class _HomePageState extends State<HomePage>
             headerBuilder: (context, extended) {
               return Padding(
                 padding: const EdgeInsets.only(top: 30.0),
-                child: Card(
-                  child: extended
-                      ? const SizedBox(
-                          width: 250,
-                          height: 150,
-                          child: GridTile(
-                            footer: Text(
-                              'Dr. Kareem Zaher',
-                              textAlign: TextAlign.center,
-                            ),
-                            child: CircleAvatar(
+                child: Consumer2<PxDoctor, PxLocale>(
+                  builder: (context, d, l, c) {
+                    final isEnglish = l.locale.languageCode == 'en';
+                    return Card(
+                      child: extended
+                          ? SizedBox(
+                              width: 250,
+                              height: 150,
+                              child: GridTile(
+                                footer: Text(
+                                  isEnglish
+                                      ? "Dr. ${d.doctor.name_en.toUpperCase()}"
+                                      : 'د / ${d.doctor.name_ar}',
+                                  textAlign: TextAlign.center,
+                                ),
+                                child: const CircleAvatar(
+                                  radius: 35,
+                                  child: Icon(Icons.person),
+                                ),
+                              ),
+                            )
+                          : const CircleAvatar(
                               radius: 35,
                               child: Icon(Icons.person),
                             ),
-                          ),
-                        )
-                      : const CircleAvatar(
-                          radius: 35,
-                          child: Icon(Icons.person),
-                        ),
+                    );
+                  },
                 ),
               );
             },
@@ -119,23 +129,28 @@ class _HomePageState extends State<HomePage>
                   SidebarXBtn(
                     isDarkMode: isDarkMode,
                     expanded: extended,
-                    onPressed: () {},
                     icon: const Icon(Icons.share),
                     labelOrTag: 'Share',
+                    onPressed: () {},
                   ),
                   SidebarXBtn(
                     isDarkMode: isDarkMode,
                     expanded: extended,
-                    onPressed: () {},
                     icon: const Icon(Icons.logout),
                     labelOrTag: 'Logout',
+                    onPressed: () {
+                      if (mounted) {
+                        context.read<PxDoctor>().logout();
+                        Scaffold.of(context).closeDrawer();
+                      }
+                    },
                   ),
                   SidebarXBtn(
                     isDarkMode: isDarkMode,
                     expanded: extended,
-                    onPressed: () {},
                     icon: const Icon(Icons.info),
                     labelOrTag: 'About',
+                    onPressed: () {},
                   ),
                 ],
               );
@@ -162,22 +177,30 @@ class _HomePageState extends State<HomePage>
           );
         },
       ),
-      body: Stack(
-        alignment: Alignment.center,
-        children: [
-          AnimatedBuilder(
-            animation: _animationController,
-            child:
-                SidebarPageRef.loggedInPages[_xController.selectedIndex].page,
-            builder: (context, child) {
-              return FadeTransition(
-                opacity: _animation,
-                child: child,
-              );
-            },
-          ),
-          const AccountStateNotifier(),
-        ],
+      body: Consumer<PxDoctor>(
+        builder: (context, d, c) {
+          return Stack(
+            alignment: Alignment.center,
+            children: [
+              AnimatedBuilder(
+                animation: _animationController,
+                child: SidebarPageRef
+                    .loggedInPages[_xController.selectedIndex].page,
+                builder: (context, child) {
+                  return FadeTransition(
+                    opacity: _animation,
+                    child: child,
+                  );
+                },
+              ),
+              //* if no account detected:
+              if (!d.isLoggedIn) const AccountStateNotifier(),
+              //* if account detected but not complete / published
+              if (d.isLoggedIn && !d.doctor.published)
+                const AccountPublishNotifier(),
+            ],
+          );
+        },
       ),
       floatingActionButton: const FloatingButtons(),
     );

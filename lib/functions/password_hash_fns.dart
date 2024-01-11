@@ -42,3 +42,12 @@ String retrievePassword(String password, String salt) {
   var digest = hmacSha256.convert(bytes);
   return digest.toString();
 }
+
+class WrongPasswordException implements Exception {
+  final String message;
+
+  WrongPasswordException({required this.message});
+
+  @override
+  String toString() => message;
+}

@@ -4,6 +4,7 @@ import 'package:doctopia_doctors/functions/list_d_list_s.dart';
 import 'package:equatable/equatable.dart';
 
 class Doctor extends Equatable {
+  final String? id;
   final int synd_id;
   final String joined_at;
   final String name_en;
@@ -24,6 +25,7 @@ class Doctor extends Equatable {
   final String degree_ar;
 
   const Doctor({
+    this.id,
     required this.synd_id,
     required this.joined_at,
     required this.name_en,
@@ -88,8 +90,9 @@ class Doctor extends Equatable {
     );
   }
 
-  factory Doctor.fromJson(Map<String, dynamic> json) {
+  factory Doctor.fromJson(Map<String, dynamic> json, {String? id}) {
     return Doctor(
+      id: id,
       synd_id: json['synd_id'],
       joined_at: json['joined_at'],
       name_en: json['name_en'],

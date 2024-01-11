@@ -14,14 +14,14 @@ class PxLocalDatabase extends ChangeNotifier {
   // late final StoreRef<int, Map<String, dynamic>> _appStoreRef;
   late final StoreRef<String, String?> _themeStoreRef;
   late final StoreRef<String, String?> _languageStoreRef;
-  late final StoreRef<String, String?> _docIdStoreRef;
+  late final StoreRef<String, dynamic> _docIdStoreRef;
 
   PxLocalDatabase() {
     _database = initDb();
     // _appStoreRef = StoreRef<int, Map<String, dynamic>>('notifications');
     _themeStoreRef = StoreRef<String, String?>('theme');
     _languageStoreRef = StoreRef<String, String?>('language');
-    _docIdStoreRef = StoreRef<String, String?>('docid');
+    _docIdStoreRef = StoreRef<String, dynamic>('docInfo');
   }
 
   // List<ClinicVisit> _appointments = [];
@@ -119,17 +119,34 @@ class PxLocalDatabase extends ChangeNotifier {
     notifyListeners();
   }
 
-  String? _docId;
-  String? get docId => _docId;
+  int? _syndId;
+  int? get syndId => _syndId;
 
-  Future<void> saveDocIdToDb(String docId) async {
-    final docIdKey = _docIdStoreRef.record('docid');
-    docIdKey.put(await _database, docId);
+  String? _password;
+  String? get password => _password;
+
+  Future<void> saveDocIdToDb(int syndId, String password) async {
+    final syndIdKey = _docIdStoreRef.record('synd_id');
+    final passwordKey = _docIdStoreRef.record('password');
+    syndIdKey.put(await _database, syndId);
+    passwordKey.put(await _database, password);
   }
 
   Future<void> fetchDocIdFromDb() async {
-    final docIdKey = _docIdStoreRef.record('docid');
-    _docId = await docIdKey.get(await _database);
+    final syndIdKey = _docIdStoreRef.record('synd_id');
+    final passwordKey = _docIdStoreRef.record('password');
+    _syndId = await syndIdKey.get(await _database);
+    _password = await passwordKey.get(await _database);
+    notifyListeners();
+  }
+
+  Future<void> clearDoctorRecordRef() async {
+    final syndIdKey = _docIdStoreRef.record('synd_id');
+    final passwordKey = _docIdStoreRef.record('password');
+    syndIdKey.delete(await _database);
+    passwordKey.delete(await _database);
+    _syndId = null;
+    _password = null;
     notifyListeners();
   }
 }

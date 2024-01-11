@@ -22,6 +22,7 @@ class HxSpeciality {
         collectionId: env.creds.COLLECTION_SPECIALITIES_CONSTANTS,
         queries: [
           Query.limit(100),
+          Query.orderAsc('speciality_en'),
         ],
       );
       // print(res.documents.first.toMap().toString());
