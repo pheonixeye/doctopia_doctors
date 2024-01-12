@@ -33,5 +33,8 @@ class CREDSDEV implements CREDS {
 
   @override
   String get COLLECTION_DOCTOR_DOCUMENTS_DOCTORS => "659935a2bb3a2310dc78";
+
+  @override
+  String get CREATE_DOCTOR_FUNCTION => '65a03e872b8af9cb6fcb';
   //-------------------------------------------------------------------//
 }

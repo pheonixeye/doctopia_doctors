@@ -103,14 +103,14 @@ class Speciality extends Equatable {
     required this.ar,
   });
 
-  // static List<Speciality> get list {
-  //   return _specialitiesEN.map((e) {
-  //     return Speciality(
-  //       en: e,
-  //       ar: _specialitiesAR.elementAt(_specialitiesEN.indexOf(e)),
-  //     );
-  //   }).toList();
-  // }
+  static List<Speciality> get list {
+    return _specialitiesEN.map((e) {
+      return Speciality(
+        en: e,
+        ar: _specialitiesAR.elementAt(_specialitiesEN.indexOf(e)),
+      );
+    }).toList();
+  }
 
   @override
   List<Object?> get props => [en, ar];

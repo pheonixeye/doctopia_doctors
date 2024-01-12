@@ -11,6 +11,7 @@ _$ReviewImpl _$$ReviewImplFromJson(Map<String, dynamic> json) => _$ReviewImpl(
       username: json['username'] as String,
       body: json['body'] as String,
       stars: json['stars'] as int,
+      waiting_time: json['waiting_time'] as int,
     );
 
 Map<String, dynamic> _$$ReviewImplToJson(_$ReviewImpl instance) =>
@@ -19,4 +20,5 @@ Map<String, dynamic> _$$ReviewImplToJson(_$ReviewImpl instance) =>
       'username': instance.username,
       'body': instance.body,
       'stars': instance.stars,
+      'waiting_time': instance.waiting_time,
     };

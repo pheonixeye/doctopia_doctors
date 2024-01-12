@@ -1,6 +1,9 @@
 // ignore_for_file: library_prefixes, non_constant_identifier_names
 
+import 'dart:convert';
+
 import 'package:appwrite/models.dart' as clientModels show Document;
+import 'package:doctopia_doctors/api/errors/create_doc_algorithm_excp.dart';
 import 'package:doctopia_doctors/api/servers/servers.dart';
 import 'package:doctopia_doctors/env/env.dart';
 
@@ -11,15 +14,17 @@ import 'package:doctopia_doctors/models/doctor/doctor.dart';
 class HxDoctor {
   final ENV env;
   late final Server server;
-  late final serverSDK.Databases server_db;
+  // late final serverSDK.Databases server_db;
   late final clientSDK.Databases client_db;
+  late final serverSDK.Functions server_functions;
 
   HxDoctor({
     required this.env,
   }) {
     server = Server.main(env.env);
-    server_db = serverSDK.Databases(server.serverAPI);
+    // server_db = serverSDK.Databases(server.serverAPI);
     client_db = clientSDK.Databases(server.clientAPI);
+    server_functions = serverSDK.Functions(server.serverAPI);
   }
 
   Future<Doctor> createDoctor({
@@ -39,8 +44,22 @@ class HxDoctor {
       rethrow;
     }
 
-    //TODO: populate the rest of the collections
-    //TODO: extract this logic in a single request to a cloud function
+    //populate the rest of the collections
+    //extract this logic in a single request to a cloud function
+    //invoke function
+
+    final excutionResult = await server_functions.createExecution(
+      functionId: env.creds.CREATE_DOCTOR_FUNCTION,
+      path: '/',
+      body: jsonEncode({'syndid': doctor.synd_id}),
+      method: 'POST',
+    );
+    //throw on wrong invokation
+    final functionResponse = jsonDecode(excutionResult.responseBody);
+    if (functionResponse['code'] != 0) {
+      throw CreateDoctorAlgorithmException(functionResponse['code'] as int);
+    }
+
     //return doctor from the initial request
     final docFromServer = Doctor.fromJson(
       createDoctorResponse.data,

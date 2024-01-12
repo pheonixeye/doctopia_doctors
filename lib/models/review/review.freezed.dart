@@ -24,6 +24,7 @@ mixin _$Review {
   String get username => throw _privateConstructorUsedError;
   String get body => throw _privateConstructorUsedError;
   int get stars => throw _privateConstructorUsedError;
+  int get waiting_time => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +36,12 @@ abstract class $ReviewCopyWith<$Res> {
   factory $ReviewCopyWith(Review value, $Res Function(Review) then) =
       _$ReviewCopyWithImpl<$Res, Review>;
   @useResult
-  $Res call({String docid, String username, String body, int stars});
+  $Res call(
+      {String docid,
+      String username,
+      String body,
+      int stars,
+      int waiting_time});
 }
 
 /// @nodoc
@@ -55,6 +61,7 @@ class _$ReviewCopyWithImpl<$Res, $Val extends Review>
     Object? username = null,
     Object? body = null,
     Object? stars = null,
+    Object? waiting_time = null,
   }) {
     return _then(_value.copyWith(
       docid: null == docid
@@ -73,6 +80,10 @@ class _$ReviewCopyWithImpl<$Res, $Val extends Review>
           ? _value.stars
           : stars // ignore: cast_nullable_to_non_nullable
               as int,
+      waiting_time: null == waiting_time
+          ? _value.waiting_time
+          : waiting_time // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -84,7 +95,12 @@ abstract class _$$ReviewImplCopyWith<$Res> implements $ReviewCopyWith<$Res> {
       __$$ReviewImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String docid, String username, String body, int stars});
+  $Res call(
+      {String docid,
+      String username,
+      String body,
+      int stars,
+      int waiting_time});
 }
 
 /// @nodoc
@@ -102,6 +118,7 @@ class __$$ReviewImplCopyWithImpl<$Res>
     Object? username = null,
     Object? body = null,
     Object? stars = null,
+    Object? waiting_time = null,
   }) {
     return _then(_$ReviewImpl(
       docid: null == docid
@@ -120,6 +137,10 @@ class __$$ReviewImplCopyWithImpl<$Res>
           ? _value.stars
           : stars // ignore: cast_nullable_to_non_nullable
               as int,
+      waiting_time: null == waiting_time
+          ? _value.waiting_time
+          : waiting_time // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -131,7 +152,8 @@ class _$ReviewImpl with DiagnosticableTreeMixin implements _Review {
       {required this.docid,
       required this.username,
       required this.body,
-      required this.stars});
+      required this.stars,
+      required this.waiting_time});
 
   factory _$ReviewImpl.fromJson(Map<String, dynamic> json) =>
       _$$ReviewImplFromJson(json);
@@ -144,10 +166,12 @@ class _$ReviewImpl with DiagnosticableTreeMixin implements _Review {
   final String body;
   @override
   final int stars;
+  @override
+  final int waiting_time;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Review(docid: $docid, username: $username, body: $body, stars: $stars)';
+    return 'Review(docid: $docid, username: $username, body: $body, stars: $stars, waiting_time: $waiting_time)';
   }
 
   @override
@@ -158,7 +182,8 @@ class _$ReviewImpl with DiagnosticableTreeMixin implements _Review {
       ..add(DiagnosticsProperty('docid', docid))
       ..add(DiagnosticsProperty('username', username))
       ..add(DiagnosticsProperty('body', body))
-      ..add(DiagnosticsProperty('stars', stars));
+      ..add(DiagnosticsProperty('stars', stars))
+      ..add(DiagnosticsProperty('waiting_time', waiting_time));
   }
 
   @override
@@ -170,12 +195,15 @@ class _$ReviewImpl with DiagnosticableTreeMixin implements _Review {
             (identical(other.username, username) ||
                 other.username == username) &&
             (identical(other.body, body) || other.body == body) &&
-            (identical(other.stars, stars) || other.stars == stars));
+            (identical(other.stars, stars) || other.stars == stars) &&
+            (identical(other.waiting_time, waiting_time) ||
+                other.waiting_time == waiting_time));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, docid, username, body, stars);
+  int get hashCode =>
+      Object.hash(runtimeType, docid, username, body, stars, waiting_time);
 
   @JsonKey(ignore: true)
   @override
@@ -196,7 +224,8 @@ abstract class _Review implements Review {
       {required final String docid,
       required final String username,
       required final String body,
-      required final int stars}) = _$ReviewImpl;
+      required final int stars,
+      required final int waiting_time}) = _$ReviewImpl;
 
   factory _Review.fromJson(Map<String, dynamic> json) = _$ReviewImpl.fromJson;
 
@@ -208,6 +237,8 @@ abstract class _Review implements Review {
   String get body;
   @override
   int get stars;
+  @override
+  int get waiting_time;
   @override
   @JsonKey(ignore: true)
   _$$ReviewImplCopyWith<_$ReviewImpl> get copyWith =>

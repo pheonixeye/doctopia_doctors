@@ -12,6 +12,7 @@ class Review with _$Review {
     required String username,
     required String body,
     required int stars,
+    required int waiting_time,
   }) = _Review;
 
   factory Review.fromJson(Map<String, Object?> json) => _$ReviewFromJson(json);
