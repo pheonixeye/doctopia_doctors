@@ -4,6 +4,7 @@ import 'package:doctopia_doctors/pages/homepage/pages/invoices_page/invoices_pag
 import 'package:doctopia_doctors/pages/homepage/pages/news_feed_page/news_feed_page.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/notifications_page/notifications_page.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/profile_page/profile_page.dart';
+import 'package:doctopia_doctors/pages/homepage/pages/reviews_page/reviews_page.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/settings_page/settings_page.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart' show Widget, IconData, Icons;
@@ -54,6 +55,13 @@ class SidebarPageRef extends Equatable {
       icon: FontAwesomeIcons.fileInvoiceDollar,
     );
   }
+  factory SidebarPageRef.reviews() {
+    return const SidebarPageRef(
+      name: 'Reviews',
+      page: ReviewsPage(),
+      icon: FontAwesomeIcons.message,
+    );
+  }
   factory SidebarPageRef.settings() {
     return const SidebarPageRef(
       name: 'Settings',
@@ -79,6 +87,7 @@ class SidebarPageRef extends Equatable {
     SidebarPageRef.clinics(),
     SidebarPageRef.notifications(),
     SidebarPageRef.invoices(),
+    SidebarPageRef.reviews(),
     SidebarPageRef.settings(),
   ];
 

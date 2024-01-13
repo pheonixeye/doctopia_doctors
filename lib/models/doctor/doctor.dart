@@ -67,6 +67,24 @@ class Doctor extends Equatable {
     "degree_ar": String,
   };
 
+  static const List<String> editableFieldAttributes = [
+    'name_en',
+    'name_ar',
+    'personal_phone',
+    'assistant_phone',
+    'email',
+    'about_en',
+    'about_ar',
+  ];
+  static const List<String> editableListAttributes = [
+    'titles_en',
+    'titles_ar',
+  ];
+  static const List<String> editableDropdownAttributes = [
+    'degree_en',
+    'speciality_en',
+  ];
+
   factory Doctor.initial() {
     return Doctor(
       synd_id: 0,
@@ -123,17 +141,17 @@ class Doctor extends Equatable {
       'personal_phone': personal_phone,
       'assistant_phone': assistant_phone,
       'email': email,
-      'salt': salt,
-      'password': password,
-      'speciality_en': speciality_en,
-      'speciality_ar': speciality_ar,
-      'published': published,
-      'titles_en': titles_en,
-      'titles_ar': titles_ar,
       "about_en": about_en,
       "about_ar": about_ar,
+      'titles_en': titles_en,
+      'titles_ar': titles_ar,
+      'speciality_en': speciality_en,
+      'speciality_ar': speciality_ar,
       "degree_en": degree_en,
       "degree_ar": degree_ar,
+      'salt': salt,
+      'password': password,
+      'published': published,
     };
   }
 

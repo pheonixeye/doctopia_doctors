@@ -70,6 +70,8 @@ class _LoadingScreenState extends State<LoadingScreen>
 
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) async {
+    //TODO: check internet connection
+    //TODO: check server state
     await Future.wait([
       context.read<PxLocalDatabase>().fetchLanguageFromDb(),
       context.read<PxLocalDatabase>().fetchThemeFromDb(),

@@ -19,4 +19,13 @@ class DoctorDocuments with _$DoctorDocuments {
 
   factory DoctorDocuments.fromJson(Map<String, Object?> json) =>
       _$DoctorDocumentsFromJson(json);
+
+  static Map<String, Type> scheme = {
+    'docid': String,
+    'synd_card': String,
+    'permit_cert': String,
+    'specialist_cert': String,
+    'consultant_cert': String,
+    'avatar': String,
+  };
 }

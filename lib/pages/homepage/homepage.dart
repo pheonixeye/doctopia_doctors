@@ -56,6 +56,30 @@ class _HomePageState extends State<HomePage>
     return Scaffold(
       appBar: AppBar(
         title: Text(context.t.doctopia),
+        actions: [
+          Consumer<PxDoctor>(
+            builder: (context, d, c) {
+              if (d.doctor.published) {
+                return const SizedBox();
+              } else {
+                return d.isLoggedIn
+                    ? FloatingActionButton.small(
+                        heroTag: 'account-not-published',
+                        tooltip: 'Account Not Published...',
+                        onPressed: () {
+                          //TODO: show info about missing attributes till sending publishing request.
+                          //TODO: if info is complete, send publishing request
+                        },
+                        child: const Icon(
+                          Icons.info,
+                          color: Colors.yellow,
+                        ),
+                      )
+                    : const SizedBox();
+              }
+            },
+          ),
+        ],
       ),
       drawer: Consumer<PxTheme>(
         builder: (context, t, c) {
@@ -89,6 +113,8 @@ class _HomePageState extends State<HomePage>
                 child: Consumer2<PxDoctor, PxLocale>(
                   builder: (context, d, l, c) {
                     final isEnglish = l.locale.languageCode == 'en';
+                    final isLoggedIn = d.isLoggedIn;
+
                     return Card(
                       child: extended
                           ? SizedBox(
@@ -96,9 +122,11 @@ class _HomePageState extends State<HomePage>
                               height: 150,
                               child: GridTile(
                                 footer: Text(
-                                  isEnglish
-                                      ? "Dr. ${d.doctor.name_en.toUpperCase()}"
-                                      : 'د / ${d.doctor.name_ar}',
+                                  isLoggedIn
+                                      ? isEnglish
+                                          ? "Dr. ${d.doctor.name_en.toUpperCase()}"
+                                          : 'د / ${d.doctor.name_ar}'
+                                      : "",
                                   textAlign: TextAlign.center,
                                 ),
                                 child: const CircleAvatar(
@@ -196,13 +224,13 @@ class _HomePageState extends State<HomePage>
               //* if no account detected:
               if (!d.isLoggedIn) const AccountStateNotifier(),
               //* if account detected but not complete / published
-              if (d.isLoggedIn && !d.doctor.published)
-                const AccountPublishNotifier(),
+              // if (d.isLoggedIn && !d.doctor.published)
+              //   const AccountPublishNotifier(),
             ],
           );
         },
       ),
-      floatingActionButton: const FloatingButtons(),
+      // floatingActionButton: const FloatingButtons(),
     );
   }
 }
