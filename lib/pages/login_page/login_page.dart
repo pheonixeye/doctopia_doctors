@@ -141,6 +141,7 @@ class _LoginpageState extends State<Loginpage> {
                       await context.read<PxDoctor>().fetchDoctor(
                             synd_id: int.parse(_syndidController.text),
                             password: _passwordController.text,
+                            errorMsg: 'Wrong id / password combination.',
                           );
                       if (rememberMe && mounted) {
                         await context.read<PxLocalDatabase>().saveDocIdToDb(

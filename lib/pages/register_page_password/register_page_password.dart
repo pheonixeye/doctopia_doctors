@@ -164,10 +164,11 @@ class _RegisterPagePasswordState extends State<RegisterPagePassword> {
                             ? await context.read<PxDoctor>().createDoctor()
                             : await context.read<PxDoctor>().updateDoctor();
                       }
+                      if (mounted) {
+                        GoRouter.of(context)
+                            .goNamed(RoutePage.loginPage().name);
+                      }
                     });
-                    if (mounted) {
-                      GoRouter.of(context).goNamed(RoutePage.loginPage().name);
-                    }
                   }
                 },
               ),

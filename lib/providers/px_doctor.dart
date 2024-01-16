@@ -70,6 +70,7 @@ class PxDoctor extends ChangeNotifier {
   Future<Doctor> fetchDoctor({
     required int synd_id,
     required String password,
+    required String errorMsg,
   }) async {
     try {
       final serverResult =
@@ -79,7 +80,7 @@ class PxDoctor extends ChangeNotifier {
 
       if (digest != serverResult.password) {
         throw WrongPasswordException(
-          message: 'Wrong id / password combination.',
+          message: errorMsg,
         );
       } else {
         _doctor = serverResult;
@@ -92,12 +93,38 @@ class PxDoctor extends ChangeNotifier {
     }
   }
 
+  Map<String, dynamic> _update = {};
+  Map<String, dynamic> get update => _update;
+
+  void setUpdate(String key, dynamic value) {
+    _update[key] = value;
+    notifyListeners();
+    print(_update);
+  }
+
+  void removeIndexFromListInUpdate(String key, int index) {
+    (_update[key] as List<String>).removeAt(index);
+    notifyListeners();
+  }
+
+  void addItemToListInUpdate(String key, int index, String value) {
+    (_update[key] as List<String>)[index] = value;
+    notifyListeners();
+  }
+
+  void revertUpdate(String key) {
+    _update.remove(key);
+    notifyListeners();
+  }
+
   Future<Doctor> updateDoctor() async {
     try {
       final doc = await doctorService.updateDoctor(
-        update: doctor,
+        id: _doctor.id!,
+        update: _update,
       );
       _doctor = doc;
+      _update = {};
       notifyListeners();
       return doc;
     } catch (e) {

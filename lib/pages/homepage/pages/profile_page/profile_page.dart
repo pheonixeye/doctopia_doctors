@@ -1,3 +1,7 @@
+import 'dart:async' show FutureOr;
+
+import 'package:after_layout/after_layout.dart';
+import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/models/doctor/doctor.dart';
 import 'package:doctopia_doctors/pages/register_page_basic/widgets/degree_selector.dart';
 import 'package:doctopia_doctors/pages/register_page_basic/widgets/speciality_selector.dart';
@@ -13,9 +17,17 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
+  @override
+  FutureOr<void> afterFirstLayout(BuildContext context) {
+    _listUpdates['titles_en'] = context.read<PxDoctor>().doctor.titles_en;
+    _listUpdates['titles_ar'] = context.read<PxDoctor>().doctor.titles_ar;
+  }
+
   Map<String, bool> isEditing =
       Doctor.scheme.map((key, value) => MapEntry(key, false));
+
+  Map<String, List<String>> _listUpdates = {};
 
   //TODO: handle doctor info updates
   //HACK: may need another doctor model for editing ??
@@ -55,6 +67,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                             ),
+                            onChanged: (value) {
+                              context.read<PxDoctor>().setUpdate(e.key, value);
+                            },
                           ),
                           const Gap(10),
                           Row(
@@ -62,10 +77,17 @@ class _ProfilePageState extends State<ProfilePage> {
                             children: [
                               ElevatedButton.icon(
                                 onPressed: () async {
-                                  //TODO: COLLECT INFO
-                                  //TODO: SET DOCTOR
-                                  //TODO: SEND UPDATE REQUEST
-                                  //TODO: SEND FETCH UPDATED DOCTOR REQUEST
+                                  //COLLECT INFO
+                                  //no need => SET DOCTOR
+
+                                  //SEND UPDATE REQUEST
+                                  await shellFunction(context,
+                                      toExecute: () async {
+                                    await context
+                                        .read<PxDoctor>()
+                                        .updateDoctor();
+                                  });
+                                  //no need => SEND FETCH UPDATED DOCTOR REQUEST
 
                                   setState(() {
                                     isEditing[e.key] = false;
@@ -77,6 +99,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               const Gap(10),
                               ElevatedButton.icon(
                                 onPressed: () {
+                                  context.read<PxDoctor>().revertUpdate(e.key);
                                   setState(() {
                                     isEditing[e.key] = false;
                                   });
@@ -107,42 +130,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   );
                 }
-              } else if (Doctor.editableDropdownAttributes.contains(e.key)) {
-                if (e.key == 'speciality_en') {
-                  return Card(
-                    child: Row(
-                      children: [
-                        const Expanded(
-                          child: SpecialitySelector(),
-                        ),
-                        FloatingActionButton.small(
-                          heroTag: 'update-speciality',
-                          child: const Icon(Icons.save),
-                          onPressed: () {},
-                        ),
-                        const Gap(20),
-                      ],
-                    ),
-                  );
-                }
-                if (e.key == 'degree_en') {
-                  return Card(
-                    child: Row(
-                      children: [
-                        const Expanded(
-                          child: DegreeSelector(),
-                        ),
-                        FloatingActionButton.small(
-                          heroTag: 'update-degree',
-                          child: const Icon(Icons.save),
-                          onPressed: () {},
-                        ),
-                        const Gap(20),
-                      ],
-                    ),
-                  );
-                }
-                return const SizedBox();
               } else if (Doctor.editableListAttributes.contains(e.key)) {
                 if (isEditing[e.key]!) {
                   return Card(
@@ -150,40 +137,55 @@ class _ProfilePageState extends State<ProfilePage> {
                       title: Text(e.key),
                       subtitle: Column(
                         children: [
-                          ...(e.value as List).map((x) {
-                            return Padding(
+                          for (int i = 0;
+                              i < (_listUpdates[e.key] as List<String>).length;
+                              i++)
+                            Padding(
                               padding:
                                   const EdgeInsets.symmetric(vertical: 4.0),
                               child: TextFormField(
-                                initialValue: x,
+                                initialValue: _listUpdates[e.key]?[i],
                                 decoration: InputDecoration(
                                   border: const OutlineInputBorder(),
                                   suffix: SizedBox(
                                     height: 24,
                                     child: FloatingActionButton.small(
-                                      heroTag: '$x-edit',
+                                      heroTag: '${e.key}-$i-edit',
                                       onPressed: () {
                                         setState(() {
-                                          (e.value as List).remove(x);
+                                          _listUpdates[e.key]?.removeAt(i);
                                         });
+                                        // d.removeIndexFromListInUpdate(e.key, i);
                                       },
                                       child: const Icon(Icons.close),
                                     ),
                                   ),
                                 ),
+                                onChanged: (value) {
+                                  // d.addItemToListInUpdate(e.key, i, value);
+                                  _listUpdates[e.key]?[i] = value.trim();
+                                },
                               ),
-                            );
-                          }).toList(),
+                            ),
                           const Gap(10),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               ElevatedButton.icon(
                                 onPressed: () async {
-                                  //TODO: COLLECT INFO
-                                  //TODO: SET DOCTOR
-                                  //TODO: SEND UPDATE REQUEST
-                                  //TODO: SEND FETCH UPDATED DOCTOR REQUEST
+                                  //done COLLECT INFO
+                                  context
+                                      .read<PxDoctor>()
+                                      .setUpdate(e.key, _listUpdates[e.key]);
+                                  //noneed SET DOCTOR
+                                  //done SEND UPDATE REQUEST
+                                  await shellFunction(context,
+                                      toExecute: () async {
+                                    await context
+                                        .read<PxDoctor>()
+                                        .updateDoctor();
+                                  });
+                                  //noneed SEND FETCH UPDATED DOCTOR REQUEST
 
                                   setState(() {
                                     isEditing[e.key] = false;
@@ -211,8 +213,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: const Icon(Icons.add),
                         onPressed: () {
                           setState(() {
-                            (e.value as List).add('');
+                            _listUpdates[e.key]?.add(e.key);
                           });
+                          // d.addItemToListInUpdate(e.key,
+                          //     (d.update[e.key] as List<String>).length, '');
                         },
                       ),
                     ),
@@ -221,7 +225,16 @@ class _ProfilePageState extends State<ProfilePage> {
                   return Card(
                     child: ListTile(
                       title: Text(e.key),
-                      subtitle: Text(e.value.toString()),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          for (String val in (e.value as List<String>))
+                            Text(
+                              '* $val',
+                              textAlign: TextAlign.start,
+                            )
+                        ],
+                      ),
                       trailing: FloatingActionButton.small(
                         heroTag: e.key,
                         child: const Icon(Icons.edit),
@@ -240,19 +253,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   icon: const Icon(Icons.password),
                   label: const Text('Change Password'),
                 );
-              } else if (e.key == 'published') {
-                return Card(
-                  child: ListTile(
-                    title: Text(e.key),
-                    trailing: FloatingActionButton(
-                      heroTag: 'is-published',
-                      onPressed: null,
-                      child: (e.value as bool)
-                          ? const Icon(Icons.check)
-                          : const Icon(Icons.close),
-                    ),
-                  ),
-                );
               } else {
                 return const SizedBox();
               }
@@ -262,4 +262,61 @@ class _ProfilePageState extends State<ProfilePage> {
       },
     );
   }
+}
+
+Widget specialityAndDegree(String key) {
+  if (Doctor.editableDropdownAttributes.contains(key)) {
+    if (key == 'speciality_en') {
+      return Card(
+        child: Row(
+          children: [
+            const Expanded(
+              child: SpecialitySelector(),
+            ),
+            FloatingActionButton.small(
+              heroTag: 'update-speciality',
+              child: const Icon(Icons.save),
+              onPressed: () {},
+            ),
+            const Gap(20),
+          ],
+        ),
+      );
+    }
+    if (key == 'degree_en') {
+      return Card(
+        child: Row(
+          children: [
+            const Expanded(
+              child: DegreeSelector(),
+            ),
+            FloatingActionButton.small(
+              heroTag: 'update-degree',
+              child: const Icon(Icons.save),
+              onPressed: () {},
+            ),
+            const Gap(20),
+          ],
+        ),
+      );
+    }
+    return const SizedBox();
+  }
+  return const SizedBox();
+}
+
+Widget isPublished(String key, bool value) {
+  if (key == 'published') {
+    return Card(
+      child: ListTile(
+        title: Text(key),
+        trailing: FloatingActionButton(
+          heroTag: 'is-published',
+          onPressed: null,
+          child: (value) ? const Icon(Icons.check) : const Icon(Icons.close),
+        ),
+      ),
+    );
+  }
+  return const SizedBox();
 }

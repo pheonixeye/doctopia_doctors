@@ -1,9 +1,7 @@
 import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/models/page_ref/page_ref.dart';
 import 'package:doctopia_doctors/pages/homepage/widgets/drag_account_notifier.dart';
-import 'package:doctopia_doctors/pages/homepage/widgets/drag_account_publish_notifier.dart';
 import 'package:doctopia_doctors/pages/homepage/widgets/sidebar_btn.dart';
-import 'package:doctopia_doctors/pages/widgets/floating_buttons.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_theme.dart';

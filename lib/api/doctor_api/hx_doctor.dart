@@ -90,14 +90,15 @@ class HxDoctor {
   }
 
   Future<Doctor> updateDoctor({
-    required Doctor update,
+    required Map<String, dynamic> update,
+    required String id,
   }) async {
     try {
       final updateDoctorResponse = await client_db.updateDocument(
         databaseId: env.creds.DATABASE_DOCTORS,
         collectionId: env.creds.COLLECTION_DOCTORS_DOCTORS,
-        documentId: update.id!,
-        data: update.toJson(),
+        documentId: id,
+        data: update,
       );
 
       final doc = Doctor.fromJson(

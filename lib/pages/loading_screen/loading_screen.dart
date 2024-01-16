@@ -86,6 +86,7 @@ class _LoadingScreenState extends State<LoadingScreen>
             ? context.read<PxDoctor>().fetchDoctor(
                   synd_id: context.read<PxLocalDatabase>().syndId!,
                   password: context.read<PxLocalDatabase>().password!,
+                  errorMsg: 'Wrong id / password combination.',
                 )
             : Future.delayed(const Duration(milliseconds: 1)),
       ]);
