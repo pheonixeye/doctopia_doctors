@@ -3,10 +3,12 @@ import 'package:doctopia_doctors/models/page_ref/page_ref.dart';
 import 'package:doctopia_doctors/pages/homepage/widgets/drag_account_notifier.dart';
 import 'package:doctopia_doctors/pages/homepage/widgets/sidebar_btn.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
+import 'package:doctopia_doctors/providers/px_documents.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_theme.dart';
 import 'package:doctopia_doctors/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sidebarx/sidebarx.dart';
 
@@ -70,7 +72,7 @@ class _HomePageState extends State<HomePage>
                         },
                         child: const Icon(
                           Icons.info,
-                          color: Colors.yellow,
+                          color: Colors.red,
                         ),
                       )
                     : const SizedBox();
@@ -79,12 +81,13 @@ class _HomePageState extends State<HomePage>
           ),
         ],
       ),
-      drawer: Consumer<PxTheme>(
-        builder: (context, t, c) {
+      drawer: Consumer2<PxDoctor, PxTheme>(
+        builder: (context, d, t, c) {
           bool isDarkMode = t.mode == ThemeMode.dark;
           return SidebarX(
+            animationDuration: const Duration(milliseconds: 300),
             controller: _xController,
-            items: SidebarPageRef.loggedInPages.map((e) {
+            items: SidebarPageRef.pages(d.isLoggedIn).map((e) {
               return SidebarXItem(
                   label: e.name,
                   icon: e.icon,
@@ -108,8 +111,8 @@ class _HomePageState extends State<HomePage>
             headerBuilder: (context, extended) {
               return Padding(
                 padding: const EdgeInsets.only(top: 30.0),
-                child: Consumer2<PxDoctor, PxLocale>(
-                  builder: (context, d, l, c) {
+                child: Consumer3<PxDoctor, PxLocale, PxDocuments>(
+                  builder: (context, d, l, docs, c) {
                     final isEnglish = l.locale.languageCode == 'en';
                     final isLoggedIn = d.isLoggedIn;
 
@@ -127,15 +130,54 @@ class _HomePageState extends State<HomePage>
                                       : "",
                                   textAlign: TextAlign.center,
                                 ),
-                                child: const CircleAvatar(
-                                  radius: 35,
-                                  child: Icon(Icons.person),
+                                child: FutureBuilder(
+                                  future: docs.doctorDocuments == null
+                                      ? null
+                                      : docs.documentsService.fetchImage(
+                                          docs.doctorDocuments!.avatar),
+                                  builder: (context, snapshot) {
+                                    while (!snapshot.hasData ||
+                                        snapshot.hasError) {
+                                      return const CircleAvatar(
+                                        radius: 35,
+                                        child: Icon(
+                                          FontAwesomeIcons.userDoctor,
+                                          size: 50,
+                                        ),
+                                      );
+                                    }
+                                    return Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 20.0),
+                                      child: Container(
+                                        width: 150,
+                                        height: 150,
+                                        clipBehavior: Clip.hardEdge,
+                                        decoration: BoxDecoration(
+                                          // color: Colors.amber,
+                                          border: Border.all(),
+                                          shape: BoxShape.circle,
+                                          image: DecorationImage(
+                                            image: MemoryImage(snapshot.data!),
+                                          ),
+                                        ),
+                                        // child: Image.memory(
+                                        //   snapshot.data!,
+                                        //   width: 150,
+                                        //   height: 150,
+                                        // ),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
                             )
                           : const CircleAvatar(
                               radius: 35,
-                              child: Icon(Icons.person),
+                              child: Icon(
+                                FontAwesomeIcons.userDoctor,
+                                size: 25,
+                              ),
                             ),
                     );
                   },
@@ -152,25 +194,27 @@ class _HomePageState extends State<HomePage>
             footerBuilder: (context, extended) {
               return Column(
                 children: [
-                  SidebarXBtn(
-                    isDarkMode: isDarkMode,
-                    expanded: extended,
-                    icon: const Icon(Icons.share),
-                    labelOrTag: 'Share',
-                    onPressed: () {},
-                  ),
-                  SidebarXBtn(
-                    isDarkMode: isDarkMode,
-                    expanded: extended,
-                    icon: const Icon(Icons.logout),
-                    labelOrTag: 'Logout',
-                    onPressed: () {
-                      if (mounted) {
-                        context.read<PxDoctor>().logout();
-                        Scaffold.of(context).closeDrawer();
-                      }
-                    },
-                  ),
+                  if (context.read<PxDoctor>().isLoggedIn)
+                    SidebarXBtn(
+                      isDarkMode: isDarkMode,
+                      expanded: extended,
+                      icon: const Icon(Icons.share),
+                      labelOrTag: 'Share',
+                      onPressed: () {},
+                    ),
+                  if (context.read<PxDoctor>().isLoggedIn)
+                    SidebarXBtn(
+                      isDarkMode: isDarkMode,
+                      expanded: extended,
+                      icon: const Icon(Icons.logout),
+                      labelOrTag: 'Logout',
+                      onPressed: () {
+                        if (mounted) {
+                          context.read<PxDoctor>().logout();
+                          Scaffold.of(context).closeDrawer();
+                        }
+                      },
+                    ),
                   SidebarXBtn(
                     isDarkMode: isDarkMode,
                     expanded: extended,
@@ -210,8 +254,9 @@ class _HomePageState extends State<HomePage>
             children: [
               AnimatedBuilder(
                 animation: _animationController,
-                child: SidebarPageRef
-                    .loggedInPages[_xController.selectedIndex].page,
+                child: SidebarPageRef.pages(
+                        d.isLoggedIn)[_xController.selectedIndex]
+                    .page,
                 builder: (context, child) {
                   return FadeTransition(
                     opacity: _animation,

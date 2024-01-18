@@ -16,17 +16,22 @@ class SidebarXBtn extends StatelessWidget {
   final bool _isDarkMode;
   @override
   Widget build(BuildContext context) {
-    return expanded
-        ? ElevatedButton.icon(
-            onPressed: onPressed,
-            icon: icon,
-            label: Text(labelOrTag),
-          )
-        : FloatingActionButton.small(
-            heroTag: labelOrTag,
-            onPressed: onPressed,
-            backgroundColor: _isDarkMode ? Colors.grey : Colors.white,
-            child: icon,
-          );
+    return AnimatedSwitcher(
+      switchInCurve: Curves.easeIn,
+      switchOutCurve: Curves.easeOut,
+      duration: const Duration(milliseconds: 300),
+      child: expanded
+          ? ElevatedButton.icon(
+              onPressed: onPressed,
+              icon: icon,
+              label: Text(labelOrTag),
+            )
+          : FloatingActionButton.small(
+              heroTag: labelOrTag,
+              onPressed: onPressed,
+              backgroundColor: _isDarkMode ? Colors.grey : Colors.white,
+              child: icon,
+            ),
+    );
   }
 }

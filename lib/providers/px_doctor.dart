@@ -99,17 +99,7 @@ class PxDoctor extends ChangeNotifier {
   void setUpdate(String key, dynamic value) {
     _update[key] = value;
     notifyListeners();
-    print(_update);
-  }
-
-  void removeIndexFromListInUpdate(String key, int index) {
-    (_update[key] as List<String>).removeAt(index);
-    notifyListeners();
-  }
-
-  void addItemToListInUpdate(String key, int index, String value) {
-    (_update[key] as List<String>)[index] = value;
-    notifyListeners();
+    // print(_update);
   }
 
   void revertUpdate(String key) {

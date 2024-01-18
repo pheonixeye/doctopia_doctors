@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:doctopia_doctors/functions/list_d_list_s.dart';
+import 'package:doctopia_doctors/models/translatable/translatable.dart';
 import 'package:equatable/equatable.dart';
 
 class Doctor extends Equatable {
@@ -67,6 +68,39 @@ class Doctor extends Equatable {
     "degree_ar": String,
   };
 
+  static const Map<String, ModelTranslatable> _forWidgets = {
+    'synd_id': ModelTranslatable(en: 'Syndicate Id', ar: "رقم القيد بالنقابة"),
+    "joined_at":
+        ModelTranslatable(en: 'Registeration Date', ar: 'تاريخ التسجيل'),
+    'name_en': ModelTranslatable(en: 'English Name', ar: "الاسم بالانجليزية"),
+    'name_ar': ModelTranslatable(en: 'Arabic Name', ar: "الاسم بالعربية"),
+    'personal_phone':
+        ModelTranslatable(en: 'Personal Phone', ar: "الرقم الشخصي"),
+    'assistant_phone':
+        ModelTranslatable(en: 'Assistant Phone', ar: "رقم السكيرتارية"),
+    'email': ModelTranslatable(en: 'Email', ar: "البريد الالكتروني"),
+    'salt': ModelTranslatable.X,
+    'password': ModelTranslatable(en: 'Password', ar: "كلمة السر"),
+    'speciality_en': ModelTranslatable(
+        en: 'Speciality in English', ar: "التخصص بالانجليزية"),
+    'speciality_ar':
+        ModelTranslatable(en: 'Speciality in Arabic', ar: "التخصص بالعربية"),
+    'published': ModelTranslatable(en: 'Published', ar: "النشر"),
+    'titles_en':
+        ModelTranslatable(en: 'English Titles', ar: "الالقاب بالانجليزية"),
+    'titles_ar': ModelTranslatable(en: 'Arabic Titles', ar: "الالقاب بالعربية"),
+    "about_en":
+        ModelTranslatable(en: 'About in English', ar: "نبذة بالانجليزية"),
+    "about_ar": ModelTranslatable(en: 'About in Arabic', ar: "نبذة بالعربية"),
+    "degree_en":
+        ModelTranslatable(en: 'English Degree', ar: "الدرجة بالانجليزية"),
+    "degree_ar": ModelTranslatable(en: 'Arabic Degree', ar: "الدرجة بالعربية"),
+  };
+
+  static String keyToWidget(String key, bool isEnglish) {
+    return isEnglish ? _forWidgets[key]!.en : _forWidgets[key]!.ar;
+  }
+
   static const List<String> editableFieldAttributes = [
     'name_en',
     'name_ar',
@@ -83,6 +117,10 @@ class Doctor extends Equatable {
   static const List<String> editableDropdownAttributes = [
     'degree_en',
     'speciality_en',
+  ];
+  static const List<String> nonEditableAttributes = [
+    'synd_id',
+    'joined_at',
   ];
 
   factory Doctor.initial() {

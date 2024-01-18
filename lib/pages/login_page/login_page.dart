@@ -1,6 +1,6 @@
 import 'package:doctopia_doctors/assets/assets.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
-import 'package:doctopia_doctors/providers/px_doctor.dart';
+import 'package:doctopia_doctors/pages/login_page/logic/login.dart';
 import 'package:doctopia_doctors/routes/route_page/route_page.dart';
 import 'package:doctopia_doctors/services/local_database_service/local_database_service.dart';
 import 'package:flutter/material.dart';
@@ -138,11 +138,12 @@ class _LoginpageState extends State<Loginpage> {
                   FocusManager.instance.primaryFocus?.unfocus();
                   if (_formKey.currentState!.validate()) {
                     await shellFunction(context, toExecute: () async {
-                      await context.read<PxDoctor>().fetchDoctor(
-                            synd_id: int.parse(_syndidController.text),
-                            password: _passwordController.text,
-                            errorMsg: 'Wrong id / password combination.',
-                          );
+                      await loginLogic(
+                        context: context,
+                        synd_id: int.parse(_syndidController.text),
+                        password: _passwordController.text,
+                      );
+
                       if (rememberMe && mounted) {
                         await context.read<PxLocalDatabase>().saveDocIdToDb(
                               int.parse(_syndidController.text),

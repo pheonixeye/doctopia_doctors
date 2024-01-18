@@ -6,6 +6,7 @@ import 'package:doctopia_doctors/models/doctor/doctor.dart';
 import 'package:doctopia_doctors/pages/register_page_basic/widgets/degree_selector.dart';
 import 'package:doctopia_doctors/pages/register_page_basic/widgets/speciality_selector.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
+import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
@@ -20,22 +21,35 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) {
-    _listUpdates['titles_en'] = context.read<PxDoctor>().doctor.titles_en;
-    _listUpdates['titles_ar'] = context.read<PxDoctor>().doctor.titles_ar;
+    setState(() {
+      _listData['titles_en'] = context
+          .read<PxDoctor>()
+          .doctor
+          .titles_en
+          .map((e) => TextEditingController(text: e))
+          .toList();
+      _listData['titles_ar'] = context
+          .read<PxDoctor>()
+          .doctor
+          .titles_ar
+          .map((e) => TextEditingController(text: e))
+          .toList();
+    });
   }
 
   Map<String, bool> isEditing =
       Doctor.scheme.map((key, value) => MapEntry(key, false));
 
-  Map<String, List<String>> _listUpdates = {};
+  Map<String, List<TextEditingController>> _listData = {};
 
-  //TODO: handle doctor info updates
-  //HACK: may need another doctor model for editing ??
+  //done: handle doctor info updates
+  //noneed: may need another doctor model for editing ??
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<PxDoctor>(
-      builder: (context, d, c) {
+    return Consumer2<PxDoctor, PxLocale>(
+      builder: (context, d, l, c) {
+        final isEnglish = l.locale.languageCode == 'en';
         if (!d.isLoggedIn) {
           return const Center(
             child: Text(
@@ -51,11 +65,26 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
               title: Text('My Profile'),
             ),
             ...d.doctor.toJson().entries.map((e) {
-              if (Doctor.editableFieldAttributes.contains(e.key)) {
+              if (Doctor.nonEditableAttributes.contains(e.key)) {
+                String value = e.value.toString();
+                if (e.key == 'joined_at') {
+                  final d = DateTime.parse(value);
+                  value = '${d.year} / ${d.month} / ${d.day}';
+                }
+                return Card(
+                  child: ListTile(
+                    title: Text(Doctor.keyToWidget(e.key, isEnglish)),
+                    subtitle: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(value),
+                    ),
+                  ),
+                );
+              } else if (Doctor.editableFieldAttributes.contains(e.key)) {
                 if (isEditing[e.key]!) {
                   return Card(
                     child: ListTile(
-                      title: Text(e.key),
+                      title: Text(Doctor.keyToWidget(e.key, isEnglish)),
                       subtitle: Column(
                         children: [
                           TextFormField(
@@ -116,8 +145,11 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
                 } else {
                   return Card(
                     child: ListTile(
-                      title: Text(e.key),
-                      subtitle: Text(e.value.toString()),
+                      title: Text(Doctor.keyToWidget(e.key, isEnglish)),
+                      subtitle: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(e.value.toString()),
+                      ),
                       trailing: FloatingActionButton.small(
                         heroTag: e.key,
                         child: const Icon(Icons.edit),
@@ -130,43 +162,41 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
                     ),
                   );
                 }
-              } else if (Doctor.editableListAttributes.contains(e.key)) {
+              }
+              //*done:
+              else if (Doctor.editableListAttributes.contains(e.key)) {
                 if (isEditing[e.key]!) {
                   return Card(
                     child: ListTile(
-                      title: Text(e.key),
+                      title: Text(Doctor.keyToWidget(e.key, isEnglish)),
                       subtitle: Column(
                         children: [
-                          for (int i = 0;
-                              i < (_listUpdates[e.key] as List<String>).length;
-                              i++)
-                            Padding(
+                          ..._listData[e.key]!.map((controller) {
+                            final index = _listData[e.key]!.indexOf(controller);
+                            return Padding(
                               padding:
                                   const EdgeInsets.symmetric(vertical: 4.0),
                               child: TextFormField(
-                                initialValue: _listUpdates[e.key]?[i],
+                                controller: controller,
                                 decoration: InputDecoration(
                                   border: const OutlineInputBorder(),
                                   suffix: SizedBox(
                                     height: 24,
                                     child: FloatingActionButton.small(
-                                      heroTag: '${e.key}-$i-edit',
+                                      heroTag: '$index-edit',
                                       onPressed: () {
+                                        //done delete textfield
                                         setState(() {
-                                          _listUpdates[e.key]?.removeAt(i);
+                                          _listData[e.key]?.removeAt(index);
                                         });
-                                        // d.removeIndexFromListInUpdate(e.key, i);
                                       },
                                       child: const Icon(Icons.close),
                                     ),
                                   ),
                                 ),
-                                onChanged: (value) {
-                                  // d.addItemToListInUpdate(e.key, i, value);
-                                  _listUpdates[e.key]?[i] = value.trim();
-                                },
                               ),
-                            ),
+                            );
+                          }).toList(),
                           const Gap(10),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -174,10 +204,13 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
                               ElevatedButton.icon(
                                 onPressed: () async {
                                   //done COLLECT INFO
-                                  context
-                                      .read<PxDoctor>()
-                                      .setUpdate(e.key, _listUpdates[e.key]);
                                   //noneed SET DOCTOR
+                                  context.read<PxDoctor>().setUpdate(
+                                        e.key,
+                                        _listData[e.key]
+                                            ?.map((e) => e.text)
+                                            .toList(),
+                                      );
                                   //done SEND UPDATE REQUEST
                                   await shellFunction(context,
                                       toExecute: () async {
@@ -197,6 +230,8 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
                               const Gap(10),
                               ElevatedButton.icon(
                                 onPressed: () {
+                                  // revert update
+
                                   setState(() {
                                     isEditing[e.key] = false;
                                   });
@@ -212,11 +247,11 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
                         heroTag: e.key,
                         child: const Icon(Icons.add),
                         onPressed: () {
+                          // add empty string to list
                           setState(() {
-                            _listUpdates[e.key]?.add(e.key);
+                            _listData[e.key]
+                                ?.add(TextEditingController(text: ''));
                           });
-                          // d.addItemToListInUpdate(e.key,
-                          //     (d.update[e.key] as List<String>).length, '');
                         },
                       ),
                     ),
@@ -224,16 +259,19 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
                 } else {
                   return Card(
                     child: ListTile(
-                      title: Text(e.key),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          for (String val in (e.value as List<String>))
-                            Text(
-                              '* $val',
-                              textAlign: TextAlign.start,
-                            )
-                        ],
+                      title: Text(Doctor.keyToWidget(e.key, isEnglish)),
+                      subtitle: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            for (String val in (e.value as List<String>))
+                              Text(
+                                '(${(e.value as List<String>).indexOf(val) + 1}) $val',
+                                textAlign: TextAlign.start,
+                              )
+                          ],
+                        ),
                       ),
                       trailing: FloatingActionButton.small(
                         heroTag: e.key,
@@ -247,12 +285,6 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
                     ),
                   );
                 }
-              } else if (e.key == 'password') {
-                return ElevatedButton.icon(
-                  onPressed: () async {},
-                  icon: const Icon(Icons.password),
-                  label: const Text('Change Password'),
-                );
               } else {
                 return const SizedBox();
               }

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:doctopia_doctors/assets/assets.dart';
-import 'package:doctopia_doctors/providers/px_doctor.dart';
+import 'package:doctopia_doctors/pages/login_page/logic/login.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_theme.dart';
 import 'package:doctopia_doctors/routes/route_page/route_page.dart';
@@ -83,11 +83,20 @@ class _LoadingScreenState extends State<LoadingScreen>
         //* check if local storage has a doctor model then login
         (context.read<PxLocalDatabase>().password != null &&
                 context.read<PxLocalDatabase>().syndId != null)
-            ? context.read<PxDoctor>().fetchDoctor(
-                  synd_id: context.read<PxLocalDatabase>().syndId!,
-                  password: context.read<PxLocalDatabase>().password!,
-                  errorMsg: 'Wrong id / password combination.',
-                )
+            //TODO: (login process):
+            //step 1: fetch Doctor Model<done>
+            //step 1*: subscribe to firebase phone number topic (Notifications)
+            //step 2: fetch Doctor Documents<done>
+            //step 3: fetch Doctor Clinics
+            //step 4: fetch Doctor Visits
+            //step 5: fetch Doctor Invoices
+            //step 6: fetch Doctor Articles
+            //step 7: homepage feed
+            ? loginLogic(
+                context: context,
+                synd_id: context.read<PxLocalDatabase>().syndId!,
+                password: context.read<PxLocalDatabase>().password!,
+              )
             : Future.delayed(const Duration(milliseconds: 1)),
       ]);
     }).whenComplete(() async {
