@@ -22,6 +22,8 @@ final GoRouter router = GoRouter(
         goRouteFromRoutePage(RoutePage.registerPagePassword()),
         goRouteFromRoutePage(RoutePage.loginPage()),
         goRouteFromRoutePage(RoutePage.tokenValidationPage()),
+        goRouteFromRoutePage(RoutePage.createClinicPage()),
+        goRouteFromRoutePage(RoutePage.editClinicPage()),
       ],
     ),
   ],

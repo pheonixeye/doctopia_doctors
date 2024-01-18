@@ -4,6 +4,7 @@ import 'package:doctopia_doctors/api/speciality_api/speciality.dart';
 import 'package:doctopia_doctors/env/env.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_documents.dart';
+import 'package:doctopia_doctors/providers/px_gov.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_specialities.dart';
 import 'package:doctopia_doctors/providers/px_theme.dart';
@@ -15,6 +16,7 @@ List<SingleChildWidget> providers(ENV env) => [
       ChangeNotifierProvider(create: (context) => PxLocalDatabase()),
       ChangeNotifierProvider(create: (context) => PxLocale(context)),
       ChangeNotifierProvider(create: (context) => PxTheme(context)),
+      ChangeNotifierProvider(create: (context) => PxGov()),
       ChangeNotifierProvider(
         create: (context) => PxSpeciality(
           specialityService: HxSpeciality(

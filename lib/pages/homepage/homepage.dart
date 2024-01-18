@@ -1,6 +1,8 @@
 import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/models/page_ref/page_ref.dart';
+import 'package:doctopia_doctors/pages/homepage/widgets/account_publish_menu_button.dart';
 import 'package:doctopia_doctors/pages/homepage/widgets/drag_account_notifier.dart';
+import 'package:doctopia_doctors/pages/homepage/widgets/floating_buttons_by_index.dart';
 import 'package:doctopia_doctors/pages/homepage/widgets/sidebar_btn.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_documents.dart';
@@ -63,21 +65,13 @@ class _HomePageState extends State<HomePage>
                 return const SizedBox();
               } else {
                 return d.isLoggedIn
-                    ? FloatingActionButton.small(
-                        heroTag: 'account-not-published',
-                        tooltip: 'Account Not Published...',
-                        onPressed: () {
-                          //TODO: show info about missing attributes till sending publishing request.
-                          //TODO: if info is complete, send publishing request
-                        },
-                        child: const Icon(
-                          Icons.info,
-                          color: Colors.red,
-                        ),
-                      )
+                    ? const AccountPublishMenuButton()
                     : const SizedBox();
               }
             },
+          ),
+          const SizedBox(
+            width: 20,
           ),
         ],
       ),
@@ -154,18 +148,16 @@ class _HomePageState extends State<HomePage>
                                         height: 150,
                                         clipBehavior: Clip.hardEdge,
                                         decoration: BoxDecoration(
-                                          // color: Colors.amber,
-                                          border: Border.all(),
+                                          border: Border.all(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .secondary,
+                                          ),
                                           shape: BoxShape.circle,
                                           image: DecorationImage(
                                             image: MemoryImage(snapshot.data!),
                                           ),
                                         ),
-                                        // child: Image.memory(
-                                        //   snapshot.data!,
-                                        //   width: 150,
-                                        //   height: 150,
-                                        // ),
                                       ),
                                     );
                                   },
@@ -209,6 +201,9 @@ class _HomePageState extends State<HomePage>
                       icon: const Icon(Icons.logout),
                       labelOrTag: 'Logout',
                       onPressed: () {
+                        setState(() {
+                          _xController.selectIndex(0);
+                        });
                         if (mounted) {
                           context.read<PxDoctor>().logout();
                           Scaffold.of(context).closeDrawer();
@@ -273,7 +268,9 @@ class _HomePageState extends State<HomePage>
           );
         },
       ),
-      // floatingActionButton: const FloatingButtons(),
+      floatingActionButton: FloatingButtonsByIndex(
+        index: _xController.selectedIndex,
+      ),
     );
   }
 }

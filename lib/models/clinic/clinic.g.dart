@@ -7,10 +7,13 @@ part of 'clinic.dart';
 // **************************************************************************
 
 _$ClinicImpl _$$ClinicImplFromJson(Map<String, dynamic> json) => _$ClinicImpl(
-      id: json['id'] as String,
       doc_id: json['doc_id'] as String,
       speciality_en: json['speciality_en'] as String,
       speciality_ar: json['speciality_ar'] as String,
+      name_en: json['name_en'] as String,
+      name_ar: json['name_ar'] as String,
+      venue_en: json['venue_en'] as String,
+      venue_ar: json['venue_ar'] as String,
       gov_en: json['gov_en'] as String,
       gov_ar: json['gov_ar'] as String,
       city_en: json['city_en'] as String,
@@ -20,7 +23,7 @@ _$ClinicImpl _$$ClinicImplFromJson(Map<String, dynamic> json) => _$ClinicImpl(
       address_en: json['address_en'] as String,
       address_ar: json['address_ar'] as String,
       location_link: json['location_link'] as String,
-      attendance: json['attendance'] as String,
+      attendance: json['attendance'] as bool,
       fees: json['fees'] as int,
       discount: json['discount'] as int,
       off_dates:
@@ -29,10 +32,13 @@ _$ClinicImpl _$$ClinicImplFromJson(Map<String, dynamic> json) => _$ClinicImpl(
 
 Map<String, dynamic> _$$ClinicImplToJson(_$ClinicImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
       'doc_id': instance.doc_id,
       'speciality_en': instance.speciality_en,
       'speciality_ar': instance.speciality_ar,
+      'name_en': instance.name_en,
+      'name_ar': instance.name_ar,
+      'venue_en': instance.venue_en,
+      'venue_ar': instance.venue_ar,
       'gov_en': instance.gov_en,
       'gov_ar': instance.gov_ar,
       'city_en': instance.city_en,

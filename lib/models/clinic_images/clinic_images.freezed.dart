@@ -20,7 +20,6 @@ ClinicImages _$ClinicImagesFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ClinicImages {
-  String get clinic_id => throw _privateConstructorUsedError;
   List<String> get images => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -35,7 +34,7 @@ abstract class $ClinicImagesCopyWith<$Res> {
           ClinicImages value, $Res Function(ClinicImages) then) =
       _$ClinicImagesCopyWithImpl<$Res, ClinicImages>;
   @useResult
-  $Res call({String clinic_id, List<String> images});
+  $Res call({List<String> images});
 }
 
 /// @nodoc
@@ -51,14 +50,9 @@ class _$ClinicImagesCopyWithImpl<$Res, $Val extends ClinicImages>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? clinic_id = null,
     Object? images = null,
   }) {
     return _then(_value.copyWith(
-      clinic_id: null == clinic_id
-          ? _value.clinic_id
-          : clinic_id // ignore: cast_nullable_to_non_nullable
-              as String,
       images: null == images
           ? _value.images
           : images // ignore: cast_nullable_to_non_nullable
@@ -75,7 +69,7 @@ abstract class _$$ClinicImagesImplCopyWith<$Res>
       __$$ClinicImagesImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String clinic_id, List<String> images});
+  $Res call({List<String> images});
 }
 
 /// @nodoc
@@ -89,14 +83,9 @@ class __$$ClinicImagesImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? clinic_id = null,
     Object? images = null,
   }) {
     return _then(_$ClinicImagesImpl(
-      clinic_id: null == clinic_id
-          ? _value.clinic_id
-          : clinic_id // ignore: cast_nullable_to_non_nullable
-              as String,
       images: null == images
           ? _value._images
           : images // ignore: cast_nullable_to_non_nullable
@@ -108,15 +97,12 @@ class __$$ClinicImagesImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$ClinicImagesImpl with DiagnosticableTreeMixin implements _ClinicImages {
-  const _$ClinicImagesImpl(
-      {required this.clinic_id, required final List<String> images})
+  const _$ClinicImagesImpl({required final List<String> images})
       : _images = images;
 
   factory _$ClinicImagesImpl.fromJson(Map<String, dynamic> json) =>
       _$$ClinicImagesImplFromJson(json);
 
-  @override
-  final String clinic_id;
   final List<String> _images;
   @override
   List<String> get images {
@@ -127,7 +113,7 @@ class _$ClinicImagesImpl with DiagnosticableTreeMixin implements _ClinicImages {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ClinicImages(clinic_id: $clinic_id, images: $images)';
+    return 'ClinicImages(images: $images)';
   }
 
   @override
@@ -135,7 +121,6 @@ class _$ClinicImagesImpl with DiagnosticableTreeMixin implements _ClinicImages {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ClinicImages'))
-      ..add(DiagnosticsProperty('clinic_id', clinic_id))
       ..add(DiagnosticsProperty('images', images));
   }
 
@@ -144,15 +129,13 @@ class _$ClinicImagesImpl with DiagnosticableTreeMixin implements _ClinicImages {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ClinicImagesImpl &&
-            (identical(other.clinic_id, clinic_id) ||
-                other.clinic_id == clinic_id) &&
             const DeepCollectionEquality().equals(other._images, _images));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, clinic_id, const DeepCollectionEquality().hash(_images));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_images));
 
   @JsonKey(ignore: true)
   @override
@@ -169,15 +152,12 @@ class _$ClinicImagesImpl with DiagnosticableTreeMixin implements _ClinicImages {
 }
 
 abstract class _ClinicImages implements ClinicImages {
-  const factory _ClinicImages(
-      {required final String clinic_id,
-      required final List<String> images}) = _$ClinicImagesImpl;
+  const factory _ClinicImages({required final List<String> images}) =
+      _$ClinicImagesImpl;
 
   factory _ClinicImages.fromJson(Map<String, dynamic> json) =
       _$ClinicImagesImpl.fromJson;
 
-  @override
-  String get clinic_id;
   @override
   List<String> get images;
   @override

@@ -10,10 +10,13 @@ class ClinicsPage extends StatefulWidget {
 class _ClinicsPageState extends State<ClinicsPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: const Center(
-        child: Text('clinics_page'),
-      ),
+    return ListView(
+      children: [
+        const ListTile(
+          leading: const CircleAvatar(),
+          title: Text('My Clinics'),
+        ),
+      ],
     );
   }
 }

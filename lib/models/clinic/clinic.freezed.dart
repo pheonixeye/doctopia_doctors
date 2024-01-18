@@ -20,10 +20,13 @@ Clinic _$ClinicFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Clinic {
-  String get id => throw _privateConstructorUsedError;
   String get doc_id => throw _privateConstructorUsedError;
   String get speciality_en => throw _privateConstructorUsedError;
   String get speciality_ar => throw _privateConstructorUsedError;
+  String get name_en => throw _privateConstructorUsedError;
+  String get name_ar => throw _privateConstructorUsedError;
+  String get venue_en => throw _privateConstructorUsedError;
+  String get venue_ar => throw _privateConstructorUsedError;
   String get gov_en => throw _privateConstructorUsedError;
   String get gov_ar => throw _privateConstructorUsedError;
   String get city_en => throw _privateConstructorUsedError;
@@ -33,7 +36,7 @@ mixin _$Clinic {
   String get address_en => throw _privateConstructorUsedError;
   String get address_ar => throw _privateConstructorUsedError;
   String get location_link => throw _privateConstructorUsedError;
-  String get attendance => throw _privateConstructorUsedError;
+  bool get attendance => throw _privateConstructorUsedError;
   int get fees => throw _privateConstructorUsedError;
   int get discount => throw _privateConstructorUsedError;
   List<String> get off_dates => throw _privateConstructorUsedError;
@@ -49,10 +52,13 @@ abstract class $ClinicCopyWith<$Res> {
       _$ClinicCopyWithImpl<$Res, Clinic>;
   @useResult
   $Res call(
-      {String id,
-      String doc_id,
+      {String doc_id,
       String speciality_en,
       String speciality_ar,
+      String name_en,
+      String name_ar,
+      String venue_en,
+      String venue_ar,
       String gov_en,
       String gov_ar,
       String city_en,
@@ -62,7 +68,7 @@ abstract class $ClinicCopyWith<$Res> {
       String address_en,
       String address_ar,
       String location_link,
-      String attendance,
+      bool attendance,
       int fees,
       int discount,
       List<String> off_dates});
@@ -81,10 +87,13 @@ class _$ClinicCopyWithImpl<$Res, $Val extends Clinic>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
     Object? doc_id = null,
     Object? speciality_en = null,
     Object? speciality_ar = null,
+    Object? name_en = null,
+    Object? name_ar = null,
+    Object? venue_en = null,
+    Object? venue_ar = null,
     Object? gov_en = null,
     Object? gov_ar = null,
     Object? city_en = null,
@@ -100,10 +109,6 @@ class _$ClinicCopyWithImpl<$Res, $Val extends Clinic>
     Object? off_dates = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
       doc_id: null == doc_id
           ? _value.doc_id
           : doc_id // ignore: cast_nullable_to_non_nullable
@@ -115,6 +120,22 @@ class _$ClinicCopyWithImpl<$Res, $Val extends Clinic>
       speciality_ar: null == speciality_ar
           ? _value.speciality_ar
           : speciality_ar // ignore: cast_nullable_to_non_nullable
+              as String,
+      name_en: null == name_en
+          ? _value.name_en
+          : name_en // ignore: cast_nullable_to_non_nullable
+              as String,
+      name_ar: null == name_ar
+          ? _value.name_ar
+          : name_ar // ignore: cast_nullable_to_non_nullable
+              as String,
+      venue_en: null == venue_en
+          ? _value.venue_en
+          : venue_en // ignore: cast_nullable_to_non_nullable
+              as String,
+      venue_ar: null == venue_ar
+          ? _value.venue_ar
+          : venue_ar // ignore: cast_nullable_to_non_nullable
               as String,
       gov_en: null == gov_en
           ? _value.gov_en
@@ -155,7 +176,7 @@ class _$ClinicCopyWithImpl<$Res, $Val extends Clinic>
       attendance: null == attendance
           ? _value.attendance
           : attendance // ignore: cast_nullable_to_non_nullable
-              as String,
+              as bool,
       fees: null == fees
           ? _value.fees
           : fees // ignore: cast_nullable_to_non_nullable
@@ -180,10 +201,13 @@ abstract class _$$ClinicImplCopyWith<$Res> implements $ClinicCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String id,
-      String doc_id,
+      {String doc_id,
       String speciality_en,
       String speciality_ar,
+      String name_en,
+      String name_ar,
+      String venue_en,
+      String venue_ar,
       String gov_en,
       String gov_ar,
       String city_en,
@@ -193,7 +217,7 @@ abstract class _$$ClinicImplCopyWith<$Res> implements $ClinicCopyWith<$Res> {
       String address_en,
       String address_ar,
       String location_link,
-      String attendance,
+      bool attendance,
       int fees,
       int discount,
       List<String> off_dates});
@@ -210,10 +234,13 @@ class __$$ClinicImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
     Object? doc_id = null,
     Object? speciality_en = null,
     Object? speciality_ar = null,
+    Object? name_en = null,
+    Object? name_ar = null,
+    Object? venue_en = null,
+    Object? venue_ar = null,
     Object? gov_en = null,
     Object? gov_ar = null,
     Object? city_en = null,
@@ -229,10 +256,6 @@ class __$$ClinicImplCopyWithImpl<$Res>
     Object? off_dates = null,
   }) {
     return _then(_$ClinicImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
       doc_id: null == doc_id
           ? _value.doc_id
           : doc_id // ignore: cast_nullable_to_non_nullable
@@ -244,6 +267,22 @@ class __$$ClinicImplCopyWithImpl<$Res>
       speciality_ar: null == speciality_ar
           ? _value.speciality_ar
           : speciality_ar // ignore: cast_nullable_to_non_nullable
+              as String,
+      name_en: null == name_en
+          ? _value.name_en
+          : name_en // ignore: cast_nullable_to_non_nullable
+              as String,
+      name_ar: null == name_ar
+          ? _value.name_ar
+          : name_ar // ignore: cast_nullable_to_non_nullable
+              as String,
+      venue_en: null == venue_en
+          ? _value.venue_en
+          : venue_en // ignore: cast_nullable_to_non_nullable
+              as String,
+      venue_ar: null == venue_ar
+          ? _value.venue_ar
+          : venue_ar // ignore: cast_nullable_to_non_nullable
               as String,
       gov_en: null == gov_en
           ? _value.gov_en
@@ -284,7 +323,7 @@ class __$$ClinicImplCopyWithImpl<$Res>
       attendance: null == attendance
           ? _value.attendance
           : attendance // ignore: cast_nullable_to_non_nullable
-              as String,
+              as bool,
       fees: null == fees
           ? _value.fees
           : fees // ignore: cast_nullable_to_non_nullable
@@ -305,10 +344,13 @@ class __$$ClinicImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ClinicImpl with DiagnosticableTreeMixin implements _Clinic {
   const _$ClinicImpl(
-      {required this.id,
-      required this.doc_id,
+      {required this.doc_id,
       required this.speciality_en,
       required this.speciality_ar,
+      required this.name_en,
+      required this.name_ar,
+      required this.venue_en,
+      required this.venue_ar,
       required this.gov_en,
       required this.gov_ar,
       required this.city_en,
@@ -328,13 +370,19 @@ class _$ClinicImpl with DiagnosticableTreeMixin implements _Clinic {
       _$$ClinicImplFromJson(json);
 
   @override
-  final String id;
-  @override
   final String doc_id;
   @override
   final String speciality_en;
   @override
   final String speciality_ar;
+  @override
+  final String name_en;
+  @override
+  final String name_ar;
+  @override
+  final String venue_en;
+  @override
+  final String venue_ar;
   @override
   final String gov_en;
   @override
@@ -354,7 +402,7 @@ class _$ClinicImpl with DiagnosticableTreeMixin implements _Clinic {
   @override
   final String location_link;
   @override
-  final String attendance;
+  final bool attendance;
   @override
   final int fees;
   @override
@@ -369,7 +417,7 @@ class _$ClinicImpl with DiagnosticableTreeMixin implements _Clinic {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Clinic(id: $id, doc_id: $doc_id, speciality_en: $speciality_en, speciality_ar: $speciality_ar, gov_en: $gov_en, gov_ar: $gov_ar, city_en: $city_en, city_ar: $city_ar, mobile: $mobile, landline: $landline, address_en: $address_en, address_ar: $address_ar, location_link: $location_link, attendance: $attendance, fees: $fees, discount: $discount, off_dates: $off_dates)';
+    return 'Clinic(doc_id: $doc_id, speciality_en: $speciality_en, speciality_ar: $speciality_ar, name_en: $name_en, name_ar: $name_ar, venue_en: $venue_en, venue_ar: $venue_ar, gov_en: $gov_en, gov_ar: $gov_ar, city_en: $city_en, city_ar: $city_ar, mobile: $mobile, landline: $landline, address_en: $address_en, address_ar: $address_ar, location_link: $location_link, attendance: $attendance, fees: $fees, discount: $discount, off_dates: $off_dates)';
   }
 
   @override
@@ -377,10 +425,13 @@ class _$ClinicImpl with DiagnosticableTreeMixin implements _Clinic {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'Clinic'))
-      ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('doc_id', doc_id))
       ..add(DiagnosticsProperty('speciality_en', speciality_en))
       ..add(DiagnosticsProperty('speciality_ar', speciality_ar))
+      ..add(DiagnosticsProperty('name_en', name_en))
+      ..add(DiagnosticsProperty('name_ar', name_ar))
+      ..add(DiagnosticsProperty('venue_en', venue_en))
+      ..add(DiagnosticsProperty('venue_ar', venue_ar))
       ..add(DiagnosticsProperty('gov_en', gov_en))
       ..add(DiagnosticsProperty('gov_ar', gov_ar))
       ..add(DiagnosticsProperty('city_en', city_en))
@@ -401,12 +452,17 @@ class _$ClinicImpl with DiagnosticableTreeMixin implements _Clinic {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ClinicImpl &&
-            (identical(other.id, id) || other.id == id) &&
             (identical(other.doc_id, doc_id) || other.doc_id == doc_id) &&
             (identical(other.speciality_en, speciality_en) ||
                 other.speciality_en == speciality_en) &&
             (identical(other.speciality_ar, speciality_ar) ||
                 other.speciality_ar == speciality_ar) &&
+            (identical(other.name_en, name_en) || other.name_en == name_en) &&
+            (identical(other.name_ar, name_ar) || other.name_ar == name_ar) &&
+            (identical(other.venue_en, venue_en) ||
+                other.venue_en == venue_en) &&
+            (identical(other.venue_ar, venue_ar) ||
+                other.venue_ar == venue_ar) &&
             (identical(other.gov_en, gov_en) || other.gov_en == gov_en) &&
             (identical(other.gov_ar, gov_ar) || other.gov_ar == gov_ar) &&
             (identical(other.city_en, city_en) || other.city_en == city_en) &&
@@ -431,25 +487,29 @@ class _$ClinicImpl with DiagnosticableTreeMixin implements _Clinic {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      doc_id,
-      speciality_en,
-      speciality_ar,
-      gov_en,
-      gov_ar,
-      city_en,
-      city_ar,
-      mobile,
-      landline,
-      address_en,
-      address_ar,
-      location_link,
-      attendance,
-      fees,
-      discount,
-      const DeepCollectionEquality().hash(_off_dates));
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        doc_id,
+        speciality_en,
+        speciality_ar,
+        name_en,
+        name_ar,
+        venue_en,
+        venue_ar,
+        gov_en,
+        gov_ar,
+        city_en,
+        city_ar,
+        mobile,
+        landline,
+        address_en,
+        address_ar,
+        location_link,
+        attendance,
+        fees,
+        discount,
+        const DeepCollectionEquality().hash(_off_dates)
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -467,10 +527,13 @@ class _$ClinicImpl with DiagnosticableTreeMixin implements _Clinic {
 
 abstract class _Clinic implements Clinic {
   const factory _Clinic(
-      {required final String id,
-      required final String doc_id,
+      {required final String doc_id,
       required final String speciality_en,
       required final String speciality_ar,
+      required final String name_en,
+      required final String name_ar,
+      required final String venue_en,
+      required final String venue_ar,
       required final String gov_en,
       required final String gov_ar,
       required final String city_en,
@@ -480,7 +543,7 @@ abstract class _Clinic implements Clinic {
       required final String address_en,
       required final String address_ar,
       required final String location_link,
-      required final String attendance,
+      required final bool attendance,
       required final int fees,
       required final int discount,
       required final List<String> off_dates}) = _$ClinicImpl;
@@ -488,13 +551,19 @@ abstract class _Clinic implements Clinic {
   factory _Clinic.fromJson(Map<String, dynamic> json) = _$ClinicImpl.fromJson;
 
   @override
-  String get id;
-  @override
   String get doc_id;
   @override
   String get speciality_en;
   @override
   String get speciality_ar;
+  @override
+  String get name_en;
+  @override
+  String get name_ar;
+  @override
+  String get venue_en;
+  @override
+  String get venue_ar;
   @override
   String get gov_en;
   @override
@@ -514,7 +583,7 @@ abstract class _Clinic implements Clinic {
   @override
   String get location_link;
   @override
-  String get attendance;
+  bool get attendance;
   @override
   int get fees;
   @override

@@ -8,7 +8,6 @@ part 'clinic_images.g.dart';
 @freezed
 class ClinicImages with _$ClinicImages {
   const factory ClinicImages({
-    required String clinic_id,
     required List<String> images,
   }) = _ClinicImages;
 
@@ -17,7 +16,6 @@ class ClinicImages with _$ClinicImages {
 
   factory ClinicImages.initial() {
     return const ClinicImages(
-      clinic_id: '',
       images: [],
     );
   }

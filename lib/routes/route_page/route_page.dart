@@ -1,3 +1,5 @@
+import 'package:doctopia_doctors/pages/create_clinic_page/create_clinic_page.dart';
+import 'package:doctopia_doctors/pages/edit_clinic_page/edit_clinic_page.dart';
 import 'package:doctopia_doctors/pages/homepage/homepage.dart';
 import 'package:doctopia_doctors/pages/loading_screen/loading_screen.dart';
 import 'package:doctopia_doctors/pages/login_page/login_page.dart';
@@ -74,6 +76,26 @@ class RoutePage {
       name: 'token_validation',
       path: 'token_validation',
       page: TokenValidationPage(
+        key: key,
+      ),
+    );
+  }
+
+  factory RoutePage.createClinicPage({Key? key}) {
+    return RoutePage(
+      name: 'create_clinic',
+      path: 'create_clinic',
+      page: CreateClinicPage(
+        key: key,
+      ),
+    );
+  }
+
+  factory RoutePage.editClinicPage({Key? key}) {
+    return RoutePage(
+      name: 'edit_clinic',
+      path: 'edit_clinic',
+      page: EditClinicPage(
         key: key,
       ),
     );

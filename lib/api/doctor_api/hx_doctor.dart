@@ -50,7 +50,7 @@ class HxDoctor {
 
     final excutionResult = await server_functions.createExecution(
       functionId: env.creds.CREATE_DOCTOR_FUNCTION,
-      path: '/',
+      path: '/create-doctor',
       body: jsonEncode({'syndid': doctor.synd_id}),
       method: 'POST',
     );
