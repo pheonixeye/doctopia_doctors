@@ -1,12 +1,11 @@
-import 'dart:convert';
-
+import 'package:doctopia_doctors/api/governorate_api/governorate_city.dart';
 import 'package:doctopia_doctors/models/city.dart';
 import 'package:doctopia_doctors/models/governorate.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class PxGov extends ChangeNotifier {
-  PxGov() {
+  final HxGovCity govCityService;
+  PxGov({required this.govCityService}) {
     loadGovernorates();
   }
 
@@ -14,11 +13,13 @@ class PxGov extends ChangeNotifier {
   List<Governorate>? get govs => _govs;
 
   Future<void> loadGovernorates() async {
-    //TODO: change fetching method to that from database
-    String data = await rootBundle.loadString('assets/json/gov.json');
-    List<dynamic> jsonResult = json.decode(data);
-    _govs = Governorate.list(jsonResult);
-    notifyListeners();
+    try {
+      final governorates = await govCityService.fetchGovernorates();
+      _govs = governorates.data;
+      notifyListeners();
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Governorate? _selectedGov;

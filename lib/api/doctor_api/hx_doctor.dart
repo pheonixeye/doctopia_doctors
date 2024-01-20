@@ -3,7 +3,7 @@
 import 'dart:convert';
 
 import 'package:appwrite/models.dart' as clientModels show Document;
-import 'package:doctopia_doctors/api/errors/create_doc_algorithm_excp.dart';
+import 'package:doctopia_doctors/api/errors/algorithm_excp.dart';
 import 'package:doctopia_doctors/api/servers/servers.dart';
 import 'package:doctopia_doctors/env/env.dart';
 
@@ -57,7 +57,7 @@ class HxDoctor {
     //throw on wrong invokation
     final functionResponse = jsonDecode(excutionResult.responseBody);
     if (functionResponse['code'] != 0) {
-      throw CreateDoctorAlgorithmException(functionResponse['code'] as int);
+      throw CreateAlgorithmException(functionResponse['code'] as int);
     }
 
     //return doctor from the initial request

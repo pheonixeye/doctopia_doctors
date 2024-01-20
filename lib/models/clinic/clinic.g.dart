@@ -24,6 +24,7 @@ _$ClinicImpl _$$ClinicImplFromJson(Map<String, dynamic> json) => _$ClinicImpl(
       address_ar: json['address_ar'] as String,
       location_link: json['location_link'] as String,
       attendance: json['attendance'] as bool,
+      published: json['published'] as bool,
       fees: json['fees'] as int,
       discount: json['discount'] as int,
       off_dates:
@@ -49,6 +50,7 @@ Map<String, dynamic> _$$ClinicImplToJson(_$ClinicImpl instance) =>
       'address_ar': instance.address_ar,
       'location_link': instance.location_link,
       'attendance': instance.attendance,
+      'published': instance.published,
       'fees': instance.fees,
       'discount': instance.discount,
       'off_dates': instance.off_dates,

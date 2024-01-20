@@ -1,7 +1,10 @@
+import 'package:doctopia_doctors/api/clinic_api/clinic_api.dart';
 import 'package:doctopia_doctors/api/doctor_api/hx_doctor.dart';
 import 'package:doctopia_doctors/api/documents_api/hx_documents.dart';
+import 'package:doctopia_doctors/api/governorate_api/governorate_city.dart';
 import 'package:doctopia_doctors/api/speciality_api/speciality.dart';
 import 'package:doctopia_doctors/env/env.dart';
+import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_documents.dart';
 import 'package:doctopia_doctors/providers/px_gov.dart';
@@ -16,7 +19,13 @@ List<SingleChildWidget> providers(ENV env) => [
       ChangeNotifierProvider(create: (context) => PxLocalDatabase()),
       ChangeNotifierProvider(create: (context) => PxLocale(context)),
       ChangeNotifierProvider(create: (context) => PxTheme(context)),
-      ChangeNotifierProvider(create: (context) => PxGov()),
+      ChangeNotifierProvider(
+        create: (context) => PxGov(
+          govCityService: HxGovCity(
+            env: env,
+          ),
+        ),
+      ),
       ChangeNotifierProvider(
         create: (context) => PxSpeciality(
           specialityService: HxSpeciality(
@@ -34,6 +43,13 @@ List<SingleChildWidget> providers(ENV env) => [
       ChangeNotifierProvider(
         create: (context) => PxDocuments(
           documentsService: HxDocuments(
+            env: env,
+          ),
+        ),
+      ),
+      ChangeNotifierProvider(
+        create: (context) => PxClinics(
+          clinicService: HxClinic(
             env: env,
           ),
         ),

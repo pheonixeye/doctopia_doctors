@@ -25,12 +25,44 @@ class Clinic with _$Clinic {
     required String address_ar,
     required String location_link,
     required bool attendance,
+    required bool published,
     required int fees,
     required int discount,
     required List<String> off_dates,
   }) = _Clinic;
 
   factory Clinic.fromJson(Map<String, Object?> json) => _$ClinicFromJson(json);
+
+  static ({String id, Clinic clinic}) clinicRecord(
+      String id, Map<String, Object?> json) {
+    return (id: id, clinic: Clinic.fromJson(json));
+  }
+
+  factory Clinic.initial() {
+    return const Clinic(
+      doc_id: '',
+      speciality_en: '',
+      speciality_ar: '',
+      name_en: '',
+      name_ar: '',
+      venue_en: '',
+      venue_ar: '',
+      gov_en: '',
+      gov_ar: '',
+      city_en: '',
+      city_ar: '',
+      mobile: '',
+      landline: '',
+      address_en: '',
+      address_ar: '',
+      location_link: '',
+      attendance: false,
+      published: false,
+      fees: 0,
+      discount: 0,
+      off_dates: [],
+    );
+  }
 
   static const List<String> editableStrings = [
     "name_en",
