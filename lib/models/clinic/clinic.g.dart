@@ -25,7 +25,8 @@ _$ClinicImpl _$$ClinicImplFromJson(Map<String, dynamic> json) => _$ClinicImpl(
       location_link: json['location_link'] as String,
       attendance: json['attendance'] as bool,
       published: json['published'] as bool,
-      fees: json['fees'] as int,
+      consultation_fees: json['consultation_fees'] as int,
+      followup_fees: json['followup_fees'] as int,
       discount: json['discount'] as int,
       off_dates:
           (json['off_dates'] as List<dynamic>).map((e) => e as String).toList(),
@@ -51,7 +52,8 @@ Map<String, dynamic> _$$ClinicImplToJson(_$ClinicImpl instance) =>
       'location_link': instance.location_link,
       'attendance': instance.attendance,
       'published': instance.published,
-      'fees': instance.fees,
+      'consultation_fees': instance.consultation_fees,
+      'followup_fees': instance.followup_fees,
       'discount': instance.discount,
       'off_dates': instance.off_dates,
     };

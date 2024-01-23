@@ -9,15 +9,15 @@ class PxClinics extends ChangeNotifier {
 
   PxClinics({required this.clinicService});
 
-  List<Clinic> _clinics = [];
-  List<Clinic> get clinics => _clinics;
+  List<({Clinic clinic, String id})> _clinics = [];
+  List<({Clinic clinic, String id})> get clinics => _clinics;
 
-  Future<List<Clinic>> fetchClinics(String doc_id) async {
+  Future<void> fetchClinics(String doc_id) async {
     try {
       final response = await clinicService.fetchDoctorClinics(doc_id);
-      _clinics = response.map((e) => e.clinic).toList();
+      _clinics = response;
       notifyListeners();
-      return _clinics;
+      // return response;
     } catch (e) {
       rethrow;
     }
@@ -45,7 +45,8 @@ class PxClinics extends ChangeNotifier {
     String? location_link,
     bool? attendance,
     bool? published,
-    int? fees,
+    int? consultation_fees,
+    int? followup_fees,
     int? discount,
     List<String>? off_dates,
   }) {
@@ -68,10 +69,79 @@ class PxClinics extends ChangeNotifier {
       location_link: location_link ?? _clinic.location_link,
       attendance: attendance ?? _clinic.attendance,
       published: published ?? _clinic.published,
-      fees: fees ?? _clinic.fees,
+      consultation_fees: consultation_fees ?? _clinic.consultation_fees,
+      followup_fees: followup_fees ?? _clinic.followup_fees,
       discount: discount ?? _clinic.discount,
       off_dates: off_dates ?? _clinic.off_dates,
     );
+    notifyListeners();
+  }
+
+  void setClinicFromKeyValue(String key, String value) {
+    switch (key) {
+      case 'name_en':
+        _clinic = _clinic.copyWith(
+          name_en: value,
+        );
+        break;
+      case 'name_ar':
+        _clinic = _clinic.copyWith(
+          name_ar: value,
+        );
+        break;
+      case 'venue_en':
+        _clinic = _clinic.copyWith(
+          venue_en: value,
+        );
+        break;
+      case 'venue_ar':
+        _clinic = _clinic.copyWith(
+          venue_ar: value,
+        );
+        break;
+      case 'mobile':
+        _clinic = _clinic.copyWith(
+          mobile: value,
+        );
+        break;
+      case 'landline':
+        _clinic = _clinic.copyWith(
+          landline: value,
+        );
+        break;
+      case 'address_en':
+        _clinic = _clinic.copyWith(
+          address_en: value,
+        );
+        break;
+      case 'address_ar':
+        _clinic = _clinic.copyWith(
+          address_ar: value,
+        );
+        break;
+      case 'location_link':
+        _clinic = _clinic.copyWith(
+          location_link: value,
+        );
+        break;
+      case 'consultation_fees':
+        _clinic = _clinic.copyWith(
+          consultation_fees: value.isEmpty ? 0 : int.parse(value),
+        );
+        break;
+      case 'followup_fees':
+        _clinic = _clinic.copyWith(
+          followup_fees: value.isEmpty ? 0 : int.parse(value),
+        );
+        break;
+      case 'discount':
+        _clinic = _clinic.copyWith(
+          discount: value.isEmpty ? 0 : int.parse(value),
+        );
+        break;
+      default:
+        return;
+    }
     notifyListeners();
   }
 

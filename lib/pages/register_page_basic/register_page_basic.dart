@@ -24,6 +24,7 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
       body: Form(
         key: _formKey,
         child: ListView(
+          cacheExtent: 3000,
           padding: const EdgeInsets.all(8),
           shrinkWrap: true,
           children: [

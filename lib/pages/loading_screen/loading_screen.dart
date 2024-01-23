@@ -87,7 +87,7 @@ class _LoadingScreenState extends State<LoadingScreen>
             //step 1: fetch Doctor Model<done>
             //step 1*: subscribe to firebase phone number topic (Notifications)
             //step 2: fetch Doctor Documents<done>
-            //step 3: fetch Doctor Clinics
+            //step 3: fetch Doctor Clinics<done>
             //step 4: fetch Doctor Visits
             //step 5: fetch Doctor Invoices
             //step 6: fetch Doctor Articles

@@ -38,7 +38,8 @@ mixin _$Clinic {
   String get location_link => throw _privateConstructorUsedError;
   bool get attendance => throw _privateConstructorUsedError;
   bool get published => throw _privateConstructorUsedError;
-  int get fees => throw _privateConstructorUsedError;
+  int get consultation_fees => throw _privateConstructorUsedError;
+  int get followup_fees => throw _privateConstructorUsedError;
   int get discount => throw _privateConstructorUsedError;
   List<String> get off_dates => throw _privateConstructorUsedError;
 
@@ -71,7 +72,8 @@ abstract class $ClinicCopyWith<$Res> {
       String location_link,
       bool attendance,
       bool published,
-      int fees,
+      int consultation_fees,
+      int followup_fees,
       int discount,
       List<String> off_dates});
 }
@@ -107,7 +109,8 @@ class _$ClinicCopyWithImpl<$Res, $Val extends Clinic>
     Object? location_link = null,
     Object? attendance = null,
     Object? published = null,
-    Object? fees = null,
+    Object? consultation_fees = null,
+    Object? followup_fees = null,
     Object? discount = null,
     Object? off_dates = null,
   }) {
@@ -184,9 +187,13 @@ class _$ClinicCopyWithImpl<$Res, $Val extends Clinic>
           ? _value.published
           : published // ignore: cast_nullable_to_non_nullable
               as bool,
-      fees: null == fees
-          ? _value.fees
-          : fees // ignore: cast_nullable_to_non_nullable
+      consultation_fees: null == consultation_fees
+          ? _value.consultation_fees
+          : consultation_fees // ignore: cast_nullable_to_non_nullable
+              as int,
+      followup_fees: null == followup_fees
+          ? _value.followup_fees
+          : followup_fees // ignore: cast_nullable_to_non_nullable
               as int,
       discount: null == discount
           ? _value.discount
@@ -226,7 +233,8 @@ abstract class _$$ClinicImplCopyWith<$Res> implements $ClinicCopyWith<$Res> {
       String location_link,
       bool attendance,
       bool published,
-      int fees,
+      int consultation_fees,
+      int followup_fees,
       int discount,
       List<String> off_dates});
 }
@@ -260,7 +268,8 @@ class __$$ClinicImplCopyWithImpl<$Res>
     Object? location_link = null,
     Object? attendance = null,
     Object? published = null,
-    Object? fees = null,
+    Object? consultation_fees = null,
+    Object? followup_fees = null,
     Object? discount = null,
     Object? off_dates = null,
   }) {
@@ -337,9 +346,13 @@ class __$$ClinicImplCopyWithImpl<$Res>
           ? _value.published
           : published // ignore: cast_nullable_to_non_nullable
               as bool,
-      fees: null == fees
-          ? _value.fees
-          : fees // ignore: cast_nullable_to_non_nullable
+      consultation_fees: null == consultation_fees
+          ? _value.consultation_fees
+          : consultation_fees // ignore: cast_nullable_to_non_nullable
+              as int,
+      followup_fees: null == followup_fees
+          ? _value.followup_fees
+          : followup_fees // ignore: cast_nullable_to_non_nullable
               as int,
       discount: null == discount
           ? _value.discount
@@ -375,7 +388,8 @@ class _$ClinicImpl with DiagnosticableTreeMixin implements _Clinic {
       required this.location_link,
       required this.attendance,
       required this.published,
-      required this.fees,
+      required this.consultation_fees,
+      required this.followup_fees,
       required this.discount,
       required final List<String> off_dates})
       : _off_dates = off_dates;
@@ -420,7 +434,9 @@ class _$ClinicImpl with DiagnosticableTreeMixin implements _Clinic {
   @override
   final bool published;
   @override
-  final int fees;
+  final int consultation_fees;
+  @override
+  final int followup_fees;
   @override
   final int discount;
   final List<String> _off_dates;
@@ -433,7 +449,7 @@ class _$ClinicImpl with DiagnosticableTreeMixin implements _Clinic {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Clinic(doc_id: $doc_id, speciality_en: $speciality_en, speciality_ar: $speciality_ar, name_en: $name_en, name_ar: $name_ar, venue_en: $venue_en, venue_ar: $venue_ar, gov_en: $gov_en, gov_ar: $gov_ar, city_en: $city_en, city_ar: $city_ar, mobile: $mobile, landline: $landline, address_en: $address_en, address_ar: $address_ar, location_link: $location_link, attendance: $attendance, published: $published, fees: $fees, discount: $discount, off_dates: $off_dates)';
+    return 'Clinic(doc_id: $doc_id, speciality_en: $speciality_en, speciality_ar: $speciality_ar, name_en: $name_en, name_ar: $name_ar, venue_en: $venue_en, venue_ar: $venue_ar, gov_en: $gov_en, gov_ar: $gov_ar, city_en: $city_en, city_ar: $city_ar, mobile: $mobile, landline: $landline, address_en: $address_en, address_ar: $address_ar, location_link: $location_link, attendance: $attendance, published: $published, consultation_fees: $consultation_fees, followup_fees: $followup_fees, discount: $discount, off_dates: $off_dates)';
   }
 
   @override
@@ -459,7 +475,8 @@ class _$ClinicImpl with DiagnosticableTreeMixin implements _Clinic {
       ..add(DiagnosticsProperty('location_link', location_link))
       ..add(DiagnosticsProperty('attendance', attendance))
       ..add(DiagnosticsProperty('published', published))
-      ..add(DiagnosticsProperty('fees', fees))
+      ..add(DiagnosticsProperty('consultation_fees', consultation_fees))
+      ..add(DiagnosticsProperty('followup_fees', followup_fees))
       ..add(DiagnosticsProperty('discount', discount))
       ..add(DiagnosticsProperty('off_dates', off_dates));
   }
@@ -497,7 +514,10 @@ class _$ClinicImpl with DiagnosticableTreeMixin implements _Clinic {
                 other.attendance == attendance) &&
             (identical(other.published, published) ||
                 other.published == published) &&
-            (identical(other.fees, fees) || other.fees == fees) &&
+            (identical(other.consultation_fees, consultation_fees) ||
+                other.consultation_fees == consultation_fees) &&
+            (identical(other.followup_fees, followup_fees) ||
+                other.followup_fees == followup_fees) &&
             (identical(other.discount, discount) ||
                 other.discount == discount) &&
             const DeepCollectionEquality()
@@ -526,7 +546,8 @@ class _$ClinicImpl with DiagnosticableTreeMixin implements _Clinic {
         location_link,
         attendance,
         published,
-        fees,
+        consultation_fees,
+        followup_fees,
         discount,
         const DeepCollectionEquality().hash(_off_dates)
       ]);
@@ -565,7 +586,8 @@ abstract class _Clinic implements Clinic {
       required final String location_link,
       required final bool attendance,
       required final bool published,
-      required final int fees,
+      required final int consultation_fees,
+      required final int followup_fees,
       required final int discount,
       required final List<String> off_dates}) = _$ClinicImpl;
 
@@ -608,7 +630,9 @@ abstract class _Clinic implements Clinic {
   @override
   bool get published;
   @override
-  int get fees;
+  int get consultation_fees;
+  @override
+  int get followup_fees;
   @override
   int get discount;
   @override

@@ -1,10 +1,13 @@
+import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/models/city.dart';
 import 'package:doctopia_doctors/models/clinic/clinic.dart';
 import 'package:doctopia_doctors/models/governorate.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
+import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_gov.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +20,30 @@ class CreateClinicPage extends StatefulWidget {
 
 class _CreateClinicPageState extends State<CreateClinicPage> {
   final _formKey = GlobalKey<FormState>();
+
+  int? _maxLength(String value) {
+    switch (value) {
+      case 'mobile':
+        return 11;
+      case 'landline':
+        return 8;
+      default:
+        return null;
+    }
+  }
+
+  bool _sideValidators(String e) {
+    if (e == 'mobile' ||
+        e == 'landline' ||
+        e == 'consultation_fees' ||
+        e == 'followup_fees' ||
+        e == 'discount') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,9 +52,11 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
       ),
       body: Consumer2<PxLocale, PxClinics>(
         builder: (context, l, c, child) {
+          final isEnglish = l.locale.languageCode == 'en';
           return Form(
             key: _formKey,
             child: ListView(
+              cacheExtent: 5000,
               children: [
                 ...Clinic.editableStrings.map((e) {
                   return Card(
@@ -35,35 +64,28 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         decoration: InputDecoration(
-                          labelText: e,
+                          labelText: Clinic.keyToWidget(e, isEnglish),
                           border: const OutlineInputBorder(),
                           suffix: const SizedBox(
                             height: 24,
                           ),
                         ),
-                        onChanged: (value) {
-                          //
-                          // "name_en",
-                          // "name_ar",
-                          // "venue_en",
-                          // "venue_ar",
-                          // "mobile",
-                          // "landline",
-                          // "address_en",
-                          // "address_ar",
-                          // "location_link",
-                          // "fees",
-                          // "discount",
-                          //
-                          switch (e) {
-                            case "name_en":
-                              context.read<PxClinics>().setClinic(
-                                    name_en: value,
-                                  );
-                              break;
-                            default:
-                              return;
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return "Empty Fields are not Allowed.";
                           }
+                          return null;
+                        },
+                        maxLength: _maxLength(e),
+                        keyboardType: _sideValidators(e)
+                            ? TextInputType.phone
+                            : TextInputType.text,
+                        inputFormatters: [
+                          if (_sideValidators(e))
+                            FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        onChanged: (value) {
+                          c.setClinicFromKeyValue(e, value.trim());
                         },
                       ),
                     ),
@@ -90,6 +112,12 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
                                     );
                                   }).toList(),
                                   value: g.selectedGov,
+                                  validator: (value) {
+                                    if (value == null) {
+                                      return 'Select Governorate.';
+                                    }
+                                    return null;
+                                  },
                                   onChanged: (val) {
                                     g.selectGov(val);
                                     context.read<PxClinics>().setClinic(
@@ -122,6 +150,12 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
                                     );
                                   }).toList(),
                                   value: gov.selectedCity,
+                                  validator: (value) {
+                                    if (value == null) {
+                                      return 'Select City.';
+                                    }
+                                    return null;
+                                  },
                                   onChanged: (val) {
                                     gov.selectCity(val);
                                     context.read<PxClinics>().setClinic(
@@ -153,6 +187,12 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
                                   );
                                 },
                               ).toList(),
+                              validator: (value) {
+                                if (value == null) {
+                                  return 'Select Attendance Type.';
+                                }
+                                return null;
+                              },
                               onChanged: (val) {
                                 context.read<PxClinics>().setClinic(
                                       attendance: val,
@@ -170,8 +210,26 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton.icon(
                       onPressed: () async {
-                        //TODO: validate fields
-                        //TODO: send create clinic request
+                        // validate fields
+                        if (_formKey.currentState!.validate()) {
+                          // populate default fields from doctor model
+                          c.setClinic(
+                            doc_id: context.read<PxDoctor>().doctor.id,
+                            speciality_en:
+                                context.read<PxDoctor>().doctor.speciality_en,
+                            speciality_ar:
+                                context.read<PxDoctor>().doctor.speciality_ar,
+                            published: false,
+                            off_dates: [],
+                          );
+                          // send create clinic request
+                          await shellFunction(context, toExecute: () async {
+                            await c.createClinic();
+                          });
+                          if (mounted) {
+                            GoRouter.of(context).pop();
+                          }
+                        }
                       },
                       icon: const Icon(Icons.add),
                       label: const Text('Create'),

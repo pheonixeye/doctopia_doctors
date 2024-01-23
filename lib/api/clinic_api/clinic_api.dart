@@ -60,7 +60,7 @@ class HxClinic {
           collectionId: env.creds.COLLECTION_CLINICS_CLINICS,
           queries: [
             clientSDK.Query.equal('doc_id', doc_id),
-            clientSDK.Query.limit(5),
+            clientSDK.Query.limit(10),
           ]);
       final _clinics = response.documents.map((e) {
         return Clinic.clinicRecord(e.$id, e.data);

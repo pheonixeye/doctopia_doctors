@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_documents.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,10 @@ Future<void> loginLogic({
           errorMsg: 'Wrong id / password combination.',
         );
     if (context.mounted) {
-      await context.read<PxDocuments>().initDocuments(doc.id!);
+      await Future.wait([
+        context.read<PxDocuments>().initDocuments(doc.id!),
+        context.read<PxClinics>().fetchClinics(doc.id!),
+      ]);
     }
   } catch (e) {
     rethrow;
