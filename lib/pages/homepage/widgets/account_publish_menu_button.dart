@@ -1,4 +1,5 @@
 import 'package:doctopia_doctors/models/documents/documents.dart';
+import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_documents.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
@@ -16,8 +17,8 @@ class AccountPublishMenuButton extends StatefulWidget {
 class _AccountPublishMenuButtonState extends State<AccountPublishMenuButton> {
   @override
   Widget build(BuildContext context) {
-    return Consumer3<PxLocale, PxDoctor, PxDocuments>(
-      builder: (context, l, doctor, documents, c) {
+    return Consumer4<PxLocale, PxDoctor, PxDocuments, PxClinics>(
+      builder: (context, l, doctor, documents, clinics, child) {
         final isEnglish = l.locale.languageCode == 'en';
         return PopupMenuButton<bool>(
           shape: RoundedRectangleBorder(
@@ -53,6 +54,31 @@ class _AccountPublishMenuButtonState extends State<AccountPublishMenuButton> {
                   ),
                 );
               }).toList(),
+              PopupMenuItem<bool>(
+                enabled: false,
+                value: (clinics.clinics.isEmpty),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    child: (clinics.clinics.isEmpty)
+                        ? const Icon(Icons.close)
+                        : const Icon(Icons.check),
+                  ),
+                  title: const Text('Add One Clinic'),
+                ),
+              ),
+              PopupMenuItem<bool>(
+                enabled: false,
+                value: (clinics.clinics.any((x) => x.clinic.published)),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    child:
+                        (clinics.clinics.any((x) => x.clinic.published == true))
+                            ? const Icon(Icons.check)
+                            : const Icon(Icons.close),
+                  ),
+                  title: const Text('Publish One Clinic'),
+                ),
+              ),
               const PopupMenuDivider(),
               PopupMenuItem(
                 child: Center(

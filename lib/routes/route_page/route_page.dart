@@ -1,5 +1,5 @@
+import 'package:doctopia_doctors/pages/clinic_schedule_page/clinic_schedule_page.dart';
 import 'package:doctopia_doctors/pages/create_clinic_page/create_clinic_page.dart';
-import 'package:doctopia_doctors/pages/edit_clinic_page/edit_clinic_page.dart';
 import 'package:doctopia_doctors/pages/homepage/homepage.dart';
 import 'package:doctopia_doctors/pages/loading_screen/loading_screen.dart';
 import 'package:doctopia_doctors/pages/login_page/login_page.dart';
@@ -91,11 +91,11 @@ class RoutePage {
     );
   }
 
-  factory RoutePage.editClinicPage({Key? key}) {
+  factory RoutePage.clinicSchedulePage({Key? key}) {
     return RoutePage(
-      name: 'edit_clinic',
-      path: 'edit_clinic',
-      page: EditClinicPage(
+      name: 'clinic_schedule',
+      path: 'clinic_schedule',
+      page: ClinicSchedulePage(
         key: key,
       ),
     );

@@ -1,12 +1,15 @@
 // ignore_for_file: prefer_final_fields
 
+import 'package:doctopia_doctors/components/prompt_dialog.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/models/clinic/clinic.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
+import 'package:doctopia_doctors/routes/route_page/route_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class ClinicsPage extends StatefulWidget {
@@ -95,8 +98,8 @@ class _ClinicsPageState extends State<ClinicsPage> {
                                 heroTag: e.hashCode,
                                 onPressed: null,
                                 child: e.published
-                                    ? const Icon(Icons.check)
-                                    : const Icon(Icons.close),
+                                    ? const Icon(Icons.public_sharp)
+                                    : const Icon(Icons.public_off),
                               ),
                               const Gap(10),
                               Expanded(
@@ -225,31 +228,88 @@ class _ClinicsPageState extends State<ClinicsPage> {
                           const Gap(10),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                            child: Wrap(
+                              // mainAxisAlignment: MainAxisAlignment.center,
+                              alignment: WrapAlignment.center,
                               children: [
-                                ElevatedButton.icon(
-                                  onPressed: () {
-                                    //TODO: show set schedule dialog
-                                  },
-                                  label: const Text('Schedule'),
-                                  icon: const Icon(Icons.calendar_month),
+                                Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: ElevatedButton.icon(
+                                    onPressed: () {
+                                      //TODO: select clinic
+                                      final _index = c.clinics.indexWhere(
+                                          (element) => element.id == id);
+                                      c.selectIndex(_index);
+                                      //TODO: navigate to schedule management page
+                                      if (mounted) {
+                                        GoRouter.of(context).goNamed(
+                                            RoutePage.clinicSchedulePage()
+                                                .name);
+                                      }
+                                    },
+                                    label: const Text('Schedule'),
+                                    icon: const Icon(Icons.calendar_month),
+                                  ),
                                 ),
-                                const Gap(10),
-                                ElevatedButton.icon(
-                                  onPressed: () async {
-                                    // publish clinic
+                                Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: ElevatedButton.icon(
+                                    onPressed: () async {
+                                      //TODO: check if clinic schedule is created
 
-                                    // testing update algorithm<working>
-                                    await shellFunction(context,
-                                        toExecute: () async {
-                                      await c.updateClinic(id, {
-                                        'published': !e.published,
+                                      // publish clinic
+
+                                      // testing update algorithm<working>
+                                      await shellFunction(context,
+                                          toExecute: () async {
+                                        await c.updateClinic(id, {
+                                          'published': !e.published,
+                                        });
                                       });
-                                    });
-                                  },
-                                  label: const Text('Publish'),
-                                  icon: const Icon(Icons.publish),
+                                    },
+                                    label: !e.published
+                                        ? const Text('Publish')
+                                        : const Text('UnPublish'),
+                                    icon: !e.published
+                                        ? const Icon(Icons.publish)
+                                        : const Icon(Icons.unpublished),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: ElevatedButton.icon(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.red,
+                                    ),
+                                    onPressed: () async {
+                                      //TODO: show confirm delete clinic dialog
+                                      final bool? result =
+                                          await showDialog<bool?>(
+                                        context: context,
+                                        builder: (context) {
+                                          return const MainPromptDialog(
+                                            title: 'Delete Clinic ?',
+                                            body:
+                                                "This is an irreversible action, Are you sure ?",
+                                          );
+                                        },
+                                      );
+
+                                      if (result != null && result) {
+                                        if (mounted) {
+                                          await shellFunction(context,
+                                              toExecute: () async {
+                                            await c.deleteClinic(
+                                              id,
+                                              e.doc_id,
+                                            );
+                                          });
+                                        }
+                                      }
+                                    },
+                                    label: const Text('Delete Clinic'),
+                                    icon: const Icon(Icons.delete_forever),
+                                  ),
                                 ),
                               ],
                             ),

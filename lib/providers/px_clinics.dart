@@ -26,6 +26,14 @@ class PxClinics extends ChangeNotifier {
   Clinic _clinic = Clinic.initial();
   Clinic get clinic => _clinic;
 
+  int? _selectedIndex;
+  int? get selectedIndex => _selectedIndex;
+
+  void selectIndex(int value) {
+    _selectedIndex = value;
+    notifyListeners();
+  }
+
   void setClinic({
     String? doc_id,
     String? speciality_en,
@@ -164,6 +172,15 @@ class PxClinics extends ChangeNotifier {
       notifyListeners();
       await fetchClinics(_clinic.doc_id);
       return _clinic;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> deleteClinic(String id, String doc_id) async {
+    try {
+      await clinicService.deleteClinic(id);
+      await fetchClinics(doc_id);
     } catch (e) {
       rethrow;
     }
