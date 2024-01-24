@@ -52,5 +52,14 @@ class CREDSDEV implements CREDS {
   @override
   String get DATABASE_CLINICS => "6597130e75340bbe78b5";
 
+  @override
+  String get BUCKET_CLINIC_IMAGES => '65992c6656ce010787a4';
+
+  @override
+  String get COLLECTION_CLINIC_IMAGES_CLINICS => '659c24521229d550da0c';
+
+  @override
+  String get DATABASE_SCHEDULE => '65a99357d692e8a7f7a8';
+
   //-------------------------------------------------------------------//
 }

@@ -1,10 +1,13 @@
 // ignore_for_file: prefer_final_fields
 
+import 'package:doctopia_doctors/components/main_snackbar.dart';
 import 'package:doctopia_doctors/components/prompt_dialog.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/models/clinic/clinic.dart';
+import 'package:doctopia_doctors/pages/homepage/pages/clinics_page/widgets/clinic_images_tile.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
+import 'package:doctopia_doctors/providers/px_schedule.dart';
 import 'package:doctopia_doctors/routes/route_page/route_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -148,12 +151,12 @@ class _ClinicsPageState extends State<ClinicsPage> {
                                                 children: [
                                                   ElevatedButton.icon(
                                                     onPressed: () async {
-                                                      //TODO: validate field using it's key
+                                                      // validate field using it's key
                                                       if (_controllers[x.key]!
                                                           .$2
                                                           .currentState!
                                                           .validate()) {
-                                                        //TODO: send update field request
+                                                        // send update field request
                                                         await shellFunction(
                                                           context,
                                                           toExecute: () async {
@@ -225,6 +228,11 @@ class _ClinicsPageState extends State<ClinicsPage> {
                               ),
                             );
                           }).toList(),
+                          ClinicImagesTile(
+                            //TODO: find why it gets the same images despite having different ids
+                            clinic_id: id,
+                            key: ValueKey(id),
+                          ),
                           const Gap(10),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -236,11 +244,11 @@ class _ClinicsPageState extends State<ClinicsPage> {
                                   padding: const EdgeInsets.all(4.0),
                                   child: ElevatedButton.icon(
                                     onPressed: () {
-                                      //TODO: select clinic
+                                      //*HACK: select clinic !IMPORTANT
                                       final _index = c.clinics.indexWhere(
                                           (element) => element.id == id);
                                       c.selectIndex(_index);
-                                      //TODO: navigate to schedule management page
+                                      // navigate to schedule management page
                                       if (mounted) {
                                         GoRouter.of(context).goNamed(
                                             RoutePage.clinicSchedulePage()
@@ -253,26 +261,41 @@ class _ClinicsPageState extends State<ClinicsPage> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(4.0),
-                                  child: ElevatedButton.icon(
-                                    onPressed: () async {
-                                      //TODO: check if clinic schedule is created
+                                  child: Consumer<PxSchedule>(
+                                    builder: (context, s, _) {
+                                      return ElevatedButton.icon(
+                                        onPressed: () async {
+                                          // check if clinic schedule is created
+                                          final _sch =
+                                              await s.fetchScheduleList(id);
+                                          if (_sch.isEmpty && mounted) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(iInfoSnackbar(
+                                                    'Add Clinic Schedule First.',
+                                                    context));
+                                          }
 
-                                      // publish clinic
-
-                                      // testing update algorithm<working>
-                                      await shellFunction(context,
-                                          toExecute: () async {
-                                        await c.updateClinic(id, {
-                                          'published': !e.published,
-                                        });
-                                      });
+                                          // testing update algorithm<working>
+                                          // publish clinic
+                                          else {
+                                            if (mounted) {
+                                              await shellFunction(context,
+                                                  toExecute: () async {
+                                                await c.updateClinic(id, {
+                                                  'published': !e.published,
+                                                });
+                                              });
+                                            }
+                                          }
+                                        },
+                                        label: !e.published
+                                            ? const Text('Publish')
+                                            : const Text('UnPublish'),
+                                        icon: !e.published
+                                            ? const Icon(Icons.publish)
+                                            : const Icon(Icons.unpublished),
+                                      );
                                     },
-                                    label: !e.published
-                                        ? const Text('Publish')
-                                        : const Text('UnPublish'),
-                                    icon: !e.published
-                                        ? const Icon(Icons.publish)
-                                        : const Icon(Icons.unpublished),
                                   ),
                                 ),
                                 Padding(
@@ -282,7 +305,7 @@ class _ClinicsPageState extends State<ClinicsPage> {
                                       backgroundColor: Colors.red,
                                     ),
                                     onPressed: () async {
-                                      //TODO: show confirm delete clinic dialog
+                                      // show confirm delete clinic dialog
                                       final bool? result =
                                           await showDialog<bool?>(
                                         context: context,

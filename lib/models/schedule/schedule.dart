@@ -17,4 +17,14 @@ class Schedule with _$Schedule {
 
   factory Schedule.fromJson(Map<String, Object?> json) =>
       _$ScheduleFromJson(json);
+
+  factory Schedule.initial() {
+    return const Schedule(
+      weekday: 'Monday',
+      intday: 1,
+      start: 0,
+      end: 0,
+      slots: 0,
+    );
+  }
 }
