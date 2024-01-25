@@ -28,6 +28,9 @@ mixin _$ClinicVisit {
   String get date => throw _privateConstructorUsedError;
   String get type => throw _privateConstructorUsedError;
   bool get attended => throw _privateConstructorUsedError;
+  int get day => throw _privateConstructorUsedError;
+  int get month => throw _privateConstructorUsedError;
+  int get year => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -49,7 +52,10 @@ abstract class $ClinicVisitCopyWith<$Res> {
       String clinic_id,
       String date,
       String type,
-      bool attended});
+      bool attended,
+      int day,
+      int month,
+      int year});
 }
 
 /// @nodoc
@@ -73,6 +79,9 @@ class _$ClinicVisitCopyWithImpl<$Res, $Val extends ClinicVisit>
     Object? date = null,
     Object? type = null,
     Object? attended = null,
+    Object? day = null,
+    Object? month = null,
+    Object? year = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -107,6 +116,18 @@ class _$ClinicVisitCopyWithImpl<$Res, $Val extends ClinicVisit>
           ? _value.attended
           : attended // ignore: cast_nullable_to_non_nullable
               as bool,
+      day: null == day
+          ? _value.day
+          : day // ignore: cast_nullable_to_non_nullable
+              as int,
+      month: null == month
+          ? _value.month
+          : month // ignore: cast_nullable_to_non_nullable
+              as int,
+      year: null == year
+          ? _value.year
+          : year // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -127,7 +148,10 @@ abstract class _$$ClinicVisitImplCopyWith<$Res>
       String clinic_id,
       String date,
       String type,
-      bool attended});
+      bool attended,
+      int day,
+      int month,
+      int year});
 }
 
 /// @nodoc
@@ -149,6 +173,9 @@ class __$$ClinicVisitImplCopyWithImpl<$Res>
     Object? date = null,
     Object? type = null,
     Object? attended = null,
+    Object? day = null,
+    Object? month = null,
+    Object? year = null,
   }) {
     return _then(_$ClinicVisitImpl(
       id: null == id
@@ -183,6 +210,18 @@ class __$$ClinicVisitImplCopyWithImpl<$Res>
           ? _value.attended
           : attended // ignore: cast_nullable_to_non_nullable
               as bool,
+      day: null == day
+          ? _value.day
+          : day // ignore: cast_nullable_to_non_nullable
+              as int,
+      month: null == month
+          ? _value.month
+          : month // ignore: cast_nullable_to_non_nullable
+              as int,
+      year: null == year
+          ? _value.year
+          : year // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -198,7 +237,10 @@ class _$ClinicVisitImpl with DiagnosticableTreeMixin implements _ClinicVisit {
       required this.clinic_id,
       required this.date,
       required this.type,
-      required this.attended});
+      required this.attended,
+      required this.day,
+      required this.month,
+      required this.year});
 
   factory _$ClinicVisitImpl.fromJson(Map<String, dynamic> json) =>
       _$$ClinicVisitImplFromJson(json);
@@ -219,10 +261,16 @@ class _$ClinicVisitImpl with DiagnosticableTreeMixin implements _ClinicVisit {
   final String type;
   @override
   final bool attended;
+  @override
+  final int day;
+  @override
+  final int month;
+  @override
+  final int year;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ClinicVisit(id: $id, pt_name: $pt_name, pt_phone: $pt_phone, doc_id: $doc_id, clinic_id: $clinic_id, date: $date, type: $type, attended: $attended)';
+    return 'ClinicVisit(id: $id, pt_name: $pt_name, pt_phone: $pt_phone, doc_id: $doc_id, clinic_id: $clinic_id, date: $date, type: $type, attended: $attended, day: $day, month: $month, year: $year)';
   }
 
   @override
@@ -237,7 +285,10 @@ class _$ClinicVisitImpl with DiagnosticableTreeMixin implements _ClinicVisit {
       ..add(DiagnosticsProperty('clinic_id', clinic_id))
       ..add(DiagnosticsProperty('date', date))
       ..add(DiagnosticsProperty('type', type))
-      ..add(DiagnosticsProperty('attended', attended));
+      ..add(DiagnosticsProperty('attended', attended))
+      ..add(DiagnosticsProperty('day', day))
+      ..add(DiagnosticsProperty('month', month))
+      ..add(DiagnosticsProperty('year', year));
   }
 
   @override
@@ -255,13 +306,16 @@ class _$ClinicVisitImpl with DiagnosticableTreeMixin implements _ClinicVisit {
             (identical(other.date, date) || other.date == date) &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.attended, attended) ||
-                other.attended == attended));
+                other.attended == attended) &&
+            (identical(other.day, day) || other.day == day) &&
+            (identical(other.month, month) || other.month == month) &&
+            (identical(other.year, year) || other.year == year));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, pt_name, pt_phone, doc_id,
-      clinic_id, date, type, attended);
+      clinic_id, date, type, attended, day, month, year);
 
   @JsonKey(ignore: true)
   @override
@@ -286,7 +340,10 @@ abstract class _ClinicVisit implements ClinicVisit {
       required final String clinic_id,
       required final String date,
       required final String type,
-      required final bool attended}) = _$ClinicVisitImpl;
+      required final bool attended,
+      required final int day,
+      required final int month,
+      required final int year}) = _$ClinicVisitImpl;
 
   factory _ClinicVisit.fromJson(Map<String, dynamic> json) =
       _$ClinicVisitImpl.fromJson;
@@ -307,6 +364,12 @@ abstract class _ClinicVisit implements ClinicVisit {
   String get type;
   @override
   bool get attended;
+  @override
+  int get day;
+  @override
+  int get month;
+  @override
+  int get year;
   @override
   @JsonKey(ignore: true)
   _$$ClinicVisitImplCopyWith<_$ClinicVisitImpl> get copyWith =>

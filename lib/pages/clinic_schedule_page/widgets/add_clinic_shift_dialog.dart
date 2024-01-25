@@ -1,3 +1,4 @@
+import 'package:doctopia_doctors/functions/date_functions.dart';
 import 'package:doctopia_doctors/models/schedule/schedule.dart';
 import 'package:doctopia_doctors/models/weekdays/weekdays.dart';
 import 'package:doctopia_doctors/providers/px_schedule.dart';
@@ -24,23 +25,12 @@ class _AddClinicShiftDialogState extends State<AddClinicShiftDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       scrollable: true,
+      contentPadding: const EdgeInsets.symmetric(
+        vertical: 8,
+        horizontal: 8,
+      ),
       shadowColor: Theme.of(context).colorScheme.tertiary,
       elevation: 10,
-      title: Row(
-        children: [
-          const Spacer(),
-          FloatingActionButton.small(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(50),
-            ),
-            heroTag: 'close-dialog',
-            onPressed: () {
-              GoRouter.of(context).pop(null);
-            },
-            child: const Icon(Icons.close),
-          ),
-        ],
-      ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
@@ -50,102 +40,134 @@ class _AddClinicShiftDialogState extends State<AddClinicShiftDialog> {
           children: [
             ListTile(
               title: const Text('Select Weekday'),
-              subtitle: DropdownButtonFormField<Weekdays>(
-                isExpanded: true,
-                items: Weekdays.list.map((e) {
-                  return DropdownMenuItem<Weekdays>(
-                    alignment: Alignment.center,
-                    value: e,
-                    child: Text(e.d),
-                  );
-                }).toList(),
-                value: _weekdays,
-                validator: (value) {
-                  if (_weekdays == null) {
-                    return 'Pick a weekday';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  setState(() {
-                    _weekdays = value;
-                  });
-                },
+              subtitle: Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: DropdownButtonFormField<Weekdays>(
+                    isExpanded: true,
+                    items: Weekdays.list.map((e) {
+                      return DropdownMenuItem<Weekdays>(
+                        alignment: Alignment.center,
+                        value: e,
+                        child: Text(e.d),
+                      );
+                    }).toList(),
+                    value: _weekdays,
+                    validator: (value) {
+                      if (_weekdays == null) {
+                        return 'Pick a weekday';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        _weekdays = value;
+                      });
+                    },
+                  ),
+                ),
               ),
             ),
             ListTile(
               title: const Text('Select Starting Time.'),
-              subtitle: DropdownButtonFormField<int>(
-                isExpanded: true,
-                items: _timeList.map((e) {
-                  return DropdownMenuItem<int>(
-                    alignment: Alignment.center,
-                    value: e,
-                    child: Text(e.toString()),
-                  );
-                }).toList(),
-                value: _start,
-                validator: (value) {
-                  if (_start == null) {
-                    return 'Pick a Starting Time.';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  setState(() {
-                    _start = value;
-                  });
-                },
+              subtitle: Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: DropdownButtonFormField<int>(
+                    isExpanded: true,
+                    items: _timeList.map((e) {
+                      return DropdownMenuItem<int>(
+                        alignment: Alignment.center,
+                        value: e,
+                        child: Text(fT(e)),
+                      );
+                    }).toList(),
+                    value: _start,
+                    validator: (value) {
+                      if (_start == null) {
+                        return 'Pick a Starting Time.';
+                      }
+                      if (_start != null && _end != null) {
+                        if (_start! > _end!) {
+                          return 'Starting Time Should be Before Ending Time.';
+                        }
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        _start = value;
+                      });
+                    },
+                  ),
+                ),
               ),
             ),
             ListTile(
               title: const Text('Select Ending Time.'),
-              subtitle: DropdownButtonFormField<int>(
-                isExpanded: true,
-                items: _timeList.map((e) {
-                  return DropdownMenuItem<int>(
-                    alignment: Alignment.center,
-                    value: e,
-                    child: Text(e.toString()),
-                  );
-                }).toList(),
-                value: _end,
-                validator: (value) {
-                  if (_end == null) {
-                    return 'Pick a Ending Time.';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  setState(() {
-                    _end = value;
-                  });
-                },
-              ),
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Number of Patients',
-                suffix: SizedBox(
-                  height: 24,
+              subtitle: Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: DropdownButtonFormField<int>(
+                    isExpanded: true,
+                    items: _timeList.map((e) {
+                      return DropdownMenuItem<int>(
+                        alignment: Alignment.center,
+                        value: e,
+                        child: Text(fT(e)),
+                      );
+                    }).toList(),
+                    value: _end,
+                    validator: (value) {
+                      if (_end == null) {
+                        return 'Pick a Ending Time.';
+                      }
+                      if (_start != null && _end != null) {
+                        if (_start! > _end!) {
+                          return 'Starting Time Should be Before Ending Time.';
+                        }
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        _end = value;
+                      });
+                    },
+                  ),
                 ),
               ),
-              keyboardType: TextInputType.phone,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Enter Number of Patients';
-                }
-                return null;
-              },
-              onChanged: (value) {
-                setState(() {
-                  _slots = int.tryParse(value);
-                });
-              },
+            ),
+            ListTile(
+              subtitle: Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Number of Patients',
+                      suffix: SizedBox(
+                        height: 24,
+                      ),
+                    ),
+                    keyboardType: TextInputType.phone,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Enter Number of Patients';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        _slots = int.tryParse(value);
+                      });
+                    },
+                  ),
+                ),
+              ),
             ),
           ],
         ),

@@ -19,86 +19,91 @@ class _AccountPublishMenuButtonState extends State<AccountPublishMenuButton> {
   Widget build(BuildContext context) {
     return Consumer4<PxLocale, PxDoctor, PxDocuments, PxClinics>(
       builder: (context, l, doctor, documents, clinics, child) {
-        final isEnglish = l.locale.languageCode == 'en';
-        return PopupMenuButton<bool>(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          color: Theme.of(context).colorScheme.secondaryContainer,
-          shadowColor: Colors.grey.shade400,
-          offset: const Offset(-20, 20),
-          elevation: 10,
-          itemBuilder: (context) {
-            return <PopupMenuEntry<bool>>[
-              //TODO: show info about missing attributes till sending publishing request.
-              ...documents.doctorDocuments!.toJson().entries.map((e) {
-                return PopupMenuItem<bool>(
+        if (doctor.doctor.published) {
+          return const SizedBox();
+        } else {
+          final isEnglish = l.locale.languageCode == 'en';
+          return PopupMenuButton<bool>(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            color: Theme.of(context).colorScheme.secondaryContainer,
+            shadowColor: Colors.grey.shade400,
+            offset: const Offset(-20, 20),
+            elevation: 10,
+            itemBuilder: (context) {
+              return <PopupMenuEntry<bool>>[
+                //show info about missing attributes till sending publishing request.
+                ...documents.doctorDocuments!.toJson().entries.map((e) {
+                  return PopupMenuItem<bool>(
+                    enabled: false,
+                    value:
+                        (e.value == null || e.value.toString().trim().isEmpty),
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        child: (e.value == null ||
+                                e.value.toString().trim().isEmpty)
+                            ? const Icon(Icons.close)
+                            : const Icon(Icons.check),
+                      ),
+                      title: Text(
+                        DoctorDocuments.keyToWidget(e.key, isEnglish),
+                        style: (doctor.doctor.degree_en != 'Consultant' &&
+                                e.key == 'consultant_cert')
+                            ? const TextStyle(
+                                decoration: TextDecoration.lineThrough,
+                              )
+                            : null,
+                      ),
+                    ),
+                  );
+                }).toList(),
+                PopupMenuItem<bool>(
                   enabled: false,
-                  value: (e.value == null || e.value.toString().trim().isEmpty),
+                  value: (clinics.clinics.isEmpty),
                   child: ListTile(
                     leading: CircleAvatar(
-                      child:
-                          (e.value == null || e.value.toString().trim().isEmpty)
-                              ? const Icon(Icons.close)
-                              : const Icon(Icons.check),
+                      child: (clinics.clinics.isEmpty)
+                          ? const Icon(Icons.close)
+                          : const Icon(Icons.check),
                     ),
-                    title: Text(
-                      DoctorDocuments.keyToWidget(e.key, isEnglish),
-                      style: (doctor.doctor.degree_en != 'Consultant' &&
-                              e.key == 'consultant_cert')
-                          ? const TextStyle(
-                              decoration: TextDecoration.lineThrough,
-                            )
-                          : null,
+                    title: const Text('Add One Clinic'),
+                  ),
+                ),
+                PopupMenuItem<bool>(
+                  enabled: false,
+                  value: (clinics.clinics.any((x) => x.clinic.published)),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      child: (clinics.clinics
+                              .any((x) => x.clinic.published == true))
+                          ? const Icon(Icons.check)
+                          : const Icon(Icons.close),
+                    ),
+                    title: const Text('Publish One Clinic'),
+                  ),
+                ),
+                const PopupMenuDivider(),
+                PopupMenuItem(
+                  child: Center(
+                    child: ElevatedButton.icon(
+                      onPressed: () async {
+                        //TODO: if info is complete, send publishing request
+                      },
+                      icon: const Icon(Icons.public),
+                      label: const Text('Request Publish'),
                     ),
                   ),
-                );
-              }).toList(),
-              PopupMenuItem<bool>(
-                enabled: false,
-                value: (clinics.clinics.isEmpty),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    child: (clinics.clinics.isEmpty)
-                        ? const Icon(Icons.close)
-                        : const Icon(Icons.check),
-                  ),
-                  title: const Text('Add One Clinic'),
                 ),
-              ),
-              PopupMenuItem<bool>(
-                enabled: false,
-                value: (clinics.clinics.any((x) => x.clinic.published)),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    child:
-                        (clinics.clinics.any((x) => x.clinic.published == true))
-                            ? const Icon(Icons.check)
-                            : const Icon(Icons.close),
-                  ),
-                  title: const Text('Publish One Clinic'),
-                ),
-              ),
-              const PopupMenuDivider(),
-              PopupMenuItem(
-                child: Center(
-                  child: ElevatedButton.icon(
-                    onPressed: () async {
-                      //TODO: if info is complete, send publishing request
-                    },
-                    icon: const Icon(Icons.public),
-                    label: const Text('Request Publish'),
-                  ),
-                ),
-              ),
-            ];
-          },
-          tooltip: 'Account Not Published...',
-          child: const Icon(
-            Icons.info,
-            color: Colors.red,
-          ),
-        );
+              ];
+            },
+            tooltip: 'Account Not Published...',
+            child: const Icon(
+              Icons.info,
+              color: Colors.red,
+            ),
+          );
+        }
       },
     );
   }

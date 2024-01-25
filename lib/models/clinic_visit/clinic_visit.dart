@@ -16,6 +16,9 @@ class ClinicVisit with _$ClinicVisit {
     required String date,
     required String type,
     required bool attended,
+    required int day,
+    required int month,
+    required int year,
   }) = _ClinicVisit;
 
   factory ClinicVisit.fromJson(Map<String, Object?> json) =>
@@ -30,5 +33,8 @@ class ClinicVisit with _$ClinicVisit {
     'date': String,
     'type': String,
     'attended': bool,
+    'day': int,
+    'month': int,
+    'year': int,
   };
 }

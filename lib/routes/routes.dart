@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 final GoRouter router = GoRouter(
   routes: [
     goRouteFromRoutePage(RoutePage.loadingScreen()),
+    goRouteFromRoutePage(RoutePage.serverOfflinePage()),
     GoRoute(
       path: RoutePage.homePage().path,
       name: RoutePage.homePage().name,

@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:after_layout/after_layout.dart';
+import 'package:doctopia_doctors/functions/date_functions.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/pages/clinic_schedule_page/widgets/add_clinic_shift_dialog.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
@@ -77,79 +78,89 @@ class _ScheduleManagementTabState extends State<ScheduleManagementTab>
           child: Card(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: ListTile(
-                title: Row(
-                  children: [
-                    const Text('Clinic Shifts'),
-                    const Spacer(),
-                    Consumer<PxClinics>(
-                      builder: (context, c, _) {
-                        return FloatingActionButton.small(
-                          heroTag: 'add-clinic-shift-btn',
-                          onPressed: () async {
-                            final result = await showAdaptiveDialog<bool>(
-                                context: context,
-                                builder: (context) {
-                                  return const AddClinicShiftDialog();
-                                });
-                            if (result != null && result && mounted) {
-                              await shellFunction(context, toExecute: () async {
-                                await context.read<PxSchedule>().addSchedule(
-                                    c.clinics[c.selectedIndex!].id);
-                              });
-                            }
+              child: Column(
+                children: [
+                  ListTile(
+                    title: Row(
+                      children: [
+                        const Text('Clinic Shifts'),
+                        const Spacer(),
+                        Consumer<PxClinics>(
+                          builder: (context, c, _) {
+                            return FloatingActionButton.small(
+                              heroTag: 'add-clinic-shift-btn',
+                              onPressed: () async {
+                                final result = await showAdaptiveDialog<bool>(
+                                    context: context,
+                                    builder: (context) {
+                                      return const AddClinicShiftDialog();
+                                    });
+                                if (result != null && result && mounted) {
+                                  await shellFunction(context,
+                                      toExecute: () async {
+                                    await context
+                                        .read<PxSchedule>()
+                                        .addSchedule(
+                                            c.clinics[c.selectedIndex!].id);
+                                  });
+                                }
+                              },
+                              child: const Icon(Icons.add),
+                            );
                           },
-                          child: const Icon(Icons.add),
-                        );
-                      },
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                subtitle: Consumer2<PxSchedule, PxClinics>(
-                  //TODO: find a way to better scroll the schedule items
-                  //TODO: add update schedule UI & algorithm
-                  //TODO: format date and time properly
-                  builder: (context, s, c, _) {
-                    final clinic_id = c.clinics[c.selectedIndex!].id;
-                    while (s.scheduleList.isEmpty) {
-                      return const Center(
-                        child: Text('No Clinic Shifts Yet.'),
-                      );
-                    }
-                    return ListView.separated(
-                      itemCount: s.scheduleList.length,
-                      separatorBuilder: (context, index) {
-                        return const Divider();
-                      },
-                      itemBuilder: (context, index) {
-                        final _sch = s.scheduleList[index].$2;
-                        return ListTile(
-                          title: Text(_sch.weekday),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('From: ${_sch.start} - To: ${_sch.end}'),
-                              Text('Number of Patients: ${_sch.slots}'),
-                            ],
-                          ),
-                          trailing: FloatingActionButton.small(
-                            heroTag: s.scheduleList[index].$1,
-                            onPressed: () async {
-                              await shellFunction(
-                                context,
-                                toExecute: () async {
-                                  await s.deleteSchedule(
-                                      clinic_id, s.scheduleList[index].$1);
-                                },
-                              );
-                            },
-                            child: const Icon(Icons.delete_forever),
-                          ),
+                  ),
+                  Consumer2<PxSchedule, PxClinics>(
+                    //find a way to better scroll the schedule items
+                    //add update schedule UI & algorithm<no-need>
+                    //format date and time properly
+                    builder: (context, s, c, _) {
+                      final clinic_id = c.clinics[c.selectedIndex!].id;
+                      while (s.scheduleList.isEmpty) {
+                        return const Center(
+                          child: Text('No Clinic Shifts Yet.'),
                         );
-                      },
-                    );
-                  },
-                ),
+                      }
+                      return Expanded(
+                        child: ListView.separated(
+                          itemCount: s.scheduleList.length,
+                          separatorBuilder: (context, index) {
+                            return const Divider();
+                          },
+                          itemBuilder: (context, index) {
+                            final _sch = s.scheduleList[index].$2;
+                            return ListTile(
+                              title: Text(_sch.weekday),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                      'From: ${fT(_sch.start)}\nTo: ${fT(_sch.end)}'),
+                                  Text('Number of Patients: ${_sch.slots}'),
+                                ],
+                              ),
+                              trailing: FloatingActionButton.small(
+                                heroTag: s.scheduleList[index].$1,
+                                onPressed: () async {
+                                  await shellFunction(
+                                    context,
+                                    toExecute: () async {
+                                      await s.deleteSchedule(
+                                          clinic_id, s.scheduleList[index].$1);
+                                    },
+                                  );
+                                },
+                                child: const Icon(Icons.delete_forever),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
             ),
           ),

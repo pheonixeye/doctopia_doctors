@@ -1,8 +1,11 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:doctopia_doctors/functions/date_functions.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/pages/clinic_schedule_page/widgets/_px_dates.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
+// import 'package:doctopia_doctors/providers/px_schedule.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,10 +18,25 @@ class ScheduleSummaryTab extends StatefulWidget {
 
 class _ScheduleSummaryTabState extends State<ScheduleSummaryTab> {
   late final ScrollController _scrollController;
+  // List<int> _onDates = [];
+
+  // void _initScheduleProviders() async {
+  //   final sch = context.read<PxSchedule>();
+  //   final clinic = context.read<PxClinics>();
+
+  //   final clinic_id = clinic.clinics[clinic.selectedIndex!].id;
+  //   final scheduleList = await sch.fetchScheduleList(clinic_id);
+
+  //   setState(() {
+  //     _onDates = [...scheduleList.map((e) => e.$2.intday).toList()];
+  //   });
+  // }
 
   @override
   void initState() {
+    // _initScheduleProviders();
     _scrollController = ScrollController();
+    // context.read<PxDates>().initDates(_onDates);
 
     _scrollController.addListener(() {
       if (_scrollController.position.atEdge) {

@@ -6,6 +6,15 @@ import 'package:doctopia_doctors/providers/px_documents.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+//TODO: (login process):
+//step 1: fetch Doctor Model<done>
+//step 1*: subscribe to firebase phone number topic (Notifications)
+//step 2: fetch Doctor Documents<done>
+//step 3: fetch Doctor Clinics<done>
+//step 4: fetch Doctor Visits
+//step 5: fetch Doctor Invoices
+//step 6: fetch Doctor Articles
+//step 7: homepage feed
 Future<void> loginLogic({
   required BuildContext context,
   required int synd_id,

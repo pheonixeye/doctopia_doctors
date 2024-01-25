@@ -229,7 +229,7 @@ class _ClinicsPageState extends State<ClinicsPage> {
                             );
                           }).toList(),
                           ClinicImagesTile(
-                            //TODO: find why it gets the same images despite having different ids
+                            //find why it gets the same images despite having different ids
                             clinic_id: id,
                             key: ValueKey(id),
                           ),

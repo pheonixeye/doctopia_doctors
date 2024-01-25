@@ -71,7 +71,7 @@ class _ClinicImagesTileState extends State<ClinicImagesTile> {
                         child: Row(
                           children: [
                             if (i.images == null)
-                              const CircularProgressIndicator()
+                              const SizedBox()
                             else
                               ..._links.map((e) {
                                 return SizedBox(

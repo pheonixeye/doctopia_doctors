@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:doctopia_doctors/assets/assets.dart';
 import 'package:doctopia_doctors/pages/login_page/logic/login.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
+import 'package:doctopia_doctors/providers/px_server_status.dart';
 import 'package:doctopia_doctors/providers/px_theme.dart';
 import 'package:doctopia_doctors/routes/route_page/route_page.dart';
 import 'package:doctopia_doctors/services/local_database_service/local_database_service.dart';
@@ -71,38 +72,38 @@ class _LoadingScreenState extends State<LoadingScreen>
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) async {
     //TODO: check internet connection
-    //TODO: check server state
-    await Future.wait([
-      context.read<PxLocalDatabase>().fetchLanguageFromDb(),
-      context.read<PxLocalDatabase>().fetchThemeFromDb(),
-      context.read<PxLocalDatabase>().fetchDocIdFromDb(),
-    ]).whenComplete(() async {
+    //check server state
+    try {
+      await context.read<PxServerStatus>().checkServerStatus();
+    } catch (e) {
+      if (mounted) {
+        await GoRouter.of(context)
+            .pushReplacementNamed(RoutePage.serverOfflinePage().name);
+      }
+    }
+    if (mounted) {
       await Future.wait([
-        context.read<PxLocale>().setLocaleFromLocalDb(),
-        context.read<PxTheme>().setThemeModeFromDb(),
-        //* check if local storage has a doctor model then login
-        (context.read<PxLocalDatabase>().password != null &&
-                context.read<PxLocalDatabase>().syndId != null)
-            //TODO: (login process):
-            //step 1: fetch Doctor Model<done>
-            //step 1*: subscribe to firebase phone number topic (Notifications)
-            //step 2: fetch Doctor Documents<done>
-            //step 3: fetch Doctor Clinics<done>
-            //step 4: fetch Doctor Visits
-            //step 5: fetch Doctor Invoices
-            //step 6: fetch Doctor Articles
-            //step 7: homepage feed
-            ? loginLogic(
-                context: context,
-                synd_id: context.read<PxLocalDatabase>().syndId!,
-                password: context.read<PxLocalDatabase>().password!,
-              )
-            : Future.delayed(const Duration(milliseconds: 1)),
-      ]);
-    }).whenComplete(() async {
-      await GoRouter.of(context)
-          .pushReplacementNamed(RoutePage.homePage().name);
-    });
-    // print('loading screen afterFirstLayout');
+        context.read<PxLocalDatabase>().fetchLanguageFromDb(),
+        context.read<PxLocalDatabase>().fetchThemeFromDb(),
+        context.read<PxLocalDatabase>().fetchDocIdFromDb(),
+      ]).whenComplete(() async {
+        await Future.wait([
+          context.read<PxLocale>().setLocaleFromLocalDb(),
+          context.read<PxTheme>().setThemeModeFromDb(),
+          //* check if local storage has a doctor model then login
+          (context.read<PxLocalDatabase>().password != null &&
+                  context.read<PxLocalDatabase>().syndId != null)
+              ? loginLogic(
+                  context: context,
+                  synd_id: context.read<PxLocalDatabase>().syndId!,
+                  password: context.read<PxLocalDatabase>().password!,
+                )
+              : Future.delayed(const Duration(milliseconds: 1)),
+        ]);
+      }).whenComplete(() async {
+        await GoRouter.of(context)
+            .pushReplacementNamed(RoutePage.homePage().name);
+      });
+    }
   }
 }

@@ -5,6 +5,7 @@ import 'package:doctopia_doctors/pages/loading_screen/loading_screen.dart';
 import 'package:doctopia_doctors/pages/login_page/login_page.dart';
 import 'package:doctopia_doctors/pages/register_page_basic/register_page_basic.dart';
 import 'package:doctopia_doctors/pages/register_page_password/register_page_password.dart';
+import 'package:doctopia_doctors/pages/server_offline_page/server_offline_page.dart';
 import 'package:doctopia_doctors/pages/token_validation_page/token_validation_page.dart';
 import 'package:flutter/widgets.dart';
 
@@ -24,6 +25,15 @@ class RoutePage {
       name: 'loading_screen',
       path: '/',
       page: LoadingScreen(
+        key: key,
+      ),
+    );
+  }
+  factory RoutePage.serverOfflinePage({Key? key}) {
+    return RoutePage(
+      name: 'server_offline',
+      path: '/server_offline',
+      page: ServerOfflinePage(
         key: key,
       ),
     );
