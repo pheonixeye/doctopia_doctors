@@ -1,5 +1,5 @@
 import 'package:doctopia_doctors/models/clinic/clinic.dart';
-import 'package:doctopia_doctors/pages/homepage/pages/bookings_page/logic/_px_clinic_visits.dart';
+import 'package:doctopia_doctors/providers/px_clinic_visits.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,6 +27,7 @@ class _ClinicVisitsTileState extends State<ClinicVisitsTile> {
               const Text('No Visits On Selected Date.')
             else
               ..._visits.map((e) {
+                //TODO: SHOW VISIT DETAILS
                 return Card(
                   child: Text(e.visit.date),
                 );

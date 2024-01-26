@@ -8,7 +8,7 @@ import 'package:doctopia_doctors/api/schedule_api/schedule_api.dart';
 import 'package:doctopia_doctors/api/server_status_api/status_api.dart';
 import 'package:doctopia_doctors/api/speciality_api/speciality.dart';
 import 'package:doctopia_doctors/env/env.dart';
-import 'package:doctopia_doctors/pages/homepage/pages/bookings_page/logic/_px_clinic_visits.dart';
+import 'package:doctopia_doctors/providers/px_clinic_visits.dart';
 import 'package:doctopia_doctors/providers/px_clinic_images.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';

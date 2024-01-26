@@ -1,3 +1,5 @@
+import 'package:doctopia_doctors/components/info_dialog.dart';
+import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/models/documents/documents.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
@@ -88,7 +90,48 @@ class _AccountPublishMenuButtonState extends State<AccountPublishMenuButton> {
                   child: Center(
                     child: ElevatedButton.icon(
                       onPressed: () async {
-                        //TODO: if info is complete, send publishing request
+                        //validate info is complete
+                        if (documents.doctorDocuments!.toJson().entries.any(
+                            (element) =>
+                                element.value == null ||
+                                element.value.toString().isEmpty)) {
+                          await showAdaptiveDialog(
+                              context: context,
+                              builder: (context) {
+                                return const InformationDialog(
+                                  title: "Missing Doctor Documents.",
+                                  body:
+                                      "Kindly Supply The Requested Documents Before Requesting Profile Publishing.",
+                                );
+                              });
+                        } else if (clinics.clinics.isEmpty) {
+                          await showAdaptiveDialog(
+                              context: context,
+                              builder: (context) {
+                                return const InformationDialog(
+                                  title: "No Clinic Found.",
+                                  body:
+                                      "Kindly Add and Publish Atleast One Clinic Before Requesting Profile Publishing.",
+                                );
+                              });
+                        } else if (clinics.clinics
+                            .any((x) => x.clinic.published == false)) {
+                          await showAdaptiveDialog(
+                              context: context,
+                              builder: (context) {
+                                return const InformationDialog(
+                                  title: "Clinic Found with No Schedule.",
+                                  body:
+                                      "Kindly Add a Schedule for your Clinics Before Requesting Profile Publishing.",
+                                );
+                              });
+                        } else {
+                          //TODO: send account publish request.
+                          await shellFunction(
+                            context,
+                            toExecute: () async {},
+                          );
+                        }
                       },
                       icon: const Icon(Icons.public),
                       label: const Text('Request Publish'),

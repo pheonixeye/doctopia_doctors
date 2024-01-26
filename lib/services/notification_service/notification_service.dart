@@ -61,7 +61,7 @@ void showFlutterNotification(RemoteMessage message) {
     flutterLocalNotificationsPlugin.show(
       notification.hashCode,
       notification.title,
-      "",
+      notification.body,
       NotificationDetails(
         android: AndroidNotificationDetails(
           channel.id,
