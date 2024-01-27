@@ -17,8 +17,8 @@ class Invoice with _$Invoice {
     required int year,
     required String payment_reference,
     required bool paid,
-    required int amount,
-    required int tax,
+    required double amount,
+    required double tax,
     required double total,
     required List<String> clinic_visits,
   }) = _Invoice;

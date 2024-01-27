@@ -3,6 +3,8 @@
 import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_documents.dart';
+import 'package:doctopia_doctors/providers/px_publish_request.dart';
+import 'package:doctopia_doctors/providers/px_reviews.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,6 +14,7 @@ import 'package:provider/provider.dart';
 //step 1*: subscribe to firebase doc_id topic (Notifications)<done>
 //step 2: fetch Doctor Documents<done>
 //step 3: fetch Doctor Clinics<done>
+//step 3*: fetch publish request status
 //step 4: fetch Doctor Visits<done>
 //step 5: fetch Doctor Invoices
 //step 6: fetch Doctor Articles
@@ -32,6 +35,8 @@ Future<void> loginLogic({
         FirebaseMessaging.instance.subscribeToTopic(doc.id!),
         context.read<PxDocuments>().initDocuments(doc.id!),
         context.read<PxClinics>().fetchClinics(doc.id!),
+        context.read<PxPublishRequest>().fetchPublishRequest(),
+        context.read<PxReviews>().fetchReviews(doc.id!),
       ]);
     }
   } catch (e) {

@@ -16,8 +16,8 @@ _$InvoiceImpl _$$InvoiceImplFromJson(Map<String, dynamic> json) =>
       year: json['year'] as int,
       payment_reference: json['payment_reference'] as String,
       paid: json['paid'] as bool,
-      amount: json['amount'] as int,
-      tax: json['tax'] as int,
+      amount: (json['amount'] as num).toDouble(),
+      tax: (json['tax'] as num).toDouble(),
       total: (json['total'] as num).toDouble(),
       clinic_visits: (json['clinic_visits'] as List<dynamic>)
           .map((e) => e as String)

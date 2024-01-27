@@ -5,6 +5,7 @@ import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_documents.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
+import 'package:doctopia_doctors/providers/px_publish_request.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,8 +20,9 @@ class AccountPublishMenuButton extends StatefulWidget {
 class _AccountPublishMenuButtonState extends State<AccountPublishMenuButton> {
   @override
   Widget build(BuildContext context) {
-    return Consumer4<PxLocale, PxDoctor, PxDocuments, PxClinics>(
-      builder: (context, l, doctor, documents, clinics, child) {
+    return Consumer5<PxLocale, PxDoctor, PxDocuments, PxClinics,
+        PxPublishRequest>(
+      builder: (context, l, doctor, documents, clinics, pub, child) {
         if (doctor.doctor.published) {
           return const SizedBox();
         } else {
@@ -86,58 +88,76 @@ class _AccountPublishMenuButtonState extends State<AccountPublishMenuButton> {
                   ),
                 ),
                 const PopupMenuDivider(),
-                PopupMenuItem(
-                  child: Center(
-                    child: ElevatedButton.icon(
-                      onPressed: () async {
-                        //validate info is complete
-                        if (documents.doctorDocuments!.toJson().entries.any(
-                            (element) =>
-                                element.value == null ||
-                                element.value.toString().isEmpty)) {
-                          await showAdaptiveDialog(
-                              context: context,
-                              builder: (context) {
-                                return const InformationDialog(
-                                  title: "Missing Doctor Documents.",
-                                  body:
-                                      "Kindly Supply The Requested Documents Before Requesting Profile Publishing.",
+                if (pub.publishRequest == null)
+                  PopupMenuItem(
+                    child: Center(
+                      child: ElevatedButton.icon(
+                        onPressed: () async {
+                          //validate info is complete
+                          if (documents.doctorDocuments!.toJson().entries.any(
+                              (element) =>
+                                  element.value == null ||
+                                  element.value.toString().isEmpty)) {
+                            await showAdaptiveDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const InformationDialog(
+                                    title: "Missing Doctor Documents.",
+                                    body:
+                                        "Kindly Supply The Requested Documents Before Requesting Profile Publishing.",
+                                  );
+                                });
+                          } else if (clinics.clinics.isEmpty) {
+                            await showAdaptiveDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const InformationDialog(
+                                    title: "No Clinic Found.",
+                                    body:
+                                        "Kindly Add and Publish Atleast One Clinic Before Requesting Profile Publishing.",
+                                  );
+                                });
+                          } else if (clinics.clinics
+                              .any((x) => x.clinic.published == false)) {
+                            await showAdaptiveDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const InformationDialog(
+                                    title: "Clinic Found with No Schedule.",
+                                    body:
+                                        "Kindly Add a Schedule for your Clinics Before Requesting Profile Publishing.",
+                                  );
+                                });
+                          } else {
+                            //TODO: send account publish request.
+                            await shellFunction(
+                              context,
+                              toExecute: () async {
+                                await pub.createPublishRequest(
+                                  synd_id: doctor.doctor.synd_id,
+                                  name_en: doctor.doctor.name_en,
+                                  name_ar: doctor.doctor.name_ar,
+                                  published: false,
                                 );
-                              });
-                        } else if (clinics.clinics.isEmpty) {
-                          await showAdaptiveDialog(
-                              context: context,
-                              builder: (context) {
-                                return const InformationDialog(
-                                  title: "No Clinic Found.",
-                                  body:
-                                      "Kindly Add and Publish Atleast One Clinic Before Requesting Profile Publishing.",
-                                );
-                              });
-                        } else if (clinics.clinics
-                            .any((x) => x.clinic.published == false)) {
-                          await showAdaptiveDialog(
-                              context: context,
-                              builder: (context) {
-                                return const InformationDialog(
-                                  title: "Clinic Found with No Schedule.",
-                                  body:
-                                      "Kindly Add a Schedule for your Clinics Before Requesting Profile Publishing.",
-                                );
-                              });
-                        } else {
-                          //TODO: send account publish request.
-                          await shellFunction(
-                            context,
-                            toExecute: () async {},
-                          );
-                        }
-                      },
-                      icon: const Icon(Icons.public),
-                      label: const Text('Request Publish'),
+                              },
+                            );
+                          }
+                        },
+                        icon: const Icon(Icons.public),
+                        label: const Text('Request Publish'),
+                      ),
                     ),
                   ),
-                ),
+                if (pub.publishRequest != null &&
+                    pub.publishRequest!.published == false)
+                  const PopupMenuItem(
+                    child: Center(
+                      child: Text(
+                        'Your Account is Under Review.',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
               ];
             },
             tooltip: 'Account Not Published...',

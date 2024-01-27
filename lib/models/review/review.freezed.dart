@@ -20,9 +20,11 @@ Review _$ReviewFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Review {
-  String get docid => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
+  String get phone => throw _privateConstructorUsedError;
+  String get doc_reply => throw _privateConstructorUsedError;
   String get body => throw _privateConstructorUsedError;
+  String get date => throw _privateConstructorUsedError;
   int get stars => throw _privateConstructorUsedError;
   int get waiting_time => throw _privateConstructorUsedError;
 
@@ -37,9 +39,11 @@ abstract class $ReviewCopyWith<$Res> {
       _$ReviewCopyWithImpl<$Res, Review>;
   @useResult
   $Res call(
-      {String docid,
-      String username,
+      {String username,
+      String phone,
+      String doc_reply,
       String body,
+      String date,
       int stars,
       int waiting_time});
 }
@@ -57,24 +61,34 @@ class _$ReviewCopyWithImpl<$Res, $Val extends Review>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? docid = null,
     Object? username = null,
+    Object? phone = null,
+    Object? doc_reply = null,
     Object? body = null,
+    Object? date = null,
     Object? stars = null,
     Object? waiting_time = null,
   }) {
     return _then(_value.copyWith(
-      docid: null == docid
-          ? _value.docid
-          : docid // ignore: cast_nullable_to_non_nullable
-              as String,
       username: null == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
+      phone: null == phone
+          ? _value.phone
+          : phone // ignore: cast_nullable_to_non_nullable
+              as String,
+      doc_reply: null == doc_reply
+          ? _value.doc_reply
+          : doc_reply // ignore: cast_nullable_to_non_nullable
+              as String,
       body: null == body
           ? _value.body
           : body // ignore: cast_nullable_to_non_nullable
+              as String,
+      date: null == date
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
               as String,
       stars: null == stars
           ? _value.stars
@@ -96,9 +110,11 @@ abstract class _$$ReviewImplCopyWith<$Res> implements $ReviewCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String docid,
-      String username,
+      {String username,
+      String phone,
+      String doc_reply,
       String body,
+      String date,
       int stars,
       int waiting_time});
 }
@@ -114,24 +130,34 @@ class __$$ReviewImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? docid = null,
     Object? username = null,
+    Object? phone = null,
+    Object? doc_reply = null,
     Object? body = null,
+    Object? date = null,
     Object? stars = null,
     Object? waiting_time = null,
   }) {
     return _then(_$ReviewImpl(
-      docid: null == docid
-          ? _value.docid
-          : docid // ignore: cast_nullable_to_non_nullable
-              as String,
       username: null == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
+      phone: null == phone
+          ? _value.phone
+          : phone // ignore: cast_nullable_to_non_nullable
+              as String,
+      doc_reply: null == doc_reply
+          ? _value.doc_reply
+          : doc_reply // ignore: cast_nullable_to_non_nullable
+              as String,
       body: null == body
           ? _value.body
           : body // ignore: cast_nullable_to_non_nullable
+              as String,
+      date: null == date
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
               as String,
       stars: null == stars
           ? _value.stars
@@ -149,9 +175,11 @@ class __$$ReviewImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ReviewImpl with DiagnosticableTreeMixin implements _Review {
   const _$ReviewImpl(
-      {required this.docid,
-      required this.username,
+      {required this.username,
+      required this.phone,
+      required this.doc_reply,
       required this.body,
+      required this.date,
       required this.stars,
       required this.waiting_time});
 
@@ -159,11 +187,15 @@ class _$ReviewImpl with DiagnosticableTreeMixin implements _Review {
       _$$ReviewImplFromJson(json);
 
   @override
-  final String docid;
-  @override
   final String username;
   @override
+  final String phone;
+  @override
+  final String doc_reply;
+  @override
   final String body;
+  @override
+  final String date;
   @override
   final int stars;
   @override
@@ -171,7 +203,7 @@ class _$ReviewImpl with DiagnosticableTreeMixin implements _Review {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Review(docid: $docid, username: $username, body: $body, stars: $stars, waiting_time: $waiting_time)';
+    return 'Review(username: $username, phone: $phone, doc_reply: $doc_reply, body: $body, date: $date, stars: $stars, waiting_time: $waiting_time)';
   }
 
   @override
@@ -179,9 +211,11 @@ class _$ReviewImpl with DiagnosticableTreeMixin implements _Review {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'Review'))
-      ..add(DiagnosticsProperty('docid', docid))
       ..add(DiagnosticsProperty('username', username))
+      ..add(DiagnosticsProperty('phone', phone))
+      ..add(DiagnosticsProperty('doc_reply', doc_reply))
       ..add(DiagnosticsProperty('body', body))
+      ..add(DiagnosticsProperty('date', date))
       ..add(DiagnosticsProperty('stars', stars))
       ..add(DiagnosticsProperty('waiting_time', waiting_time));
   }
@@ -191,10 +225,13 @@ class _$ReviewImpl with DiagnosticableTreeMixin implements _Review {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ReviewImpl &&
-            (identical(other.docid, docid) || other.docid == docid) &&
             (identical(other.username, username) ||
                 other.username == username) &&
+            (identical(other.phone, phone) || other.phone == phone) &&
+            (identical(other.doc_reply, doc_reply) ||
+                other.doc_reply == doc_reply) &&
             (identical(other.body, body) || other.body == body) &&
+            (identical(other.date, date) || other.date == date) &&
             (identical(other.stars, stars) || other.stars == stars) &&
             (identical(other.waiting_time, waiting_time) ||
                 other.waiting_time == waiting_time));
@@ -202,8 +239,8 @@ class _$ReviewImpl with DiagnosticableTreeMixin implements _Review {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, docid, username, body, stars, waiting_time);
+  int get hashCode => Object.hash(
+      runtimeType, username, phone, doc_reply, body, date, stars, waiting_time);
 
   @JsonKey(ignore: true)
   @override
@@ -221,20 +258,26 @@ class _$ReviewImpl with DiagnosticableTreeMixin implements _Review {
 
 abstract class _Review implements Review {
   const factory _Review(
-      {required final String docid,
-      required final String username,
+      {required final String username,
+      required final String phone,
+      required final String doc_reply,
       required final String body,
+      required final String date,
       required final int stars,
       required final int waiting_time}) = _$ReviewImpl;
 
   factory _Review.fromJson(Map<String, dynamic> json) = _$ReviewImpl.fromJson;
 
   @override
-  String get docid;
-  @override
   String get username;
   @override
+  String get phone;
+  @override
+  String get doc_reply;
+  @override
   String get body;
+  @override
+  String get date;
   @override
   int get stars;
   @override

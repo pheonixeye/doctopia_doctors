@@ -28,8 +28,8 @@ mixin _$Invoice {
   int get year => throw _privateConstructorUsedError;
   String get payment_reference => throw _privateConstructorUsedError;
   bool get paid => throw _privateConstructorUsedError;
-  int get amount => throw _privateConstructorUsedError;
-  int get tax => throw _privateConstructorUsedError;
+  double get amount => throw _privateConstructorUsedError;
+  double get tax => throw _privateConstructorUsedError;
   double get total => throw _privateConstructorUsedError;
   List<String> get clinic_visits => throw _privateConstructorUsedError;
 
@@ -52,8 +52,8 @@ abstract class $InvoiceCopyWith<$Res> {
       int year,
       String payment_reference,
       bool paid,
-      int amount,
-      int tax,
+      double amount,
+      double tax,
       double total,
       List<String> clinic_visits});
 }
@@ -120,11 +120,11 @@ class _$InvoiceCopyWithImpl<$Res, $Val extends Invoice>
       amount: null == amount
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       tax: null == tax
           ? _value.tax
           : tax // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       total: null == total
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
@@ -153,8 +153,8 @@ abstract class _$$InvoiceImplCopyWith<$Res> implements $InvoiceCopyWith<$Res> {
       int year,
       String payment_reference,
       bool paid,
-      int amount,
-      int tax,
+      double amount,
+      double tax,
       double total,
       List<String> clinic_visits});
 }
@@ -219,11 +219,11 @@ class __$$InvoiceImplCopyWithImpl<$Res>
       amount: null == amount
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       tax: null == tax
           ? _value.tax
           : tax // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       total: null == total
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
@@ -274,9 +274,9 @@ class _$InvoiceImpl with DiagnosticableTreeMixin implements _Invoice {
   @override
   final bool paid;
   @override
-  final int amount;
+  final double amount;
   @override
-  final int tax;
+  final double tax;
   @override
   final double total;
   final List<String> _clinic_visits;
@@ -374,8 +374,8 @@ abstract class _Invoice implements Invoice {
       required final int year,
       required final String payment_reference,
       required final bool paid,
-      required final int amount,
-      required final int tax,
+      required final double amount,
+      required final double tax,
       required final double total,
       required final List<String> clinic_visits}) = _$InvoiceImpl;
 
@@ -398,9 +398,9 @@ abstract class _Invoice implements Invoice {
   @override
   bool get paid;
   @override
-  int get amount;
+  double get amount;
   @override
-  int get tax;
+  double get tax;
   @override
   double get total;
   @override

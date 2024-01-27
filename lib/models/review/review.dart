@@ -8,9 +8,11 @@ part 'review.g.dart';
 @freezed
 class Review with _$Review {
   const factory Review({
-    required String docid,
     required String username,
+    required String phone,
+    required String doc_reply,
     required String body,
+    required String date,
     required int stars,
     required int waiting_time,
   }) = _Review;
