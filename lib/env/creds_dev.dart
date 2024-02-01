@@ -68,5 +68,8 @@ class CREDSDEV implements CREDS {
   @override
   String get DATABASE_REVIEWS => '65971337ddbd72bf356b';
 
+  @override
+  String get DATABASE_INVOICES => "6597132aa5c49a3ad6ad";
+
   //-------------------------------------------------------------------//
 }

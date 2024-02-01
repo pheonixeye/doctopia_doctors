@@ -11,11 +11,12 @@ class Invoice with _$Invoice {
   const factory Invoice({
     required String id,
     required String docid,
-    required String link,
     required String issued_at,
     required int month,
     required int year,
+    required String payment_link,
     required String payment_reference,
+    required String file_reference,
     required bool paid,
     required double amount,
     required double tax,

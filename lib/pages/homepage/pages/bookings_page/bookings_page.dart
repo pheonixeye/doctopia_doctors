@@ -31,7 +31,7 @@ class _BookingsPageState extends State<BookingsPage> with AfterLayoutMixin {
   FutureOr<void> afterFirstLayout(BuildContext context) async {
     final cv = context.read<PxClinicVisits>();
     await cv.fetchClinicVisits();
-    //TODO: _animateToIndex(_yearsController, cv.year, _yearsWidth);
+    //_animateToIndex(_yearsController, cv.year, _yearsWidth);
     _animateToIndex(_monthsController, cv.month, _monthsWidth);
     _animateToIndex(_daysController, cv.day, _daysWidth);
   }
@@ -80,7 +80,7 @@ class _BookingsPageState extends State<BookingsPage> with AfterLayoutMixin {
               ),
             ),
             Card(
-              //TODO: extract this into another widget
+              //extract this into another widget
               //use provider for date instead of setstate
               child: Padding(
                 padding: const EdgeInsets.all(8.0),

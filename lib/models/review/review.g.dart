@@ -18,11 +18,11 @@ _$ReviewImpl _$$ReviewImplFromJson(Map<String, dynamic> json) => _$ReviewImpl(
 
 Map<String, dynamic> _$$ReviewImplToJson(_$ReviewImpl instance) =>
     <String, dynamic>{
-      'date': instance.date,
       'username': instance.username,
       'phone': instance.phone,
+      'doc_reply': instance.doc_reply,
       'body': instance.body,
+      'date': instance.date,
       'stars': instance.stars,
       'waiting_time': instance.waiting_time,
-      'doc_reply': instance.doc_reply,
     };
