@@ -31,6 +31,7 @@ class HxSpeciality {
         return Speciality(
           en: e.data['speciality_en'],
           ar: e.data['speciality_ar'],
+          spec_id: e.data['spec_id'],
         );
       }).toList();
 

@@ -123,6 +123,7 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
                                     context.read<PxClinics>().setClinic(
                                           gov_en: val?.governorate_name_en,
                                           gov_ar: val?.governorate_name_ar,
+                                          gov_id: val?.id,
                                         );
                                   },
                                 ),
@@ -161,6 +162,7 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
                                     context.read<PxClinics>().setClinic(
                                           city_en: val?.city_name_en,
                                           city_ar: val?.city_name_ar,
+                                          city_id: val?.id,
                                         );
                                   },
                                 ),
@@ -219,6 +221,7 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
                                 context.read<PxDoctor>().doctor.speciality_en,
                             speciality_ar:
                                 context.read<PxDoctor>().doctor.speciality_ar,
+                            spec_id: context.read<PxDoctor>().doctor.spec_id,
                             published: false,
                             off_dates: [],
                           );

@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:equatable/equatable.dart';
 
 const List<String> _specialitiesEN = [
@@ -97,21 +99,23 @@ const List<String> _specialitiesAR = [
 class Speciality extends Equatable {
   final String en;
   final String ar;
+  final int spec_id;
 
   const Speciality({
     required this.en,
     required this.ar,
+    required this.spec_id,
   });
 
-  static List<Speciality> get list {
-    return _specialitiesEN.map((e) {
-      return Speciality(
-        en: e,
-        ar: _specialitiesAR.elementAt(_specialitiesEN.indexOf(e)),
-      );
-    }).toList();
-  }
+  // static List<Speciality> get list {
+  //   return _specialitiesEN.map((e) {
+  //     return Speciality(
+  //       en: e,
+  //       ar: _specialitiesAR.elementAt(_specialitiesEN.indexOf(e)),
+  //     );
+  //   }).toList();
+  // }
 
   @override
-  List<Object?> get props => [en, ar];
+  List<Object?> get props => [en, ar, spec_id];
 }

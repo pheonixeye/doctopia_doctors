@@ -57,6 +57,9 @@ class PxClinics extends ChangeNotifier {
     int? followup_fees,
     int? discount,
     List<String>? off_dates,
+    int? spec_id,
+    int? gov_id,
+    int? city_id,
   }) {
     _clinic = _clinic.copyWith(
       doc_id: doc_id ?? _clinic.doc_id,
@@ -81,6 +84,9 @@ class PxClinics extends ChangeNotifier {
       followup_fees: followup_fees ?? _clinic.followup_fees,
       discount: discount ?? _clinic.discount,
       off_dates: off_dates ?? _clinic.off_dates,
+      spec_id: spec_id ?? _clinic.spec_id,
+      gov_id: gov_id ?? _clinic.gov_id,
+      city_id: city_id ?? _clinic.city_id,
     );
     notifyListeners();
   }

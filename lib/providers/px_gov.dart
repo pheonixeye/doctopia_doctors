@@ -5,9 +5,7 @@ import 'package:flutter/material.dart';
 
 class PxGov extends ChangeNotifier {
   final HxGovCity govCityService;
-  PxGov({required this.govCityService}) {
-    loadGovernorates();
-  }
+  PxGov({required this.govCityService});
 
   List<Governorate>? _govs;
   List<Governorate>? get govs => _govs;

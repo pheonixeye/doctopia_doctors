@@ -4,7 +4,7 @@ import 'package:doctopia_doctors/models/city.dart';
 import 'package:equatable/equatable.dart';
 
 class Governorate extends Equatable {
-  final String id;
+  final int id;
   final String governorate_name_en;
   final String governorate_name_ar;
   final List<City> cities;
@@ -18,7 +18,7 @@ class Governorate extends Equatable {
 
   factory Governorate.fromJson(dynamic json) {
     return Governorate(
-      id: json['id'] as String,
+      id: int.parse(json['id'] as String),
       governorate_name_en: json['governorate_name_en'] as String,
       governorate_name_ar: json['governorate_name_ar'] as String,
       cities: City.cities(json['cities']),

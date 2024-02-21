@@ -3,8 +3,8 @@
 import 'package:equatable/equatable.dart';
 
 class City extends Equatable {
-  final String id;
-  final String governorate_id;
+  final int id;
+  final int governorate_id;
   final String city_name_en;
   final String city_name_ar;
 
@@ -17,8 +17,8 @@ class City extends Equatable {
 
   factory City.fromJson(dynamic json) {
     return City(
-      id: json['id'] as String,
-      governorate_id: json['governorate_id'] as String,
+      id: int.parse(json['id'] as String),
+      governorate_id: int.parse(json['governorate_id'] as String),
       city_name_en: json['city_name_en'] as String,
       city_name_ar: json['city_name_ar'] as String,
     );

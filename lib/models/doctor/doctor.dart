@@ -15,6 +15,7 @@ class Doctor extends Equatable {
   final String email;
   final String salt;
   final String password;
+  final int? spec_id;
   final String speciality_en;
   final String speciality_ar;
   final bool published;
@@ -36,6 +37,7 @@ class Doctor extends Equatable {
     required this.email,
     required this.salt,
     required this.password,
+    required this.spec_id,
     required this.speciality_en,
     required this.speciality_ar,
     required this.published,
@@ -57,6 +59,7 @@ class Doctor extends Equatable {
     'email': String,
     'salt': String,
     'password': String,
+    'spec_id': int,
     'speciality_en': String,
     'speciality_ar': String,
     'published': bool,
@@ -133,6 +136,7 @@ class Doctor extends Equatable {
       email: '',
       salt: '',
       password: '',
+      spec_id: null,
       speciality_en: '',
       speciality_ar: '',
       about_en: '',
@@ -158,6 +162,7 @@ class Doctor extends Equatable {
       email: json['email'],
       salt: json['salt'],
       password: json['password'],
+      spec_id: json['spec_id'],
       speciality_en: json['speciality_en'],
       speciality_ar: json['speciality_ar'],
       published: json['published'],
@@ -183,6 +188,7 @@ class Doctor extends Equatable {
       "about_ar": about_ar,
       'titles_en': titles_en,
       'titles_ar': titles_ar,
+      'spec_id': spec_id,
       'speciality_en': speciality_en,
       'speciality_ar': speciality_ar,
       "degree_en": degree_en,
@@ -203,6 +209,7 @@ class Doctor extends Equatable {
     String? email,
     String? salt,
     String? password,
+    int? spec_id,
     String? speciality_en,
     String? speciality_ar,
     bool? published,
@@ -223,6 +230,7 @@ class Doctor extends Equatable {
       email: email ?? this.email,
       salt: salt ?? this.salt,
       password: password ?? this.password,
+      spec_id: spec_id ?? this.spec_id,
       speciality_en: speciality_en ?? this.speciality_en,
       speciality_ar: speciality_ar ?? this.speciality_ar,
       published: published ?? this.published,
@@ -246,6 +254,7 @@ class Doctor extends Equatable {
         email,
         salt,
         password,
+        spec_id,
         speciality_en,
         speciality_ar,
         published,

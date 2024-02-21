@@ -23,9 +23,9 @@ mixin _$Invoice {
   String get id => throw _privateConstructorUsedError;
   String get docid => throw _privateConstructorUsedError;
   String get issued_at => throw _privateConstructorUsedError;
-  String get payment_link => throw _privateConstructorUsedError;
   int get month => throw _privateConstructorUsedError;
   int get year => throw _privateConstructorUsedError;
+  String get payment_link => throw _privateConstructorUsedError;
   String get payment_reference => throw _privateConstructorUsedError;
   String get file_reference => throw _privateConstructorUsedError;
   bool get paid => throw _privateConstructorUsedError;
@@ -48,9 +48,9 @@ abstract class $InvoiceCopyWith<$Res> {
       {String id,
       String docid,
       String issued_at,
-      String payment_link,
       int month,
       int year,
+      String payment_link,
       String payment_reference,
       String file_reference,
       bool paid,
@@ -76,9 +76,9 @@ class _$InvoiceCopyWithImpl<$Res, $Val extends Invoice>
     Object? id = null,
     Object? docid = null,
     Object? issued_at = null,
-    Object? payment_link = null,
     Object? month = null,
     Object? year = null,
+    Object? payment_link = null,
     Object? payment_reference = null,
     Object? file_reference = null,
     Object? paid = null,
@@ -100,10 +100,6 @@ class _$InvoiceCopyWithImpl<$Res, $Val extends Invoice>
           ? _value.issued_at
           : issued_at // ignore: cast_nullable_to_non_nullable
               as String,
-      payment_link: null == payment_link
-          ? _value.payment_link
-          : payment_link // ignore: cast_nullable_to_non_nullable
-              as String,
       month: null == month
           ? _value.month
           : month // ignore: cast_nullable_to_non_nullable
@@ -112,6 +108,10 @@ class _$InvoiceCopyWithImpl<$Res, $Val extends Invoice>
           ? _value.year
           : year // ignore: cast_nullable_to_non_nullable
               as int,
+      payment_link: null == payment_link
+          ? _value.payment_link
+          : payment_link // ignore: cast_nullable_to_non_nullable
+              as String,
       payment_reference: null == payment_reference
           ? _value.payment_reference
           : payment_reference // ignore: cast_nullable_to_non_nullable
@@ -155,9 +155,9 @@ abstract class _$$InvoiceImplCopyWith<$Res> implements $InvoiceCopyWith<$Res> {
       {String id,
       String docid,
       String issued_at,
-      String payment_link,
       int month,
       int year,
+      String payment_link,
       String payment_reference,
       String file_reference,
       bool paid,
@@ -181,9 +181,9 @@ class __$$InvoiceImplCopyWithImpl<$Res>
     Object? id = null,
     Object? docid = null,
     Object? issued_at = null,
-    Object? payment_link = null,
     Object? month = null,
     Object? year = null,
+    Object? payment_link = null,
     Object? payment_reference = null,
     Object? file_reference = null,
     Object? paid = null,
@@ -205,10 +205,6 @@ class __$$InvoiceImplCopyWithImpl<$Res>
           ? _value.issued_at
           : issued_at // ignore: cast_nullable_to_non_nullable
               as String,
-      payment_link: null == payment_link
-          ? _value.payment_link
-          : payment_link // ignore: cast_nullable_to_non_nullable
-              as String,
       month: null == month
           ? _value.month
           : month // ignore: cast_nullable_to_non_nullable
@@ -217,6 +213,10 @@ class __$$InvoiceImplCopyWithImpl<$Res>
           ? _value.year
           : year // ignore: cast_nullable_to_non_nullable
               as int,
+      payment_link: null == payment_link
+          ? _value.payment_link
+          : payment_link // ignore: cast_nullable_to_non_nullable
+              as String,
       payment_reference: null == payment_reference
           ? _value.payment_reference
           : payment_reference // ignore: cast_nullable_to_non_nullable
@@ -256,9 +256,9 @@ class _$InvoiceImpl with DiagnosticableTreeMixin implements _Invoice {
       {required this.id,
       required this.docid,
       required this.issued_at,
-      required this.payment_link,
       required this.month,
       required this.year,
+      required this.payment_link,
       required this.payment_reference,
       required this.file_reference,
       required this.paid,
@@ -278,11 +278,11 @@ class _$InvoiceImpl with DiagnosticableTreeMixin implements _Invoice {
   @override
   final String issued_at;
   @override
-  final String payment_link;
-  @override
   final int month;
   @override
   final int year;
+  @override
+  final String payment_link;
   @override
   final String payment_reference;
   @override
@@ -305,7 +305,7 @@ class _$InvoiceImpl with DiagnosticableTreeMixin implements _Invoice {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Invoice(id: $id, docid: $docid, issued_at: $issued_at, payment_link: $payment_link, month: $month, year: $year, payment_reference: $payment_reference, file_reference: $file_reference, paid: $paid, amount: $amount, tax: $tax, total: $total, clinic_visits: $clinic_visits)';
+    return 'Invoice(id: $id, docid: $docid, issued_at: $issued_at, month: $month, year: $year, payment_link: $payment_link, payment_reference: $payment_reference, file_reference: $file_reference, paid: $paid, amount: $amount, tax: $tax, total: $total, clinic_visits: $clinic_visits)';
   }
 
   @override
@@ -316,9 +316,9 @@ class _$InvoiceImpl with DiagnosticableTreeMixin implements _Invoice {
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('docid', docid))
       ..add(DiagnosticsProperty('issued_at', issued_at))
-      ..add(DiagnosticsProperty('payment_link', payment_link))
       ..add(DiagnosticsProperty('month', month))
       ..add(DiagnosticsProperty('year', year))
+      ..add(DiagnosticsProperty('payment_link', payment_link))
       ..add(DiagnosticsProperty('payment_reference', payment_reference))
       ..add(DiagnosticsProperty('file_reference', file_reference))
       ..add(DiagnosticsProperty('paid', paid))
@@ -337,10 +337,10 @@ class _$InvoiceImpl with DiagnosticableTreeMixin implements _Invoice {
             (identical(other.docid, docid) || other.docid == docid) &&
             (identical(other.issued_at, issued_at) ||
                 other.issued_at == issued_at) &&
-            (identical(other.payment_link, payment_link) ||
-                other.payment_link == payment_link) &&
             (identical(other.month, month) || other.month == month) &&
             (identical(other.year, year) || other.year == year) &&
+            (identical(other.payment_link, payment_link) ||
+                other.payment_link == payment_link) &&
             (identical(other.payment_reference, payment_reference) ||
                 other.payment_reference == payment_reference) &&
             (identical(other.file_reference, file_reference) ||
@@ -360,9 +360,9 @@ class _$InvoiceImpl with DiagnosticableTreeMixin implements _Invoice {
       id,
       docid,
       issued_at,
-      payment_link,
       month,
       year,
+      payment_link,
       payment_reference,
       file_reference,
       paid,
@@ -390,9 +390,9 @@ abstract class _Invoice implements Invoice {
       {required final String id,
       required final String docid,
       required final String issued_at,
-      required final String payment_link,
       required final int month,
       required final int year,
+      required final String payment_link,
       required final String payment_reference,
       required final String file_reference,
       required final bool paid,
@@ -410,11 +410,11 @@ abstract class _Invoice implements Invoice {
   @override
   String get issued_at;
   @override
-  String get payment_link;
-  @override
   int get month;
   @override
   int get year;
+  @override
+  String get payment_link;
   @override
   String get payment_reference;
   @override

@@ -38,15 +38,16 @@ class HxGovCity {
       Governorates _governorates = Governorates(
           data: govs.documents.map((e) {
         return Governorate(
-          id: e.data['id'],
+          id: int.parse(e.data['id'] as String),
           governorate_name_en: e.data['governorate_name_en'],
           governorate_name_ar: e.data['governorate_name_ar'],
           cities: cities.documents.where((x) {
-            return e.data['id'] == x.data['governorate_id'];
+            return int.parse(e.data['id'] as String) ==
+                int.parse(x.data['governorate_id'] as String);
           }).map((z) {
             return City(
-              id: z.data['id'],
-              governorate_id: z.data['governorate_id'],
+              id: int.parse(z.data['id'] as String),
+              governorate_id: int.parse(z.data['governorate_id'] as String),
               city_name_en: z.data['city_name_en'],
               city_name_ar: z.data['city_name_ar'],
             );

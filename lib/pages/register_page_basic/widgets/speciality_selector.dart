@@ -46,6 +46,7 @@ class SpecialitySelector extends StatelessWidget {
                   context.read<PxDoctor>().setDoctor(
                         speciality_en: value?.en,
                         speciality_ar: value?.ar,
+                        spec_id: value?.spec_id,
                       );
                 },
               );

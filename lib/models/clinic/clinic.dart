@@ -31,6 +31,9 @@ class Clinic with _$Clinic {
     required int followup_fees,
     required int discount,
     required List<String> off_dates,
+    required int? spec_id,
+    required int? gov_id,
+    required int? city_id,
   }) = _Clinic;
 
   factory Clinic.fromJson(Map<String, Object?> json) => _$ClinicFromJson(json);
@@ -64,6 +67,9 @@ class Clinic with _$Clinic {
       followup_fees: 0,
       discount: 0,
       off_dates: [],
+      gov_id: null,
+      spec_id: null,
+      city_id: null,
     );
   }
 

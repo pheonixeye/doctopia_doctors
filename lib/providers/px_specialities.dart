@@ -7,9 +7,7 @@ class PxSpeciality extends ChangeNotifier {
 
   PxSpeciality({
     required this.specialityService,
-  }) {
-    fetchSpecialities();
-  }
+  });
 
   List<Speciality> _specialities = [];
   List<Speciality> get specialities => _specialities;

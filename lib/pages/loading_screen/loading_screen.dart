@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:doctopia_doctors/assets/assets.dart';
 import 'package:doctopia_doctors/pages/login_page/logic/login.dart';
+import 'package:doctopia_doctors/providers/px_gov.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_server_status.dart';
+import 'package:doctopia_doctors/providers/px_specialities.dart';
 import 'package:doctopia_doctors/providers/px_theme.dart';
 import 'package:doctopia_doctors/routes/route_page/route_page.dart';
 import 'package:doctopia_doctors/services/local_database_service/local_database_service.dart';
@@ -74,12 +76,17 @@ class _LoadingScreenState extends State<LoadingScreen>
     //TODO: check internet connection
     //check server state
     try {
-      await context.read<PxServerStatus>().checkServerStatus();
+      await Future.wait([
+        context.read<PxServerStatus>().checkServerStatus(),
+        context.read<PxSpeciality>().fetchSpecialities(),
+        context.read<PxGov>().loadGovernorates(),
+      ]);
     } catch (e) {
       if (mounted) {
         await GoRouter.of(context)
             .pushReplacementNamed(RoutePage.serverOfflinePage().name);
       }
+      print(e.toString());
     }
     if (mounted) {
       await Future.wait([
