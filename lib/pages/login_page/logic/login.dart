@@ -32,7 +32,7 @@ Future<void> loginLogic({
         );
     if (context.mounted) {
       await Future.wait([
-        FirebaseMessaging.instance.subscribeToTopic(doc.id!),
+        // FirebaseMessaging.instance.subscribeToTopic(doc.id!),
         context.read<PxDocuments>().initDocuments(doc.id!),
         context.read<PxClinics>().fetchClinics(doc.id!),
         context.read<PxPublishRequest>().fetchPublishRequest(),

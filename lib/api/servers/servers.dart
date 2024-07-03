@@ -28,11 +28,13 @@ class Server {
       clientAPI:
           clientSDK.Client(endPoint: env.creds.ENDPOINT, selfSigned: true)
               .setProject(env.creds.PROJECT)
-              .addHeader("X-RateLimit-Limit", "5000"),
+              // .addHeader("X-RateLimit-Limit", "5000")
+              .addHeader("Access-Control-Allow-Origin", "*"),
       serverAPI:
           serverSDK.Client(endPoint: env.creds.ENDPOINT, selfSigned: true)
               .setProject(env.creds.PROJECT)
-              .setKey(env.creds.API_KEY),
+              .setKey(env.creds.API_KEY)
+              .addHeader("Access-Control-Allow-Origin", "*"),
     );
   }
 }

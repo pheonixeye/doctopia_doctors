@@ -82,13 +82,13 @@ class _LoadingScreenState extends State<LoadingScreen>
         context.read<PxGov>().loadGovernorates(),
       ]);
     } catch (e) {
-      if (mounted) {
+      if (context.mounted) {
         await GoRouter.of(context)
             .pushReplacementNamed(RoutePage.serverOfflinePage().name);
       }
       print(e.toString());
     }
-    if (mounted) {
+    if (context.mounted) {
       await Future.wait([
         context.read<PxLocalDatabase>().fetchLanguageFromDb(),
         context.read<PxLocalDatabase>().fetchThemeFromDb(),

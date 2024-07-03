@@ -17,10 +17,11 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      // throw UnsupportedError(
+      //   'DefaultFirebaseOptions have not been configured for web - '
+      //   'you can reconfigure this by running the FlutterFire CLI again.',
+      // );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -50,6 +51,14 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyATwsBAQKbx69R9hthxZo7owLydtCKLNiw',
+    appId: '1:266247700931:android:2cd3d625e019433a0e3d76',
+    messagingSenderId: '266247700931',
+    projectId: 'doctopia-954fd',
+    storageBucket: 'doctopia-954fd.appspot.com',
+  );
+
+  static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyATwsBAQKbx69R9hthxZo7owLydtCKLNiw',
     appId: '1:266247700931:android:2cd3d625e019433a0e3d76',
     messagingSenderId: '266247700931',
