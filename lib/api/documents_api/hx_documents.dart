@@ -9,14 +9,12 @@ import 'package:flutter/services.dart';
 // import 'package:dart_appwrite/dart_appwrite.dart' as serverSDK;
 
 class HxDocuments {
-  final ENV env;
+  final ENV env = ENV("dev");
   late final Server server;
   late final clientSDK.Databases client_db;
   late final clientSDK.Storage client_storage;
 
-  HxDocuments({
-    required this.env,
-  }) {
+  HxDocuments() {
     server = Server.main(env.env);
     client_db = clientSDK.Databases(server.clientAPI);
     client_storage = clientSDK.Storage(server.clientAPI);

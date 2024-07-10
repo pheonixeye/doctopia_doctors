@@ -1,9 +1,12 @@
 import 'package:doctopia_doctors/assets/assets.dart';
-import 'package:doctopia_doctors/pages/register_page_basic/widgets/degree_selector.dart';
-import 'package:doctopia_doctors/pages/register_page_basic/widgets/speciality_selector.dart';
+import 'package:doctopia_doctors/models/user/user_model.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
+import 'package:doctopia_doctors/providers/px_user_model.dart';
 import 'package:doctopia_doctors/routes/route_page/route_page.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -17,263 +20,399 @@ class RegisterPageBasic extends StatefulWidget {
 
 class _RegisterPageBasicState extends State<RegisterPageBasic> {
   final _formKey = GlobalKey<FormState>();
+  final _syndIdController = TextEditingController();
+  final _usernameController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+
+  bool isPasswordObscure = true;
+  bool isConfirmPasswordObscure = true;
+
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    _syndIdController.dispose();
+    _usernameController.dispose();
+    _phoneController.dispose();
+    _emailController.dispose();
+    super.dispose();
+  }
+
+  String? _service;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          cacheExtent: 3000,
-          padding: const EdgeInsets.all(8),
-          shrinkWrap: true,
-          children: [
-            Hero(
-              tag: 'logo',
-              child: SizedBox(
-                width: 150,
-                height: 150,
-                child: Image.asset(AppAssets.icon),
+      body: InkWell(
+        onTap: () {
+          FocusManager.instance.primaryFocus?.unfocus();
+        },
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            cacheExtent: 3000,
+            padding: const EdgeInsets.all(8),
+            shrinkWrap: true,
+            children: [
+              Hero(
+                tag: 'logo',
+                child: SizedBox(
+                  width: 100,
+                  height: 100,
+                  child: Image.asset(Assets.icon),
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  const CircleAvatar(
-                    child: Text("#"),
-                  ),
-                  const Gap(10),
-                  Expanded(
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: "Syndicate Id",
-                        hintText: "######",
-                        border: OutlineInputBorder(),
-                        suffix: SizedBox(
-                          height: 24,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const CircleAvatar(
+                      child: Text("#"),
+                    ),
+                    const Gap(10),
+                    Expanded(
+                      child: TextFormField(
+                        controller: _syndIdController,
+                        decoration: const InputDecoration(
+                          labelText: "Syndicate Id",
+                          hintText: "######",
+                          border: OutlineInputBorder(),
+                          suffix: SizedBox(
+                            height: 24,
+                          ),
                         ),
+                        keyboardType: TextInputType.number,
+                        maxLength: 6,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Kindly Enter Syndicate Id Number.";
+                          }
+                          return null;
+                        },
                       ),
-                      keyboardType: TextInputType.number,
-                      maxLength: 6,
-                      onChanged: (value) {
-                        context.read<PxDoctor>().setDoctor(
-                              synd_id: int.parse(value),
-                            );
-                      },
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const CircleAvatar(
+                      child: Text('E'),
+                    ),
+                    const Gap(10),
+                    Expanded(
+                      child: TextFormField(
+                        controller: _usernameController,
+                        decoration: const InputDecoration(
+                          labelText: "English Name",
+                          hintText: "A - B - C - D",
+                          border: OutlineInputBorder(),
+                          suffix: SizedBox(
+                            height: 24,
+                          ),
+                        ),
+                        keyboardType: TextInputType.name,
+                        onChanged: (value) {
+                          context.read<PxDoctor>().setDoctor(
+                                name_en: value.trim().toLowerCase(),
+                              );
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Kindly Enter Name.";
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const CircleAvatar(
+                      child: Icon(Icons.phone),
+                    ),
+                    const Gap(10),
+                    Expanded(
+                      child: TextFormField(
+                        controller: _phoneController,
+                        decoration: const InputDecoration(
+                          labelText: "Personal Phone",
+                          hintText: "###-####-####",
+                          border: OutlineInputBorder(),
+                          suffix: SizedBox(
+                            height: 24,
+                          ),
+                        ),
+                        maxLength: 11,
+                        keyboardType: TextInputType.phone,
+                        onChanged: (value) {
+                          context.read<PxDoctor>().setDoctor(
+                                personal_phone: value.trim().toLowerCase(),
+                              );
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Kindly Enter Personal Mobile Number.";
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const CircleAvatar(
+                      child: Text("@"),
+                    ),
+                    const Gap(10),
+                    Expanded(
+                      child: TextFormField(
+                        controller: _emailController,
+                        decoration: const InputDecoration(
+                          labelText: "Email",
+                          hintText: "example@domain.com",
+                          border: OutlineInputBorder(),
+                          suffix: SizedBox(
+                            height: 24,
+                          ),
+                        ),
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (value) {
+                          if (value == null ||
+                              !EmailValidator.validate(value)) {
+                            return "Kindly Enter a Valid Email Address.";
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  leading: const CircleAvatar(
+                    child: Text("S"),
+                  ),
+                  contentPadding: const EdgeInsets.all(0),
+                  title: const Text('Select Service Type'),
+                  subtitle: Card(
+                    child: DropdownButtonFormField<String>(
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Kindly Enter Syndicate Id Number.";
+                        if (value == null) {
+                          return 'Kindly Select Service Type.';
                         }
                         return null;
                       },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  const CircleAvatar(
-                    child: Text('E'),
-                  ),
-                  const Gap(10),
-                  Expanded(
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: "English Name",
-                        hintText: "A - B - C - D",
-                        border: OutlineInputBorder(),
-                        suffix: SizedBox(
-                          height: 24,
-                        ),
-                      ),
-                      keyboardType: TextInputType.name,
+                      alignment: Alignment.center,
+                      isExpanded: true,
+                      hint: const Text('Service Type...'),
+                      items: ["Clinic", "Laboratory", "Radiology", "Pharmacy"]
+                          .map((e) {
+                        return DropdownMenuItem<String>(
+                          alignment: Alignment.center,
+                          value: e,
+                          child: Text(
+                            e,
+                            textAlign: TextAlign.center,
+                          ),
+                        );
+                      }).toList(),
+                      value: _service,
                       onChanged: (value) {
-                        context.read<PxDoctor>().setDoctor(
-                              name_en: value.trim().toLowerCase(),
-                            );
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Kindly Enter English Name.";
-                        }
-                        return null;
+                        setState(() {
+                          _service = value;
+                        });
                       },
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  const CircleAvatar(
-                    child: Text('A'),
-                  ),
-                  const Gap(10),
-                  Expanded(
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: "Arabic Name",
-                        hintText: "ا - ب - ت - ث",
-                        border: OutlineInputBorder(),
-                        suffix: SizedBox(
-                          height: 24,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    const CircleAvatar(
+                      child: Text('P'),
+                    ),
+                    const Gap(10),
+                    Expanded(
+                      child: TextFormField(
+                        controller: _passwordController,
+                        decoration: InputDecoration(
+                          labelText: "Password",
+                          hintText: "********",
+                          border: const OutlineInputBorder(),
+                          suffix: SizedBox(
+                            height: 32,
+                            child: FloatingActionButton.small(
+                              heroTag: 'obscure-password',
+                              onPressed: () {
+                                setState(() {
+                                  isPasswordObscure = !isPasswordObscure;
+                                });
+                              },
+                              child: const Icon(Icons.remove_red_eye),
+                            ),
+                          ),
                         ),
+                        obscureText: isPasswordObscure,
+                        obscuringCharacter: "*",
+                        keyboardType: TextInputType.visiblePassword,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Kindly Enter Password.";
+                          }
+                          if (value.length < 8) {
+                            return "Minimum Required Length is 8 Characters.";
+                          }
+                          return null;
+                        },
                       ),
-                      keyboardType: TextInputType.name,
-                      onChanged: (value) {
-                        context.read<PxDoctor>().setDoctor(
-                              name_ar: value.trim().toLowerCase(),
-                            );
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Kindly Enter Arabic Name.";
-                        }
-                        return null;
-                      },
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  const CircleAvatar(
-                    child: Icon(Icons.phone),
-                  ),
-                  const Gap(10),
-                  Expanded(
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: "Personal Phone",
-                        hintText: "###-####-####",
-                        border: OutlineInputBorder(),
-                        suffix: SizedBox(
-                          height: 24,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    const CircleAvatar(
+                      child: Text('P'),
+                    ),
+                    const Gap(10),
+                    Expanded(
+                      child: TextFormField(
+                        controller: _confirmPasswordController,
+                        decoration: InputDecoration(
+                          labelText: "Confirm Password",
+                          hintText: "********",
+                          border: const OutlineInputBorder(),
+                          suffix: SizedBox(
+                            height: 32,
+                            child: FloatingActionButton.small(
+                              heroTag: 'obscure--confirm-password',
+                              onPressed: () {
+                                setState(() {
+                                  isConfirmPasswordObscure =
+                                      !isConfirmPasswordObscure;
+                                });
+                              },
+                              child: const Icon(Icons.remove_red_eye),
+                            ),
+                          ),
                         ),
+                        obscureText: isConfirmPasswordObscure,
+                        obscuringCharacter: "*",
+                        keyboardType: TextInputType.visiblePassword,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Kindly Confirm Password.";
+                          }
+                          if (_passwordController.text !=
+                              _confirmPasswordController.text) {
+                            return "Password Not Matching.";
+                          }
+                          return null;
+                        },
                       ),
-                      maxLength: 11,
-                      keyboardType: TextInputType.phone,
-                      onChanged: (value) {
-                        context.read<PxDoctor>().setDoctor(
-                              personal_phone: value.trim().toLowerCase(),
-                            );
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Kindly Enter Personal Mobile Number.";
-                        }
-                        return null;
-                      },
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  const CircleAvatar(
-                    child: Icon(Icons.phone),
-                  ),
-                  const Gap(10),
-                  Expanded(
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: "Assisstant Phone",
-                        hintText: "###-####-####",
-                        border: OutlineInputBorder(),
-                        suffix: SizedBox(
-                          height: 24,
-                        ),
+              const Gap(20),
+              Consumer<PxUserModel>(
+                builder: (context, u, _) {
+                  return ElevatedButton.icon(
+                    icon: const Icon(Icons.person_add_alt),
+                    label: const Text('Register'),
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        //TODO: validate form and create a new user account
+                        try {
+                          await EasyLoading.show(status: "Loading...");
+                          final UserModel _model = UserModel(
+                            id: '',
+                            username: _usernameController.text
+                                .toLowerCase()
+                                .replaceAll(" ", ""),
+                            password: _confirmPasswordController.text,
+                            email: _emailController.text.toLowerCase(),
+                            service: _service!.toLowerCase(),
+                            phone: _phoneController.text,
+                            synd_id: int.parse(_syndIdController.text),
+                          );
+                          await u.createUserAccount(_model);
+                          await EasyLoading.dismiss();
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                duration: Duration(seconds: 2),
+                                content: Text(
+                                  "Success",
+                                  style: TextStyle(
+                                    color: Colors.green,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            );
+                            GoRouter.of(context)
+                                .goNamed(RoutePage.loginPage().name);
+                          }
+                        } catch (e) {
+                          await EasyLoading.dismiss();
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(e.toString())));
+                          }
+                        }
+                      }
+                    },
+                  );
+                },
+              ),
+              const Gap(20),
+              Text.rich(
+                TextSpan(
+                  text: "Already Registered ?  ",
+                  children: [
+                    TextSpan(
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          GoRouter.of(context)
+                              .goNamed(RoutePage.loginPage().name);
+                        },
+                      text: "Login",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: Colors.green,
                       ),
-                      keyboardType: TextInputType.phone,
-                      maxLength: 11,
-                      onChanged: (value) {
-                        context.read<PxDoctor>().setDoctor(
-                              assistant_phone: value.trim().toLowerCase(),
-                            );
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Kindly Enter Assisstant Mobile Number.";
-                        }
-                        return null;
-                      },
                     ),
-                  ),
-                ],
+                  ],
+                ),
+                textAlign: TextAlign.center,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  const CircleAvatar(
-                    child: Text("@"),
-                  ),
-                  const Gap(10),
-                  Expanded(
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: "Email",
-                        hintText: "abcd@xzy.com",
-                        border: OutlineInputBorder(),
-                        suffix: SizedBox(
-                          height: 24,
-                        ),
-                      ),
-                      keyboardType: TextInputType.emailAddress,
-                      onChanged: (value) {
-                        context.read<PxDoctor>().setDoctor(
-                              email: value.trim().toLowerCase(),
-                            );
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Kindly Enter Email Address.";
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const Gap(10),
-            const SpecialitySelector(),
-            const Gap(10),
-            const DegreeSelector(),
-            const Gap(10),
-            ElevatedButton.icon(
-              icon: const Icon(Icons.arrow_forward_ios),
-              label: const Text('Next'),
-              onPressed: () async {
-                if (_formKey.currentState!.validate()) {
-                  GoRouter.of(context)
-                      .goNamed(RoutePage.registerPagePassword().name);
-                }
-              },
-            ),
-            const Gap(10),
-            ElevatedButton.icon(
-              icon: const Icon(Icons.arrow_back_ios),
-              label: const Text('Back'),
-              onPressed: () async {
-                GoRouter.of(context).pop();
-              },
-            ),
-            const Gap(10),
-          ],
+            ],
+          ),
         ),
       ),
     );

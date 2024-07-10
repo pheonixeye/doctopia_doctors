@@ -6,11 +6,11 @@ import 'package:doctopia_doctors/env/env.dart';
 import 'package:doctopia_doctors/models/clinic_visit/clinic_visit.dart';
 
 class HxClinicVisits {
-  final ENV env;
+  final ENV env = ENV("dev");
   late final Server server;
   late final clientSDK.Databases client_db;
 
-  HxClinicVisits({required this.env}) {
+  HxClinicVisits() {
     server = Server.main(env.env);
     client_db = clientSDK.Databases(server.clientAPI);
   }

@@ -8,12 +8,12 @@ import 'package:doctopia_doctors/env/env.dart';
 import 'package:doctopia_doctors/models/clinic_images/clinic_images.dart';
 
 class HxClinicImages {
-  final ENV env;
+  final ENV env = ENV("dev");
   late final Server server;
   late final clientSDK.Databases client_db;
   late final clientSDK.Storage client_storage;
 
-  HxClinicImages({required this.env}) {
+  HxClinicImages() {
     server = Server.main(env.env);
     client_db = clientSDK.Databases(server.clientAPI);
     client_storage = clientSDK.Storage(server.clientAPI);

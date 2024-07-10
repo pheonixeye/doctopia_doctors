@@ -13,6 +13,7 @@ class SidebarXBtn extends StatelessWidget {
   final void Function() onPressed;
   final Icon icon;
   final String labelOrTag;
+  // ignore: unused_field
   final bool _isDarkMode;
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class SidebarXBtn extends StatelessWidget {
           : FloatingActionButton.small(
               heroTag: labelOrTag,
               onPressed: onPressed,
-              backgroundColor: _isDarkMode ? Colors.grey : Colors.white,
+              // backgroundColor: _isDarkMode ? Colors.grey : Colors.white,
               child: icon,
             ),
     );

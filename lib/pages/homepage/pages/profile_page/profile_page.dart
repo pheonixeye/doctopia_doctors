@@ -1,13 +1,15 @@
-import 'dart:async' show FutureOr;
+// ignore_for_file: non_constant_identifier_names
 
-import 'package:after_layout/after_layout.dart';
-import 'package:doctopia_doctors/functions/shell_function.dart';
+import 'package:doctopia_doctors/models/degree/degree.dart';
 import 'package:doctopia_doctors/models/doctor/doctor.dart';
-import 'package:doctopia_doctors/pages/register_page_basic/widgets/degree_selector.dart';
-import 'package:doctopia_doctors/pages/register_page_basic/widgets/speciality_selector.dart';
+import 'package:doctopia_doctors/models/speciality.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
+import 'package:doctopia_doctors/providers/px_specialities.dart';
+import 'package:doctopia_doctors/providers/px_user_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
@@ -18,39 +20,132 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
+class _ProfilePageState extends State<ProfilePage> {
+  final Map<String, bool> _isEditing = {};
+  final formKey = GlobalKey<FormState>();
+  late final TextEditingController _name_enController;
+  late final TextEditingController _name_arController;
+  late final TextEditingController _title_enController;
+  late final TextEditingController _title_arController;
+  late final TextEditingController _about_enController;
+  late final TextEditingController _about_arController;
+  late final TextEditingController _synd_idController;
+  late final TextEditingController _personal_phoneController;
+
+  Speciality? _speciality;
+  Degree? _degree;
+
   @override
-  FutureOr<void> afterFirstLayout(BuildContext context) {
-    setState(() {
-      _listData['titles_en'] = context
-          .read<PxDoctor>()
-          .doctor
-          .titles_en
-          .map((e) => TextEditingController(text: e))
-          .toList();
-      _listData['titles_ar'] = context
-          .read<PxDoctor>()
-          .doctor
-          .titles_ar
-          .map((e) => TextEditingController(text: e))
-          .toList();
-    });
+  void initState() {
+    _name_enController = TextEditingController();
+    _name_arController = TextEditingController();
+    _title_enController = TextEditingController();
+    _title_arController = TextEditingController();
+    _about_enController = TextEditingController();
+    _about_arController = TextEditingController();
+    _synd_idController = TextEditingController();
+    _personal_phoneController = TextEditingController();
+    Doctor.emptyForCreate().toJson().entries.map((e) {
+      _isEditing[e.key] = false;
+    }).toList();
+    super.initState();
   }
 
-  Map<String, bool> isEditing =
-      Doctor.scheme.map((key, value) => MapEntry(key, false));
+  @override
+  void dispose() {
+    _name_enController.dispose();
+    _name_arController.dispose();
+    _title_enController.dispose();
+    _title_arController.dispose();
+    _about_enController.dispose();
+    _about_arController.dispose();
+    _synd_idController.dispose();
+    _personal_phoneController.dispose();
+    super.dispose();
+  }
 
-  Map<String, List<TextEditingController>> _listData = {};
+  String? _validator(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return "Empty Inputs Are Not Allowed";
+    }
+    return null;
+  }
 
-  //done: handle doctor info updates
-  //noneed: may need another doctor model for editing ??
+  Future<void> _UpdateDoctorField(String key, dynamic value) async {
+    final d = context.read<PxDoctor>();
+    d.setUpdate(key, value);
+    await d.updateDoctor();
+  }
+
+  void _RevertUpdate(String key) {
+    final d = context.read<PxDoctor>();
+    d.revertUpdate(key);
+  }
+
+  Widget _updateBtnsRow(
+      String field, TextEditingController controller, BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        IconButton.outlined(
+          onPressed: () async {
+            try {
+              await EasyLoading.show(status: "Loading...");
+              if (field == "synd_id") {
+                await _UpdateDoctorField(
+                    field, int.parse(controller.text.trim()));
+              } else {
+                await _UpdateDoctorField(field, controller.text.trim());
+              }
+              await EasyLoading.showSuccess("Success...");
+              setState(() {
+                _isEditing[field] = false;
+              });
+            } catch (e) {
+              await EasyLoading.dismiss();
+
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  duration: const Duration(seconds: 10),
+                  content: Text(
+                    e.toString(),
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ));
+              }
+              setState(() {
+                _isEditing[field] = false;
+              });
+            }
+          },
+          icon: const Icon(
+            Icons.check,
+          ),
+        ),
+        const Gap(20),
+        IconButton.outlined(
+          onPressed: () {
+            setState(() {
+              _isEditing[field] = false;
+            });
+          },
+          icon: const Icon(
+            Icons.close,
+          ),
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<PxDoctor, PxLocale>(
-      builder: (context, d, l, c) {
-        final isEnglish = l.locale.languageCode == 'en';
-        if (!d.isLoggedIn) {
+    return Consumer3<PxUserModel, PxDoctor, PxLocale>(
+      builder: (context, u, d, l, _) {
+        final isDoctorNull = d.doctor == null;
+        if (!u.isLoggedIn) {
           return const Center(
             child: Text(
               'Not Logged In...',
@@ -58,297 +153,522 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
             ),
           );
         }
-        return ListView(
-          children: [
-            const ListTile(
-              leading: CircleAvatar(),
-              title: Text('My Profile'),
-            ),
-            ...d.doctor.toJson().entries.map((e) {
-              if (Doctor.nonEditableAttributes.contains(e.key)) {
-                String value = e.value.toString();
-                if (e.key == 'joined_at') {
-                  final d = DateTime.parse(value);
-                  value = '${d.year} / ${d.month} / ${d.day}';
-                }
-                return Card(
-                  child: ListTile(
-                    title: Text(Doctor.keyToWidget(e.key, isEnglish)),
-                    subtitle: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(value),
-                    ),
-                  ),
-                );
-              } else if (Doctor.editableFieldAttributes.contains(e.key)) {
-                if (isEditing[e.key]!) {
-                  return Card(
-                    child: ListTile(
-                      title: Text(Doctor.keyToWidget(e.key, isEnglish)),
-                      subtitle: Column(
-                        children: [
-                          TextFormField(
-                            initialValue: e.value,
-                            maxLines:
-                                (e.key == 'about_en' || e.key == 'about_ar')
-                                    ? 5
-                                    : 1,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                            ),
-                            onChanged: (value) {
-                              context.read<PxDoctor>().setUpdate(e.key, value);
-                            },
-                          ),
-                          const Gap(10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ElevatedButton.icon(
-                                onPressed: () async {
-                                  //COLLECT INFO
-                                  //no need => SET DOCTOR
-
-                                  //SEND UPDATE REQUEST
-                                  await shellFunction(context,
-                                      toExecute: () async {
-                                    await context
-                                        .read<PxDoctor>()
-                                        .updateDoctor();
-                                  });
-                                  //no need => SEND FETCH UPDATED DOCTOR REQUEST
-
-                                  setState(() {
-                                    isEditing[e.key] = false;
-                                  });
-                                },
-                                icon: const Icon(Icons.save),
-                                label: const Text('Update'),
-                              ),
-                              const Gap(10),
-                              ElevatedButton.icon(
-                                onPressed: () {
-                                  context.read<PxDoctor>().revertUpdate(e.key);
-                                  setState(() {
-                                    isEditing[e.key] = false;
-                                  });
-                                },
-                                icon: const Icon(Icons.close),
-                                label: const Text('Cancel'),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                } else {
-                  return Card(
-                    child: ListTile(
-                      title: Text(Doctor.keyToWidget(e.key, isEnglish)),
-                      subtitle: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(e.value.toString()),
-                      ),
-                      trailing: FloatingActionButton.small(
-                        heroTag: e.key,
-                        child: const Icon(Icons.edit),
-                        onPressed: () {
-                          setState(() {
-                            isEditing[e.key] = true;
-                          });
-                        },
-                      ),
-                    ),
-                  );
-                }
-              }
-              //*done:
-              else if (Doctor.editableListAttributes.contains(e.key)) {
-                if (isEditing[e.key]!) {
-                  return Card(
-                    child: ListTile(
-                      title: Text(Doctor.keyToWidget(e.key, isEnglish)),
-                      subtitle: Column(
-                        children: [
-                          ..._listData[e.key]!.map((controller) {
-                            final index = _listData[e.key]!.indexOf(controller);
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 4.0),
-                              child: TextFormField(
-                                controller: controller,
-                                decoration: InputDecoration(
-                                  border: const OutlineInputBorder(),
-                                  suffix: SizedBox(
-                                    height: 24,
-                                    child: FloatingActionButton.small(
-                                      heroTag: '$index-edit',
-                                      onPressed: () {
-                                        //done delete textfield
-                                        setState(() {
-                                          _listData[e.key]?.removeAt(index);
-                                        });
-                                      },
-                                      child: const Icon(Icons.close),
-                                    ),
-                                  ),
+        return Form(
+          key: formKey,
+          child: ListView(
+            children: [
+              const Gap(10),
+              Card.outlined(
+                elevation: 2,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(
+                      leading: const CircleAvatar(),
+                      title: const Text("English Name"),
+                      subtitle: (isDoctorNull || _isEditing["name_en"] == true)
+                          ? Column(
+                              children: [
+                                TextFormField(
+                                  controller: _name_enController,
+                                  decoration: const InputDecoration(
+                                      border: OutlineInputBorder()),
+                                  validator: _validator,
                                 ),
-                              ),
-                            );
-                          }).toList(),
-                          const Gap(10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ElevatedButton.icon(
-                                onPressed: () async {
-                                  //done COLLECT INFO
-                                  //noneed SET DOCTOR
-                                  context.read<PxDoctor>().setUpdate(
-                                        e.key,
-                                        _listData[e.key]
-                                            ?.map((e) => e.text)
-                                            .toList(),
-                                      );
-                                  //done SEND UPDATE REQUEST
-                                  await shellFunction(context,
-                                      toExecute: () async {
-                                    await context
-                                        .read<PxDoctor>()
-                                        .updateDoctor();
-                                  });
-                                  //noneed SEND FETCH UPDATED DOCTOR REQUEST
-
-                                  setState(() {
-                                    isEditing[e.key] = false;
-                                  });
-                                },
-                                icon: const Icon(Icons.save),
-                                label: const Text('Update'),
-                              ),
-                              const Gap(10),
-                              ElevatedButton.icon(
-                                onPressed: () {
-                                  // revert update
-
-                                  setState(() {
-                                    isEditing[e.key] = false;
-                                  });
-                                },
-                                icon: const Icon(Icons.close),
-                                label: const Text('Cancel'),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      trailing: FloatingActionButton.small(
-                        heroTag: e.key,
-                        child: const Icon(Icons.add),
+                                const Gap(5),
+                                _updateBtnsRow(
+                                  "name_en",
+                                  _name_enController,
+                                  context,
+                                ),
+                              ],
+                            )
+                          : Text(d.doctor!.name_en),
+                      trailing: IconButton.outlined(
                         onPressed: () {
-                          // add empty string to list
+                          if (isDoctorNull) {
+                            return;
+                          }
                           setState(() {
-                            _listData[e.key]
-                                ?.add(TextEditingController(text: ''));
+                            _isEditing["name_en"] = !_isEditing["name_en"]!;
                           });
                         },
+                        icon: Icon(
+                            !_isEditing["name_en"]! ? Icons.edit : Icons.close),
                       ),
                     ),
-                  );
-                } else {
-                  return Card(
-                    child: ListTile(
-                      title: Text(Doctor.keyToWidget(e.key, isEnglish)),
-                      subtitle: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            for (String val in (e.value as List<String>))
-                              Text(
-                                '(${(e.value as List<String>).indexOf(val) + 1}) $val',
-                                textAlign: TextAlign.start,
-                              )
-                          ],
+                    ListTile(
+                      leading: const CircleAvatar(),
+                      title: const Text("Arabic Name"),
+                      subtitle: (isDoctorNull || _isEditing["name_ar"] == true)
+                          ? Column(
+                              children: [
+                                TextFormField(
+                                  controller: _name_arController,
+                                  decoration: const InputDecoration(
+                                      border: OutlineInputBorder()),
+                                  validator: _validator,
+                                ),
+                                const Gap(5),
+                                _updateBtnsRow(
+                                  "name_ar",
+                                  _name_arController,
+                                  context,
+                                ),
+                              ],
+                            )
+                          : Text(d.doctor!.name_ar),
+                      trailing: IconButton.outlined(
+                        onPressed: () {
+                          if (isDoctorNull) {
+                            return;
+                          }
+                          setState(() {
+                            _isEditing["name_ar"] = !_isEditing["name_ar"]!;
+                          });
+                        },
+                        icon: Icon(
+                            !_isEditing["name_ar"]! ? Icons.edit : Icons.close),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Gap(10),
+              Card.outlined(
+                elevation: 2,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(
+                      leading: const CircleAvatar(),
+                      title: const Text("Syndicate Id"),
+                      subtitle: (isDoctorNull || _isEditing["synd_id"] == true)
+                          ? TextFormField(
+                              controller: _synd_idController,
+                              decoration: const InputDecoration(
+                                  border: OutlineInputBorder()),
+                              validator: _validator,
+                            )
+                          : Text(d.doctor!.synd_id.toString()),
+                      trailing: IconButton.outlined(
+                        onPressed: () async {
+                          if (isDoctorNull) {
+                            return;
+                          }
+                          await EasyLoading.showError(
+                              "Syndicate Id Cannot Be Changed.");
+                        },
+                        icon: Icon(
+                            !_isEditing["synd_id"]! ? Icons.edit : Icons.close),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Gap(10),
+              Card.outlined(
+                elevation: 2,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(
+                      leading: const CircleAvatar(),
+                      title: const Text("Personal Phone"),
+                      subtitle:
+                          (isDoctorNull || _isEditing["personal_phone"] == true)
+                              ? Column(
+                                  children: [
+                                    TextFormField(
+                                      controller: _personal_phoneController,
+                                      decoration: const InputDecoration(
+                                          border: OutlineInputBorder()),
+                                      validator: _validator,
+                                    ),
+                                    const Gap(10),
+                                    _updateBtnsRow(
+                                      "personal_phone",
+                                      _personal_phoneController,
+                                      context,
+                                    ),
+                                  ],
+                                )
+                              : Text(d.doctor!.personal_phone),
+                      trailing: IconButton.outlined(
+                        onPressed: () {
+                          if (isDoctorNull) {
+                            return;
+                          }
+                          setState(() {
+                            _isEditing["personal_phone"] =
+                                !_isEditing["personal_phone"]!;
+                          });
+                        },
+                        icon: Icon(!_isEditing["personal_phone"]!
+                            ? Icons.edit
+                            : Icons.close),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Gap(10),
+              Card.outlined(
+                elevation: 2,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(
+                      leading: const CircleAvatar(),
+                      title: const Text("Speciality"),
+                      trailing: const IconButton(
+                        onPressed: null,
+                        icon: Icon(
+                          Icons.close,
+                          color: Colors.transparent,
                         ),
                       ),
-                      trailing: FloatingActionButton.small(
-                        heroTag: e.key,
-                        child: const Icon(Icons.edit),
+                      subtitle: (isDoctorNull ||
+                              _isEditing["specialty_en"] == true)
+                          ? Consumer<PxSpeciality>(
+                              builder: (context, s, _) {
+                                return DropdownButtonHideUnderline(
+                                  child: DropdownButtonFormField<Speciality>(
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                    ),
+                                    value: _speciality,
+                                    validator: (value) {
+                                      if (value == null) {
+                                        return "Invalid Input, Kindly Select Speciality";
+                                      }
+                                      return null;
+                                    },
+                                    isExpanded: true,
+                                    alignment: Alignment.center,
+                                    items: s.specialities.map((e) {
+                                      return DropdownMenuItem<Speciality>(
+                                        alignment: Alignment.center,
+                                        value: e,
+                                        child: Text(e.en),
+                                      );
+                                    }).toList(),
+                                    onChanged: (value) async {
+                                      setState(() {
+                                        _speciality = value;
+                                      });
+                                      if (!isDoctorNull && value != null) {
+                                        try {
+                                          await EasyLoading.show(
+                                              status: "Loading...");
+                                          await _UpdateDoctorField(
+                                              "specialty_en", value.en);
+                                          await _UpdateDoctorField(
+                                              "specialty_ar", value.ar);
+                                          await EasyLoading.showSuccess(
+                                              "Success...");
+                                        } catch (e) {
+                                          await EasyLoading.dismiss();
+                                          await EasyLoading.showError(
+                                              e.toString());
+                                          setState(() {
+                                            _isEditing["specialty_en"] == false;
+                                          });
+                                        }
+                                      }
+                                    },
+                                  ),
+                                );
+                              },
+                            )
+                          : Text(d.doctor!.speciality_en),
+                    ),
+                  ],
+                ),
+              ),
+              const Gap(10),
+              Card.outlined(
+                elevation: 2,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(
+                      leading: const CircleAvatar(),
+                      title: const Text("Medical Degree"),
+                      trailing: (_isEditing["degree_en"] == true)
+                          ? const IconButton(
+                              onPressed: null,
+                              icon: Icon(
+                                Icons.close,
+                                color: Colors.transparent,
+                              ),
+                            )
+                          : IconButton.outlined(
+                              onPressed: () {
+                                setState(() {
+                                  _isEditing["degree_en"] == true;
+                                });
+                              },
+                              icon: const Icon(
+                                Icons.edit,
+                              ),
+                            ),
+                      subtitle: (isDoctorNull ||
+                              _isEditing["degree_en"] == true)
+                          ? DropdownButtonHideUnderline(
+                              child: DropdownButtonFormField<Degree>(
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                ),
+                                validator: (value) {
+                                  if (value == null) {
+                                    return "Invalid Input, Kindly Select Degree";
+                                  }
+                                  return null;
+                                },
+                                value: _degree,
+                                isExpanded: true,
+                                alignment: Alignment.center,
+                                items: Degree.list.map((e) {
+                                  return DropdownMenuItem<Degree>(
+                                    alignment: Alignment.center,
+                                    value: e,
+                                    child: Text(e.en),
+                                  );
+                                }).toList(),
+                                onChanged: (value) async {
+                                  setState(() {
+                                    _degree = value;
+                                  });
+                                  if (!isDoctorNull && value != null) {
+                                    try {
+                                      await EasyLoading.show(
+                                          status: "Loading...");
+                                      await _UpdateDoctorField(
+                                          "degree_en", value.en);
+                                      await _UpdateDoctorField(
+                                          "degree_ar", value.ar);
+                                      await EasyLoading.showSuccess(
+                                          "Success...");
+                                    } catch (e) {
+                                      await EasyLoading.dismiss();
+                                      await EasyLoading.showError(e.toString());
+                                      setState(() {
+                                        _isEditing["degree_en"] == false;
+                                      });
+                                    }
+                                  }
+                                },
+                              ),
+                            )
+                          : Text(d.doctor!.degree_en),
+                    ),
+                  ],
+                ),
+              ),
+              const Gap(10),
+              Card.outlined(
+                elevation: 2,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(
+                      leading: const CircleAvatar(),
+                      title: const Text("English Title"),
+                      subtitle: (isDoctorNull || _isEditing["title_en"] == true)
+                          ? Column(
+                              children: [
+                                TextFormField(
+                                  decoration: const InputDecoration(
+                                      border: OutlineInputBorder()),
+                                  validator: _validator,
+                                  controller: _title_enController,
+                                ),
+                                const Gap(10),
+                                _updateBtnsRow(
+                                    "title_en", _title_enController, context)
+                              ],
+                            )
+                          : Text(d.doctor!.title_en),
+                      trailing: IconButton.outlined(
                         onPressed: () {
+                          if (isDoctorNull) {
+                            return;
+                          }
                           setState(() {
-                            isEditing[e.key] = true;
+                            _isEditing["title_en"] = !_isEditing["title_en"]!;
                           });
                         },
+                        icon: Icon(!_isEditing["title_en"]!
+                            ? Icons.edit
+                            : Icons.close),
                       ),
                     ),
-                  );
-                }
-              } else {
-                return const SizedBox();
-              }
-            }).toList(),
-          ],
+                    ListTile(
+                      leading: const CircleAvatar(),
+                      title: const Text("Arabic Title"),
+                      subtitle: (isDoctorNull || _isEditing["title_ar"] == true)
+                          ? Column(
+                              children: [
+                                TextFormField(
+                                  controller: _title_arController,
+                                  decoration: const InputDecoration(
+                                      border: OutlineInputBorder()),
+                                  validator: _validator,
+                                ),
+                                const Gap(10),
+                                _updateBtnsRow(
+                                    "title_ar", _title_arController, context)
+                              ],
+                            )
+                          : Text(d.doctor!.title_ar),
+                      trailing: IconButton.outlined(
+                        onPressed: () {
+                          if (isDoctorNull) {
+                            return;
+                          }
+                          setState(() {
+                            _isEditing["title_ar"] = !_isEditing["title_ar"]!;
+                          });
+                        },
+                        icon: Icon(!_isEditing["title_ar"]!
+                            ? Icons.edit
+                            : Icons.close),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Gap(10),
+              Card.outlined(
+                elevation: 2,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(
+                      leading: const CircleAvatar(),
+                      title: const Text("English About"),
+                      subtitle: (isDoctorNull || _isEditing["about_en"] == true)
+                          ? Column(
+                              children: [
+                                TextFormField(
+                                  controller: _about_enController,
+                                  decoration: const InputDecoration(
+                                      border: OutlineInputBorder()),
+                                  validator: _validator,
+                                ),
+                                const Gap(10),
+                                _updateBtnsRow(
+                                    "about_en", _about_enController, context)
+                              ],
+                            )
+                          : Text(d.doctor!.about_en),
+                      trailing: IconButton.outlined(
+                        onPressed: () {
+                          if (isDoctorNull) {
+                            return;
+                          }
+                          setState(() {
+                            _isEditing["about_en"] = !_isEditing["about_en"]!;
+                          });
+                        },
+                        icon: Icon(!_isEditing["about_en"]!
+                            ? Icons.edit
+                            : Icons.close),
+                      ),
+                    ),
+                    ListTile(
+                      leading: const CircleAvatar(),
+                      title: const Text("Arabic About"),
+                      subtitle: (isDoctorNull || _isEditing["about_ar"] == true)
+                          ? Column(
+                              children: [
+                                TextFormField(
+                                  controller: _about_arController,
+                                  decoration: const InputDecoration(
+                                      border: OutlineInputBorder()),
+                                  validator: _validator,
+                                ),
+                                const Gap(10),
+                                _updateBtnsRow(
+                                  "about_ar",
+                                  _about_arController,
+                                  context,
+                                ),
+                              ],
+                            )
+                          : Text(d.doctor!.about_ar),
+                      trailing: IconButton.outlined(
+                        onPressed: () {
+                          if (isDoctorNull) {
+                            return;
+                          }
+                          setState(() {
+                            _isEditing["about_ar"] = !_isEditing["about_ar"]!;
+                          });
+                        },
+                        icon: Icon(!_isEditing["about_ar"]!
+                            ? Icons.edit
+                            : Icons.close),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Gap(10),
+              if (isDoctorNull)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton.icon(
+                    onPressed: () async {
+                      if (formKey.currentState!.validate()) {
+                        d.setDoctor(
+                          synd_id: int.parse(_synd_idController.text),
+                          personal_phone: _personal_phoneController.text.trim(),
+                          name_en: _name_enController.text.trim(),
+                          name_ar: _name_arController.text.trim(),
+                          title_en: _title_enController.text.trim(),
+                          title_ar: _title_arController.text.trim(),
+                          about_en: _about_enController.text.trim(),
+                          about_ar: _about_arController.text.trim(),
+                          speciality_en: _speciality!.en,
+                          speciality_ar: _speciality!.ar,
+                          degree_en: _degree!.en,
+                          degree_ar: _degree!.ar,
+                        );
+                        try {
+                          await EasyLoading.show(status: "Loading...");
+                          await d.createDoctor();
+                          await EasyLoading.showSuccess("Success...");
+                        } catch (e) {
+                          d.nullifyDoctor();
+                          await EasyLoading.dismiss();
+                          if (kDebugMode) {
+                            print(e);
+                          }
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              duration: const Duration(seconds: 10),
+                              content: Text(
+                                e.toString(),
+                                style: const TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ));
+                          }
+                        }
+                      }
+                    },
+                    label: const Text("Save"),
+                    icon: const Icon(Icons.save),
+                  ),
+                )
+            ],
+          ),
         );
       },
     );
   }
-}
-
-Widget specialityAndDegree(String key) {
-  if (Doctor.editableDropdownAttributes.contains(key)) {
-    if (key == 'speciality_en') {
-      return Card(
-        child: Row(
-          children: [
-            const Expanded(
-              child: SpecialitySelector(),
-            ),
-            FloatingActionButton.small(
-              heroTag: 'update-speciality',
-              child: const Icon(Icons.save),
-              onPressed: () {},
-            ),
-            const Gap(20),
-          ],
-        ),
-      );
-    }
-    if (key == 'degree_en') {
-      return Card(
-        child: Row(
-          children: [
-            const Expanded(
-              child: DegreeSelector(),
-            ),
-            FloatingActionButton.small(
-              heroTag: 'update-degree',
-              child: const Icon(Icons.save),
-              onPressed: () {},
-            ),
-            const Gap(20),
-          ],
-        ),
-      );
-    }
-    return const SizedBox();
-  }
-  return const SizedBox();
-}
-
-Widget isPublished(String key, bool value) {
-  if (key == 'published') {
-    return Card(
-      child: ListTile(
-        title: Text(key),
-        trailing: FloatingActionButton(
-          heroTag: 'is-published',
-          onPressed: null,
-          child: (value) ? const Icon(Icons.check) : const Icon(Icons.close),
-        ),
-      ),
-    );
-  }
-  return const SizedBox();
 }

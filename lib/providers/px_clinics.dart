@@ -14,9 +14,9 @@ class PxClinics extends ChangeNotifier {
 
   Future<void> fetchClinics(String doc_id) async {
     try {
-      final response = await clinicService.fetchDoctorClinics(doc_id);
-      _clinics = response;
-      notifyListeners();
+      // final response = await clinicService.fetchDoctorClinics(doc_id);
+      // _clinics = response;
+      // notifyListeners();
       // return response;
     } catch (e) {
       rethrow;
@@ -159,25 +159,25 @@ class PxClinics extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Clinic> createClinic() async {
+  Future<Clinic?> createClinic() async {
     try {
-      final response = await clinicService.createClinic(clinic);
-      _clinic = response.clinic;
-      notifyListeners();
-      await fetchClinics(clinic.doc_id);
-      return response.clinic;
+      // final response = await clinicService.createClinic(clinic);
+      // _clinic = response.clinic;
+      // notifyListeners();
+      // await fetchClinics(clinic.doc_id);
+      // return response.clinic;
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<Clinic> updateClinic(String id, Map<String, dynamic> update) async {
+  Future<Clinic?> updateClinic(String id, Map<String, dynamic> update) async {
     try {
-      final response = await clinicService.updateClinic(id, update);
-      _clinic = response.clinic;
-      notifyListeners();
-      await fetchClinics(_clinic.doc_id);
-      return _clinic;
+      // final response = await clinicService.updateClinic(id, update);
+      // _clinic = response.clinic;
+      // notifyListeners();
+      // await fetchClinics(_clinic.doc_id);
+      // return _clinic;
     } catch (e) {
       rethrow;
     }
@@ -185,7 +185,7 @@ class PxClinics extends ChangeNotifier {
 
   Future<void> deleteClinic(String id, String doc_id) async {
     try {
-      await clinicService.deleteClinic(id);
+      // await clinicService.deleteClinic(id);
       await fetchClinics(doc_id);
     } catch (e) {
       rethrow;

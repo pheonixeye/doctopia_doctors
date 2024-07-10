@@ -44,15 +44,15 @@ dependencies:
   font_awesome_flutter: 
   provider: 
   after_layout: 
-  email_validator: 
+  email_validator: ^3.0.0 
   crypto: 
   file_picker: 
   go_router:
   equatable:
   uuid:
-  appwrite: 
+  appwrite: 11.0.1
   sidebarx: 
-  dart_appwrite: 
+  # dart_appwrite: 
   dynamic_color:
   permission_handler: 
   firebase_core: 
@@ -67,6 +67,8 @@ dependencies:
   json_annotation: ^4.8.1
   google_fonts:
   flutter_spinkit:
+  pocketbase: ^0.11.0
+  animated_text_kit: ^4.2.2
  
 
 dev_dependencies:

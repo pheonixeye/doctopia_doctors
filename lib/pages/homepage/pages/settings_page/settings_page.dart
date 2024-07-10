@@ -1,6 +1,6 @@
-import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_theme.dart';
+import 'package:doctopia_doctors/providers/px_user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -54,9 +54,9 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
         ),
-        Consumer<PxDoctor>(
-          builder: (context, d, c) {
-            if (d.isLoggedIn) {
+        Consumer<PxUserModel>(
+          builder: (context, u, c) {
+            if (u.isLoggedIn) {
               return Card(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),

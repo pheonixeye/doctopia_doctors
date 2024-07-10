@@ -23,7 +23,7 @@ class _AccountPublishMenuButtonState extends State<AccountPublishMenuButton> {
     return Consumer5<PxLocale, PxDoctor, PxDocuments, PxClinics,
         PxPublishRequest>(
       builder: (context, l, doctor, documents, clinics, pub, child) {
-        if (doctor.doctor.published) {
+        if (doctor.doctor!.published) {
           return const SizedBox();
         } else {
           final isEnglish = l.locale.languageCode == 'en';
@@ -52,7 +52,7 @@ class _AccountPublishMenuButtonState extends State<AccountPublishMenuButton> {
                       ),
                       title: Text(
                         DoctorDocuments.keyToWidget(e.key, isEnglish),
-                        style: (doctor.doctor.degree_en != 'Consultant' &&
+                        style: (doctor.doctor!.degree_en != 'Consultant' &&
                                 e.key == 'consultant_cert')
                             ? const TextStyle(
                                 decoration: TextDecoration.lineThrough,
@@ -134,9 +134,9 @@ class _AccountPublishMenuButtonState extends State<AccountPublishMenuButton> {
                               context,
                               toExecute: () async {
                                 await pub.createPublishRequest(
-                                  synd_id: doctor.doctor.synd_id,
-                                  name_en: doctor.doctor.name_en,
-                                  name_ar: doctor.doctor.name_ar,
+                                  synd_id: doctor.doctor!.synd_id,
+                                  name_en: doctor.doctor!.name_en,
+                                  name_ar: doctor.doctor!.name_ar,
                                   published: false,
                                 );
                               },

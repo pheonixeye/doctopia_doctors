@@ -6,11 +6,11 @@ import 'package:appwrite/appwrite.dart' as clientSDK;
 import 'package:doctopia_doctors/models/review/review.dart';
 
 class HxReviews {
-  final ENV env;
+  final ENV env = ENV("dev");
   late final Server server;
   late final clientSDK.Databases client_db;
 
-  HxReviews({required this.env}) {
+  HxReviews() {
     server = Server.main(env.env);
     client_db = clientSDK.Databases(server.clientAPI);
   }

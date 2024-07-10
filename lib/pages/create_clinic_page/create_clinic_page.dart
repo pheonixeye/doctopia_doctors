@@ -3,7 +3,6 @@ import 'package:doctopia_doctors/models/city.dart';
 import 'package:doctopia_doctors/models/clinic/clinic.dart';
 import 'package:doctopia_doctors/models/governorate.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
-import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_gov.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:flutter/material.dart';
@@ -215,16 +214,16 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
                         // validate fields
                         if (_formKey.currentState!.validate()) {
                           // populate default fields from doctor model
-                          c.setClinic(
-                            doc_id: context.read<PxDoctor>().doctor.id,
-                            speciality_en:
-                                context.read<PxDoctor>().doctor.speciality_en,
-                            speciality_ar:
-                                context.read<PxDoctor>().doctor.speciality_ar,
-                            spec_id: context.read<PxDoctor>().doctor.spec_id,
-                            published: false,
-                            off_dates: [],
-                          );
+                          // c.setClinic(
+                          //   doc_id: context.read<PxDoctor>().doctor.id,
+                          //   speciality_en:
+                          //       context.read<PxDoctor>().doctor.speciality_en,
+                          //   speciality_ar:
+                          //       context.read<PxDoctor>().doctor.speciality_ar,
+                          //   spec_id: context.read<PxDoctor>().doctor.spec_id,
+                          //   published: false,
+                          //   off_dates: [],
+                          // );
                           // send create clinic request
                           await shellFunction(context, toExecute: () async {
                             await c.createClinic();

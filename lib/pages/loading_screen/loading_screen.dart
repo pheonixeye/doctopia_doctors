@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:doctopia_doctors/assets/assets.dart';
-import 'package:doctopia_doctors/pages/login_page/logic/login.dart';
 import 'package:doctopia_doctors/providers/px_gov.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_server_status.dart';
@@ -54,7 +53,7 @@ class _LoadingScreenState extends State<LoadingScreen>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Spacer(),
-              Image.asset(AppAssets.logo),
+              Image.asset(Assets.logo),
               SpinKitPumpingHeart(
                 color: const Color(0xffFE7800),
                 size: 75.0,
@@ -82,11 +81,11 @@ class _LoadingScreenState extends State<LoadingScreen>
         context.read<PxGov>().loadGovernorates(),
       ]);
     } catch (e) {
+      print(e.toString());
       if (context.mounted) {
         await GoRouter.of(context)
-            .pushReplacementNamed(RoutePage.serverOfflinePage().name);
+            .pushNamed(RoutePage.serverOfflinePage().name);
       }
-      print(e.toString());
     }
     if (context.mounted) {
       await Future.wait([
@@ -97,19 +96,9 @@ class _LoadingScreenState extends State<LoadingScreen>
         await Future.wait([
           context.read<PxLocale>().setLocaleFromLocalDb(),
           context.read<PxTheme>().setThemeModeFromDb(),
-          //* check if local storage has a doctor model then login
-          (context.read<PxLocalDatabase>().password != null &&
-                  context.read<PxLocalDatabase>().syndId != null)
-              ? loginLogic(
-                  context: context,
-                  synd_id: context.read<PxLocalDatabase>().syndId!,
-                  password: context.read<PxLocalDatabase>().password!,
-                )
-              : Future.delayed(const Duration(milliseconds: 1)),
         ]);
       }).whenComplete(() async {
-        await GoRouter.of(context)
-            .pushReplacementNamed(RoutePage.homePage().name);
+        await GoRouter.of(context).pushNamed(RoutePage.loginPage().name);
       });
     }
   }

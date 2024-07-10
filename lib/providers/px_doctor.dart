@@ -1,19 +1,23 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:doctopia_doctors/api/doctor_api/hx_doctor.dart';
-import 'package:doctopia_doctors/functions/password_hash_fns.dart';
+import 'package:doctopia_doctors/models/destination.dart';
 import 'package:doctopia_doctors/models/doctor/doctor.dart';
 import 'package:flutter/material.dart';
+import 'package:pocketbase/pocketbase.dart';
 
 class PxDoctor extends ChangeNotifier {
   final HxDoctor doctorService;
-  PxDoctor({required this.doctorService});
+  final String id;
+  PxDoctor({
+    required this.doctorService,
+    required this.id,
+  }) {
+    fetchDoctor();
+  }
 
-  Doctor _doctor = Doctor.initial();
-  Doctor get doctor => _doctor;
-
-  bool _isLoggedIn = false;
-  bool get isLoggedIn => _isLoggedIn;
+  Doctor? _doctor;
+  Doctor? get doctor => _doctor;
 
   void setDoctor({
     int? synd_id,
@@ -21,77 +25,70 @@ class PxDoctor extends ChangeNotifier {
     String? name_en,
     String? name_ar,
     String? personal_phone,
-    String? assistant_phone,
-    String? email,
-    String? salt,
-    String? password,
-    int? spec_id,
     String? speciality_en,
     String? speciality_ar,
     bool? published,
-    List<String>? titles_en,
-    List<String>? titles_ar,
+    String? title_en,
+    String? title_ar,
     String? about_en,
     String? about_ar,
     String? degree_en,
     String? degree_ar,
+    double? rating,
+    List<String>? tags,
+    int? views,
+    List<Destination>? destinations,
   }) {
-    _doctor = _doctor.copyWith(
-      synd_id: synd_id ?? _doctor.synd_id,
-      joined_at: joined_at ?? _doctor.joined_at,
-      name_en: name_en ?? _doctor.name_en,
-      name_ar: name_ar ?? _doctor.name_ar,
-      personal_phone: personal_phone ?? _doctor.personal_phone,
-      assistant_phone: assistant_phone ?? _doctor.assistant_phone,
-      email: email ?? _doctor.email,
-      salt: salt ?? _doctor.salt,
-      password: password ?? _doctor.password,
-      spec_id: spec_id ?? doctor.spec_id,
-      speciality_en: speciality_en ?? _doctor.speciality_en,
-      speciality_ar: speciality_ar ?? _doctor.speciality_ar,
-      degree_en: degree_en ?? _doctor.degree_en,
-      degree_ar: degree_ar ?? _doctor.degree_ar,
-      published: published ?? _doctor.published,
-      titles_en: titles_en ?? _doctor.titles_en,
-      titles_ar: titles_ar ?? doctor.titles_ar,
-      about_en: about_en ?? _doctor.about_en,
-      about_ar: about_ar ?? _doctor.about_ar,
+    _doctor ??= Doctor.emptyForCreate();
+    _doctor = _doctor?.copyWith(
+      id: id,
+      synd_id: synd_id ?? _doctor?.synd_id,
+      joined_at: DateTime.now().toIso8601String(),
+      name_en: name_en ?? _doctor?.name_en,
+      name_ar: name_ar ?? _doctor?.name_ar,
+      personal_phone: personal_phone ?? _doctor?.personal_phone,
+      speciality_en: speciality_en ?? _doctor?.speciality_en,
+      speciality_ar: speciality_ar ?? _doctor?.speciality_ar,
+      degree_en: degree_en ?? _doctor?.degree_en,
+      degree_ar: degree_ar ?? _doctor?.degree_ar,
+      published: published ?? _doctor?.published,
+      title_en: title_en ?? _doctor?.title_en,
+      title_ar: title_ar ?? doctor?.title_ar,
+      about_en: about_en ?? _doctor?.about_en,
+      about_ar: about_ar ?? _doctor?.about_ar,
+      tags: [],
+      views: 0,
+      destinations: [],
     );
     notifyListeners();
   }
 
-  Future<Doctor> createDoctor() async {
+  Future<Doctor?> createDoctor() async {
     try {
-      final doc = await doctorService.createDoctor(doctor: doctor);
+      final doc = await doctorService.createDoctor(doctor: doctor!);
+      await fetchDoctor();
       return doc;
-    } catch (e) {
-      rethrow;
+    } on ClientException catch (e) {
+      throw Exception(e.response["message"]);
     }
   }
 
-  Future<Doctor> fetchDoctor({
-    required int synd_id,
-    required String password,
-    required String errorMsg,
-  }) async {
+  void nullifyDoctor() {
+    _doctor = null;
+    notifyListeners();
+  }
+
+  Future<Doctor> fetchDoctor() async {
     try {
-      final serverResult =
-          await doctorService.fetchDoctorBySyndId(synd_id: synd_id);
+      final serverResult = await doctorService.fetchDoctorById(id: id);
 
-      final digest = retrievePassword(password, serverResult.salt);
+      _doctor = serverResult;
 
-      if (digest != serverResult.password) {
-        throw WrongPasswordException(
-          message: errorMsg,
-        );
-      } else {
-        _doctor = serverResult;
-        _isLoggedIn = true;
-        notifyListeners();
-        return serverResult;
-      }
-    } catch (e) {
-      rethrow;
+      notifyListeners();
+
+      return serverResult;
+    } on ClientException catch (e) {
+      throw Exception(e.response["message"]);
     }
   }
 
@@ -101,7 +98,6 @@ class PxDoctor extends ChangeNotifier {
   void setUpdate(String key, dynamic value) {
     _update[key] = value;
     notifyListeners();
-    // print(_update);
   }
 
   void revertUpdate(String key) {
@@ -109,24 +105,18 @@ class PxDoctor extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Doctor> updateDoctor() async {
+  Future<Doctor?> updateDoctor() async {
     try {
       final doc = await doctorService.updateDoctor(
-        id: _doctor.id!,
+        id: id,
         update: _update,
       );
       _doctor = doc;
       _update = {};
       notifyListeners();
       return doc;
-    } catch (e) {
-      rethrow;
+    } on ClientException catch (e) {
+      throw Exception(e.response["message"]);
     }
-  }
-
-  void logout() {
-    _isLoggedIn = false;
-    _doctor = Doctor.initial();
-    notifyListeners();
   }
 }

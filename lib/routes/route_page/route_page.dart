@@ -8,93 +8,95 @@ import 'package:doctopia_doctors/pages/register_page_password/register_page_pass
 import 'package:doctopia_doctors/pages/server_offline_page/server_offline_page.dart';
 import 'package:doctopia_doctors/pages/token_validation_page/token_validation_page.dart';
 import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 
 class RoutePage {
   final String path;
   final String name;
   final Widget page;
+  final List<RouteBase>? routes;
 
   const RoutePage({
     required this.path,
     required this.name,
     required this.page,
+    this.routes,
   });
 
-  factory RoutePage.loadingScreen({Key? key}) {
+  factory RoutePage.loadingScreen({Key? key, List<GoRoute>? routes}) {
     return RoutePage(
-      name: 'loading_screen',
+      name: '/',
       path: '/',
       page: LoadingScreen(
         key: key,
       ),
+      routes: routes,
     );
   }
-  factory RoutePage.serverOfflinePage({Key? key}) {
+  factory RoutePage.serverOfflinePage({Key? key, List<GoRoute>? routes}) {
     return RoutePage(
-      name: 'server_offline',
-      path: '/server_offline',
+      name: 'offline',
+      path: 'offline',
       page: ServerOfflinePage(
         key: key,
       ),
     );
   }
 
-  factory RoutePage.homePage({Key? key}) {
+  factory RoutePage.homePage({Key? key, List<GoRoute>? routes}) {
     return RoutePage(
-      name: 'home_page',
-      path: '/home_page',
+      name: 'home',
+      path: 'home',
       page: HomePage(
         key: key,
       ),
     );
   }
-  factory RoutePage.registerPageBasic({Key? key}) {
+  factory RoutePage.registerPageBasic({Key? key, List<GoRoute>? routes}) {
     return RoutePage(
-      name: 'register_page_basic',
-      path: 'register_page_basic',
+      name: 'register',
+      path: 'register',
       page: RegisterPageBasic(
         key: key,
       ),
     );
   }
 
-  factory RoutePage.registerPagePassword({
-    Key? key,
-    bool isRegister = true,
-  }) {
+  factory RoutePage.forgotPassword(
+      {Key? key, bool isRegister = true, List<GoRoute>? routes}) {
     return RoutePage(
-      name: 'register_page_password',
-      path: 'register_page_password',
+      name: 'forgotpassword',
+      path: 'forgotpassword',
       page: RegisterPagePassword(
         key: key,
         isRegister: isRegister,
       ),
     );
   }
-  factory RoutePage.loginPage({Key? key}) {
+  factory RoutePage.loginPage({Key? key, List<GoRoute>? routes}) {
     return RoutePage(
-      name: 'login_page',
-      path: 'login_page',
+      name: 'login',
+      path: 'login',
       page: Loginpage(
         key: key,
       ),
     );
   }
 
-  factory RoutePage.tokenValidationPage({Key? key}) {
+  factory RoutePage.tokenValidationPage({Key? key, List<GoRoute>? routes}) {
     return RoutePage(
-      name: 'token_validation',
-      path: 'token_validation',
+      name: 'tokenvalidation',
+      path: 'tokenvalidation',
       page: TokenValidationPage(
         key: key,
       ),
     );
   }
 
-  factory RoutePage.createClinicPage({Key? key}) {
+  factory RoutePage.createClinicPage({Key? key, List<GoRoute>? routes}) {
     return RoutePage(
-      name: 'create_clinic',
-      path: 'create_clinic',
+      name: 'createclinic',
+      path: 'createclinic',
       page: CreateClinicPage(
         key: key,
       ),
@@ -103,8 +105,8 @@ class RoutePage {
 
   factory RoutePage.clinicSchedulePage({Key? key}) {
     return RoutePage(
-      name: 'clinic_schedule',
-      path: 'clinic_schedule',
+      name: 'clinicschedule',
+      path: 'clinicschedule',
       page: ClinicSchedulePage(
         key: key,
       ),

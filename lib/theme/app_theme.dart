@@ -39,7 +39,7 @@ class AppTheme {
         width: 250,
         itemPadding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primaryContainer,
+          // color: Theme.of(context).colorScheme.primaryContainer,
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
@@ -61,7 +61,7 @@ class AppTheme {
   static SidebarXTheme sidebarXthemeRegularDark(BuildContext context) =>
       SidebarXTheme(
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primaryContainer,
+          // color: Theme.of(context).colorScheme.primaryContainer,
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
@@ -105,7 +105,7 @@ class AppTheme {
           size: 20,
         ),
         selectedIconTheme: const IconThemeData(
-          color: Colors.white,
+          // color: Colors.white,
           size: 28,
         ),
         itemPadding: const EdgeInsets.all(4),
@@ -116,14 +116,14 @@ class AppTheme {
         width: 250,
         itemPadding: const EdgeInsets.all(4),
         selectedItemDecoration: BoxDecoration(
-          color: Colors.white,
+          // color: Colors.white,
           border: Border.all(
             width: 0.5,
           ),
           borderRadius: BorderRadius.circular(8),
         ),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primaryContainer,
+          // color: Theme.of(context).colorScheme.primaryContainer,
           borderRadius: BorderRadius.circular(20),
           boxShadow: const [
             BoxShadow(
@@ -149,14 +149,14 @@ class AppTheme {
           size: 28,
         ),
         selectedItemDecoration: BoxDecoration(
-          color: Colors.white,
+          // color: Colors.white,
           border: Border.all(
             width: 0.5,
           ),
           borderRadius: BorderRadius.circular(8),
         ),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primaryContainer,
+          // color: Theme.of(context).colorScheme.primaryContainer,
           borderRadius: BorderRadius.circular(20),
           boxShadow: const [
             BoxShadow(

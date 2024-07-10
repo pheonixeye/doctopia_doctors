@@ -30,7 +30,7 @@ class _TokenValidationPageState extends State<TokenValidationPage> {
                 height: 150,
                 child: Hero(
                   tag: 'logo',
-                  child: Image.asset(AppAssets.icon),
+                  child: Image.asset(Assets.icon),
                 ),
               ),
               Padding(
@@ -73,7 +73,7 @@ class _TokenValidationPageState extends State<TokenValidationPage> {
                     //TODO: check token entered against doctor id
                     //TODO: navigate to password reset page
                     GoRouter.of(context).goNamed(
-                      RoutePage.registerPagePassword(
+                      RoutePage.forgotPassword(
                         isRegister: false,
                       ).name,
                     );

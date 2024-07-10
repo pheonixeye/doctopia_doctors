@@ -6,11 +6,11 @@ import 'package:appwrite/appwrite.dart' as clientSDK;
 import 'package:doctopia_doctors/models/publish_request/publish_request.dart';
 
 class HxPublishRequest {
-  final ENV env;
+  final ENV env = ENV("dev");
   late final Server server;
   late final clientSDK.Databases client_db;
 
-  HxPublishRequest({required this.env}) {
+  HxPublishRequest() {
     server = Server.main(env.env);
     client_db = clientSDK.Databases(server.clientAPI);
   }

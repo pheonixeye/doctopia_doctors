@@ -3,7 +3,7 @@ import 'package:doctopia_doctors/routes/transitions.dart';
 import 'package:go_router/go_router.dart';
 
 GoRoute goRouteFromRoutePage(RoutePage model,
-    [GlobalTransitionBuilder transitionBuilder = slideTransitionBuilder]) {
+    [GlobalTransitionBuilder transitionBuilder = fadeTransitionBuilder]) {
   return GoRoute(
     path: model.path,
     name: model.name,
@@ -15,5 +15,6 @@ GoRoute goRouteFromRoutePage(RoutePage model,
         child: model.page,
       );
     },
+    routes: model.routes ?? [],
   );
 }

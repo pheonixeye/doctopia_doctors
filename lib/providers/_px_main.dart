@@ -10,7 +10,6 @@ import 'package:doctopia_doctors/api/reviews_api/reviews_api.dart';
 import 'package:doctopia_doctors/api/schedule_api/schedule_api.dart';
 import 'package:doctopia_doctors/api/server_status_api/status_api.dart';
 import 'package:doctopia_doctors/api/speciality_api/speciality.dart';
-import 'package:doctopia_doctors/env/env.dart';
 import 'package:doctopia_doctors/providers/px_clinic_visits.dart';
 import 'package:doctopia_doctors/providers/px_clinic_images.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
@@ -25,99 +24,84 @@ import 'package:doctopia_doctors/providers/px_schedule.dart';
 import 'package:doctopia_doctors/providers/px_server_status.dart';
 import 'package:doctopia_doctors/providers/px_specialities.dart';
 import 'package:doctopia_doctors/providers/px_theme.dart';
+import 'package:doctopia_doctors/providers/px_user_model.dart';
 import 'package:doctopia_doctors/services/local_database_service/local_database_service.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
-List<SingleChildWidget> providers(ENV env) => [
-      ChangeNotifierProvider(create: (context) => PxLocalDatabase()),
-      ChangeNotifierProvider(create: (context) => PxLocale(context)),
-      ChangeNotifierProvider(create: (context) => PxTheme(context)),
-      ChangeNotifierProvider(
-        create: (context) => PxServerStatus(
-          statusService: HxServerStatus(
-            env: env,
-          ),
-        ),
+final List<SingleChildWidget> providers = [
+  ChangeNotifierProvider(create: (context) => PxUserModel()),
+  ChangeNotifierProvider(create: (context) => PxLocalDatabase()),
+  ChangeNotifierProvider(create: (context) => PxLocale(context)),
+  ChangeNotifierProvider(create: (context) => PxTheme(context)),
+  ChangeNotifierProvider(
+    create: (context) => PxServerStatus(
+      statusService: HxServerStatus(),
+    ),
+  ),
+  ChangeNotifierProvider(
+    create: (context) => PxGov(
+      govCityService: HxGovCity(),
+    ),
+  ),
+  ChangeNotifierProvider(
+    create: (context) => PxSpeciality(
+      specialityService: HxSpeciality(),
+    ),
+  ),
+  ChangeNotifierProvider(
+    create: (context) => PxDoctor(
+      id: context.read<PxUserModel>().id!,
+      doctorService: HxDoctor(),
+    ),
+  ),
+  ChangeNotifierProvider(
+    create: (context) => PxDocuments(
+      documentsService: HxDocuments(),
+    ),
+  ),
+  ChangeNotifierProvider(
+    create: (context) => PxClinics(
+      clinicService: HxClinic(),
+    ),
+  ),
+  ChangeNotifierProvider(
+    create: (context) => PxClinicImages(
+      clinicImagesService: HxClinicImages(
       ),
-      ChangeNotifierProvider(
-        create: (context) => PxGov(
-          govCityService: HxGovCity(
-            env: env,
-          ),
-        ),
+    ),
+  ),
+  ChangeNotifierProvider(
+    create: (context) => PxSchedule(
+      scheduleService: HxSchedule(
       ),
-      ChangeNotifierProvider(
-        create: (context) => PxSpeciality(
-          specialityService: HxSpeciality(
-            env: env,
-          ),
-        ),
+    ),
+  ),
+  ChangeNotifierProvider(
+    create: (context) => PxClinicVisits(
+      visitsService: HxClinicVisits(
       ),
-      ChangeNotifierProvider(
-        create: (context) => PxDoctor(
-          doctorService: HxDoctor(
-            env: env,
-          ),
-        ),
+      doc_id: context.read<PxDoctor>().doctor!.id,
+    ),
+  ),
+  ChangeNotifierProvider(
+    create: (context) => PxPublishRequest(
+      publishRequestService: HxPublishRequest(
       ),
-      ChangeNotifierProvider(
-        create: (context) => PxDocuments(
-          documentsService: HxDocuments(
-            env: env,
-          ),
-        ),
+      doc_id: context.read<PxDoctor>().doctor!.id,
+    ),
+  ),
+  ChangeNotifierProvider(
+    create: (context) => PxReviews(
+      reviewsService: HxReviews(
       ),
-      ChangeNotifierProvider(
-        create: (context) => PxClinics(
-          clinicService: HxClinic(
-            env: env,
-          ),
-        ),
+    ),
+  ),
+  ChangeNotifierProvider(
+    create: (context) => PxInvoices(
+      invoicesService: HxInvoices(
       ),
-      ChangeNotifierProvider(
-        create: (context) => PxClinicImages(
-          clinicImagesService: HxClinicImages(
-            env: env,
-          ),
-        ),
-      ),
-      ChangeNotifierProvider(
-        create: (context) => PxSchedule(
-          scheduleService: HxSchedule(
-            env: env,
-          ),
-        ),
-      ),
-      ChangeNotifierProvider(
-        create: (context) => PxClinicVisits(
-          visitsService: HxClinicVisits(
-            env: env,
-          ),
-          doc_id: context.read<PxDoctor>().doctor.id!,
-        ),
-      ),
-      ChangeNotifierProvider(
-        create: (context) => PxPublishRequest(
-          publishRequestService: HxPublishRequest(
-            env: env,
-          ),
-          doc_id: context.read<PxDoctor>().doctor.id!,
-        ),
-      ),
-      ChangeNotifierProvider(
-        create: (context) => PxReviews(
-          reviewsService: HxReviews(
-            env: env,
-          ),
-        ),
-      ),
-      ChangeNotifierProvider(
-        create: (context) => PxInvoices(
-          invoicesService: HxInvoices(
-            env: env,
-          ),
-          doc_id: context.read<PxDoctor>().doctor.id!,
-        ),
-      ),
-    ];
+      doc_id: context.read<PxDoctor>().doctor!.id,
+    ),
+  ),
+];

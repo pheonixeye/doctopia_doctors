@@ -40,7 +40,7 @@ class _ReviewsPageState extends State<ReviewsPage> with AfterLayoutMixin {
   FutureOr<void> afterFirstLayout(BuildContext context) async {
     await context
         .read<PxReviews>()
-        .fetchReviews(context.read<PxDoctor>().doctor.id!)
+        .fetchReviews(context.read<PxDoctor>().doctor!.id)
         .whenComplete(() {
       if (mounted) {
         setState(() {
@@ -118,8 +118,8 @@ class _ReviewsPageState extends State<ReviewsPage> with AfterLayoutMixin {
                                                         await r.updateReview(
                                                           context
                                                               .read<PxDoctor>()
-                                                              .doctor
-                                                              .id!,
+                                                              .doctor!
+                                                              .id,
                                                           e.id,
                                                           _controllers[e.id]!
                                                               .text,

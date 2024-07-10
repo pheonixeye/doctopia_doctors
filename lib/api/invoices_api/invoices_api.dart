@@ -6,11 +6,11 @@ import 'package:appwrite/appwrite.dart' as clientSDK;
 import 'package:doctopia_doctors/models/invoice/invoice.dart';
 
 class HxInvoices {
-  final ENV env;
+  final ENV env = ENV("dev");
   late final Server server;
   late final clientSDK.Databases client_db;
 
-  HxInvoices({required this.env}) {
+  HxInvoices() {
     server = Server.main(env.env);
     client_db = clientSDK.Databases(server.clientAPI);
   }

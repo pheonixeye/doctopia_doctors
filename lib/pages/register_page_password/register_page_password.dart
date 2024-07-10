@@ -50,7 +50,7 @@ class _RegisterPagePasswordState extends State<RegisterPagePassword> {
                 child: SizedBox(
                   width: 150,
                   height: 150,
-                  child: Image.asset(AppAssets.icon),
+                  child: Image.asset(Assets.icon),
                 ),
               ),
               Padding(
@@ -153,10 +153,10 @@ class _RegisterPagePasswordState extends State<RegisterPagePassword> {
                   if (_formKey.currentState!.validate()) {
                     final sp = generatePasswordHash(_passwordController.text);
                     if (mounted) {
-                      context.read<PxDoctor>().setDoctor(
-                            password: sp.password,
-                            salt: sp.salt,
-                          );
+                      // context.read<PxDoctor>().setDoctor(
+                      //       password: sp.password,
+                      //       salt: sp.salt,
+                      //     );
                     }
                     await shellFunction(context, toExecute: () async {
                       if (mounted) {

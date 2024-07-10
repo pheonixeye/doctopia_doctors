@@ -23,7 +23,7 @@ class _DocumentsPageState extends State<DocumentsPage> with AfterLayoutMixin {
   FutureOr<void> afterFirstLayout(BuildContext context) async {
     await context
         .read<PxDocuments>()
-        .initDocuments(context.read<PxDoctor>().doctor.id!);
+        .initDocuments(context.read<PxDoctor>().doctor!.id);
   }
 
   @override
@@ -99,7 +99,7 @@ class _DocumentsPageState extends State<DocumentsPage> with AfterLayoutMixin {
                                 }
                                 if (imgPath != null && mounted) {
                                   final fileName =
-                                      '''${context.read<PxDoctor>().doctor.name_en.replaceAll(' ', '_')}-${e.key}-${DateTime.now().toIso8601String()}.${_pickedFiles!.files.first.extension}'''
+                                      '''${context.read<PxDoctor>().doctor!.name_en.replaceAll(' ', '_')}-${e.key}-${DateTime.now().toIso8601String()}.${_pickedFiles!.files.first.extension}'''
                                           .replaceAll(' ', '');
                                   await shellFunction(
                                     context,
@@ -107,7 +107,7 @@ class _DocumentsPageState extends State<DocumentsPage> with AfterLayoutMixin {
                                       await d.updateDocument(
                                         e.key,
                                         imgPath!,
-                                        context.read<PxDoctor>().doctor.id!,
+                                        context.read<PxDoctor>().doctor!.id,
                                         fileName: fileName,
                                       );
                                     },

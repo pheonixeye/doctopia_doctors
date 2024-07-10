@@ -2,7 +2,6 @@
 
 import 'package:doctopia_doctors/env/env.dart';
 import 'package:appwrite/appwrite.dart' as clientSDK;
-import 'package:dart_appwrite/dart_appwrite.dart' as serverSDK;
 
 class Servers {
   const Servers._();
@@ -13,12 +12,12 @@ class Servers {
 class Server {
   final String name;
   final clientSDK.Client clientAPI;
-  final serverSDK.Client serverAPI;
+  // final serverSDK.Client serverAPI;
 
   const Server._({
     required this.name,
     required this.clientAPI,
-    required this.serverAPI,
+    // required this.serverAPI,
   });
 
   factory Server.main(String environment) {
@@ -29,11 +28,6 @@ class Server {
           clientSDK.Client(endPoint: env.creds.ENDPOINT, selfSigned: true)
               .setProject(env.creds.PROJECT)
               // .addHeader("X-RateLimit-Limit", "5000")
-              .addHeader("Access-Control-Allow-Origin", "*"),
-      serverAPI:
-          serverSDK.Client(endPoint: env.creds.ENDPOINT, selfSigned: true)
-              .setProject(env.creds.PROJECT)
-              .setKey(env.creds.API_KEY)
               .addHeader("Access-Control-Allow-Origin", "*"),
     );
   }

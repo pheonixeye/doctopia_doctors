@@ -6,13 +6,11 @@ import 'package:doctopia_doctors/env/env.dart';
 import 'package:doctopia_doctors/models/schedule/schedule.dart';
 
 class HxSchedule {
-  final ENV env;
+  final ENV env = ENV("dev");
   late final Server server;
   late final clientSDK.Databases client_db;
 
-  HxSchedule({
-    required this.env,
-  }) {
+  HxSchedule() {
     server = Server.main(env.env);
     client_db = clientSDK.Databases(server.clientAPI);
   }

@@ -1,0 +1,197 @@
+[
+  {
+    "id" : "1",
+    "speciality_en": "Allergy and Immunology",
+    "speciality_ar": "حساسيه ومناعه"
+  },
+  {
+    "id" : "2",
+    "speciality_en": "Andrology and Infertility",
+    "speciality_ar": "ذكوره وعقم"
+  },
+  {
+    "id" : "3",
+    "speciality_en": "Audiology",
+    "speciality_ar": "سمعيات"
+  },
+  {
+    "id" : "4",
+    "speciality_en": "CardioThoracic Surgery",
+    "speciality_ar": "جراحه قلب وصدر"
+  },
+  {
+    "id" : "5",
+    "speciality_en": "Cardiology",
+    "speciality_ar": "قلب واوعيه دمويه"
+  },
+  {
+    "id" : "6",
+    "speciality_en": "Pulmonology",
+    "speciality_ar": "صدر وجهاز تنفسي"
+  },
+  {
+    "id" : "7",
+    "speciality_en": "Dentistry",
+    "speciality_ar": "اسنان"
+  },
+  {
+    "id" : "8",
+    "speciality_en": "Dermatology",
+    "speciality_ar": "جلديه"
+  },
+  {
+    "id" : "9",
+    "speciality_en": "Endocrinology",
+    "speciality_ar": "سكر وغدد صماء"
+  },
+  {
+    "id" : "10",
+    "speciality_en": "Diagnostic Radiology",
+    "speciality_ar": "الأشعة التشخيصيه"
+  },
+  {
+    "id" : "11",
+    "speciality_en": "Clinical Nutrition",
+    "speciality_ar": "تخسيس وتغذية"
+  },
+  {
+    "id" : "12",
+    "speciality_en": "Ear, Nose and Throat",
+    "speciality_ar": "أنف وأذن وحنجرة"
+  },
+  {
+    "id" : "13",
+    "speciality_en": "Family Medicine",
+    "speciality_ar": "طب الاسره"
+  },
+  {
+    "id" : "14",
+    "speciality_en": "Gastroenterology",
+    "speciality_ar": "جهاز هضمي ومناظير"
+  },
+  {
+    "id" : "15",
+    "speciality_en": "General Practice",
+    "speciality_ar": "ممارس عام"
+  },
+  {
+    "id" : "16",
+    "speciality_en": "General Surgery",
+    "speciality_ar": "جراحه عامه"
+  },
+  {
+    "id" : "17",
+    "speciality_en": "Geriatrics",
+    "speciality_ar": "طب المسنين"
+  },
+  {
+    "id" : "18",
+    "speciality_en": "Gynaecology",
+    "speciality_ar": "نساء وتوليد"
+  },
+  {
+    "id" : "19",
+    "speciality_en": "Hematology",
+    "speciality_ar": "امراض الدم"
+  },
+  {
+    "id" : "20",
+    "speciality_en": "Internal Medicine",
+    "speciality_ar": "باطنه"
+  },
+  {
+    "id" : "21",
+    "speciality_en": "Interventional Radiology",
+    "speciality_ar": "الأشعة التداخلية"
+  },
+  {
+    "id" : "22",
+    "speciality_en": "Maxillofacial Surgery",
+    "speciality_ar": "جراحه وجه و فكين"
+  },
+  {
+    "id" : "23",
+    "speciality_en": "Nephrology",
+    "speciality_ar": "امراض كلى"
+  },
+  {
+    "id" : "24",
+    "speciality_en": "Neurology",
+    "speciality_ar": "مخ وأعصاب"
+  },
+  {
+    "id" : "25",
+    "speciality_en": "Neurosurgery",
+    "speciality_ar": "جراحة مخ وأعصاب"
+  },
+  {
+    "id" : "26",
+    "speciality_en": "Oncology",
+    "speciality_ar": "أورام"
+  },
+  {
+    "id" : "27",
+    "speciality_en": "Oncology Surgery",
+    "speciality_ar": "جراحه اورام"
+  },
+  {
+    "id" : "28",
+    "speciality_en": "Ophthalmology",
+    "speciality_ar": "عيون"
+  },
+  {
+    "id" : "29",
+    "speciality_en": "Orthopedics",
+    "speciality_ar": "عظام"
+  },
+  {
+    "id" : "30",
+    "speciality_en": "Pain Management",
+    "speciality_ar": "علاج الآلام"
+  },
+  {
+    "id" : "31",
+    "speciality_en": "Pediatric Surgery",
+    "speciality_ar": "جراحه أطفال"
+  },
+  {
+    "id" : "32",
+    "speciality_en": "Pediatrics",
+    "speciality_ar": "أطفال وحديثى الولاده"
+  },
+  {
+    "id" : "33",
+    "speciality_en": "Phoniatrics",
+    "speciality_ar": "نطق وتخاطب"
+  },
+  {
+    "id" : "34",
+    "speciality_en": "Physiotherapy",
+    "speciality_ar": "علاج طبيعى"
+  },
+  {
+    "id" : "35",
+    "speciality_en": "Plastic Surgery",
+    "speciality_ar": "جراحة تجميل"
+  },
+  {
+    "id" : "36",
+    "speciality_en": "Psychiatry",
+    "speciality_ar": "نفسي"
+  },
+  {
+    "id" : "37",
+    "speciality_en": "Rheumatology",
+    "speciality_ar": "روماتيزم"
+  },
+  {
+    "id" : "38",
+    "speciality_en": "Urology",
+    "speciality_ar": "مسالك بوليه"
+  },
+  {
+    "id" : "39",
+    "speciality_en": "Vascular Surgery",
+    "speciality_ar": "جراحه اوعيه دمويه"
+  }
+]

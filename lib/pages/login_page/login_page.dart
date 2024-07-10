@@ -1,9 +1,14 @@
+import 'dart:async';
+
+import 'package:after_layout/after_layout.dart';
 import 'package:doctopia_doctors/assets/assets.dart';
-import 'package:doctopia_doctors/functions/shell_function.dart';
-import 'package:doctopia_doctors/pages/login_page/logic/login.dart';
+import 'package:doctopia_doctors/providers/px_user_model.dart';
 import 'package:doctopia_doctors/routes/route_page/route_page.dart';
-import 'package:doctopia_doctors/services/local_database_service/local_database_service.dart';
+import 'package:doctopia_doctors/routes/routes.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -15,15 +20,23 @@ class Loginpage extends StatefulWidget {
   State<Loginpage> createState() => _LoginpageState();
 }
 
-class _LoginpageState extends State<Loginpage> {
+class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
+  @override
+  FutureOr<void> afterFirstLayout(BuildContext context) {
+    final _u = context.read<PxUserModel>();
+    if (_u.isLoggedIn) {
+      GoRouter.of(context).goNamed(RoutePage.homePage().name);
+    }
+  }
+
   final _formKey = GlobalKey<FormState>();
   bool rememberMe = false;
   bool obscure = true;
-  final _syndidController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   @override
   void dispose() {
-    _syndidController.dispose();
+    _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -40,37 +53,38 @@ class _LoginpageState extends State<Loginpage> {
             shrinkWrap: true,
             children: [
               SizedBox(
-                width: 150,
-                height: 150,
+                width: 100,
+                height: 100,
                 child: Hero(
                   tag: 'logo',
-                  child: Image.asset(AppAssets.icon),
+                  child: Image.asset(Assets.icon),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const CircleAvatar(
-                      child: Icon(Icons.numbers),
+                      child: Text("@"),
                     ),
                     const Gap(10),
                     Expanded(
                       child: TextFormField(
-                        controller: _syndidController,
+                        controller: _emailController,
                         decoration: const InputDecoration(
-                          labelText: "Syndicate Id",
-                          hintText: "######",
+                          labelText: "Email",
+                          hintText: "example@domain.com",
                           border: OutlineInputBorder(),
                           suffix: SizedBox(
                             height: 24,
                           ),
                         ),
-                        keyboardType: TextInputType.number,
-                        maxLength: 6,
+                        keyboardType: TextInputType.emailAddress,
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Kindly Enter Syndicate Id Number.";
+                          if (value == null ||
+                              !EmailValidator.validate(value)) {
+                            return "Kindly Enter a Valid Email Address.";
                           }
                           return null;
                         },
@@ -121,44 +135,54 @@ class _LoginpageState extends State<Loginpage> {
                   ],
                 ),
               ),
-              CheckboxListTile(
-                title: const Text('Remember me'),
-                value: rememberMe,
-                onChanged: (v) {
-                  setState(() {
-                    rememberMe = v!;
-                  });
-                },
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CheckboxListTile(
+                  title: const Text('Remember me'),
+                  value: rememberMe,
+                  onChanged: (v) {
+                    setState(() {
+                      rememberMe = v!;
+                    });
+                  },
+                ),
               ),
               const Gap(10),
-              ElevatedButton.icon(
-                icon: const Icon(Icons.login),
-                label: const Text('Login'),
-                onPressed: () async {
-                  FocusManager.instance.primaryFocus?.unfocus();
-                  if (_formKey.currentState!.validate()) {
-                    await shellFunction(context, toExecute: () async {
-                      await loginLogic(
-                        context: context,
-                        synd_id: int.parse(_syndidController.text),
-                        password: _passwordController.text,
-                      );
-
-                      if (rememberMe && mounted) {
-                        await context.read<PxLocalDatabase>().saveDocIdToDb(
-                              int.parse(_syndidController.text),
-                              _passwordController.text,
+              Consumer<PxUserModel>(
+                builder: (context, u, _) {
+                  return ElevatedButton.icon(
+                    icon: const Icon(Icons.login),
+                    label: const Text('Login'),
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        try {
+                          await EasyLoading.show(status: "Loading...");
+                          await u.loginUserByEmailAndPassword(
+                            _emailController.text.trim(),
+                            _passwordController.text,
+                          );
+                          await EasyLoading.showSuccess("Success...");
+                          if (context.mounted) {
+                            GoRouter.of(context).goNamed(AppRouter.home);
+                          }
+                        } catch (e) {
+                          await EasyLoading.dismiss();
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                duration: const Duration(seconds: 10),
+                                content: Text(e.toString(),
+                                    style: const TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.w600,
+                                    )),
+                              ),
                             );
-                        if (mounted) {
-                          GoRouter.of(context)
-                              .goNamed(RoutePage.homePage().name);
+                          }
                         }
                       }
-                    });
-                    //validate doctor exists
-                    //validate password matches
-                    //save doctor synd_id  & password in local storage if remember me
-                  }
+                    },
+                  );
                 },
               ),
               const Gap(10),
@@ -172,7 +196,27 @@ class _LoginpageState extends State<Loginpage> {
                   //TODO: send token to doctor via mail
                 },
               ),
-              const Gap(10),
+              const Gap(20),
+              Text.rich(
+                TextSpan(
+                  text: "Not Registered Yet ?  ",
+                  children: [
+                    TextSpan(
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          GoRouter.of(context)
+                              .goNamed(RoutePage.registerPageBasic().name);
+                        },
+                      text: "Create An Account.",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: Colors.green,
+                      ),
+                    ),
+                  ],
+                ),
+                textAlign: TextAlign.center,
+              ),
             ],
           ),
         ),
