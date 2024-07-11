@@ -18,25 +18,10 @@ class ScheduleSummaryTab extends StatefulWidget {
 
 class _ScheduleSummaryTabState extends State<ScheduleSummaryTab> {
   late final ScrollController _scrollController;
-  // List<int> _onDates = [];
-
-  // void _initScheduleProviders() async {
-  //   final sch = context.read<PxSchedule>();
-  //   final clinic = context.read<PxClinics>();
-
-  //   final clinic_id = clinic.clinics[clinic.selectedIndex!].id;
-  //   final scheduleList = await sch.fetchScheduleList(clinic_id);
-
-  //   setState(() {
-  //     _onDates = [...scheduleList.map((e) => e.$2.intday).toList()];
-  //   });
-  // }
 
   @override
   void initState() {
-    // _initScheduleProviders();
     _scrollController = ScrollController();
-    // context.read<PxDates>().initDates(_onDates);
 
     _scrollController.addListener(() {
       if (_scrollController.position.atEdge) {
@@ -59,14 +44,13 @@ class _ScheduleSummaryTabState extends State<ScheduleSummaryTab> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Consumer3<PxLocale, PxClinics, PxDates>(
-        builder: (context, l, c, d, child) {
+        builder: (context, l, c, d, _) {
           return ListView.separated(
             controller: _scrollController,
             itemCount: d.dates.length,
             itemBuilder: (context, index) {
               final _d = d.dates[index];
-              final isOff = c.clinics[c.selectedIndex!].clinic.off_dates
-                  .contains(_d.toIso8601String());
+              final isOff = c.clinic?.off_dates.contains(_d.toIso8601String());
               return ListTile(
                 leading: const CircleAvatar(),
                 title: Text(getWeekday(_d.weekday)!),
@@ -74,19 +58,18 @@ class _ScheduleSummaryTabState extends State<ScheduleSummaryTab> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text('${_d.day} / ${_d.month} / ${_d.year}'),
                 ),
-                trailing: IconButton.filledTonal(
+                trailing: IconButton.outlined(
                   style: IconButton.styleFrom(
-                    backgroundColor: isOff ? Colors.red : null,
+                    backgroundColor:
+                        (isOff != null && isOff) ? Colors.red : null,
                   ),
                   onPressed: () async {
                     await shellFunction(
                       context,
                       toExecute: () async {
                         late final Map<String, dynamic> _update;
-                        List<String> clinicOffDates = [
-                          ...c.clinics[c.selectedIndex!].clinic.off_dates
-                        ];
-                        if (isOff) {
+                        List<String> clinicOffDates = [...c.clinic!.off_dates];
+                        if (isOff != null && isOff) {
                           clinicOffDates.remove(_d.toIso8601String());
                         } else {
                           clinicOffDates.add(_d.toIso8601String());
@@ -95,12 +78,15 @@ class _ScheduleSummaryTabState extends State<ScheduleSummaryTab> {
                         _update = {
                           'off_dates': clinicOffDates,
                         };
-                        await c.updateClinic(
-                            c.clinics[c.selectedIndex!].id, _update);
+                        await c
+                            .updateClinic(c.clinic!.id, _update)
+                            .whenComplete(() {
+                          c.selectClinic(c.clinic);
+                        });
                       },
                     );
                   },
-                  icon: isOff
+                  icon: (isOff != null && isOff)
                       ? const Icon(Icons.airplanemode_inactive_rounded)
                       : const Icon(Icons.airplanemode_active),
                 ),

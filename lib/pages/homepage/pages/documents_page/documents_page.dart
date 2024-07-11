@@ -9,7 +9,7 @@ import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:file_picker/file_picker.dart';
+// import 'package:file_picker/file_picker.dart';
 
 class DocumentsPage extends StatefulWidget {
   const DocumentsPage({super.key});
@@ -89,30 +89,30 @@ class _DocumentsPageState extends State<DocumentsPage> with AfterLayoutMixin {
                               icon: const Icon(Icons.upload),
                               label: const Text('Upload Image'),
                               onPressed: () async {
-                                late String? imgPath;
-                                final FilePickerResult? _pickedFiles =
-                                    await FilePicker.platform.pickFiles(
-                                  type: FileType.image,
-                                );
-                                if (_pickedFiles != null) {
-                                  imgPath = _pickedFiles.files.first.path;
-                                }
-                                if (imgPath != null && mounted) {
-                                  final fileName =
-                                      '''${context.read<PxDoctor>().doctor!.name_en.replaceAll(' ', '_')}-${e.key}-${DateTime.now().toIso8601String()}.${_pickedFiles!.files.first.extension}'''
-                                          .replaceAll(' ', '');
-                                  await shellFunction(
-                                    context,
-                                    toExecute: () async {
-                                      await d.updateDocument(
-                                        e.key,
-                                        imgPath!,
-                                        context.read<PxDoctor>().doctor!.id,
-                                        fileName: fileName,
-                                      );
-                                    },
-                                  );
-                                }
+                                // late String? imgPath;
+                                // final FilePickerResult? _pickedFiles =
+                                //     await FilePicker.platform.pickFiles(
+                                //   type: FileType.image,
+                                // );
+                                // if (_pickedFiles != null) {
+                                //   imgPath = _pickedFiles.files.first.path;
+                                // }
+                                // if (imgPath != null && mounted) {
+                                //   final fileName =
+                                //       '''${context.read<PxDoctor>().doctor!.name_en.replaceAll(' ', '_')}-${e.key}-${DateTime.now().toIso8601String()}.${_pickedFiles!.files.first.extension}'''
+                                //           .replaceAll(' ', '');
+                                //   await shellFunction(
+                                //     context,
+                                //     toExecute: () async {
+                                //       await d.updateDocument(
+                                //         e.key,
+                                //         imgPath!,
+                                //         context.read<PxDoctor>().doctor!.id,
+                                //         fileName: fileName,
+                                //       );
+                                //     },
+                                //   );
+                                // }
                               },
                             ),
                           ],

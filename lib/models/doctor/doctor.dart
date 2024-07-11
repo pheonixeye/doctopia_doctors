@@ -23,6 +23,7 @@ class Doctor extends Equatable {
   final List<String> tags;
   final int views;
   final List<Destination> destinations;
+  final String? avatar;
 
   const Doctor({
     required this.id,
@@ -44,6 +45,7 @@ class Doctor extends Equatable {
     required this.tags,
     required this.views,
     required this.destinations,
+    this.avatar,
   });
 
   Doctor copyWith({
@@ -66,6 +68,7 @@ class Doctor extends Equatable {
     List<String>? tags,
     int? views,
     List<Destination>? destinations,
+    String? avatar,
   }) {
     return Doctor(
       id: id ?? this.id,
@@ -87,6 +90,7 @@ class Doctor extends Equatable {
       tags: tags ?? this.tags,
       views: views ?? this.views,
       destinations: destinations ?? this.destinations,
+      avatar: avatar ?? this.avatar,
     );
   }
 
@@ -111,6 +115,7 @@ class Doctor extends Equatable {
       'tags': tags,
       'views': views,
       'destinations': destinations.map((e) => e.toJson()).toList(),
+      'avatar': avatar,
     };
   }
 
@@ -137,6 +142,7 @@ class Doctor extends Equatable {
       destinations: (map['destinations'] as List)
           .map((e) => Destination.fromJson(e))
           .toList(),
+      avatar: map['avatar'] as String?,
     );
   }
 
@@ -161,6 +167,7 @@ class Doctor extends Equatable {
       tags: [],
       views: 0,
       destinations: [],
+      avatar: null,
     );
   }
 
@@ -168,7 +175,7 @@ class Doctor extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object> get props {
+  List<Object?> get props {
     return [
       id,
       synd_id,
@@ -189,6 +196,7 @@ class Doctor extends Equatable {
       tags,
       views,
       destinations,
+      avatar,
     ];
   }
 }

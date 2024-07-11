@@ -3,9 +3,15 @@ import 'package:sidebarx/sidebarx.dart';
 
 class AppTheme {
   static CardTheme cardTheme = CardTheme(
-    elevation: 10,
+    elevation: 6,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(8),
+    ),
+  );
+
+  static ListTileThemeData listTileTheme = ListTileThemeData(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(8),
     ),
   );
 
@@ -22,14 +28,15 @@ class AppTheme {
   static ThemeData theme({
     required ColorScheme colorScheme,
     required TextTheme textTheme,
-    required Iterable<ThemeExtension<dynamic>>? extensions,
+    // required Iterable<ThemeExtension<dynamic>>? extensions,
   }) {
     return ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
-      extensions: extensions,
+      // extensions: extensions,
       textTheme: textTheme,
       cardTheme: cardTheme,
+      listTileTheme: listTileTheme,
       appBarTheme: appBarTheme(colorScheme),
     );
   }

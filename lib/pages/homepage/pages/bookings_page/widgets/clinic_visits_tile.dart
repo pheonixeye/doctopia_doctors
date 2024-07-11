@@ -17,7 +17,7 @@ class _ClinicVisitsTileState extends State<ClinicVisitsTile> {
     return Consumer<PxClinicVisits>(
       builder: (context, v, c) {
         final _visits =
-            v.data.where((x) => x.visit.clinic_id == widget.clinicData.id);
+            v.data.where((x) => x.clinic_id == widget.clinicData.id);
         return ExpansionTile(
           leading: const CircleAvatar(),
           initiallyExpanded: true,
@@ -29,7 +29,7 @@ class _ClinicVisitsTileState extends State<ClinicVisitsTile> {
               ..._visits.map((e) {
                 //TODO: SHOW VISIT DETAILS
                 return Card(
-                  child: Text(e.visit.date),
+                  child: Text(e.date),
                 );
               }).toList(),
           ],

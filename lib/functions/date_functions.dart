@@ -13,11 +13,11 @@ String? getWeekday(int key) {
 }
 
 /// format time function - takes an hour integer and returns am/pm formatted time
-String fT(int hour) {
+String fT(int hour, int min) {
   return switch (hour) {
-    < 12 => '$hour A.M.',
-    > 12 => '${hour - 12} P.M.',
-    == 12 => '$hour P.M.',
+    < 12 => '$hour:$min A.M.',
+    > 12 => '${hour - 12}:$min P.M.',
+    == 12 => '$hour:$min P.M.',
     _ => 'Unsupported Time Format.',
   };
 }

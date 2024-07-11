@@ -20,7 +20,7 @@ class _AddClinicShiftDialogState extends State<AddClinicShiftDialog> {
   Weekdays? _weekdays;
   int? _start;
   int? _end;
-  int? _slots;
+  // int? _slots;
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -79,7 +79,7 @@ class _AddClinicShiftDialogState extends State<AddClinicShiftDialog> {
                       return DropdownMenuItem<int>(
                         alignment: Alignment.center,
                         value: e,
-                        child: Text(fT(e)),
+                        child: Text(fT(e, 0)),
                       );
                     }).toList(),
                     value: _start,
@@ -114,7 +114,7 @@ class _AddClinicShiftDialogState extends State<AddClinicShiftDialog> {
                       return DropdownMenuItem<int>(
                         alignment: Alignment.center,
                         value: e,
-                        child: Text(fT(e)),
+                        child: Text(fT(e, 0)),
                       );
                     }).toList(),
                     value: _end,
@@ -162,7 +162,7 @@ class _AddClinicShiftDialogState extends State<AddClinicShiftDialog> {
                     },
                     onChanged: (value) {
                       setState(() {
-                        _slots = int.tryParse(value);
+                        // _slots = int.tryParse(value);
                       });
                     },
                   ),
@@ -178,18 +178,20 @@ class _AddClinicShiftDialogState extends State<AddClinicShiftDialog> {
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               final _sch = Schedule(
+                id: '${_weekdays!.i}',
                 weekday: _weekdays!.d,
                 intday: _weekdays!.i,
-                start: _start!,
-                end: _end!,
-                slots: _slots!,
+                startHour: _start!,
+                startMin: _start!,
+                endHour: _end!,
+                endMin: _end!,
+                available: false,
               );
               context.read<PxSchedule>().setSchedule(
                     weekday: _sch.weekday,
                     intday: _sch.intday,
-                    start: _sch.start,
-                    end: _sch.end,
-                    slots: _sch.slots,
+                    startHour: _sch.startHour,
+                    endHour: _sch.endHour,
                   );
               GoRouter.of(context).pop<bool>(true);
             }

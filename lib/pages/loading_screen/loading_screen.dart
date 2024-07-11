@@ -6,8 +6,9 @@ import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_server_status.dart';
 import 'package:doctopia_doctors/providers/px_specialities.dart';
 import 'package:doctopia_doctors/providers/px_theme.dart';
-import 'package:doctopia_doctors/routes/route_page/route_page.dart';
+import 'package:doctopia_doctors/routes/routes.dart';
 import 'package:doctopia_doctors/services/local_database_service/local_database_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gap/gap.dart';
@@ -72,7 +73,7 @@ class _LoadingScreenState extends State<LoadingScreen>
 
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) async {
-    //TODO: check internet connection
+    //deferred: check internet connection
     //check server state
     try {
       await Future.wait([
@@ -81,24 +82,20 @@ class _LoadingScreenState extends State<LoadingScreen>
         context.read<PxGov>().loadGovernorates(),
       ]);
     } catch (e) {
-      print(e.toString());
+      if (kDebugMode) {
+        print(e.toString());
+      }
       if (context.mounted) {
-        await GoRouter.of(context)
-            .pushNamed(RoutePage.serverOfflinePage().name);
+        await GoRouter.of(context).pushNamed(AppRouter.offline);
       }
     }
     if (context.mounted) {
-      await Future.wait([
-        context.read<PxLocalDatabase>().fetchLanguageFromDb(),
-        context.read<PxLocalDatabase>().fetchThemeFromDb(),
-        context.read<PxLocalDatabase>().fetchDocIdFromDb(),
-      ]).whenComplete(() async {
-        await Future.wait([
-          context.read<PxLocale>().setLocaleFromLocalDb(),
-          context.read<PxTheme>().setThemeModeFromDb(),
-        ]);
-      }).whenComplete(() async {
-        await GoRouter.of(context).pushNamed(RoutePage.loginPage().name);
+      await context.read<PxLocalDatabase>().initDb().whenComplete(() {
+        context.read<PxLocalDatabase>().fetchLanguageFromDb();
+        context.read<PxLocalDatabase>().fetchThemeFromDb();
+        context.read<PxLocale>().setLocaleFromLocalDb();
+        context.read<PxTheme>().setThemeModeFromDb();
+        GoRouter.of(context).pushNamed(AppRouter.login);
       });
     }
   }

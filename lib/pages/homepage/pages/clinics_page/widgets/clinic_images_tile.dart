@@ -7,7 +7,7 @@ import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/clinics_page/widgets/image_viewer_dialog.dart';
 import 'package:doctopia_doctors/providers/px_clinic_images.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
-import 'package:file_picker/file_picker.dart';
+// import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -123,29 +123,29 @@ class _ClinicImagesTileState extends State<ClinicImagesTile> {
                               child: FloatingActionButton(
                                 heroTag: 'add-image-${widget.clinic_id}',
                                 onPressed: () async {
-                                  late String? imgPath;
-                                  final FilePickerResult? _pickedFiles =
-                                      await FilePicker.platform.pickFiles(
-                                    type: FileType.image,
-                                  );
-                                  if (_pickedFiles != null) {
-                                    imgPath = _pickedFiles.files.first.path;
-                                  }
-                                  if (imgPath != null && mounted) {
-                                    final fileName =
-                                        '${widget.clinic_id}-${DateTime.now().toIso8601String()}.${_pickedFiles!.files.first.extension}';
+                                  // late String? imgPath;
+                                  // final FilePickerResult? _pickedFiles =
+                                  //     await FilePicker.platform.pickFiles(
+                                  //   type: FileType.image,
+                                  // );
+                                  // if (_pickedFiles != null) {
+                                  //   imgPath = _pickedFiles.files.first.path;
+                                  // }
+                                  // if (imgPath != null && mounted) {
+                                  //   final fileName =
+                                  //       '${widget.clinic_id}-${DateTime.now().toIso8601String()}.${_pickedFiles!.files.first.extension}';
 
-                                    await shellFunction(
-                                      context,
-                                      toExecute: () async {
-                                        await i.addClinicImage(
-                                          imgPath!,
-                                          widget.clinic_id,
-                                          fileName: fileName,
-                                        );
-                                      },
-                                    );
-                                  }
+                                  //   await shellFunction(
+                                  //     context,
+                                  //     toExecute: () async {
+                                  //       await i.addClinicImage(
+                                  //         imgPath!,
+                                  //         widget.clinic_id,
+                                  //         fileName: fileName,
+                                  //       );
+                                  //     },
+                                  //   );
+                                  // }
                                 },
                                 child: const Icon(Icons.add),
                               ),

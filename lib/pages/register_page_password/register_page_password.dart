@@ -1,5 +1,4 @@
 import 'package:doctopia_doctors/assets/assets.dart';
-import 'package:doctopia_doctors/functions/password_hash_fns.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/routes/route_page/route_page.dart';
@@ -20,6 +19,7 @@ class RegisterPagePassword extends StatefulWidget {
 }
 
 class _RegisterPagePasswordState extends State<RegisterPagePassword> {
+  //TODO: refactor into forgot password page
   final _formKey = GlobalKey<FormState>();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
@@ -151,13 +151,6 @@ class _RegisterPagePasswordState extends State<RegisterPagePassword> {
                 label: const Text('Submit'),
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    final sp = generatePasswordHash(_passwordController.text);
-                    if (mounted) {
-                      // context.read<PxDoctor>().setDoctor(
-                      //       password: sp.password,
-                      //       salt: sp.salt,
-                      //     );
-                    }
                     await shellFunction(context, toExecute: () async {
                       if (mounted) {
                         widget.isRegister

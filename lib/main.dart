@@ -9,8 +9,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import 'theme/custom_color.g.dart';
-
 // import 'package:doctopia_doctors/services/notification_service/notification_service.dart';
 // import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
@@ -61,12 +59,12 @@ class MyApp extends StatelessWidget {
             colorScheme: const ColorScheme.light(
               primary: Colors.green,
             ),
-            extensions: [lightCustomColors],
+            // extensions: [lightCustomColors],
             textTheme: textTheme,
           ),
           darkTheme: AppTheme.theme(
             colorScheme: const ColorScheme.dark(),
-            extensions: [darkCustomColors],
+            // extensions: [darkCustomColors],
             textTheme: textTheme.apply(
               displayColor: Colors.white,
               bodyColor: Colors.white,

@@ -30,6 +30,7 @@ class _BookingsPageState extends State<BookingsPage> with AfterLayoutMixin {
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) async {
     final cv = context.read<PxClinicVisits>();
+    //TODO:
     await cv.fetchClinicVisits();
     //_animateToIndex(_yearsController, cv.year, _yearsWidth);
     _animateToIndex(_monthsController, cv.month, _monthsWidth);
@@ -235,7 +236,7 @@ class _BookingsPageState extends State<BookingsPage> with AfterLayoutMixin {
                             children: [
                               ...c.clinics.map((e) {
                                 return ClinicVisitsTile(
-                                  clinicData: e,
+                                  clinicData: (clinic: e, id: e.id),
                                 );
                               }).toList(),
                             ],

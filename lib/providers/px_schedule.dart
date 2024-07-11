@@ -18,16 +18,19 @@ class PxSchedule extends ChangeNotifier {
   void setSchedule({
     String? weekday,
     int? intday,
-    int? start,
-    int? end,
+    int? startHour,
+    int? startMin,
+    int? endHour,
+    int? endMin,
     int? slots,
   }) {
     _schedule = _schedule.copyWith(
       weekday: weekday ?? _schedule.weekday,
       intday: intday ?? _schedule.intday,
-      start: start ?? _schedule.start,
-      end: end ?? _schedule.end,
-      slots: slots ?? _schedule.slots,
+      startHour: startHour ?? _schedule.startHour,
+      startMin: startMin ?? _schedule.startMin,
+      endHour: endHour ?? _schedule.endHour,
+      endMin: endMin ?? _schedule.endMin,
     );
     notifyListeners();
   }

@@ -22,7 +22,9 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final Map<String, bool> _isEditing = {};
+
   final formKey = GlobalKey<FormState>();
+
   late final TextEditingController _name_enController;
   late final TextEditingController _name_arController;
   late final TextEditingController _title_enController;
@@ -45,9 +47,11 @@ class _ProfilePageState extends State<ProfilePage> {
     _about_arController = TextEditingController();
     _synd_idController = TextEditingController();
     _personal_phoneController = TextEditingController();
+
     Doctor.emptyForCreate().toJson().entries.map((e) {
       _isEditing[e.key] = false;
     }).toList();
+
     super.initState();
   }
 
@@ -83,60 +87,66 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _updateBtnsRow(
-      String field, TextEditingController controller, BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        IconButton.outlined(
-          onPressed: () async {
-            try {
-              await EasyLoading.show(status: "Loading...");
-              if (field == "synd_id") {
-                await _UpdateDoctorField(
-                    field, int.parse(controller.text.trim()));
-              } else {
-                await _UpdateDoctorField(field, controller.text.trim());
-              }
-              await EasyLoading.showSuccess("Success...");
-              setState(() {
-                _isEditing[field] = false;
-              });
-            } catch (e) {
-              await EasyLoading.dismiss();
+    String field,
+    TextEditingController controller,
+    BuildContext context,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 5.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          IconButton.outlined(
+            onPressed: () async {
+              try {
+                await EasyLoading.show(status: "Loading...");
+                if (field == "synd_id") {
+                  await _UpdateDoctorField(
+                      field, int.parse(controller.text.trim()));
+                } else {
+                  await _UpdateDoctorField(field, controller.text.trim());
+                }
+                await EasyLoading.showSuccess("Success...");
+                setState(() {
+                  _isEditing[field] = false;
+                });
+              } catch (e) {
+                await EasyLoading.dismiss();
 
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  duration: const Duration(seconds: 10),
-                  content: Text(
-                    e.toString(),
-                    style: const TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.w600,
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    duration: const Duration(seconds: 10),
+                    content: Text(
+                      e.toString(),
+                      style: const TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                ));
+                  ));
+                }
+                setState(() {
+                  _isEditing[field] = false;
+                });
               }
+            },
+            icon: const Icon(
+              Icons.check,
+            ),
+          ),
+          const Gap(20),
+          IconButton.outlined(
+            onPressed: () {
               setState(() {
                 _isEditing[field] = false;
               });
-            }
-          },
-          icon: const Icon(
-            Icons.check,
+            },
+            icon: const Icon(
+              Icons.close,
+            ),
           ),
-        ),
-        const Gap(20),
-        IconButton.outlined(
-          onPressed: () {
-            setState(() {
-              _isEditing[field] = false;
-            });
-          },
-          icon: const Icon(
-            Icons.close,
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -145,14 +155,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Consumer3<PxUserModel, PxDoctor, PxLocale>(
       builder: (context, u, d, l, _) {
         final isDoctorNull = d.doctor == null;
-        if (!u.isLoggedIn) {
-          return const Center(
-            child: Text(
-              'Not Logged In...',
-              textAlign: TextAlign.center,
-            ),
-          );
-        }
+
         return Form(
           key: formKey,
           child: ListView(
@@ -175,12 +178,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                       border: OutlineInputBorder()),
                                   validator: _validator,
                                 ),
-                                const Gap(5),
-                                _updateBtnsRow(
-                                  "name_en",
-                                  _name_enController,
-                                  context,
-                                ),
+                                if (!isDoctorNull)
+                                  _updateBtnsRow(
+                                    "name_en",
+                                    _name_enController,
+                                    context,
+                                  ),
                               ],
                             )
                           : Text(d.doctor!.name_en),
@@ -209,12 +212,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                       border: OutlineInputBorder()),
                                   validator: _validator,
                                 ),
-                                const Gap(5),
-                                _updateBtnsRow(
-                                  "name_ar",
-                                  _name_arController,
-                                  context,
-                                ),
+                                if (!isDoctorNull)
+                                  _updateBtnsRow(
+                                    "name_ar",
+                                    _name_arController,
+                                    context,
+                                  ),
                               ],
                             )
                           : Text(d.doctor!.name_ar),
@@ -229,84 +232,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         },
                         icon: Icon(
                             !_isEditing["name_ar"]! ? Icons.edit : Icons.close),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const Gap(10),
-              Card.outlined(
-                elevation: 2,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ListTile(
-                      leading: const CircleAvatar(),
-                      title: const Text("Syndicate Id"),
-                      subtitle: (isDoctorNull || _isEditing["synd_id"] == true)
-                          ? TextFormField(
-                              controller: _synd_idController,
-                              decoration: const InputDecoration(
-                                  border: OutlineInputBorder()),
-                              validator: _validator,
-                            )
-                          : Text(d.doctor!.synd_id.toString()),
-                      trailing: IconButton.outlined(
-                        onPressed: () async {
-                          if (isDoctorNull) {
-                            return;
-                          }
-                          await EasyLoading.showError(
-                              "Syndicate Id Cannot Be Changed.");
-                        },
-                        icon: Icon(
-                            !_isEditing["synd_id"]! ? Icons.edit : Icons.close),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const Gap(10),
-              Card.outlined(
-                elevation: 2,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ListTile(
-                      leading: const CircleAvatar(),
-                      title: const Text("Personal Phone"),
-                      subtitle:
-                          (isDoctorNull || _isEditing["personal_phone"] == true)
-                              ? Column(
-                                  children: [
-                                    TextFormField(
-                                      controller: _personal_phoneController,
-                                      decoration: const InputDecoration(
-                                          border: OutlineInputBorder()),
-                                      validator: _validator,
-                                    ),
-                                    const Gap(10),
-                                    _updateBtnsRow(
-                                      "personal_phone",
-                                      _personal_phoneController,
-                                      context,
-                                    ),
-                                  ],
-                                )
-                              : Text(d.doctor!.personal_phone),
-                      trailing: IconButton.outlined(
-                        onPressed: () {
-                          if (isDoctorNull) {
-                            return;
-                          }
-                          setState(() {
-                            _isEditing["personal_phone"] =
-                                !_isEditing["personal_phone"]!;
-                          });
-                        },
-                        icon: Icon(!_isEditing["personal_phone"]!
-                            ? Icons.edit
-                            : Icons.close),
                       ),
                     ),
                   ],
@@ -353,29 +278,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                         child: Text(e.en),
                                       );
                                     }).toList(),
-                                    onChanged: (value) async {
+                                    onChanged: (value) {
                                       setState(() {
                                         _speciality = value;
                                       });
-                                      if (!isDoctorNull && value != null) {
-                                        try {
-                                          await EasyLoading.show(
-                                              status: "Loading...");
-                                          await _UpdateDoctorField(
-                                              "specialty_en", value.en);
-                                          await _UpdateDoctorField(
-                                              "specialty_ar", value.ar);
-                                          await EasyLoading.showSuccess(
-                                              "Success...");
-                                        } catch (e) {
-                                          await EasyLoading.dismiss();
-                                          await EasyLoading.showError(
-                                              e.toString());
-                                          setState(() {
-                                            _isEditing["specialty_en"] == false;
-                                          });
-                                        }
-                                      }
                                     },
                                   ),
                                 );
@@ -395,15 +301,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     ListTile(
                       leading: const CircleAvatar(),
                       title: const Text("Medical Degree"),
-                      trailing: (_isEditing["degree_en"] == true)
-                          ? const IconButton(
-                              onPressed: null,
-                              icon: Icon(
-                                Icons.close,
-                                color: Colors.transparent,
-                              ),
-                            )
-                          : IconButton.outlined(
+                      trailing: (_isEditing["degree_en"] == false)
+                          ? IconButton.outlined(
                               onPressed: () {
                                 setState(() {
                                   _isEditing["degree_en"] == true;
@@ -412,7 +311,18 @@ class _ProfilePageState extends State<ProfilePage> {
                               icon: const Icon(
                                 Icons.edit,
                               ),
-                            ),
+                            )
+                          : isDoctorNull
+                              ? const IconButton(
+                                  onPressed: null,
+                                  icon: Icon(
+                                    Icons.close,
+                                    color: Colors.transparent,
+                                  ),
+                                )
+                              : const SizedBox(),
+                      //TODO: refactor whole page
+                      //TODO: set correct conditioning
                       subtitle: (isDoctorNull ||
                               _isEditing["degree_en"] == true)
                           ? DropdownButtonHideUnderline(
@@ -484,9 +394,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                   validator: _validator,
                                   controller: _title_enController,
                                 ),
-                                const Gap(10),
-                                _updateBtnsRow(
-                                    "title_en", _title_enController, context)
+                                if (!isDoctorNull)
+                                  _updateBtnsRow(
+                                    "title_en",
+                                    _title_enController,
+                                    context,
+                                  )
                               ],
                             )
                           : Text(d.doctor!.title_en),
@@ -516,9 +429,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                       border: OutlineInputBorder()),
                                   validator: _validator,
                                 ),
-                                const Gap(10),
-                                _updateBtnsRow(
-                                    "title_ar", _title_arController, context)
+                                if (!isDoctorNull)
+                                  _updateBtnsRow(
+                                    "title_ar",
+                                    _title_arController,
+                                    context,
+                                  )
                               ],
                             )
                           : Text(d.doctor!.title_ar),
@@ -557,9 +473,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                       border: OutlineInputBorder()),
                                   validator: _validator,
                                 ),
-                                const Gap(10),
-                                _updateBtnsRow(
-                                    "about_en", _about_enController, context)
+                                if (!isDoctorNull)
+                                  _updateBtnsRow(
+                                    "about_en",
+                                    _about_enController,
+                                    context,
+                                  )
                               ],
                             )
                           : Text(d.doctor!.about_en),
@@ -590,11 +509,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                   validator: _validator,
                                 ),
                                 const Gap(10),
-                                _updateBtnsRow(
-                                  "about_ar",
-                                  _about_arController,
-                                  context,
-                                ),
+                                if (!isDoctorNull)
+                                  _updateBtnsRow(
+                                    "about_ar",
+                                    _about_arController,
+                                    context,
+                                  ),
                               ],
                             )
                           : Text(d.doctor!.about_ar),
@@ -623,8 +543,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     onPressed: () async {
                       if (formKey.currentState!.validate()) {
                         d.setDoctor(
-                          synd_id: int.parse(_synd_idController.text),
-                          personal_phone: _personal_phoneController.text.trim(),
+                          synd_id: u.model?.synd_id,
+                          personal_phone: u.model?.phone,
                           name_en: _name_enController.text.trim(),
                           name_ar: _name_arController.text.trim(),
                           title_en: _title_enController.text.trim(),

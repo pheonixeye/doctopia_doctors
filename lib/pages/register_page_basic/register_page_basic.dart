@@ -1,8 +1,7 @@
 import 'package:doctopia_doctors/assets/assets.dart';
 import 'package:doctopia_doctors/models/user/user_model.dart';
-import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
-import 'package:doctopia_doctors/routes/route_page/route_page.dart';
+import 'package:doctopia_doctors/routes/routes.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -119,11 +118,6 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                           ),
                         ),
                         keyboardType: TextInputType.name,
-                        onChanged: (value) {
-                          context.read<PxDoctor>().setDoctor(
-                                name_en: value.trim().toLowerCase(),
-                              );
-                        },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Kindly Enter Name.";
@@ -157,11 +151,6 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                         ),
                         maxLength: 11,
                         keyboardType: TextInputType.phone,
-                        onChanged: (value) {
-                          context.read<PxDoctor>().setDoctor(
-                                personal_phone: value.trim().toLowerCase(),
-                              );
-                        },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Kindly Enter Personal Mobile Number.";
@@ -346,12 +335,13 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                     label: const Text('Register'),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        //TODO: validate form and create a new user account
+                        //todo: validate form and create a new user account
                         try {
                           await EasyLoading.show(status: "Loading...");
                           final UserModel _model = UserModel(
                             id: '',
                             username: _usernameController.text
+                                .trim()
                                 .toLowerCase()
                                 .replaceAll(" ", ""),
                             password: _confirmPasswordController.text,
@@ -375,8 +365,7 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                                 ),
                               ),
                             );
-                            GoRouter.of(context)
-                                .goNamed(RoutePage.loginPage().name);
+                            GoRouter.of(context).goNamed(AppRouter.login);
                           }
                         } catch (e) {
                           await EasyLoading.dismiss();
@@ -398,8 +387,7 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                     TextSpan(
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          GoRouter.of(context)
-                              .goNamed(RoutePage.loginPage().name);
+                          GoRouter.of(context).goNamed(AppRouter.login);
                         },
                       text: "Login",
                       style: const TextStyle(

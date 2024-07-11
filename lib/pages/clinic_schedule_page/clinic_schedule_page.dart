@@ -35,15 +35,21 @@ class _ClinicSchedulePageState extends State<ClinicSchedulePage>
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        return true;
+    return PopScope(
+      onPopInvoked: (val) {
+        // return true;
       },
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Schedule"),
           bottom: TabBar(
             controller: _tabController,
+            indicatorColor: Colors.white,
+            labelStyle: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+            ),
             tabs: const [
               Tab(
                 key: GlobalObjectKey('1'),

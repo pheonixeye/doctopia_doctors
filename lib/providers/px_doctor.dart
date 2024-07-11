@@ -3,7 +3,7 @@
 import 'package:doctopia_doctors/api/doctor_api/hx_doctor.dart';
 import 'package:doctopia_doctors/models/destination.dart';
 import 'package:doctopia_doctors/models/doctor/doctor.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 class PxDoctor extends ChangeNotifier {
@@ -78,7 +78,7 @@ class PxDoctor extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Doctor> fetchDoctor() async {
+  Future<Doctor?> fetchDoctor() async {
     try {
       final serverResult = await doctorService.fetchDoctorById(id: id);
 
@@ -88,8 +88,26 @@ class PxDoctor extends ChangeNotifier {
 
       return serverResult;
     } on ClientException catch (e) {
-      throw Exception(e.response["message"]);
+      _doctor = null;
+      notifyListeners();
+      if (kDebugMode) {
+        print("PxDoctor().fetchDoctor(${e.response["message"]})");
+      }
+      return null;
+      // throw Exception(e.response["message"]);
     }
+  }
+
+  Future<void> updateDoctorAvatar({
+    required List<int> fileBytes,
+    required String? fileName,
+  }) async {
+    await doctorService.updateDoctorAvatar(
+      id: id,
+      fileBytes: fileBytes,
+      fileName: fileName,
+    );
+    await fetchDoctor();
   }
 
   Map<String, dynamic> _update = {};

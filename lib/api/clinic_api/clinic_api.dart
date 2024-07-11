@@ -9,96 +9,74 @@
 // import 'package:doctopia_doctors/env/env.dart';
 // import 'package:doctopia_doctors/models/clinic/clinic.dart';
 
+// ignore_for_file: non_constant_identifier_names
+
+import 'package:doctopia_doctors/api/_pocket_main/pocket_main.dart';
+import 'package:doctopia_doctors/models/clinic/clinic.dart';
+import 'package:doctopia_doctors/providers/px_user_model.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:pocketbase/pocketbase.dart';
+import 'package:provider/provider.dart';
+
 class HxClinic {
-//   final ENV env;
-//   late final Server server;
-//   late final clientSDK.Databases client_db;
-//   late final serverSDK.Functions server_functions;
+  Future<Clinic?> createClinic(Clinic clinic) async {
+    try {
+      final response = await PocketbaseHelper.pb.collection("clinics").create(
+            body: clinic.toPocketbaseJson(),
+          );
+      final _clinic = Clinic.fromJson(response.toJson());
+      return _clinic;
+    } catch (e) {
+      rethrow;
+    }
+  }
 
-//   HxClinic({
-//     required this.env,
-//   }) {
-//     server = Server.main(env.env);
-//     client_db = clientSDK.Databases(server.clientAPI);
-//     server_functions = serverSDK.Functions(server.serverAPI);
-//   }
+  Future<List<Clinic>?> fetchDoctorClinics(String doc_id) async {
+    try {
+      final response = await PocketbaseHelper.pb.collection("clinics").getList(
+            filter: 'doc_id = "$doc_id"',
+          );
 
-//   Future<({Clinic clinic, String id})> createClinic(Clinic clinic) async {
-//     try {
-//       final response = await client_db.createDocument(
-//         databaseId: env.creds.DATABASE_CLINICS,
-//         collectionId: env.creds.COLLECTION_CLINICS_CLINICS,
-//         documentId: clientSDK.ID.unique(),
-//         data: clinic.toJson(),
-//       );
+      final _clinics =
+          response.items.map((e) => Clinic.fromJson(e.toJson())).toList();
+      if (kDebugMode) {
+        print("fetchDoctorClinics(${_clinics.length})");
+      }
+      return _clinics;
+    } on ClientException catch (e) {
+      if (kDebugMode) {
+        print(e.toString());
+      }
+      throw Exception(e.response['message']);
+    }
+  }
 
-//       final excutionResult = await server_functions.createExecution(
-//         functionId: env.creds.CREATE_DOCTOR_FUNCTION,
-//         path: '/create-clinic',
-//         body: jsonEncode({'clinic_id': response.$id}),
-//         method: 'POST',
-//       );
-//       //throw on wrong invokation
-//       final functionResponse = jsonDecode(excutionResult.responseBody);
-//       if (functionResponse['code'] != 0) {
-//         throw CreateAlgorithmException(functionResponse['code'] as int);
-//       }
+  Future<Clinic> updateClinic(
+    String id,
+    Map<String, dynamic> update,
+  ) async {
+    try {
+      final response = await PocketbaseHelper.pb.collection("clinics").update(
+            id,
+            body: update,
+          );
+      final _clinic = Clinic.fromJson(response.toJson());
+      return _clinic;
+    } catch (e) {
+      rethrow;
+    }
+  }
 
-//       final _clinicRecord = Clinic.clinicRecord(response.$id, response.data);
-
-//       return _clinicRecord;
-//     } catch (e) {
-//       rethrow;
-//     }
-//   }
-
-//   Future<List<({Clinic clinic, String id})>> fetchDoctorClinics(
-//       String doc_id) async {
-//     try {
-//       final response = await client_db.listDocuments(
-//           databaseId: env.creds.DATABASE_CLINICS,
-//           collectionId: env.creds.COLLECTION_CLINICS_CLINICS,
-//           queries: [
-//             clientSDK.Query.equal('doc_id', doc_id),
-//             clientSDK.Query.limit(10),
-//           ]);
-//       final _clinics = response.documents.map((e) {
-//         return Clinic.clinicRecord(e.$id, e.data);
-//       }).toList();
-
-//       return _clinics;
-//     } catch (e) {
-//       rethrow;
-//     }
-//   }
-
-//   Future<({Clinic clinic, String id})> updateClinic(
-//     String id,
-//     Map<String, dynamic> update,
-//   ) async {
-//     try {
-//       final response = await client_db.updateDocument(
-//         databaseId: env.creds.DATABASE_CLINICS,
-//         collectionId: env.creds.COLLECTION_CLINICS_CLINICS,
-//         documentId: id,
-//         data: update,
-//       );
-//       final _clinic = Clinic.clinicRecord(id, response.data);
-//       return _clinic;
-//     } catch (e) {
-//       rethrow;
-//     }
-//   }
-
-//   Future<void> deleteClinic(String id) async {
-//     try {
-//       await client_db.deleteDocument(
-//         databaseId: env.creds.DATABASE_CLINICS,
-//         collectionId: env.creds.COLLECTION_CLINICS_CLINICS,
-//         documentId: id,
-//       );
-//     } catch (e) {
-//       rethrow;
-//     }
-//   }
+  Future<void> deleteClinic(String id, BuildContext context) async {
+    try {
+      final _token = context.read<PxUserModel>().token;
+      await PocketbaseHelper.pb.collection("clinics").delete(
+        id,
+        headers: {"Authorization": "$_token"},
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

@@ -10,19 +10,15 @@ class PxTheme extends ChangeNotifier {
   ThemeMode _mode = ThemeMode.light;
   ThemeMode get mode => _mode;
 
-  // Brightness _brightness = Brightness.light;
-  // Brightness get brightness => _brightness;
-
   Future<void> changeThemeMode() async {
     _mode = _mode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
     await context.read<PxLocalDatabase>().saveThemeToDb(_mode.name);
     notifyListeners();
   }
 
-  Future<void> setThemeModeFromDb() async {
-    await context.read<PxLocalDatabase>().fetchThemeFromDb().whenComplete(() {
-      _mode = tmx.fromString(context.read<PxLocalDatabase>().theme);
-    });
+  void setThemeModeFromDb() {
+    context.read<PxLocalDatabase>().fetchThemeFromDb();
+    _mode = tmx.fromString(context.read<PxLocalDatabase>().theme);
     notifyListeners();
   }
 }

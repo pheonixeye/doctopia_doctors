@@ -76,11 +76,10 @@ class _AccountPublishMenuButtonState extends State<AccountPublishMenuButton> {
                 ),
                 PopupMenuItem<bool>(
                   enabled: false,
-                  value: (clinics.clinics.any((x) => x.clinic.published)),
+                  value: (clinics.clinics.any((x) => x.published)),
                   child: ListTile(
                     leading: CircleAvatar(
-                      child: (clinics.clinics
-                              .any((x) => x.clinic.published == true))
+                      child: (clinics.clinics.any((x) => x.published == true))
                           ? const Icon(Icons.check)
                           : const Icon(Icons.close),
                     ),
@@ -118,7 +117,7 @@ class _AccountPublishMenuButtonState extends State<AccountPublishMenuButton> {
                                   );
                                 });
                           } else if (clinics.clinics
-                              .any((x) => x.clinic.published == false)) {
+                              .any((x) => x.published == false)) {
                             await showAdaptiveDialog(
                                 context: context,
                                 builder: (context) {

@@ -157,13 +157,16 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
                       if (_formKey.currentState!.validate()) {
                         try {
                           await EasyLoading.show(status: "Loading...");
-                          await u.loginUserByEmailAndPassword(
+                          final _id = await u.loginUserByEmailAndPassword(
                             _emailController.text.trim(),
                             _passwordController.text,
                           );
                           await EasyLoading.showSuccess("Success...");
                           if (context.mounted) {
-                            GoRouter.of(context).goNamed(AppRouter.home);
+                            GoRouter.of(context).goNamed(
+                              AppRouter.home,
+                              pathParameters: {"id": _id},
+                            );
                           }
                         } catch (e) {
                           await EasyLoading.dismiss();
@@ -204,8 +207,7 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
                     TextSpan(
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          GoRouter.of(context)
-                              .goNamed(RoutePage.registerPageBasic().name);
+                          GoRouter.of(context).goNamed(AppRouter.register);
                         },
                       text: "Create An Account.",
                       style: const TextStyle(

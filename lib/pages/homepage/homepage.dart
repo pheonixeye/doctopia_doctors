@@ -1,4 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:doctopia_doctors/api/_pocket_main/pocket_main.dart';
+import 'package:doctopia_doctors/components/main_snackbar.dart';
+import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/models/page_ref/page_ref.dart';
 import 'package:doctopia_doctors/pages/homepage/widgets/floating_buttons_by_index.dart';
@@ -9,6 +12,8 @@ import 'package:doctopia_doctors/providers/px_theme.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
 import 'package:doctopia_doctors/routes/routes.dart';
 import 'package:doctopia_doctors/theme/app_theme.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
@@ -105,7 +110,7 @@ class _HomePageState extends State<HomePage>
           return SidebarX(
             animationDuration: const Duration(milliseconds: 300),
             controller: _xController,
-            items: SidebarPageRef.pages(true).map((e) {
+            items: loggedInPages(u.id!).map((e) {
               return SidebarXItem(
                   label: e.name,
                   icon: e.icon,
@@ -117,8 +122,7 @@ class _HomePageState extends State<HomePage>
                         _animationController.reset();
                         _animationController.forward();
                       }
-                      _xController
-                          .selectIndex(SidebarPageRef.loggedInPages.indexOf(e));
+                      _xController.selectIndex(loggedInPages(u.id!).indexOf(e));
                       if (_xController.extended) {
                         _xController.setExtended(false);
                       }
@@ -129,65 +133,108 @@ class _HomePageState extends State<HomePage>
             headerBuilder: (context, extended) {
               return Padding(
                 padding: const EdgeInsets.only(top: 30.0),
-                child: Consumer2<PxUserModel, PxDocuments>(
-                  builder: (context, u, docs, c) {
-                    return Card(
-                      child: extended
-                          ? SizedBox(
-                              width: 250,
-                              height: 150,
-                              child: GridTile(
-                                footer: const Text(
-                                  "",
-                                  textAlign: TextAlign.center,
-                                ),
-                                child: FutureBuilder(
-                                  future: docs.doctorDocuments == null
-                                      ? null
-                                      : docs.documentsService.fetchImage(
-                                          docs.doctorDocuments!.avatar),
-                                  builder: (context, snapshot) {
-                                    while (!snapshot.hasData ||
-                                        snapshot.hasError) {
-                                      return const CircleAvatar(
-                                        radius: 35,
-                                        child: Icon(
-                                          FontAwesomeIcons.userDoctor,
-                                          size: 50,
-                                        ),
-                                      );
-                                    }
-                                    return Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 20.0),
-                                      child: Container(
-                                        width: 150,
-                                        height: 150,
-                                        clipBehavior: Clip.hardEdge,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .secondary,
-                                          ),
-                                          shape: BoxShape.circle,
-                                          image: DecorationImage(
-                                            image: MemoryImage(snapshot.data!),
-                                          ),
-                                        ),
+                child: Consumer3<PxUserModel, PxDoctor, PxDocuments>(
+                  builder: (context, u, d, docs, c) {
+                    return InkWell(
+                      onTap: () async {
+                        FilePickerResult? _image;
+                        try {
+                          _image = await FilePicker.platform.pickFiles(
+                            dialogTitle: "Select Avatar",
+                            allowMultiple: false,
+                            type: FileType.image,
+                            withData: true,
+                          );
+                          if (_image != null && context.mounted) {
+                            if (kDebugMode) {
+                              print(_image.names);
+                            }
+                            await shellFunction(context, toExecute: () async {
+                              await d.updateDoctorAvatar(
+                                fileBytes: _image!.files.first.bytes!,
+                                fileName: "${d.id}_${_image.names[0]}",
+                              );
+                            });
+                          }
+                        } catch (e) {
+                          if (kDebugMode) {
+                            print(e.toString());
+                          }
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              iInfoSnackbar(
+                                "Unknown Error.",
+                                context,
+                                Colors.red,
+                              ),
+                            );
+                          }
+                        }
+                      },
+                      child: Card(
+                        child: extended
+                            ? SizedBox(
+                                width: 250,
+                                height: 150,
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    const SizedBox(height: 10),
+                                    Expanded(
+                                      child: Builder(
+                                        builder: (context) {
+                                          while (d.doctor!.avatar == null) {
+                                            return const CircleAvatar(
+                                              radius: 35,
+                                              child: Icon(
+                                                FontAwesomeIcons.userDoctor,
+                                                size: 50,
+                                              ),
+                                            );
+                                          }
+                                          return Container(
+                                            width: 200,
+                                            height: 200,
+                                            clipBehavior: Clip.hardEdge,
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary,
+                                              ),
+                                              shape: BoxShape.circle,
+                                              image: DecorationImage(
+                                                //http://127.0.0.1:8090/api/files/COLLECTION_ID_OR_NAME/RECORD_ID/FILENAME?thumb=100x300
+                                                image: NetworkImage(
+                                                    "${PocketbaseHelper.pb.baseUrl}/api/files/doctors/${d.doctor?.id}/${d.doctor?.avatar}?thumb=200x200"),
+                                              ),
+                                            ),
+                                          );
+                                        },
                                       ),
-                                    );
-                                  },
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      d.doctor == null ? "" : d.doctor!.name_en,
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                  ],
+                                ),
+                              )
+                            : const CircleAvatar(
+                                radius: 35,
+                                child: Icon(
+                                  FontAwesomeIcons.userDoctor,
+                                  size: 25,
                                 ),
                               ),
-                            )
-                          : const CircleAvatar(
-                              radius: 35,
-                              child: Icon(
-                                FontAwesomeIcons.userDoctor,
-                                size: 25,
-                              ),
-                            ),
+                      ),
                     );
                   },
                 ),
@@ -235,7 +282,6 @@ class _HomePageState extends State<HomePage>
                 : AppTheme.sidebarXthemeExtendedLight(context),
             toggleButtonBuilder: (context, extended) {
               return FloatingActionButton.small(
-                backgroundColor: isDarkMode ? Colors.grey : Colors.white,
                 child: Icon(extended
                     ? Icons.arrow_back_ios_new
                     : Icons.arrow_forward_ios),
@@ -256,8 +302,7 @@ class _HomePageState extends State<HomePage>
             children: [
               AnimatedBuilder(
                 animation: _animationController,
-                child:
-                    SidebarPageRef.pages(true)[_xController.selectedIndex].page,
+                child: loggedInPages(d.id)[_xController.selectedIndex].page,
                 builder: (context, child) {
                   return FadeTransition(
                     opacity: _animation,
@@ -275,6 +320,7 @@ class _HomePageState extends State<HomePage>
         },
       ),
       floatingActionButton: FloatingButtonsByIndex(
+        id: context.read<PxUserModel>().id!,
         index: _xController.selectedIndex,
       ),
     );

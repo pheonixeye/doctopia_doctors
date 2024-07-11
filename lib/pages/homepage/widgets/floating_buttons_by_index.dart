@@ -1,10 +1,15 @@
-import 'package:doctopia_doctors/routes/route_page/route_page.dart';
+import 'package:doctopia_doctors/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class FloatingButtonsByIndex extends StatelessWidget {
-  const FloatingButtonsByIndex({super.key, required this.index});
+  const FloatingButtonsByIndex({
+    super.key,
+    required this.index,
+    required this.id,
+  });
   final int index;
+  final String id;
   @override
   Widget build(BuildContext context) {
     return switch (index) {
@@ -15,7 +20,12 @@ class FloatingButtonsByIndex extends StatelessWidget {
       4 => FloatingActionButton.extended(
           heroTag: 'create-clinic',
           onPressed: () {
-            GoRouter.of(context).goNamed(RoutePage.createClinicPage().name);
+            GoRouter.of(context).goNamed(
+              AppRouter.createclinic,
+              pathParameters: {
+                "id": id,
+              },
+            );
           },
           label: const Text('Create Clinic'),
           icon: const Icon(Icons.add),

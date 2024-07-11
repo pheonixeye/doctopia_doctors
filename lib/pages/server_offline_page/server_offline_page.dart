@@ -1,6 +1,6 @@
 import 'package:doctopia_doctors/assets/assets.dart';
 import 'package:doctopia_doctors/providers/px_server_status.dart';
-import 'package:doctopia_doctors/routes/route_page/route_page.dart';
+import 'package:doctopia_doctors/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gap/gap.dart';
@@ -66,9 +66,7 @@ class _ServerOfflinePageState extends State<ServerOfflinePage>
             ElevatedButton.icon(
               onPressed: () {
                 if (mounted) {
-                  GoRouter.of(context).goNamed(RoutePage.loadingScreen(
-                    key: UniqueKey(),
-                  ).name);
+                  GoRouter.of(context).goNamed(AppRouter.loadingscreen);
                 }
               },
               icon: const Icon(Icons.refresh),

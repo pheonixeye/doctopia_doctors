@@ -22,7 +22,7 @@ class PxUserModel extends ChangeNotifier {
             body: value.toPocketbaseJson(),
           );
       if (kDebugMode) {
-        print(result.toJson());
+        // print(result.toJson());
       }
       _model = UserModel.fromJson(result.toJson());
       return _model!;
@@ -31,7 +31,7 @@ class PxUserModel extends ChangeNotifier {
     }
   }
 
-  Future<void> loginUserByEmailAndPassword(
+  Future<String> loginUserByEmailAndPassword(
     String email,
     String password,
   ) async {
@@ -41,14 +41,17 @@ class PxUserModel extends ChangeNotifier {
                 email,
                 password,
               );
-      _id = result.record!.id;
+      _model = UserModel.fromJson(result.record!.toJson());
+      _id = result.record?.id;
       _token = result.token;
       _isLoggedIn = true;
       notifyListeners();
       if (kDebugMode) {
-        print(id);
-        print(token);
+        // print(result.toJson());
+        // print(id);
+        // print(token);
       }
+      return _id!;
     } on ClientException catch (e) {
       throw Exception(e.response["message"]);
     }
@@ -58,6 +61,7 @@ class PxUserModel extends ChangeNotifier {
     _id = null;
     _token = null;
     _isLoggedIn = false;
+    _model = null;
     notifyListeners();
 
     PocketbaseHelper.pb.authStore.clear();
