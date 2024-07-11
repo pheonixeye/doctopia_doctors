@@ -58,6 +58,7 @@ class Clinic extends Equatable {
     int? followup_duration,
     List<String>? off_dates,
     String? gov_en,
+    String? dest_id,
     String? gov_ar,
     String? city_en,
     String? city_ar,
@@ -83,7 +84,7 @@ class Clinic extends Equatable {
       followup_duration: followup_duration ?? this.followup_duration,
       off_dates: off_dates ?? this.off_dates,
       destination: destination.copyWith(
-        id: id ?? this.id,
+        id: "${destination.govEn}_${destination.areaEn}_${destination.addressEn}",
         govEn: gov_en ?? destination.govEn,
         govAr: gov_ar ?? destination.govAr,
         areaEn: city_en ?? destination.areaEn,

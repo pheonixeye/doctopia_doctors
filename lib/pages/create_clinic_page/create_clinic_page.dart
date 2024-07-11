@@ -151,9 +151,6 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Create Clinic'),
-      ),
       body: Consumer2<PxLocale, PxClinics>(
         builder: (context, l, c, _) {
           final isEnglish = l.locale.languageCode == 'en';
@@ -162,6 +159,9 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
             child: ListView(
               cacheExtent: 5000,
               children: [
+                const ListTile(
+                  title: Text('Create Clinic'),
+                ),
                 ...Clinic.editableStrings.map((e) {
                   return Card(
                     child: Padding(

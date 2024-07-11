@@ -16,8 +16,7 @@ class FloatingButtonsByIndex extends StatelessWidget {
       0 => const SizedBox(),
       1 => const SizedBox(),
       2 => const SizedBox(),
-      3 => const SizedBox(),
-      4 => FloatingActionButton.extended(
+      3 => FloatingActionButton.extended(
           heroTag: 'create-clinic',
           onPressed: () {
             GoRouter.of(context).goNamed(
@@ -30,6 +29,7 @@ class FloatingButtonsByIndex extends StatelessWidget {
           label: const Text('Create Clinic'),
           icon: const Icon(Icons.add),
         ),
+      4 => const SizedBox(),
       5 => const SizedBox(),
       6 => const SizedBox(),
       7 => const SizedBox(),

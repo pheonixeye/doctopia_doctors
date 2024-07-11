@@ -40,31 +40,36 @@ class _ClinicSchedulePageState extends State<ClinicSchedulePage>
         // return true;
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text("Schedule"),
-          bottom: TabBar(
-            controller: _tabController,
-            indicatorColor: Colors.white,
-            labelStyle: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(60),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
             ),
-            tabs: const [
-              Tab(
-                key: GlobalObjectKey('1'),
-                text: 'Summary',
-                icon: Icon(Icons.calendar_month),
+            child: TabBar(
+              controller: _tabController,
+              indicatorColor: Colors.white,
+              labelStyle: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
               ),
-              Tab(
-                key: GlobalObjectKey('2'),
-                text: 'Management',
-                icon: Icon(Icons.edit_calendar_rounded),
-              ),
-            ],
-            onTap: (value) {
-              _tabController.animateTo(value);
-            },
+              tabs: const [
+                Tab(
+                  key: GlobalObjectKey('1'),
+                  text: 'Summary',
+                  icon: Icon(Icons.calendar_month),
+                ),
+                Tab(
+                  key: GlobalObjectKey('2'),
+                  text: 'Management',
+                  icon: Icon(Icons.edit_calendar_rounded),
+                ),
+              ],
+              onTap: (value) {
+                _tabController.animateTo(value);
+              },
+            ),
           ),
         ),
         body: TabBarView(

@@ -1,5 +1,5 @@
 import 'package:doctopia_doctors/assets/assets.dart';
-import 'package:doctopia_doctors/routes/route_page/route_page.dart';
+import 'package:doctopia_doctors/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -74,9 +74,7 @@ class _TokenValidationPageState extends State<TokenValidationPage> {
                     //TODO: check token entered against doctor id
                     //TODO: navigate to password reset page
                     GoRouter.of(context).goNamed(
-                      RoutePage.forgotPassword(
-                        isRegister: false,
-                      ).name,
+                      AppRouter.tokenvalidation,
                     );
                   }
                 },

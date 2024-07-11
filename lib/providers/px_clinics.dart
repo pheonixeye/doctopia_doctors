@@ -87,7 +87,7 @@ class PxClinics extends ChangeNotifier {
       // ),
     );
     if (kDebugMode) {
-      // print(_clinic);
+      print(_clinic);
     }
     notifyListeners();
   }
@@ -212,9 +212,9 @@ class PxClinics extends ChangeNotifier {
     }
   }
 
-  Future<void> deleteClinic(String id, BuildContext context) async {
+  Future<void> deleteClinic(Clinic clinic, BuildContext context) async {
     try {
-      await clinicService.deleteClinic(id, context);
+      await clinicService.deleteClinic(clinic, context);
       await fetchClinics();
     } catch (e) {
       rethrow;

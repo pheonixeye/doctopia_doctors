@@ -7,7 +7,6 @@ import 'package:doctopia_doctors/models/page_ref/page_ref.dart';
 import 'package:doctopia_doctors/pages/homepage/widgets/floating_buttons_by_index.dart';
 import 'package:doctopia_doctors/pages/homepage/widgets/sidebar_btn.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
-import 'package:doctopia_doctors/providers/px_documents.dart';
 import 'package:doctopia_doctors/providers/px_theme.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
 import 'package:doctopia_doctors/routes/routes.dart';
@@ -21,7 +20,8 @@ import 'package:provider/provider.dart';
 import 'package:sidebarx/sidebarx.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({super.key, required this.child});
+  final Widget child;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage>
           return SidebarX(
             animationDuration: const Duration(milliseconds: 300),
             controller: _xController,
-            items: loggedInPages(u.id!).map((e) {
+            items: loggedInPages.map((e) {
               return SidebarXItem(
                   label: e.name,
                   icon: e.icon,
@@ -122,19 +122,23 @@ class _HomePageState extends State<HomePage>
                         _animationController.reset();
                         _animationController.forward();
                       }
-                      _xController.selectIndex(loggedInPages(u.id!).indexOf(e));
+                      _xController.selectIndex(loggedInPages.indexOf(e));
                       if (_xController.extended) {
                         _xController.setExtended(false);
                       }
                     });
                     Scaffold.of(context).closeDrawer();
+                    GoRouter.of(context).goNamed(
+                      e.path,
+                      pathParameters: {"id": u.id!},
+                    );
                   });
             }).toList(),
             headerBuilder: (context, extended) {
               return Padding(
                 padding: const EdgeInsets.only(top: 30.0),
-                child: Consumer3<PxUserModel, PxDoctor, PxDocuments>(
-                  builder: (context, u, d, docs, c) {
+                child: Consumer2<PxUserModel, PxDoctor>(
+                  builder: (context, u, d, _) {
                     return InkWell(
                       onTap: () async {
                         FilePickerResult? _image;
@@ -295,27 +299,13 @@ class _HomePageState extends State<HomePage>
           );
         },
       ),
-      body: Consumer<PxDoctor>(
-        builder: (context, d, c) {
-          return Stack(
-            alignment: Alignment.center,
-            children: [
-              AnimatedBuilder(
-                animation: _animationController,
-                child: loggedInPages(d.id)[_xController.selectedIndex].page,
-                builder: (context, child) {
-                  return FadeTransition(
-                    opacity: _animation,
-                    child: child,
-                  );
-                },
-              ),
-              //* if no account detected:
-              // if (!d.isLoggedIn) const AccountStateNotifier(),
-              //* if account detected but not complete / published
-              // if (d.isLoggedIn && !d.doctor.published)
-              //   const AccountPublishNotifier(),
-            ],
+      body: AnimatedBuilder(
+        animation: _animationController,
+        child: widget.child,
+        builder: (context, child) {
+          return FadeTransition(
+            opacity: _animation,
+            child: child,
           );
         },
       ),

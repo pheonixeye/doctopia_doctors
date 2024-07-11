@@ -123,8 +123,10 @@ class _ScheduleManagementTabState extends State<ScheduleManagementTab>
                             title: Text.rich(
                               TextSpan(
                                 text: "",
-                                style: const TextStyle(
-                                  color: Colors.green,
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .appBarTheme
+                                      .backgroundColor,
                                 ),
                                 children: [
                                   TextSpan(

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:after_layout/after_layout.dart';
 import 'package:doctopia_doctors/assets/assets.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
-import 'package:doctopia_doctors/routes/route_page/route_page.dart';
 import 'package:doctopia_doctors/routes/routes.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
@@ -25,7 +24,7 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
   FutureOr<void> afterFirstLayout(BuildContext context) {
     final _u = context.read<PxUserModel>();
     if (_u.isLoggedIn) {
-      GoRouter.of(context).goNamed(RoutePage.homePage().name);
+      GoRouter.of(context).goNamed(AppRouter.home);
     }
   }
 

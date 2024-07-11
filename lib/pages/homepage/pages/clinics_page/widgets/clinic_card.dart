@@ -3,10 +3,10 @@ import 'package:doctopia_doctors/components/prompt_dialog.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/models/clinic/clinic.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
-import 'package:doctopia_doctors/providers/px_schedule.dart';
 import 'package:doctopia_doctors/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +20,7 @@ class ClinicCard extends StatefulWidget {
 }
 
 class _ClinicCardState extends State<ClinicCard> {
+  //TODO: add location to destination
   static const _textFieldDecoration = InputDecoration(
     border: OutlineInputBorder(),
     suffix: SizedBox(
@@ -223,41 +224,86 @@ class _ClinicCardState extends State<ClinicCard> {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(4.0),
-                        child: Consumer<PxSchedule>(
-                          builder: (context, s, _) {
-                            return ElevatedButton.icon(
-                              onPressed: () async {
-                                // check if clinic schedule is created
-                                final _sch = widget.clinic.schedule;
-                                if (_sch.isEmpty && context.mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      iInfoSnackbar(
-                                          'Add Clinic Schedule First.',
-                                          context));
-                                }
+                        child: ElevatedButton.icon(
+                          onPressed: () async {
+                            // check if clinic schedule is created
+                            final _sch = widget.clinic.schedule;
+                            final _hasSchSet =
+                                _sch.any((s) => s.available == true);
+                            if (_hasSchSet && context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  iInfoSnackbar(
+                                      'Add Clinic Schedule First.', context));
+                            }
 
-                                // testing update algorithm<working>
-                                // publish clinic
-                                else {
-                                  if (context.mounted) {
-                                    await shellFunction(context,
-                                        toExecute: () async {
-                                      await c.updateClinic(widget.clinic.id, {
-                                        'published': !widget.clinic.published,
-                                      });
-                                    });
-                                  }
-                                }
-                              },
-                              label: !widget.clinic.published
-                                  ? const Text('Publish')
-                                  : const Text('UnPublish'),
-                              icon: !widget.clinic.published
-                                  ? const Icon(Icons.publish)
-                                  : const Icon(Icons.unpublished),
-                            );
+                            // testing update algorithm<working>
+                            // publish clinic
+                            else {
+                              if (context.mounted) {
+                                await shellFunction(context,
+                                    toExecute: () async {
+                                  await c.updateClinic(widget.clinic.id, {
+                                    'published': !widget.clinic.published,
+                                  });
+                                });
+                              }
+                            }
                           },
+                          label: !widget.clinic.published
+                              ? const Text('Publish')
+                              : const Text('UnPublish'),
+                          icon: !widget.clinic.published
+                              ? const Icon(Icons.publish)
+                              : const Icon(Icons.unpublished),
                         ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Builder(builder: (context) {
+                          return ElevatedButton.icon(
+                            onPressed: () async {
+                              final oldDest = widget.clinic.destination;
+                              bool isInitial =
+                                  oldDest.lat == 0 && oldDest.lon == 0;
+                              GeoPoint? p = await showSimplePickerLocation(
+                                context: context,
+                                isDismissible: true,
+                                title: "Pick Clinic Location",
+                                textConfirmPicker: "Confirm",
+                                radius: 12,
+                                initPosition: isInitial
+                                    ? GeoPoint(
+                                        latitude: 30,
+                                        longitude: 31,
+                                      )
+                                    : GeoPoint(
+                                        latitude: oldDest.lat,
+                                        longitude: oldDest.lon,
+                                      ),
+                              );
+                              if (p != null && context.mounted) {
+                                final newDest =
+                                    widget.clinic.destination.copyWith(
+                                  lat: p.latitude,
+                                  lon: p.longitude,
+                                );
+                                await shellFunction(
+                                  context,
+                                  toExecute: () async {
+                                    await c.updateClinic(
+                                      widget.clinic.id,
+                                      {
+                                        "destination": newDest.toJson(),
+                                      },
+                                    );
+                                  },
+                                );
+                              }
+                            },
+                            label: const Text('Set Location'),
+                            icon: const Icon(Icons.pin_drop),
+                          );
+                        }),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(4.0),
@@ -283,8 +329,7 @@ class _ClinicCardState extends State<ClinicCard> {
                               if (context.mounted) {
                                 await shellFunction(context,
                                     toExecute: () async {
-                                  await c.deleteClinic(
-                                      widget.clinic.id, context);
+                                  await c.deleteClinic(widget.clinic, context);
                                 });
                               }
                             }
@@ -296,7 +341,7 @@ class _ClinicCardState extends State<ClinicCard> {
                     ],
                   ),
                 ),
-                const Gap(60),
+                const Gap(10),
               ],
             );
           },

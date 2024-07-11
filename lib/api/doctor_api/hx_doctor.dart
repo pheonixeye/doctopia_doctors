@@ -28,7 +28,7 @@ class HxDoctor {
           await PocketbaseHelper.pb.collection("doctors").getOne(id);
 
       if (kDebugMode) {
-        print(response.toJson());
+        // print(response.toJson());
       }
       final doctor = Doctor.fromJson(response.toJson());
 

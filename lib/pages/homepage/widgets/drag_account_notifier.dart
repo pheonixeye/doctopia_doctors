@@ -1,4 +1,4 @@
-import 'package:doctopia_doctors/routes/route_page/route_page.dart';
+import 'package:doctopia_doctors/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -86,15 +86,14 @@ class _AccountStateNotifierState extends State<AccountStateNotifier> {
                 children: [
                   ElevatedButton.icon(
                     onPressed: () {
-                      GoRouter.of(context).goNamed(RoutePage.loginPage().name);
+                      GoRouter.of(context).goNamed(AppRouter.login);
                     },
                     icon: const Icon(Icons.login),
                     label: const Text('Login'),
                   ),
                   ElevatedButton.icon(
                     onPressed: () {
-                      GoRouter.of(context)
-                          .goNamed(RoutePage.registerPageBasic().name);
+                      GoRouter.of(context).goNamed(AppRouter.register);
                     },
                     icon: const Icon(Icons.person_add_alt_1),
                     label: const Text('Register'),

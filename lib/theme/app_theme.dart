@@ -28,12 +28,10 @@ class AppTheme {
   static ThemeData theme({
     required ColorScheme colorScheme,
     required TextTheme textTheme,
-    // required Iterable<ThemeExtension<dynamic>>? extensions,
   }) {
     return ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
-      // extensions: extensions,
       textTheme: textTheme,
       cardTheme: cardTheme,
       listTileTheme: listTileTheme,
@@ -46,7 +44,7 @@ class AppTheme {
         width: 250,
         itemPadding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          // color: Theme.of(context).colorScheme.primaryContainer,
+          color: Theme.of(context).appBarTheme.backgroundColor,
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
@@ -69,6 +67,8 @@ class AppTheme {
       SidebarXTheme(
         decoration: BoxDecoration(
           // color: Theme.of(context).colorScheme.primaryContainer,
+          color: Theme.of(context).appBarTheme.backgroundColor,
+
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
@@ -80,8 +80,8 @@ class AppTheme {
             ),
           ],
         ),
-        textStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
-        selectedTextStyle: const TextStyle(color: Colors.white),
+        // textStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+        // selectedTextStyle: const TextStyle(color: Colors.white),
         itemDecoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: Theme.of(context).canvasColor),
@@ -123,7 +123,7 @@ class AppTheme {
         width: 250,
         itemPadding: const EdgeInsets.all(4),
         selectedItemDecoration: BoxDecoration(
-          // color: Colors.white,
+          color: Colors.white,
           border: Border.all(
             width: 0.5,
           ),
@@ -131,6 +131,8 @@ class AppTheme {
         ),
         decoration: BoxDecoration(
           // color: Theme.of(context).colorScheme.primaryContainer,
+          color: Theme.of(context).appBarTheme.backgroundColor,
+
           borderRadius: BorderRadius.circular(20),
           boxShadow: const [
             BoxShadow(
@@ -164,6 +166,8 @@ class AppTheme {
         ),
         decoration: BoxDecoration(
           // color: Theme.of(context).colorScheme.primaryContainer,
+          color: Theme.of(context).appBarTheme.backgroundColor,
+
           borderRadius: BorderRadius.circular(20),
           boxShadow: const [
             BoxShadow(
@@ -174,6 +178,10 @@ class AppTheme {
               spreadRadius: 2,
             ),
           ],
+        ),
+        hoverColor: Colors.orange.shade500,
+        hoverTextStyle: const TextStyle(
+          color: Colors.white,
         ),
       );
 }

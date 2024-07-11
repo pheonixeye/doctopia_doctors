@@ -2,10 +2,9 @@ import 'dart:async';
 
 import 'package:after_layout/after_layout.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
+import 'package:doctopia_doctors/pages/homepage/pages/bookings_page/widgets/clinic_visits_tile.dart';
 import 'package:doctopia_doctors/providers/px_clinic_visits.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/bookings_page/logic/date_provider.dart';
-import 'package:doctopia_doctors/pages/homepage/pages/bookings_page/widgets/clinic_visits_tile.dart';
-import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
@@ -30,9 +29,7 @@ class _BookingsPageState extends State<BookingsPage> with AfterLayoutMixin {
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) async {
     final cv = context.read<PxClinicVisits>();
-    //TODO:
-    await cv.fetchClinicVisits();
-    //_animateToIndex(_yearsController, cv.year, _yearsWidth);
+
     _animateToIndex(_monthsController, cv.month, _monthsWidth);
     _animateToIndex(_daysController, cv.day, _daysWidth);
   }
@@ -220,28 +217,26 @@ class _BookingsPageState extends State<BookingsPage> with AfterLayoutMixin {
               ),
             ),
             const Divider(),
-            Consumer<PxClinics>(
-              builder: (context, c, _) {
-                //extract this into another widget
-                return Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: c.clinics.isEmpty
-                        ? const Center(
-                            child: Text(
-                              'No Clinics Yet',
-                            ),
-                          )
-                        : Column(
-                            children: [
-                              ...c.clinics.map((e) {
-                                return ClinicVisitsTile(
-                                  clinicData: (clinic: e, id: e.id),
-                                );
-                              }).toList(),
-                            ],
-                          ),
-                  ),
+            Builder(
+              builder: (context) {
+                while (v.data.isEmpty) {
+                  return const Padding(
+                    padding: EdgeInsets.only(top: 60.0),
+                    child: Center(
+                      child: Text("No Visits In Selected Date"),
+                    ),
+                  );
+                }
+                return ListView.builder(
+                  shrinkWrap: true,
+                  primary: false,
+                  itemCount: v.data.length,
+                  itemBuilder: (context, index) {
+                    return ClinicVisitsTile(
+                      index: index,
+                      visit: v.data[index],
+                    );
+                  },
                 );
               },
             ),

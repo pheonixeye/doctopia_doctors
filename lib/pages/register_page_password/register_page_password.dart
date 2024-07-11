@@ -1,7 +1,7 @@
 import 'package:doctopia_doctors/assets/assets.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
-import 'package:doctopia_doctors/routes/route_page/route_page.dart';
+import 'package:doctopia_doctors/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -157,9 +157,8 @@ class _RegisterPagePasswordState extends State<RegisterPagePassword> {
                             ? await context.read<PxDoctor>().createDoctor()
                             : await context.read<PxDoctor>().updateDoctor();
                       }
-                      if (mounted) {
-                        GoRouter.of(context)
-                            .goNamed(RoutePage.loginPage().name);
+                      if (context.mounted) {
+                        GoRouter.of(context).goNamed(AppRouter.login);
                       }
                     });
                   }
