@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:after_layout/after_layout.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/bookings_page/logic/date_provider.dart';
+import 'package:doctopia_doctors/pages/homepage/pages/invoices_page/widgets/invoice_card.dart';
 import 'package:doctopia_doctors/providers/px_invoices.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -42,7 +43,6 @@ class _InvoicesPageState extends State<InvoicesPage> with AfterLayoutMixin {
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) async {
     final cv = context.read<PxInvoices>();
-    await cv.fetchInvoice();
     _animateToIndex(_yearsController, cv.year, _yearsWidth);
     _animateToIndex(_monthsController, cv.month, _monthsWidth);
   }
@@ -179,16 +179,7 @@ class _InvoicesPageState extends State<InvoicesPage> with AfterLayoutMixin {
                 ),
               )
             else
-              Card(
-                //TODO: update ui based on data
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ExpansionTile(
-                    title: Text(
-                        '${v.invoice!.invoice.month} - ${v.invoice!.invoice.year}'),
-                  ),
-                ),
-              ),
+              InvoiceCard(invoice: v.invoice!),
           ],
         );
       },

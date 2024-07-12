@@ -1,10 +1,7 @@
 import 'package:doctopia_doctors/api/governorate_api/governorate_city.dart';
-import 'package:doctopia_doctors/api/invoices_api/invoices_api.dart';
 import 'package:doctopia_doctors/api/server_status_api/status_api.dart';
 import 'package:doctopia_doctors/api/speciality_api/speciality.dart';
-import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_gov.dart';
-import 'package:doctopia_doctors/providers/px_invoices.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_server_status.dart';
 import 'package:doctopia_doctors/providers/px_specialities.dart';
@@ -32,12 +29,6 @@ final List<SingleChildWidget> providers = [
   ChangeNotifierProvider(
     create: (context) => PxSpeciality(
       specialityService: HxSpeciality(),
-    ),
-  ),
-  ChangeNotifierProvider(
-    create: (context) => PxInvoices(
-      invoicesService: HxInvoices(),
-      doc_id: context.read<PxDoctor>().doctor!.id,
     ),
   ),
 ];

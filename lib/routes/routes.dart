@@ -3,6 +3,7 @@
 import 'package:doctopia_doctors/api/clinic_api/clinic_api.dart';
 import 'package:doctopia_doctors/api/clinic_visits_api/hx_clinic_visits.dart';
 import 'package:doctopia_doctors/api/doctor_api/hx_doctor.dart';
+import 'package:doctopia_doctors/api/invoices_api/invoices_api.dart';
 import 'package:doctopia_doctors/api/reviews_api/reviews_api.dart';
 import 'package:doctopia_doctors/pages/clinic_schedule_page/clinic_schedule_page.dart';
 import 'package:doctopia_doctors/pages/create_clinic_page/create_clinic_page.dart';
@@ -23,6 +24,7 @@ import 'package:doctopia_doctors/pages/token_validation_page/token_validation_pa
 import 'package:doctopia_doctors/providers/px_clinic_visits.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
+import 'package:doctopia_doctors/providers/px_invoices.dart';
 import 'package:doctopia_doctors/providers/px_reviews.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
 // import 'package:doctopia_doctors/routes/route_page/route_page.dart';
@@ -252,12 +254,22 @@ class AppRouter {
                 path: invoices,
                 name: invoices,
                 pageBuilder: (context, state) {
+                  final id = state.pathParameters["id"] as String;
+                  final key = ValueKey(id);
+
                   return CustomTransitionPage(
                     transitionDuration: const Duration(milliseconds: 500),
                     name: invoices,
                     transitionsBuilder: fadeTransitionBuilder,
-                    child: InvoicesPage(
-                      key: state.pageKey,
+                    child: ChangeNotifierProvider(
+                      key: key,
+                      create: (context) => PxInvoices(
+                        doc_id: id,
+                        invoicesService: HxInvoices(),
+                      ),
+                      child: InvoicesPage(
+                        key: key,
+                      ),
                     ),
                   );
                 },

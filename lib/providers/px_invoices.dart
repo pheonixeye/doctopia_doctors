@@ -2,21 +2,26 @@
 
 import 'package:doctopia_doctors/api/invoices_api/invoices_api.dart';
 import 'package:doctopia_doctors/models/invoice/invoice.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 class PxInvoices extends ChangeNotifier {
   final HxInvoices invoicesService;
   final String doc_id;
 
-  PxInvoices({required this.doc_id, required this.invoicesService});
+  PxInvoices({
+    required this.doc_id,
+    required this.invoicesService,
+  }) {
+    fetchInvoice();
+  }
 
   int _month = DateTime.now().month;
   int get month => _month;
   int _year = DateTime.now().year;
   int get year => _year;
 
-  ({String id, Invoice invoice})? _invoice;
-  ({String id, Invoice invoice})? get invoice => _invoice;
+  Invoice? _invoice;
+  Invoice? get invoice => _invoice;
 
   Future<void> setDate({int? m, int? y}) async {
     _month = m ?? _month;
@@ -30,6 +35,9 @@ class PxInvoices extends ChangeNotifier {
       final response =
           await invoicesService.fetchDoctorInvoice(doc_id, month, year);
       _invoice = response;
+      if (kDebugMode) {
+        print("PxInvoices().fetchInvoice()");
+      }
       notifyListeners();
     } catch (e) {
       rethrow;

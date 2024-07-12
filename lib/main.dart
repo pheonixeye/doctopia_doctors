@@ -9,6 +9,10 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+//TODO: need to switch to asana as it's getting large
+//TODO: implement notifications
+//TODO: implement news feed page based on speciality
+
 // import 'package:doctopia_doctors/services/notification_service/notification_service.dart';
 // import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
