@@ -179,7 +179,7 @@ class _InvoicesPageState extends State<InvoicesPage> with AfterLayoutMixin {
                 ),
               )
             else
-              InvoiceCard(invoice: v.invoice!),
+              InvoiceCard(detailedInvoice: v.invoice!),
           ],
         );
       },

@@ -16,7 +16,7 @@ class HxClinicVisits {
       final response =
           await PocketbaseHelper.pb.collection("visits_${month}_$year").getList(
                 filter:
-                    "doc_id = '$doc_id'${day == null ? "" : " && day = '$day'"}",
+                    "doc_id = '$doc_id'${(day == null || day == 0) ? "" : " && day = '$day'"}",
               );
       if (kDebugMode) {
         print(

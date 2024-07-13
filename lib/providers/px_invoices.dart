@@ -1,7 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:doctopia_doctors/api/invoices_api/invoices_api.dart';
-import 'package:doctopia_doctors/models/invoice/invoice.dart';
+import 'package:doctopia_doctors/models/invoice/detailed_invoice.dart';
 import 'package:flutter/foundation.dart';
 
 class PxInvoices extends ChangeNotifier {
@@ -20,8 +20,8 @@ class PxInvoices extends ChangeNotifier {
   int _year = DateTime.now().year;
   int get year => _year;
 
-  Invoice? _invoice;
-  Invoice? get invoice => _invoice;
+  DetailedInvoice? _invoice;
+  DetailedInvoice? get invoice => _invoice;
 
   Future<void> setDate({int? m, int? y}) async {
     _month = m ?? _month;

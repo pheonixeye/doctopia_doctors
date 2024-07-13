@@ -3,11 +3,11 @@
 import 'package:doctopia_doctors/models/degree/degree.dart';
 import 'package:doctopia_doctors/models/doctor/doctor.dart';
 import 'package:doctopia_doctors/models/speciality.dart';
+import 'package:doctopia_doctors/pages/homepage/pages/profile_page/widgets/doctor_profile_create.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_specialities.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
@@ -81,10 +81,10 @@ class _ProfilePageState extends State<ProfilePage> {
     await d.updateDoctor();
   }
 
-  void _RevertUpdate(String key) {
-    final d = context.read<PxDoctor>();
-    d.revertUpdate(key);
-  }
+  // void _RevertUpdate(String key) {
+  //   final d = context.read<PxDoctor>();
+  //   d.revertUpdate(key);
+  // }
 
   Widget _updateBtnsRow(
     String field,
@@ -100,12 +100,8 @@ class _ProfilePageState extends State<ProfilePage> {
             onPressed: () async {
               try {
                 await EasyLoading.show(status: "Loading...");
-                if (field == "synd_id") {
-                  await _UpdateDoctorField(
-                      field, int.parse(controller.text.trim()));
-                } else {
-                  await _UpdateDoctorField(field, controller.text.trim());
-                }
+
+                await _UpdateDoctorField(field, controller.text.trim());
                 await EasyLoading.showSuccess("Success...");
                 setState(() {
                   _isEditing[field] = false;
@@ -154,7 +150,9 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Consumer3<PxUserModel, PxDoctor, PxLocale>(
       builder: (context, u, d, l, _) {
-        final isDoctorNull = d.doctor == null;
+        while (d.doctor == null) {
+          return const DoctorProfileCreate();
+        }
 
         return Form(
           key: formKey,
@@ -169,7 +167,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ListTile(
                       leading: const CircleAvatar(),
                       title: const Text("English Name"),
-                      subtitle: (isDoctorNull || _isEditing["name_en"] == true)
+                      subtitle: (_isEditing["name_en"] == true)
                           ? Column(
                               children: [
                                 TextFormField(
@@ -178,20 +176,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                       border: OutlineInputBorder()),
                                   validator: _validator,
                                 ),
-                                if (!isDoctorNull)
-                                  _updateBtnsRow(
-                                    "name_en",
-                                    _name_enController,
-                                    context,
-                                  ),
+                                _updateBtnsRow(
+                                  "name_en",
+                                  _name_enController,
+                                  context,
+                                ),
                               ],
                             )
                           : Text(d.doctor!.name_en),
                       trailing: IconButton.outlined(
                         onPressed: () {
-                          if (isDoctorNull) {
-                            return;
-                          }
                           setState(() {
                             _isEditing["name_en"] = !_isEditing["name_en"]!;
                           });
@@ -203,7 +197,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ListTile(
                       leading: const CircleAvatar(),
                       title: const Text("Arabic Name"),
-                      subtitle: (isDoctorNull || _isEditing["name_ar"] == true)
+                      subtitle: (_isEditing["name_ar"] == true)
                           ? Column(
                               children: [
                                 TextFormField(
@@ -212,20 +206,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                       border: OutlineInputBorder()),
                                   validator: _validator,
                                 ),
-                                if (!isDoctorNull)
-                                  _updateBtnsRow(
-                                    "name_ar",
-                                    _name_arController,
-                                    context,
-                                  ),
+                                _updateBtnsRow(
+                                  "name_ar",
+                                  _name_arController,
+                                  context,
+                                ),
                               ],
                             )
                           : Text(d.doctor!.name_ar),
                       trailing: IconButton.outlined(
                         onPressed: () {
-                          if (isDoctorNull) {
-                            return;
-                          }
                           setState(() {
                             _isEditing["name_ar"] = !_isEditing["name_ar"]!;
                           });
@@ -253,8 +243,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           color: Colors.transparent,
                         ),
                       ),
-                      subtitle: (isDoctorNull ||
-                              _isEditing["specialty_en"] == true)
+                      subtitle: (_isEditing["specialty_en"] == true)
                           ? Consumer<PxSpeciality>(
                               builder: (context, s, _) {
                                 return DropdownButtonHideUnderline(
@@ -301,30 +290,17 @@ class _ProfilePageState extends State<ProfilePage> {
                     ListTile(
                       leading: const CircleAvatar(),
                       title: const Text("Medical Degree"),
-                      trailing: (_isEditing["degree_en"] == false)
-                          ? IconButton.outlined(
-                              onPressed: () {
-                                setState(() {
-                                  _isEditing["degree_en"] == true;
-                                });
-                              },
-                              icon: const Icon(
-                                Icons.edit,
-                              ),
-                            )
-                          : isDoctorNull
-                              ? const IconButton(
-                                  onPressed: null,
-                                  icon: Icon(
-                                    Icons.close,
-                                    color: Colors.transparent,
-                                  ),
-                                )
-                              : const SizedBox(),
-                      //TODO: refactor whole page
-                      //TODO: set correct conditioning
-                      subtitle: (isDoctorNull ||
-                              _isEditing["degree_en"] == true)
+                      trailing: IconButton.outlined(
+                          onPressed: () {
+                            setState(() {
+                              _isEditing["degree_en"] =
+                                  !_isEditing["degree_en"]!;
+                            });
+                          },
+                          icon: Icon(!_isEditing["degree_en"]!
+                              ? Icons.edit
+                              : Icons.close)),
+                      subtitle: (_isEditing["degree_en"] == true)
                           ? DropdownButtonHideUnderline(
                               child: DropdownButtonFormField<Degree>(
                                 decoration: const InputDecoration(
@@ -350,7 +326,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   setState(() {
                                     _degree = value;
                                   });
-                                  if (!isDoctorNull && value != null) {
+                                  if (value != null) {
                                     try {
                                       await EasyLoading.show(
                                           status: "Loading...");
@@ -364,7 +340,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       await EasyLoading.dismiss();
                                       await EasyLoading.showError(e.toString());
                                       setState(() {
-                                        _isEditing["degree_en"] == false;
+                                        _isEditing["degree_en"] = false;
                                       });
                                     }
                                   }
@@ -385,7 +361,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ListTile(
                       leading: const CircleAvatar(),
                       title: const Text("English Title"),
-                      subtitle: (isDoctorNull || _isEditing["title_en"] == true)
+                      subtitle: (_isEditing["title_en"] == true)
                           ? Column(
                               children: [
                                 TextFormField(
@@ -394,20 +370,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                   validator: _validator,
                                   controller: _title_enController,
                                 ),
-                                if (!isDoctorNull)
-                                  _updateBtnsRow(
-                                    "title_en",
-                                    _title_enController,
-                                    context,
-                                  )
+                                _updateBtnsRow(
+                                  "title_en",
+                                  _title_enController,
+                                  context,
+                                )
                               ],
                             )
                           : Text(d.doctor!.title_en),
                       trailing: IconButton.outlined(
                         onPressed: () {
-                          if (isDoctorNull) {
-                            return;
-                          }
                           setState(() {
                             _isEditing["title_en"] = !_isEditing["title_en"]!;
                           });
@@ -420,7 +392,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ListTile(
                       leading: const CircleAvatar(),
                       title: const Text("Arabic Title"),
-                      subtitle: (isDoctorNull || _isEditing["title_ar"] == true)
+                      subtitle: (_isEditing["title_ar"] == true)
                           ? Column(
                               children: [
                                 TextFormField(
@@ -429,20 +401,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                       border: OutlineInputBorder()),
                                   validator: _validator,
                                 ),
-                                if (!isDoctorNull)
-                                  _updateBtnsRow(
-                                    "title_ar",
-                                    _title_arController,
-                                    context,
-                                  )
+                                _updateBtnsRow(
+                                  "title_ar",
+                                  _title_arController,
+                                  context,
+                                )
                               ],
                             )
                           : Text(d.doctor!.title_ar),
                       trailing: IconButton.outlined(
                         onPressed: () {
-                          if (isDoctorNull) {
-                            return;
-                          }
                           setState(() {
                             _isEditing["title_ar"] = !_isEditing["title_ar"]!;
                           });
@@ -464,7 +432,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ListTile(
                       leading: const CircleAvatar(),
                       title: const Text("English About"),
-                      subtitle: (isDoctorNull || _isEditing["about_en"] == true)
+                      subtitle: (_isEditing["about_en"] == true)
                           ? Column(
                               children: [
                                 TextFormField(
@@ -473,20 +441,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                       border: OutlineInputBorder()),
                                   validator: _validator,
                                 ),
-                                if (!isDoctorNull)
-                                  _updateBtnsRow(
-                                    "about_en",
-                                    _about_enController,
-                                    context,
-                                  )
+                                _updateBtnsRow(
+                                  "about_en",
+                                  _about_enController,
+                                  context,
+                                )
                               ],
                             )
                           : Text(d.doctor!.about_en),
                       trailing: IconButton.outlined(
                         onPressed: () {
-                          if (isDoctorNull) {
-                            return;
-                          }
                           setState(() {
                             _isEditing["about_en"] = !_isEditing["about_en"]!;
                           });
@@ -499,7 +463,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ListTile(
                       leading: const CircleAvatar(),
                       title: const Text("Arabic About"),
-                      subtitle: (isDoctorNull || _isEditing["about_ar"] == true)
+                      subtitle: (_isEditing["about_ar"] == true)
                           ? Column(
                               children: [
                                 TextFormField(
@@ -509,20 +473,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                   validator: _validator,
                                 ),
                                 const Gap(10),
-                                if (!isDoctorNull)
-                                  _updateBtnsRow(
-                                    "about_ar",
-                                    _about_arController,
-                                    context,
-                                  ),
+                                _updateBtnsRow(
+                                  "about_ar",
+                                  _about_arController,
+                                  context,
+                                ),
                               ],
                             )
                           : Text(d.doctor!.about_ar),
                       trailing: IconButton.outlined(
                         onPressed: () {
-                          if (isDoctorNull) {
-                            return;
-                          }
                           setState(() {
                             _isEditing["about_ar"] = !_isEditing["about_ar"]!;
                           });
@@ -536,55 +496,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               const Gap(10),
-              if (isDoctorNull)
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton.icon(
-                    onPressed: () async {
-                      if (formKey.currentState!.validate()) {
-                        d.setDoctor(
-                          synd_id: u.model?.synd_id,
-                          personal_phone: u.model?.phone,
-                          name_en: _name_enController.text.trim(),
-                          name_ar: _name_arController.text.trim(),
-                          title_en: _title_enController.text.trim(),
-                          title_ar: _title_arController.text.trim(),
-                          about_en: _about_enController.text.trim(),
-                          about_ar: _about_arController.text.trim(),
-                          speciality_en: _speciality!.en,
-                          speciality_ar: _speciality!.ar,
-                          degree_en: _degree!.en,
-                          degree_ar: _degree!.ar,
-                        );
-                        try {
-                          await EasyLoading.show(status: "Loading...");
-                          await d.createDoctor();
-                          await EasyLoading.showSuccess("Success...");
-                        } catch (e) {
-                          d.nullifyDoctor();
-                          await EasyLoading.dismiss();
-                          if (kDebugMode) {
-                            print(e);
-                          }
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              duration: const Duration(seconds: 10),
-                              content: Text(
-                                e.toString(),
-                                style: const TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ));
-                          }
-                        }
-                      }
-                    },
-                    label: const Text("Save"),
-                    icon: const Icon(Icons.save),
-                  ),
-                )
             ],
           ),
         );

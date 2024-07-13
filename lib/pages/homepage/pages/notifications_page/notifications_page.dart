@@ -1,3 +1,4 @@
+import 'package:doctopia_doctors/pages/homepage/pages/under_construction/under_construction_page.dart';
 import 'package:flutter/material.dart';
 
 class NotificationsPage extends StatefulWidget {
@@ -8,12 +9,9 @@ class NotificationsPage extends StatefulWidget {
 }
 
 class _NotificationsPageState extends State<NotificationsPage> {
+  //TODO: build UI && Logic
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Text('notifications_page'),
-      ),
-    );
+    return const UnderConstructionPage();
   }
 }

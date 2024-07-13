@@ -17,18 +17,9 @@ final List<SingleChildWidget> providers = [
   ChangeNotifierProvider(create: (context) => PxLocale(context)),
   ChangeNotifierProvider(create: (context) => PxTheme(context)),
   ChangeNotifierProvider(
-    create: (context) => PxServerStatus(
-      statusService: HxServerStatus(),
-    ),
-  ),
+      create: (context) => PxServerStatus(statusService: HxServerStatus())),
   ChangeNotifierProvider(
-    create: (context) => PxGov(
-      govCityService: HxGovCity(),
-    ),
-  ),
+      create: (context) => PxGov(govCityService: HxGovCity())),
   ChangeNotifierProvider(
-    create: (context) => PxSpeciality(
-      specialityService: HxSpeciality(),
-    ),
-  ),
+      create: (context) => PxSpeciality(specialityService: HxSpeciality())),
 ];

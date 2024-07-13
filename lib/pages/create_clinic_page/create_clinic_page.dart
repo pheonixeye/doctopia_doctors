@@ -6,6 +6,7 @@ import 'package:doctopia_doctors/models/schedule/schedule.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/providers/px_gov.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
+import 'package:doctopia_doctors/routes/routes.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -336,7 +337,12 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
                             await c.createClinic(_clinic!);
                           });
                           if (context.mounted) {
-                            GoRouter.of(context).pop();
+                            GoRouter.of(context).goNamed(
+                              AppRouter.clinics,
+                              pathParameters: {
+                                "id": c.id,
+                              },
+                            );
                           }
                         }
                       },

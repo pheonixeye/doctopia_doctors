@@ -17,7 +17,10 @@ class ClinicsPage extends StatefulWidget {
 class _ClinicsPageState extends State<ClinicsPage> {
   @override
   Widget build(BuildContext context) {
-    //TODO: find why the state is not updating on creating a new clinic
+    //fixed: find why the state is not updating on creating a new clinic
+    //new instance of PxClinics did not know about the clinics fetched by the other
+    //instance - static fixed the issue
+
     return ListView(
       cacheExtent: 3000,
       children: [

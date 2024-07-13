@@ -20,7 +20,7 @@ class ClinicCard extends StatefulWidget {
 }
 
 class _ClinicCardState extends State<ClinicCard> {
-  //TODO: add location to destination
+  //todo: add location to destination
   static const _textFieldDecoration = InputDecoration(
     border: OutlineInputBorder(),
     suffix: SizedBox(
@@ -229,8 +229,8 @@ class _ClinicCardState extends State<ClinicCard> {
                             // check if clinic schedule is created
                             final _sch = widget.clinic.schedule;
                             final _hasSchSet =
-                                _sch.any((s) => s.available == true);
-                            if (_hasSchSet && context.mounted) {
+                                _sch.map((s) => s.available == true).toList();
+                            if (!_hasSchSet.contains(true) && context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   iInfoSnackbar(
                                       'Add Clinic Schedule First.', context));

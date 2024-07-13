@@ -5,6 +5,7 @@ import 'package:doctopia_doctors/api/clinic_visits_api/hx_clinic_visits.dart';
 import 'package:doctopia_doctors/api/doctor_api/hx_doctor.dart';
 import 'package:doctopia_doctors/api/invoices_api/invoices_api.dart';
 import 'package:doctopia_doctors/api/reviews_api/reviews_api.dart';
+import 'package:doctopia_doctors/api/scrapper_api/scrapper_api.dart';
 import 'package:doctopia_doctors/pages/clinic_schedule_page/clinic_schedule_page.dart';
 import 'package:doctopia_doctors/pages/create_clinic_page/create_clinic_page.dart';
 import 'package:doctopia_doctors/pages/homepage/homepage.dart';
@@ -26,6 +27,7 @@ import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_invoices.dart';
 import 'package:doctopia_doctors/providers/px_reviews.dart';
+import 'package:doctopia_doctors/providers/px_scrapper.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
 // import 'package:doctopia_doctors/routes/route_page/route_page.dart';
 import 'package:doctopia_doctors/routes/transitions.dart';
@@ -77,7 +79,7 @@ class AppRouter {
               final key = ValueKey(id);
               return CustomTransitionPage(
                 transitionDuration: const Duration(milliseconds: 500),
-                name: home,
+                name: "shell",
                 transitionsBuilder: fadeTransitionBuilder,
                 child: ChangeNotifierProvider(
                   key: key,
@@ -97,21 +99,42 @@ class AppRouter {
                   state.pathParameters["id"] == null) {
                 return "/$login";
               }
+
               return null;
             },
             routes: [
               GoRoute(
-                path: home, //app:/:id
+                path: home, //app/:id?page=1
                 name: home,
                 pageBuilder: (context, state) {
+                  final page = state.uri.queryParameters["page"] ?? "1";
+                  final key = ValueKey(page);
+                  print(page);
+
                   return CustomTransitionPage(
                     transitionDuration: const Duration(milliseconds: 500),
                     name: home,
                     transitionsBuilder: fadeTransitionBuilder,
-                    child: NewsFeedPage(
-                      key: state.pageKey,
+                    child: ChangeNotifierProvider(
+                      key: key,
+                      create: (context) => PxScrapper(
+                        scrapperService: HxScrapper(),
+                        page: int.parse(page),
+                      ),
+                      child: NewsFeedPage(
+                        key: key,
+                      ),
                     ),
                   );
+                },
+                redirect: (context, state) {
+                  //HACK: supposed to save state
+                  final page = state.uri.queryParameters["page"];
+                  final id = state.pathParameters["id"];
+                  if (page == null) {
+                    return "/app/$id?page=1";
+                  }
+                  return null;
                 },
               ),
               GoRoute(
@@ -164,7 +187,7 @@ class AppRouter {
                         clinicService: HxClinic(),
                       ),
                       child: ClinicsPage(
-                        key: state.pageKey,
+                        key: key,
                       ),
                     ),
                   );

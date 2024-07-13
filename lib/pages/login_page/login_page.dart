@@ -165,6 +165,7 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
                             GoRouter.of(context).goNamed(
                               AppRouter.home,
                               pathParameters: {"id": _id},
+                              queryParameters: {"page": "1"},
                             );
                           }
                         } catch (e) {

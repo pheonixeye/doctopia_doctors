@@ -65,8 +65,8 @@ class _HomePageState extends State<HomePage>
       appBar: AppBar(
         title: Text(context.t.doctopia),
         actions: [
-          Consumer<PxDoctor>(
-            builder: (context, d, c) {
+          Consumer2<PxUserModel, PxDoctor>(
+            builder: (context, u, d, c) {
               if (d.doctor == null) {
                 return SizedBox(
                   width: 150.0,
@@ -91,6 +91,10 @@ class _HomePageState extends State<HomePage>
                         setState(() {
                           _xController.selectIndex(2); //doctor profile
                         });
+                        GoRouter.of(context).goNamed(
+                          AppRouter.profile,
+                          pathParameters: {"id": u.id!},
+                        );
                       },
                     ),
                   ),

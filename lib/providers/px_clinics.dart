@@ -19,7 +19,7 @@ class PxClinics extends ChangeNotifier {
     }
   }
 
-  List<Clinic> _clinics = [];
+  static List<Clinic> _clinics = [];
   List<Clinic> get clinics => _clinics;
 
   Future<List<Clinic>?> fetchClinics() async {
@@ -191,9 +191,8 @@ class PxClinics extends ChangeNotifier {
       final response = await clinicService.createClinic(clinic);
       _clinic = response;
       notifyListeners();
-      await Future.delayed(const Duration(seconds: 1), () async {
-        await fetchClinics();
-      });
+
+      await fetchClinics();
       return response;
     } catch (e) {
       rethrow;

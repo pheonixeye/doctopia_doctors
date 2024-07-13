@@ -5,6 +5,7 @@ import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/bookings_page/widgets/clinic_visits_tile.dart';
 import 'package:doctopia_doctors/providers/px_clinic_visits.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/bookings_page/logic/date_provider.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
@@ -72,9 +73,32 @@ class _BookingsPageState extends State<BookingsPage> with AfterLayoutMixin {
                 children: [
                   const Text('My Bookings'),
                   const Spacer(),
-                  Text('${v.day} - ${v.month} - ${v.year}'),
+                  v.day == 0
+                      ? Text('${v.month} - ${v.year}')
+                      : Text('${v.day} - ${v.month} - ${v.year}'),
                   const Spacer(),
                 ],
+              ),
+              trailing: FloatingActionButton.small(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                tooltip: "Today's Bookings",
+                heroTag: 'today-bookings',
+                onPressed: () async {
+                  final _today = DateTime.now();
+                  await shellFunction(
+                    context,
+                    toExecute: () async {
+                      v.setDate(
+                        d: _today.day,
+                        m: _today.month,
+                        y: _today.year,
+                      );
+                    },
+                  );
+                },
+                child: const Icon(Icons.today),
               ),
             ),
             Card(
@@ -174,12 +198,41 @@ class _BookingsPageState extends State<BookingsPage> with AfterLayoutMixin {
                       height: _textWidth,
                       child: Row(
                         children: [
-                          const Gap(10),
-                          const SizedBox(
+                          // const Gap(10),
+                          SizedBox(
                             width: _textWidth,
-                            child: Text("Day"),
+                            child: Card.outlined(
+                              elevation: v.day == 0 ? 0 : 6,
+                              child: Center(
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8.0),
+                                  child: Text.rich(
+                                    TextSpan(
+                                      text: "Day",
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .appBarTheme
+                                            .backgroundColor,
+                                        decoration: TextDecoration.underline,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () async {
+                                          await shellFunction(
+                                            context,
+                                            toExecute: () async {
+                                              await v.setDate(d: 0);
+                                            },
+                                          );
+                                        },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
-                          const Gap(10),
+                          const Gap(20),
                           Expanded(
                             child: ListView(
                               controller: _daysController,
@@ -190,18 +243,21 @@ class _BookingsPageState extends State<BookingsPage> with AfterLayoutMixin {
 
                                   return SizedBox(
                                     width: _daysWidth,
-                                    child: Card(
-                                      elevation: isSelected ? 0 : 10,
-                                      child: RadioMenuButton<int>(
-                                        value: e,
-                                        groupValue: v.day,
-                                        onChanged: (value) async {
-                                          await shellFunction(context,
-                                              toExecute: () async {
-                                            await v.setDate(d: value);
-                                          });
-                                        },
-                                        child: Text(e.toString()),
+                                    child: Tooltip(
+                                      message: "All Month Bookings",
+                                      child: Card(
+                                        elevation: isSelected ? 0 : 10,
+                                        child: RadioMenuButton<int>(
+                                          value: e,
+                                          groupValue: v.day,
+                                          onChanged: (value) async {
+                                            await shellFunction(context,
+                                                toExecute: () async {
+                                              await v.setDate(d: value);
+                                            });
+                                          },
+                                          child: Text(e.toString()),
+                                        ),
                                       ),
                                     ),
                                   );

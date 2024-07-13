@@ -35,57 +35,52 @@ class _ClinicSchedulePageState extends State<ClinicSchedulePage>
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      onPopInvoked: (val) {
-        // return true;
-      },
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(60),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).primaryColor,
+          ),
+          child: TabBar(
+            controller: _tabController,
+            indicatorColor: Colors.white,
+            labelStyle: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
             ),
-            child: TabBar(
-              controller: _tabController,
-              indicatorColor: Colors.white,
-              labelStyle: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
+            tabs: const [
+              Tab(
+                key: GlobalObjectKey('1'),
+                text: 'Summary',
+                icon: Icon(Icons.calendar_month),
               ),
-              tabs: const [
-                Tab(
-                  key: GlobalObjectKey('1'),
-                  text: 'Summary',
-                  icon: Icon(Icons.calendar_month),
-                ),
-                Tab(
-                  key: GlobalObjectKey('2'),
-                  text: 'Management',
-                  icon: Icon(Icons.edit_calendar_rounded),
-                ),
-              ],
-              onTap: (value) {
-                _tabController.animateTo(value);
-              },
-            ),
+              Tab(
+                key: GlobalObjectKey('2'),
+                text: 'Management',
+                icon: Icon(Icons.edit_calendar_rounded),
+              ),
+            ],
+            onTap: (value) {
+              _tabController.animateTo(value);
+            },
           ),
         ),
-        body: TabBarView(
-          controller: _tabController,
-          children: [
-            //schedule management tab page
-            ChangeNotifierProvider(
-              create: (_) => PxDates(),
-              builder: (context, child) {
-                return const ScheduleSummaryTab();
-              },
-            ),
-            //schedule management tab page
-            const ScheduleManagementTab(),
-          ],
-        ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          //schedule management tab page
+          ChangeNotifierProvider(
+            create: (_) => PxDates(),
+            builder: (context, child) {
+              return const ScheduleSummaryTab();
+            },
+          ),
+          //schedule management tab page
+          const ScheduleManagementTab(),
+        ],
       ),
     );
   }

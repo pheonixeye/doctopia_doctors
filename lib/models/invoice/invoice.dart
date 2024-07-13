@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:doctopia_doctors/api/_pocket_main/pocket_main.dart';
 import 'package:equatable/equatable.dart';
 
 class Invoice extends Equatable {
@@ -35,7 +36,7 @@ class Invoice extends Equatable {
 
   Invoice copyWith({
     String? id,
-    String? docid,
+    String? doc_id,
     String? issued_at,
     int? month,
     int? year,
@@ -50,7 +51,7 @@ class Invoice extends Equatable {
   }) {
     return Invoice(
       id: id ?? this.id,
-      doc_id: docid ?? this.doc_id,
+      doc_id: doc_id ?? this.doc_id,
       issued_at: issued_at ?? this.issued_at,
       month: month ?? this.month,
       year: year ?? this.year,
@@ -122,4 +123,8 @@ class Invoice extends Equatable {
       clinic_visits,
     ];
   }
+  //http://127.0.0.1:8090/api/files/COLLECTION_ID_OR_NAME/RECORD_ID/FILENAME?thumb=100x300
+
+  String get pdfUrl =>
+      '${PocketbaseHelper.pb.baseUrl}/api/files/invoices_${month}_$year/$id/$file_reference';
 }
