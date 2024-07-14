@@ -78,7 +78,6 @@ dependencies:
   flutter_osm_plugin: ^1.1.0
   flutter_svg: ^2.0.9
   screenshot: ^3.0.0
-  chaleno: ^0.0.7
  
 
 dev_dependencies:
