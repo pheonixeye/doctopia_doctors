@@ -43,7 +43,7 @@ class _ServerOfflinePageState extends State<ServerOfflinePage>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Spacer(),
-            Image.asset(Assets.logo),
+            Image.asset(Assets.icon),
             SpinKitPouringHourGlassRefined(
               color: const Color(0xffFE7800),
               size: 75.0,

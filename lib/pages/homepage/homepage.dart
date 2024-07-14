@@ -2,10 +2,8 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:doctopia_doctors/api/_pocket_main/pocket_main.dart';
 import 'package:doctopia_doctors/components/main_snackbar.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
-import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/models/page_ref/page_ref.dart';
 import 'package:doctopia_doctors/pages/homepage/widgets/floating_buttons_by_index.dart';
-import 'package:doctopia_doctors/pages/homepage/widgets/sidebar_btn.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_theme.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
@@ -63,7 +61,7 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(context.t.doctopia),
+        title: const Text("ProKliniK"),
         actions: [
           Consumer2<PxUserModel, PxDoctor>(
             builder: (context, u, d, c) {
@@ -85,7 +83,7 @@ class _HomePageState extends State<HomePage>
                     child: AnimatedTextKit(
                       repeatForever: true,
                       animatedTexts: [
-                        FlickerAnimatedText('Profile Not Complete'),
+                        FlickerAnimatedText('Complete Your Profile.'),
                       ],
                       onTap: () {
                         setState(() {
@@ -106,6 +104,26 @@ class _HomePageState extends State<HomePage>
           const SizedBox(
             width: 20,
           ),
+          Consumer<PxUserModel>(
+            builder: (context, u, _) {
+              return FloatingActionButton.small(
+                heroTag: 'logout-btn',
+                tooltip: "Logout",
+                child: const Icon(Icons.logout),
+                onPressed: () {
+                  setState(() {
+                    _xController.selectIndex(0);
+                  });
+                  if (context.mounted) {
+                    u.logout();
+                    Scaffold.of(context).closeDrawer();
+                    GoRouter.of(context).goNamed(AppRouter.login);
+                  }
+                },
+              );
+            },
+          ),
+          const SizedBox(width: 20),
         ],
       ),
       drawer: Consumer2<PxUserModel, PxTheme>(
@@ -255,33 +273,6 @@ class _HomePageState extends State<HomePage>
                 color: Theme.of(context).colorScheme.onPrimary,
               ),
             ),
-            footerBuilder: (context, extended) {
-              return Consumer<PxUserModel>(
-                builder: (context, u, _) {
-                  return Column(
-                    children: [
-                      if (u.token != null)
-                        SidebarXBtn(
-                          isDarkMode: isDarkMode,
-                          expanded: extended,
-                          icon: const Icon(Icons.logout),
-                          labelOrTag: 'Logout',
-                          onPressed: () {
-                            setState(() {
-                              _xController.selectIndex(0);
-                            });
-                            if (context.mounted) {
-                              u.logout();
-                              Scaffold.of(context).closeDrawer();
-                              GoRouter.of(context).goNamed(AppRouter.login);
-                            }
-                          },
-                        ),
-                    ],
-                  );
-                },
-              );
-            },
             theme: isDarkMode
                 ? AppTheme.sidebarXthemeRegularDark(context)
                 : AppTheme.sidebarXthemeRegularLight(context),

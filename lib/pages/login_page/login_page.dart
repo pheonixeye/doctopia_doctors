@@ -58,6 +58,7 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
             padding: const EdgeInsets.all(8),
             shrinkWrap: true,
             children: [
+              const SizedBox(height: 30),
               SizedBox(
                 width: 100,
                 height: 100,
@@ -66,6 +67,17 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
                   child: Image.asset(Assets.icon),
                 ),
               ),
+              const SizedBox(height: 5),
+              const Text(
+                "ProKliniK",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.w600,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 30),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -243,9 +255,9 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
                           GoRouter.of(context).goNamed(AppRouter.register);
                         },
                       text: "Create An Account.",
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.w700,
-                        color: Colors.green,
+                        color: Theme.of(context).appBarTheme.backgroundColor,
                       ),
                     ),
                   ],

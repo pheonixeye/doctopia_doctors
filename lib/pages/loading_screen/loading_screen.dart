@@ -55,7 +55,11 @@ class _LoadingScreenState extends State<LoadingScreen>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Spacer(),
-              Image.asset(Assets.logo),
+              Image.asset(
+                Assets.icon,
+                width: 100,
+                height: 100,
+              ),
               SpinKitPumpingHeart(
                 color: const Color(0xffFE7800),
                 size: 75.0,

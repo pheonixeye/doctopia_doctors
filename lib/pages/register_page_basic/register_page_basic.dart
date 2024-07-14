@@ -56,6 +56,7 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
             padding: const EdgeInsets.all(8),
             shrinkWrap: true,
             children: [
+              const SizedBox(height: 30),
               Hero(
                 tag: 'logo',
                 child: SizedBox(
@@ -64,6 +65,16 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                   child: Image.asset(Assets.icon),
                 ),
               ),
+              const SizedBox(height: 5),
+              const Text(
+                "ProKliniK",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontStyle: FontStyle.italic,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 30),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -390,9 +401,9 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                           GoRouter.of(context).goNamed(AppRouter.login);
                         },
                       text: "Login",
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.w700,
-                        color: Colors.green,
+                        color: Theme.of(context).appBarTheme.backgroundColor,
                       ),
                     ),
                   ],

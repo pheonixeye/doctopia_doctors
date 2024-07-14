@@ -51,14 +51,24 @@ class _TokenValidationPageState extends State<TokenValidationPage> {
             padding: const EdgeInsets.all(8),
             shrinkWrap: true,
             children: [
+              const SizedBox(height: 30),
               SizedBox(
-                width: 150,
-                height: 150,
+                width: 100,
+                height: 100,
                 child: Hero(
                   tag: 'logo',
                   child: Image.asset(Assets.icon),
                 ),
               ),
+              const SizedBox(height: 5),
+              const Text(
+                "ProKliniK",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+              const SizedBox(height: 30),
               const Padding(
                 padding: EdgeInsets.symmetric(
                   vertical: 12.0,

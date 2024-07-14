@@ -1,11 +1,11 @@
 {
-    "name": "doctopia_doctors",
-    "short_name": "doctopia_doctors",
+    "name": "ProKliniK Doctors",
+    "short_name": "ProKliniK Doctors",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "ProKliniK Doctor Booking Management Portal.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

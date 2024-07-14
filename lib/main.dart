@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp.router(
           //OPTIONS
           debugShowCheckedModeBanner: false,
-          title: 'Doctopia',
+          title: 'ProKliniK',
           //THEMES
           theme: AppTheme.theme(
             colorScheme: const ColorScheme.light(
