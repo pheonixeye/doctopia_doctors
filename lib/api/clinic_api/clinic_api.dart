@@ -93,17 +93,23 @@ class HxClinic {
         final doctor = Doctor.fromJson(doc_response.toJson());
 
         final dest = doctor.destinations;
+
         final updatedDestination = Destination.fromJson(update['destination']);
+
         dest.removeWhere((d) => d.id == updatedDestination.id);
+
         final newDoctorDestinations = <Destination>[
           ...dest,
           updatedDestination,
         ];
-        await PocketbaseHelper.pb
-            .collection("doctors")
-            .update(_clinic.doc_id, body: {
-          "destinations": newDoctorDestinations.map((e) => e.toJson()).toList(),
-        });
+
+        await PocketbaseHelper.pb.collection("doctors").update(
+          _clinic.doc_id,
+          body: {
+            "destinations":
+                newDoctorDestinations.map((e) => e.toJson()).toList(),
+          },
+        );
       }
       return _clinic;
     } catch (e) {

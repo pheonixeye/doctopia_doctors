@@ -6,6 +6,7 @@ import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_server_status.dart';
 import 'package:doctopia_doctors/providers/px_specialities.dart';
 import 'package:doctopia_doctors/providers/px_theme.dart';
+import 'package:doctopia_doctors/providers/px_user_model.dart';
 import 'package:doctopia_doctors/routes/routes.dart';
 import 'package:doctopia_doctors/services/local_database_service/local_database_service.dart';
 import 'package:flutter/foundation.dart';
@@ -95,7 +96,17 @@ class _LoadingScreenState extends State<LoadingScreen>
         context.read<PxLocalDatabase>().fetchThemeFromDb();
         context.read<PxLocale>().setLocaleFromLocalDb();
         context.read<PxTheme>().setThemeModeFromDb();
-        GoRouter.of(context).pushNamed(AppRouter.login);
+        final _u = context.read<PxUserModel>();
+        if (_u.isLoggedIn) {
+          GoRouter.of(context).pushNamed(
+            AppRouter.home,
+            pathParameters: {
+              "id": _u.id!,
+            },
+          );
+        } else {
+          GoRouter.of(context).pushNamed(AppRouter.login);
+        }
       });
     }
   }

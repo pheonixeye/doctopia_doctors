@@ -4,6 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 class PxUserModel extends ChangeNotifier {
+  PxUserModel() {
+    _loginFromAuthStore();
+  }
+
   UserModel? _model;
   UserModel? get model => _model;
 
@@ -28,6 +32,24 @@ class PxUserModel extends ChangeNotifier {
       return _model!;
     } on ClientException catch (e) {
       throw Exception(e.response["message"]);
+    }
+  }
+
+  static final _store = PocketbaseHelper.pb.authStore;
+
+  Future<void> _loginFromAuthStore() async {
+    //TODO: route to homepage if user is already authenticated;
+
+    // await PocketbaseHelper.pb.collection("users").authRefresh();
+    if (_store.isValid) {
+      _model = UserModel.fromJson(_store.model);
+      _id = _store.model.id;
+      _token = _store.token;
+      _isLoggedIn = true;
+      notifyListeners();
+    }
+    if (kDebugMode) {
+      print("PxUserModel()._loginFromAuthStore($_id)(${_store.isValid})");
     }
   }
 
@@ -64,6 +86,28 @@ class PxUserModel extends ChangeNotifier {
     _model = null;
     notifyListeners();
 
-    PocketbaseHelper.pb.authStore.clear();
+    // PocketbaseHelper.pb.authStore.clear();
+  }
+
+  Future<void> requestPasswordReset(String email) async {
+    try {
+      await PocketbaseHelper.pb.collection("users").requestPasswordReset(email);
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<void> confirmResetPassword({
+    required String token,
+    required String password,
+    required String confirm,
+  }) async {
+    try {
+      await PocketbaseHelper.pb
+          .collection("users")
+          .confirmPasswordReset(token, password, confirm);
+    } on ClientException catch (e) {
+      throw Exception(e.response['message']);
+    }
   }
 }

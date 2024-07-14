@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
 
 class Destination extends Equatable {
@@ -63,10 +61,10 @@ class Destination extends Equatable {
     };
   }
 
-  factory Destination.fromPocketbase(String data) {
-    final json = jsonDecode(data);
-    return Destination.fromJson(json);
-  }
+  // factory Destination.fromPocketbase(String data) {
+  //   final json = jsonDecode(data);
+  //   return Destination.fromJson(json);
+  // }
 
   factory Destination.fromJson(Map<String, dynamic> map) {
     // final map = jsonDecode(data);

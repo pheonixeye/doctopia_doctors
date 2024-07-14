@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:after_layout/after_layout.dart';
 import 'package:doctopia_doctors/assets/assets.dart';
+import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
 import 'package:doctopia_doctors/routes/routes.dart';
 import 'package:email_validator/email_validator.dart';
@@ -24,11 +25,17 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
   FutureOr<void> afterFirstLayout(BuildContext context) {
     final _u = context.read<PxUserModel>();
     if (_u.isLoggedIn) {
-      GoRouter.of(context).goNamed(AppRouter.home);
+      GoRouter.of(context).goNamed(
+        AppRouter.home,
+        pathParameters: {
+          "id": _u.id!,
+        },
+      );
     }
   }
 
   final _formKey = GlobalKey<FormState>();
+  final _emailFieldKey = GlobalKey<FormFieldState>();
   bool rememberMe = false;
   bool obscure = true;
   final _emailController = TextEditingController();
@@ -70,6 +77,7 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
                     const Gap(10),
                     Expanded(
                       child: TextFormField(
+                        key: _emailFieldKey,
                         controller: _emailController,
                         decoration: const InputDecoration(
                           labelText: "Email",
@@ -134,70 +142,95 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CheckboxListTile(
-                  title: const Text('Remember me'),
-                  value: rememberMe,
-                  onChanged: (v) {
-                    setState(() {
-                      rememberMe = v!;
-                    });
-                  },
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.all(8.0),
+              //   child: CheckboxListTile(
+              //     title: const Text('Remember me'),
+              //     value: rememberMe,
+              //     onChanged: (v) {
+              //       setState(() {
+              //         rememberMe = v!;
+              //       });
+              //     },
+              //   ),
+              // ),
               const Gap(10),
               Consumer<PxUserModel>(
                 builder: (context, u, _) {
-                  return ElevatedButton.icon(
-                    icon: const Icon(Icons.login),
-                    label: const Text('Login'),
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        try {
-                          await EasyLoading.show(status: "Loading...");
-                          final _id = await u.loginUserByEmailAndPassword(
-                            _emailController.text.trim(),
-                            _passwordController.text,
-                          );
-                          await EasyLoading.showSuccess("Success...");
-                          if (context.mounted) {
-                            GoRouter.of(context).goNamed(
-                              AppRouter.home,
-                              pathParameters: {"id": _id},
-                              queryParameters: {"page": "1"},
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12.0, horizontal: 24),
+                    child: ElevatedButton.icon(
+                      icon: const Icon(Icons.login),
+                      label: const Text('Login'),
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          try {
+                            await EasyLoading.show(status: "Loading...");
+                            final _id = await u.loginUserByEmailAndPassword(
+                              _emailController.text.trim(),
+                              _passwordController.text,
                             );
-                          }
-                        } catch (e) {
-                          await EasyLoading.dismiss();
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                duration: const Duration(seconds: 10),
-                                content: Text(e.toString(),
-                                    style: const TextStyle(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.w600,
-                                    )),
-                              ),
-                            );
+                            await EasyLoading.showSuccess("Success...");
+                            if (context.mounted) {
+                              GoRouter.of(context).goNamed(
+                                AppRouter.home,
+                                pathParameters: {"id": _id},
+                                queryParameters: {"page": "1"},
+                              );
+                            }
+                          } catch (e) {
+                            await EasyLoading.dismiss();
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  duration: const Duration(seconds: 10),
+                                  content: Text(e.toString(),
+                                      style: const TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.w600,
+                                      )),
+                                ),
+                              );
+                            }
                           }
                         }
-                      }
-                    },
+                      },
+                    ),
                   );
                 },
               ),
               const Gap(10),
-              ElevatedButton.icon(
-                icon: const Icon(Icons.lock_reset),
-                label: const Text('Forgot Password'),
-                onPressed: () async {
-                  //TODO: synd id field is not empty
-                  //TODO: validate doctor exists
-                  //TODO: send generate doctor token request
-                  //TODO: send token to doctor via mail
-                },
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 4.0,
+                ),
+                child: Consumer<PxUserModel>(
+                  builder: (context, u, _) {
+                    return ElevatedButton.icon(
+                      icon: const Icon(Icons.lock_reset),
+                      label: const Text('Forgot Password'),
+                      onPressed: () async {
+                        //todo: email field is not empty
+                        if (_emailFieldKey.currentState != null &&
+                            _emailFieldKey.currentState!.validate()) {
+                          await shellFunction(context, toExecute: () async {
+                            //todo: validate doctor exists => done automatically
+                            //todo: send token to doctor via mail
+                            await u.requestPasswordReset(
+                                _emailController.text.trim());
+                            if (context.mounted) {
+                              GoRouter.of(context)
+                                  .goNamed(AppRouter.tokenvalidation);
+                            }
+                          });
+                        }
+                        //deferred / no need: send generate doctor token request
+                      },
+                    );
+                  },
+                ),
               ),
               const Gap(20),
               Text.rich(

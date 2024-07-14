@@ -15,8 +15,12 @@ class PxScrapper extends ChangeNotifier {
   final int page;
 
   Future<void> init() async {
-    _pageResults = await scrapperService.init(page);
-    notifyListeners();
+    try {
+      _pageResults = await scrapperService.init(page);
+      notifyListeners();
+    } catch (e) {
+      throw Exception(e.toString());
+    }
     if (kDebugMode) {
       print("PxScrapper().init(page:$page)");
     }

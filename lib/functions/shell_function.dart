@@ -7,6 +7,7 @@ Future<void> shellFunction(
   BuildContext context, {
   required Function toExecute,
   String sucessMsg = "Success...",
+  Function? onCatch,
 }) async {
   try {
     await EasyLoading.show(status: "LOADING...");
@@ -23,6 +24,9 @@ Future<void> shellFunction(
         e.toString(),
         Colors.red,
       );
+      if (onCatch != null) {
+        onCatch();
+      }
     }
   }
 }

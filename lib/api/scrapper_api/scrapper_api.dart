@@ -4,7 +4,8 @@ import 'package:uuid/uuid.dart';
 
 class HxScrapper {
   Future<List<MedArticle>> init(int page) async {
-    late final String url = "https://www.medscape.com/index/list_13470_$page";
+    late final String url =
+        "https://www.medscape.com/index/list_13470_${page - 1}";
 
     List<Result> _results = [];
     await Chaleno().load(url).then((p) {
