@@ -26,6 +26,7 @@ import 'package:doctopia_doctors/providers/px_clinic_visits.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_invoices.dart';
+import 'package:doctopia_doctors/providers/px_nav.dart';
 import 'package:doctopia_doctors/providers/px_reviews.dart';
 import 'package:doctopia_doctors/providers/px_scrapper.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
@@ -81,12 +82,19 @@ class AppRouter {
                 transitionDuration: const Duration(milliseconds: 500),
                 name: "shell",
                 transitionsBuilder: fadeTransitionBuilder,
-                child: ChangeNotifierProvider(
-                  key: key,
-                  create: (context) => PxDoctor(
-                    doctorService: HxDoctor(),
-                    id: id,
-                  ),
+                child: MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider(
+                      key: key,
+                      create: (context) => PxDoctor(
+                        doctorService: HxDoctor(),
+                        id: id,
+                      ),
+                    ),
+                    ChangeNotifierProvider(
+                      create: (context) => PxNav(),
+                    ),
+                  ],
                   child: HomePage(
                     key: key,
                     child: child,

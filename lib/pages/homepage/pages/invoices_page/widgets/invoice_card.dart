@@ -1,6 +1,7 @@
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 
+import 'package:doctopia_doctors/pages/homepage/pages/invoices_page/widgets/invoice_payment_details_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -20,7 +21,12 @@ class InvoiceCard extends StatelessWidget {
         child: ExpansionTile(
           leading: FloatingActionButton.small(
             onPressed: () {
-              //TODO: go to payment page
+              showDialog(
+                context: context,
+                builder: (context) => InvoicePaymentDetailsDialog(
+                  invoice: detailedInvoice.invoice,
+                ),
+              );
             },
             heroTag: detailedInvoice.invoice.id,
             child: const Icon(Icons.monetization_on),

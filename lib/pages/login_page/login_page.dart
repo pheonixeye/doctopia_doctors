@@ -227,16 +227,18 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
                         //todo: email field is not empty
                         if (_emailFieldKey.currentState != null &&
                             _emailFieldKey.currentState!.validate()) {
-                          await shellFunction(context, toExecute: () async {
-                            //todo: validate doctor exists => done automatically
-                            //todo: send token to doctor via mail
-                            await u.requestPasswordReset(
-                                _emailController.text.trim());
-                            if (context.mounted) {
-                              GoRouter.of(context)
-                                  .goNamed(AppRouter.tokenvalidation);
-                            }
-                          });
+                          await shellFunction(
+                            context,
+                            toExecute: () async {
+                              //todo: validate doctor exists => done automatically
+                              //todo: send token to doctor via mail
+                              await u.requestPasswordReset(
+                                  _emailController.text.trim());
+                            },
+                            sucessMsg:
+                                "A Password Reset Link Was Sent To Your Email Address.",
+                            duration: const Duration(seconds: 15),
+                          );
                         }
                         //deferred / no need: send generate doctor token request
                       },

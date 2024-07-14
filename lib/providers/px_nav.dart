@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:sidebarx/sidebarx.dart';
 
 class PxNav extends ChangeNotifier {
-  int _index = 0;
+  final SidebarXController _xController = SidebarXController(
+    selectedIndex: _index,
+    extended: _extended,
+  );
+
+  SidebarXController get controller => _xController;
+
+  static int _index = 0;
   int get index => _index;
 
-  bool _extended = false;
+  static bool _extended = false;
   bool get extended => _extended;
 
   void setIndex(int i) {
@@ -12,8 +20,30 @@ class PxNav extends ChangeNotifier {
     notifyListeners();
   }
 
+  void navToIndex(int index) {
+    setIndex(index);
+    _xController.selectIndex(index);
+  }
+
+  void collapse() {
+    _extended = false;
+    notifyListeners();
+    _xController.setExtended(extended);
+  }
+
+  void expandCollapse() {
+    setExtended();
+    _xController.setExtended(extended);
+  }
+
   void setExtended() {
     _extended = !_extended;
     notifyListeners();
+  }
+
+  @override
+  dispose() {
+    _xController.dispose();
+    super.dispose();
   }
 }

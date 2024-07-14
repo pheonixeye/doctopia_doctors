@@ -1,4 +1,7 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/news_feed_page/widgets/article_card.dart';
+import 'package:doctopia_doctors/providers/px_doctor.dart';
+import 'package:doctopia_doctors/providers/px_nav.dart';
 import 'package:doctopia_doctors/providers/px_scrapper.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
 import 'package:doctopia_doctors/routes/routes.dart';
@@ -18,8 +21,67 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
   //todo: build UI && Logic
   @override
   Widget build(BuildContext context) {
-    return Consumer2<PxScrapper, PxUserModel>(
-      builder: (context, s, u, _) {
+    return Consumer4<PxUserModel, PxDoctor, PxScrapper, PxNav>(
+      builder: (context, u, d, s, n, _) {
+        while (d.doctor == null) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Card.outlined(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: DefaultTextStyle(
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                      shadows: [
+                        Shadow(
+                          blurRadius: 7.0,
+                          color: Colors.white,
+                          offset: Offset(0, 0),
+                        ),
+                      ],
+                    ),
+                    child: AnimatedTextKit(
+                      repeatForever: true,
+                      animatedTexts: [
+                        ColorizeAnimatedText(
+                          'Complete Your Profile To Get A Customized News Feed Of Medical Articles.',
+                          textAlign: TextAlign.center,
+                          textStyle: const TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            shadows: [
+                              Shadow(
+                                blurRadius: 7.0,
+                                color: Colors.white,
+                                offset: Offset(0, 0),
+                              ),
+                            ],
+                          ),
+                          colors: [
+                            Colors.green,
+                            Colors.white,
+                            Colors.orange,
+                            Colors.purple,
+                            Colors.black,
+                          ],
+                        ),
+                      ],
+                      onTap: () {
+                        n.navToIndex(2);
+                        GoRouter.of(context).goNamed(
+                          AppRouter.profile,
+                          pathParameters: {"id": u.id!},
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        }
         while (s.pageResults == null) {
           return Center(
             child: SpinKitHourGlass(

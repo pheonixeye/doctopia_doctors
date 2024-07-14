@@ -1,3 +1,4 @@
+import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_theme.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
@@ -62,7 +63,15 @@ class _SettingsPageState extends State<SettingsPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton.icon(
                     onPressed: () async {
-                      //TODO: change password logic
+                      await shellFunction(
+                        context,
+                        toExecute: () async {
+                          await u.requestPasswordReset(u.model!.email!);
+                        },
+                        sucessMsg:
+                            "A Password Reset Link Was Sent To Your Email Address.",
+                        duration: const Duration(seconds: 15),
+                      );
                     },
                     icon: const Icon(Icons.password),
                     label: const Text('Change Password'),

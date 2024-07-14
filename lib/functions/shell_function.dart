@@ -8,6 +8,7 @@ Future<void> shellFunction(
   required Function toExecute,
   String sucessMsg = "Success...",
   Function? onCatch,
+  Duration duration = const Duration(seconds: 10),
 }) async {
   try {
     await EasyLoading.show(status: "LOADING...");
@@ -23,6 +24,7 @@ Future<void> shellFunction(
         context,
         e.toString(),
         Colors.red,
+        duration,
       );
       if (onCatch != null) {
         onCatch();
