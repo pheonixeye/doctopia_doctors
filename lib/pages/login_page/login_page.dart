@@ -1,6 +1,3 @@
-import 'dart:async';
-
-import 'package:after_layout/after_layout.dart';
 import 'package:doctopia_doctors/assets/assets.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
@@ -20,19 +17,19 @@ class Loginpage extends StatefulWidget {
   State<Loginpage> createState() => _LoginpageState();
 }
 
-class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
-  @override
-  FutureOr<void> afterFirstLayout(BuildContext context) {
-    final _u = context.read<PxUserModel>();
-    if (_u.isLoggedIn) {
-      GoRouter.of(context).goNamed(
-        AppRouter.home,
-        pathParameters: {
-          "id": _u.id!,
-        },
-      );
-    }
-  }
+class _LoginpageState extends State<Loginpage> {
+  // @override
+  // FutureOr<void> afterFirstLayout(BuildContext context) {
+  //   final _u = context.read<PxUserModel>();
+  //   if (_u.isLoggedIn) {
+  //     GoRouter.of(context).goNamed(
+  //       AppRouter.home,
+  //       pathParameters: {
+  //         "id": _u.id!,
+  //       },
+  //     );
+  //   }
+  // }
 
   final _formKey = GlobalKey<FormState>();
   final _emailFieldKey = GlobalKey<FormFieldState>();
@@ -154,8 +151,12 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
                   ],
                 ),
               ),
+              // const SizedBox(height: 10),
               // Padding(
-              //   padding: const EdgeInsets.all(8.0),
+              //   padding: const EdgeInsets.symmetric(
+              //     vertical: 8.0,
+              //     horizontal: 12,
+              //   ),
               //   child: CheckboxListTile(
               //     title: const Text('Remember me'),
               //     value: rememberMe,
@@ -182,7 +183,9 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
                             final _id = await u.loginUserByEmailAndPassword(
                               _emailController.text.trim(),
                               _passwordController.text,
+                              rememberMe,
                             );
+                            await u.saveFcmToken();
                             await EasyLoading.showSuccess("Success...");
                             if (context.mounted) {
                               GoRouter.of(context).goNamed(
@@ -246,6 +249,7 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
                   },
                 ),
               ),
+
               const Gap(20),
               Text.rich(
                 TextSpan(

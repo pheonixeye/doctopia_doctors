@@ -1,0 +1,14 @@
+{
+    "flutter": {
+        "platforms": {
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "proklinik",
+                    "configurations": {
+                        "web": "1:996546589832:web:77721870dbe02c42079b3d"
+                    }
+                }
+            }
+        }
+    }
+}

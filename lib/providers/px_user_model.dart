@@ -1,4 +1,7 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:doctopia_doctors/api/_pocket_main/pocket_main.dart';
+import 'package:doctopia_doctors/functions/dprint.dart';
 import 'package:doctopia_doctors/models/user/user_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pocketbase/pocketbase.dart';
@@ -35,28 +38,27 @@ class PxUserModel extends ChangeNotifier {
     }
   }
 
-  static final _store = PocketbaseHelper.pb.authStore;
-
   Future<void> _loginFromAuthStore() async {
     //TODO: route to homepage if user is already authenticated;
 
-    // await PocketbaseHelper.pb.collection("users").authRefresh();
-    if (_store.isValid) {
-      _model = UserModel.fromJson(_store.model);
-      _id = _store.model.id;
-      _token = _store.token;
+    if (PocketbaseHelper.store.isValid) {
+      _model = UserModel.fromJson(PocketbaseHelper.store.model);
+      _id = PocketbaseHelper.store.model.id;
+      _token = PocketbaseHelper.store.token;
       _isLoggedIn = true;
       notifyListeners();
     }
     if (kDebugMode) {
-      print("PxUserModel()._loginFromAuthStore($_id)(${_store.isValid})");
+      print(
+          "PxUserModel()._loginFromAuthStore($_token)(${PocketbaseHelper.store.isValid})");
     }
   }
 
   Future<String> loginUserByEmailAndPassword(
     String email,
-    String password,
-  ) async {
+    String password, [
+    bool rememberMe = false,
+  ]) async {
     try {
       final result =
           await PocketbaseHelper.pb.collection("users").authWithPassword(
@@ -67,12 +69,18 @@ class PxUserModel extends ChangeNotifier {
       _id = result.record?.id;
       _token = result.token;
       _isLoggedIn = true;
+
       notifyListeners();
       if (kDebugMode) {
         // print(result.toJson());
         // print(id);
         // print(token);
       }
+      if (rememberMe) {
+        // PocketbaseHelper.store.clear();
+        PocketbaseHelper.store.save(result.token, result.record);
+      }
+
       return _id!;
     } on ClientException catch (e) {
       throw Exception(e.response["message"]);
@@ -109,5 +117,26 @@ class PxUserModel extends ChangeNotifier {
     } on ClientException catch (e) {
       throw Exception(e.response['message']);
     }
+  }
+
+  String? _fcm_token;
+  String? get fcm_token => _fcm_token;
+
+  void setFcmToken(String? value) {
+    _fcm_token = value;
+    notifyListeners();
+    dprint("PxUserModel().setFcmToken($value)");
+  }
+
+  Future<void> saveFcmToken() async {
+    final result = await PocketbaseHelper.pb.collection("users").update(
+      id!,
+      body: {
+        "fcm_token": _fcm_token,
+      },
+    );
+    _model = UserModel.fromJson(result.toJson());
+    notifyListeners();
+    dprint("PxUserModel().saveFcmToken(${_model?.fcm_token})");
   }
 }

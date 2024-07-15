@@ -1,92 +1,68 @@
-// import 'package:doctopia_doctors/firebase_options.dart';
-// import 'package:doctopia_doctors/models/clinic_visit/clinic_visit.dart';
-// // import 'package:doctopia_doctors/services/local_database_service/local_database_service.dart';
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:firebase_messaging/firebase_messaging.dart';
-// import 'package:flutter/foundation.dart' show kIsWeb;
-// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:doctopia_doctors/functions/dprint.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
-// @pragma('vm:entry-point')
-// Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-//   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-//   await setupFlutterNotifications();
-//   showFlutterNotification(message);
-//   // If you're going to use other Firebase services in the background, such as Firestore,
-//   // make sure you call `initializeApp` before using other Firebase services.
-//   // print('Handling a background message ${message.messageId}');
-// }
+@pragma("vm:entry-point")
+Future<void> onbackgroundMessage(RemoteMessage remoteMessage) async {
+  if (remoteMessage.notification != null) {
+    //TODO:
+    dprint(remoteMessage.toString());
+  }
+}
 
-// late AndroidNotificationChannel channel;
+void onMessageOpenedAppBackground(RemoteMessage remoteMessage) {
+  if (remoteMessage.notification != null) {
+    dprint(remoteMessage.toString());
+  }
+}
 
-// bool isFlutterLocalNotificationsInitialized = false;
+void onMessageOpenedAppForeground(RemoteMessage remoteMessage) {
+  if (remoteMessage.notification != null) {
+    dprint(remoteMessage.toString());
+  }
+}
 
-// Future<void> setupFlutterNotifications() async {
-//   if (isFlutterLocalNotificationsInitialized) {
-//     return;
-//   }
-//   channel = const AndroidNotificationChannel(
-//     'high_importance_channel', // id
-//     'High Importance SMS Notifications', // title
-//     description:
-//         'This channel is used for important.max notifications.', // description
-//     importance: Importance.max,
-//   );
+class NotificationsService {
+  NotificationsService();
+  // ignore: constant_identifier_names
+  static const String APIKEY =
+      "BIVnTiVKKbzjOeWhQ-8JdmP8SlMOvyIRp3b5qX39JfWHdJkFv2oRgcd0hNCFtbibu5yimpNa8-nmBmwjIbjFqM0";
 
-//   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  String? _token;
+  String? get token => _token;
 
-//   /// Create an Android Notification Channel.
-//   ///
-//   /// We use this channel in the `AndroidManifest.xml` file to override the
-//   /// default FCM channel to enable heads up notifications.
-//   await flutterLocalNotificationsPlugin
-//       .resolvePlatformSpecificImplementation<
-//           AndroidFlutterLocalNotificationsPlugin>()
-//       ?.createNotificationChannel(channel);
+  Future<void> init() async {
+    final permission = await FirebaseMessaging.instance.requestPermission();
+    switch (permission.authorizationStatus) {
+      case AuthorizationStatus.authorized:
+        _token = await getFcmToken();
+        break;
+      case AuthorizationStatus.denied:
+        break;
+      case AuthorizationStatus.notDetermined:
+        _token = await getFcmToken();
+        break;
+      case AuthorizationStatus.provisional:
+        _token = await getFcmToken();
+        break;
+    }
+    dprint("NotificationsService().init()");
+  }
 
-//   /// Update the iOS foreground notification presentation options to allow
-//   /// heads up notifications.
-//   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-//     alert: true,
-//     badge: true,
-//     sound: true,
-//   );
-//   isFlutterLocalNotificationsInitialized = true;
-// }
+  Future<String?> getFcmToken({int retries = 3}) async {
+    try {
+      final _token = await FirebaseMessaging.instance.getToken(
+        vapidKey: APIKEY,
+      );
+      return _token;
+    } catch (e) {
+      if (retries > 0) {
+        await Future.delayed(const Duration(seconds: 5), () async {
+          return await getFcmToken(retries: retries - 1);
+        });
+      }
+    }
+    dprint("NotificationsService().getFcmToken($_token)");
 
-// void showFlutterNotification(RemoteMessage message) {
-//   RemoteNotification? notification = message.notification;
-//   final ClinicVisit appointment = ClinicVisit.fromJson(message.data);
-//   AndroidNotification? android = message.notification?.android;
-//   if (notification != null && android != null && !kIsWeb) {
-//     flutterLocalNotificationsPlugin.show(
-//       notification.hashCode,
-//       notification.title,
-//       notification.body,
-//       NotificationDetails(
-//         android: AndroidNotificationDetails(
-//           channel.id,
-//           channel.name,
-//           channelDescription: channel.description,
-//           icon: 'launcher_icon',
-//           visibility: NotificationVisibility.public,
-//           category: AndroidNotificationCategory.message,
-//           styleInformation:
-//               BigTextStyleInformation(appointment.toJson().toString()),
-//         ),
-//       ),
-//     );
-//   }
-//   _sideEffects(appointment);
-// }
-
-// /// Initialize the [FlutterLocalNotificationsPlugin] package.
-// late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-
-// Future<void> _sideEffects(ClinicVisit appointment) async {
-//   // final db = PxLocalDatabase();
-//   // await db.saveAppointmentToDb(appointment);
-//   // await sendSMS(
-//   //   appointment.phone,
-//   //   appointment.toSMS(),
-//   // );
-// }
+    return null;
+  }
+}

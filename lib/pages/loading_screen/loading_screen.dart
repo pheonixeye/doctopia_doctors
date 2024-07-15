@@ -9,6 +9,7 @@ import 'package:doctopia_doctors/providers/px_theme.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
 import 'package:doctopia_doctors/routes/routes.dart';
 import 'package:doctopia_doctors/services/local_database_service/local_database_service.dart';
+import 'package:doctopia_doctors/services/notification_service/notification_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -80,6 +81,7 @@ class _LoadingScreenState extends State<LoadingScreen>
   FutureOr<void> afterFirstLayout(BuildContext context) async {
     //deferred: check internet connection
     //check server state
+
     try {
       await Future.wait([
         context.read<PxServerStatus>().checkServerStatus(),
@@ -95,13 +97,21 @@ class _LoadingScreenState extends State<LoadingScreen>
       }
     }
     if (context.mounted) {
-      await context.read<PxLocalDatabase>().initDb().whenComplete(() {
+      await context.read<PxLocalDatabase>().initDb().whenComplete(() async {
         context.read<PxLocalDatabase>().fetchLanguageFromDb();
         context.read<PxLocalDatabase>().fetchThemeFromDb();
         context.read<PxLocale>().setLocaleFromLocalDb();
         context.read<PxTheme>().setThemeModeFromDb();
+
+        //#fetch fcm_token
         final _u = context.read<PxUserModel>();
-        if (_u.isLoggedIn) {
+        final _notificationService = NotificationsService();
+        await _notificationService.init();
+        if (_notificationService.token != null) {
+          _u.setFcmToken(_notificationService.token);
+        }
+        //FIXME: navigate based on login status
+        if (_u.isLoggedIn && context.mounted) {
           GoRouter.of(context).pushNamed(
             AppRouter.home,
             pathParameters: {
@@ -109,7 +119,9 @@ class _LoadingScreenState extends State<LoadingScreen>
             },
           );
         } else {
-          GoRouter.of(context).pushNamed(AppRouter.login);
+          if (context.mounted) {
+            GoRouter.of(context).pushNamed(AppRouter.login);
+          }
         }
       });
     }

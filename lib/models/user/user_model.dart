@@ -10,6 +10,7 @@ class UserModel extends Equatable {
   final String phone;
   final String? password;
   final int synd_id;
+  final String? fcm_token;
 
   const UserModel({
     required this.id,
@@ -19,6 +20,7 @@ class UserModel extends Equatable {
     required this.service,
     required this.phone,
     required this.synd_id,
+    this.fcm_token,
   });
 
   @override
@@ -31,18 +33,19 @@ class UserModel extends Equatable {
       service,
       phone,
       synd_id,
+      fcm_token,
     ];
   }
 
-  UserModel copyWith({
-    String? id,
-    String? username,
-    String? email,
-    String? service,
-    String? password,
-    String? phone,
-    int? synd_id,
-  }) {
+  UserModel copyWith(
+      {String? id,
+      String? username,
+      String? email,
+      String? service,
+      String? password,
+      String? phone,
+      int? synd_id,
+      String? fcm_token}) {
     return UserModel(
       id: id ?? this.id,
       username: username ?? this.username,
@@ -51,6 +54,7 @@ class UserModel extends Equatable {
       service: service ?? this.service,
       phone: phone ?? this.phone,
       synd_id: synd_id ?? this.synd_id,
+      fcm_token: fcm_token ?? this.fcm_token,
     );
   }
 
@@ -64,6 +68,7 @@ class UserModel extends Equatable {
       'synd_id': synd_id,
       'password': password,
       'passwordConfirm': password,
+      'fcm_token': fcm_token,
     };
   }
 
@@ -76,6 +81,7 @@ class UserModel extends Equatable {
       'synd_id': synd_id,
       'password': password,
       'passwordConfirm': password,
+      'fcm_token': fcm_token,
     };
   }
 
@@ -88,6 +94,7 @@ class UserModel extends Equatable {
       phone: map['phone'] as String,
       password: map['password'] as String?,
       synd_id: map['synd_id'] as int,
+      fcm_token: map['fcm_token'] as String?,
     );
   }
 
