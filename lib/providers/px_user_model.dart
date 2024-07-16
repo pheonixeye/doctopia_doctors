@@ -38,20 +38,18 @@ class PxUserModel extends ChangeNotifier {
     }
   }
 
-  Future<void> _loginFromAuthStore() async {
+  void _loginFromAuthStore() {
     //TODO: route to homepage if user is already authenticated;
 
-    if (PocketbaseHelper.store.isValid) {
-      _model = UserModel.fromJson(PocketbaseHelper.store.model);
-      _id = PocketbaseHelper.store.model.id;
-      _token = PocketbaseHelper.store.token;
+    if (PocketbaseHelper.pb.authStore.isValid) {
+      _model = UserModel.fromJson(PocketbaseHelper.pb.authStore.model);
+      _id = PocketbaseHelper.pb.authStore.model.id;
+      _token = PocketbaseHelper.pb.authStore.token;
       _isLoggedIn = true;
       notifyListeners();
     }
-    if (kDebugMode) {
-      print(
-          "PxUserModel()._loginFromAuthStore($_token)(${PocketbaseHelper.store.isValid})");
-    }
+    dprint(
+        "PxUserModel()._loginFromAuthStore($_token)(${PocketbaseHelper.pb.authStore.isValid})");
   }
 
   Future<String> loginUserByEmailAndPassword(
@@ -71,14 +69,9 @@ class PxUserModel extends ChangeNotifier {
       _isLoggedIn = true;
 
       notifyListeners();
-      if (kDebugMode) {
-        // print(result.toJson());
-        // print(id);
-        // print(token);
-      }
+
       if (rememberMe) {
-        // PocketbaseHelper.store.clear();
-        PocketbaseHelper.store.save(result.token, result.record);
+        PocketbaseHelper.pb.authStore.save(result.token, result.record);
       }
 
       return _id!;
@@ -111,9 +104,11 @@ class PxUserModel extends ChangeNotifier {
     required String confirm,
   }) async {
     try {
-      await PocketbaseHelper.pb
-          .collection("users")
-          .confirmPasswordReset(token, password, confirm);
+      await PocketbaseHelper.pb.collection("users").confirmPasswordReset(
+            token,
+            password,
+            confirm,
+          );
     } on ClientException catch (e) {
       throw Exception(e.response['message']);
     }
@@ -125,18 +120,21 @@ class PxUserModel extends ChangeNotifier {
   void setFcmToken(String? value) {
     _fcm_token = value;
     notifyListeners();
-    dprint("PxUserModel().setFcmToken($value)");
+    // dprint("PxUserModel().setFcmToken($value)");
   }
 
   Future<void> saveFcmToken() async {
-    final result = await PocketbaseHelper.pb.collection("users").update(
-      id!,
-      body: {
-        "fcm_token": _fcm_token,
-      },
-    );
-    _model = UserModel.fromJson(result.toJson());
-    notifyListeners();
-    dprint("PxUserModel().saveFcmToken(${_model?.fcm_token})");
+    if (_token != null && _token != _model!.fcm_token) {
+      final result = await PocketbaseHelper.pb.collection("users").update(
+        id!,
+        body: {
+          "fcm_token": _fcm_token,
+        },
+      );
+      _model = UserModel.fromJson(result.toJson());
+      notifyListeners();
+    }
+    dprint(
+        "PxUserModel().saveFcmToken(${_token == _model!.fcm_token ? 'SameToken' : _model?.fcm_token})");
   }
 }

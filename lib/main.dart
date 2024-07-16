@@ -17,8 +17,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:onmessage/onmessage.dart';
 import 'package:provider/provider.dart';
 
-//TODO: need to switch to asana as it's getting large
-//TODO: implement notifications
+//todo: need to switch to asana as it's getting large
+//todo: implement notifications
 //TODO: implement news feed page based on speciality
 
 Future<void> main() async {
@@ -45,6 +45,7 @@ Future<void> main() async {
 
   OnMessage.instance.stream.listen((MessageEvent event) {
     final data = jsonDecode(event.data.toString());
+    dprint("OnMessage.instance.stream.listen()");
     dprint(data);
   });
 

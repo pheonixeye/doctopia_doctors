@@ -1,7 +1,9 @@
+import 'package:after_layout/after_layout.dart';
 import 'package:doctopia_doctors/assets/assets.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
 import 'package:doctopia_doctors/routes/routes.dart';
+import 'package:doctopia_doctors/services/notification_service/notification_service.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -17,19 +19,16 @@ class Loginpage extends StatefulWidget {
   State<Loginpage> createState() => _LoginpageState();
 }
 
-class _LoginpageState extends State<Loginpage> {
-  // @override
-  // FutureOr<void> afterFirstLayout(BuildContext context) {
-  //   final _u = context.read<PxUserModel>();
-  //   if (_u.isLoggedIn) {
-  //     GoRouter.of(context).goNamed(
-  //       AppRouter.home,
-  //       pathParameters: {
-  //         "id": _u.id!,
-  //       },
-  //     );
-  //   }
-  // }
+class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
+  @override
+  Future<void> afterFirstLayout(BuildContext context) async {
+    final _u = context.read<PxUserModel>();
+    final _notificationService = NotificationsService();
+    await _notificationService.init();
+    if (_notificationService.token != null) {
+      _u.setFcmToken(_notificationService.token);
+    }
+  }
 
   final _formKey = GlobalKey<FormState>();
   final _emailFieldKey = GlobalKey<FormFieldState>();
@@ -151,22 +150,22 @@ class _LoginpageState extends State<Loginpage> {
                   ],
                 ),
               ),
-              // const SizedBox(height: 10),
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(
-              //     vertical: 8.0,
-              //     horizontal: 12,
-              //   ),
-              //   child: CheckboxListTile(
-              //     title: const Text('Remember me'),
-              //     value: rememberMe,
-              //     onChanged: (v) {
-              //       setState(() {
-              //         rememberMe = v!;
-              //       });
-              //     },
-              //   ),
-              // ),
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 8.0,
+                  horizontal: 12,
+                ),
+                child: CheckboxListTile(
+                  title: const Text('Remember me'),
+                  value: rememberMe,
+                  onChanged: (v) {
+                    setState(() {
+                      rememberMe = v!;
+                    });
+                  },
+                ),
+              ),
               const Gap(10),
               Consumer<PxUserModel>(
                 builder: (context, u, _) {

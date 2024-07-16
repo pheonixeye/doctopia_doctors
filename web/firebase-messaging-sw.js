@@ -9,12 +9,7 @@ function handleClick(event) {
   }
 }
 
-messaging.onBackgroundMessage(function (payload) {
-  channel.postMessage(
-    payload
-  );
 
-})
 
 self.addEventListener('notificationclick', handleClick);
 
@@ -33,6 +28,6 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 // Optional:
-messaging.onBackgroundMessage((m) => {
-  console.log("onBackgroundMessage", m);
+messaging.onBackgroundMessage((payload) => {
+  channel.postMessage(payload);
 });

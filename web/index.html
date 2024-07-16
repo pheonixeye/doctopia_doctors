@@ -113,13 +113,10 @@
     if ("serviceWorker" in navigator) {
       window.addEventListener('load', function (ev) {
         var loading = document.querySelector('#loading');
-        navigator.serviceWorker.register("/firebase-messaging-sw.js");
-        const channel = new BroadcastChannel('sw-messages');
-        channel.addEventListener("message", function (event) {
-          localStorage.setItem('flutter.notificationExist', true)
-          window.postMessage(JSON.stringify(event.data))
 
-        })
+        navigator.serviceWorker.register("/firebase-messaging-sw.js", {
+          scope: '/firebase-cloud-messaging-push-scope',
+        });
 
         // Download main.dart.js
         _flutter.loader.loadEntrypoint({
@@ -140,6 +137,11 @@
             });
           }
         });
+      });
+      const channel = new BroadcastChannel('sw-messages');
+      channel.addEventListener("message", function (event) {
+        localStorage.setItem('flutter.notificationExist', true);
+        window.postMessage(JSON.stringify(event.data));
       });
     }
   </script>

@@ -1,22 +1,28 @@
+import 'package:doctopia_doctors/firebase_options.dart';
 import 'package:doctopia_doctors/functions/dprint.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 @pragma("vm:entry-point")
 Future<void> onbackgroundMessage(RemoteMessage remoteMessage) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   if (remoteMessage.notification != null) {
     //TODO:
+    dprint("onBackgroudMessage()");
     dprint(remoteMessage.toString());
   }
 }
 
 void onMessageOpenedAppBackground(RemoteMessage remoteMessage) {
   if (remoteMessage.notification != null) {
+    dprint("onMessageOpenedAppBackground()");
     dprint(remoteMessage.toString());
   }
 }
 
 void onMessageOpenedAppForeground(RemoteMessage remoteMessage) {
   if (remoteMessage.notification != null) {
+    dprint("onMessageOpenedAppForeground()");
     dprint(remoteMessage.toString());
   }
 }
@@ -56,7 +62,7 @@ class NotificationsService {
       return _token;
     } catch (e) {
       if (retries > 0) {
-        await Future.delayed(const Duration(seconds: 5), () async {
+        await Future.delayed(const Duration(seconds: 10), () async {
           return await getFcmToken(retries: retries - 1);
         });
       }
