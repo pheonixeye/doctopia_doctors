@@ -116,7 +116,6 @@ class AppRouter {
                 pageBuilder: (context, state) {
                   final page = state.uri.queryParameters["page"] ?? "1";
                   final key = ValueKey(page);
-                  print(page);
 
                   return CustomTransitionPage(
                     transitionDuration: const Duration(milliseconds: 500),
