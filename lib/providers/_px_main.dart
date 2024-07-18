@@ -12,8 +12,8 @@ import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 final List<SingleChildWidget> providers = [
-  ChangeNotifierProvider(create: (context) => PxUserModel()),
   ChangeNotifierProvider(create: (context) => PxLocalDatabase()),
+  ChangeNotifierProvider(create: (context) => PxUserModel(context)),
   ChangeNotifierProvider(create: (context) => PxLocale(context)),
   ChangeNotifierProvider(create: (context) => PxTheme(context)),
   ChangeNotifierProvider(

@@ -103,8 +103,7 @@ class AppRouter {
               );
             },
             redirect: (context, state) {
-              if (context.read<PxUserModel>().id == null ||
-                  state.pathParameters["id"] == null) {
+              if (context.read<PxUserModel>().id == null) {
                 return "/$login";
               }
 

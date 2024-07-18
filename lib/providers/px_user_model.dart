@@ -1,14 +1,20 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'dart:convert';
+
 import 'package:doctopia_doctors/api/_pocket_main/pocket_main.dart';
 import 'package:doctopia_doctors/functions/dprint.dart';
 import 'package:doctopia_doctors/models/user/user_model.dart';
+import 'package:doctopia_doctors/services/local_database_service/local_database_service.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
+import 'package:provider/provider.dart';
 
 class PxUserModel extends ChangeNotifier {
-  PxUserModel() {
-    _loginFromAuthStore();
+  final BuildContext context;
+  PxUserModel(this.context) {
+    _loginFromAuthStore(context);
   }
 
   UserModel? _model;
@@ -38,18 +44,27 @@ class PxUserModel extends ChangeNotifier {
     }
   }
 
-  void _loginFromAuthStore() {
+  void _loginFromAuthStore(BuildContext context) {
     //TODO: route to homepage if user is already authenticated;
-
-    if (PocketbaseHelper.pb.authStore.isValid) {
-      _model = UserModel.fromJson(PocketbaseHelper.pb.authStore.model);
-      _id = PocketbaseHelper.pb.authStore.model.id;
-      _token = PocketbaseHelper.pb.authStore.token;
-      _isLoggedIn = true;
-      notifyListeners();
+    final localDb = context.read<PxLocalDatabase>();
+    if (localDb.token != null && localDb.userModel != null) {
+      try {
+        _model = UserModel.fromJson(jsonDecode(localDb.userModel!));
+        _id = _model!.id;
+        _token = localDb.token;
+        _isLoggedIn = true;
+        PocketbaseHelper.pb.authStore.save(_token!, _model);
+        notifyListeners();
+      } catch (e) {
+        _model = null;
+        _id = null;
+        _token = null;
+        _isLoggedIn = false;
+        PocketbaseHelper.pb.authStore.clear();
+        notifyListeners();
+      }
     }
-    dprint(
-        "PxUserModel()._loginFromAuthStore($_token)(${PocketbaseHelper.pb.authStore.isValid})");
+    dprint("PxUserModel()._loginFromAuthStore(${localDb.userModel})");
   }
 
   Future<String> loginUserByEmailAndPassword(
@@ -70,8 +85,11 @@ class PxUserModel extends ChangeNotifier {
 
       notifyListeners();
 
-      if (rememberMe) {
-        PocketbaseHelper.pb.authStore.save(result.token, result.record);
+      if (rememberMe && context.mounted) {
+        await context.read<PxLocalDatabase>().saveCredentials(
+              result.token,
+              result.record!.toString(),
+            );
       }
 
       return _id!;
@@ -85,6 +103,8 @@ class PxUserModel extends ChangeNotifier {
     _token = null;
     _isLoggedIn = false;
     _model = null;
+    PocketbaseHelper.pb.authStore.clear();
+    context.read<PxLocalDatabase>().clearCredentials();
     notifyListeners();
 
     // PocketbaseHelper.pb.authStore.clear();

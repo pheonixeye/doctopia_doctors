@@ -8,10 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class PxLocalDatabase extends ChangeNotifier {
   static late final SharedPreferences prefs;
 
-  // PxLocalDatabase() {
-  //   initDb();
-  // }
-
   Future<void> initDb() async {
     prefs = await SharedPreferences.getInstance();
   }
@@ -38,5 +34,26 @@ class PxLocalDatabase extends ChangeNotifier {
   void fetchLanguageFromDb() {
     _language = prefs.getString("lang");
     notifyListeners();
+  }
+
+  String? _token;
+  String? get token => _token;
+
+  String? _userModel;
+  String? get userModel => _userModel;
+
+  Future<void> saveCredentials(String token, String userModel) async {
+    await prefs.setString('token', token);
+    await prefs.setString('userModel', userModel);
+  }
+
+  void getCredentials() {
+    _token = prefs.getString('token');
+    _userModel = prefs.getString('userModel');
+  }
+
+  Future<void> clearCredentials() async {
+    await prefs.setString('token', '');
+    await prefs.setString('userModel', '');
   }
 }

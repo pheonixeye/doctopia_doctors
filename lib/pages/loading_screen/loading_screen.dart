@@ -99,13 +99,14 @@ class _LoadingScreenState extends State<LoadingScreen>
       await context.read<PxLocalDatabase>().initDb().whenComplete(() async {
         context.read<PxLocalDatabase>().fetchLanguageFromDb();
         context.read<PxLocalDatabase>().fetchThemeFromDb();
+        context.read<PxLocalDatabase>().getCredentials();
         context.read<PxLocale>().setLocaleFromLocalDb();
         context.read<PxTheme>().setThemeModeFromDb();
 
         //FIXME: navigate based on login status
         final _u = context.read<PxUserModel>();
         if (_u.isLoggedIn && context.mounted) {
-          GoRouter.of(context).pushNamed(
+          GoRouter.of(context).goNamed(
             AppRouter.home,
             pathParameters: {
               "id": _u.id!,
@@ -113,7 +114,7 @@ class _LoadingScreenState extends State<LoadingScreen>
           );
         } else {
           if (context.mounted) {
-            GoRouter.of(context).pushNamed(AppRouter.login);
+            GoRouter.of(context).goNamed(AppRouter.login);
           }
         }
       });
