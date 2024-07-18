@@ -61,6 +61,7 @@ class _ClinicCardState extends State<ClinicCard> {
       }),
     ),
   );
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -68,6 +69,47 @@ class _ClinicCardState extends State<ClinicCard> {
         padding: const EdgeInsets.all(8.0),
         child: Consumer<PxClinics>(
           builder: (context, c, _) {
+            Future<void> _setClinicLocation() async {
+              final oldDest = widget.clinic.destination;
+              bool isInitial = oldDest.lat == 0 && oldDest.lon == 0;
+              GeoPoint? p = await showSimplePickerLocation(
+                context: context,
+                isDismissible: true,
+                title: "Pick Clinic Location",
+                textConfirmPicker: "Confirm",
+                radius: 12,
+                zoomOption: const ZoomOption(
+                  minZoomLevel: 10,
+                ),
+                initPosition: isInitial
+                    ? GeoPoint(
+                        latitude: 30,
+                        longitude: 31,
+                      )
+                    : GeoPoint(
+                        latitude: oldDest.lat,
+                        longitude: oldDest.lon,
+                      ),
+              );
+              if (p != null && context.mounted) {
+                final newDest = widget.clinic.destination.copyWith(
+                  lat: p.latitude,
+                  lon: p.longitude,
+                );
+                await shellFunction(
+                  context,
+                  toExecute: () async {
+                    await c.updateClinic(
+                      widget.clinic.id,
+                      {
+                        "destination": newDest.toJson(),
+                      },
+                    );
+                  },
+                );
+              }
+            }
+
             return ExpansionTile(
               title: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -84,6 +126,19 @@ class _ClinicCardState extends State<ClinicCard> {
                     Expanded(
                       child: Text(widget.clinic.name_en),
                     ),
+                    if (widget.clinic.destination.lat == 0 ||
+                        widget.clinic.destination.lon == 0)
+                      IconButton.outlined(
+                        tooltip: "Clinic Location Not Set.",
+                        onPressed: () async {
+                          await _setClinicLocation();
+                        },
+                        icon: Icon(
+                          Icons.pin_drop,
+                          color: Theme.of(context).appBarTheme.backgroundColor,
+                        ),
+                      ),
+                    const Gap(10),
                   ],
                 ),
               ),
@@ -190,11 +245,6 @@ class _ClinicCardState extends State<ClinicCard> {
                     ),
                   );
                 }).toList(),
-                // ClinicImagesTile(
-                //   //find why it gets the same images despite having different ids
-                //   clinic_id: e.id,
-                //   key: ValueKey(e.id),
-                // ),
                 const Gap(10),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -259,51 +309,13 @@ class _ClinicCardState extends State<ClinicCard> {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(4.0),
-                        child: Builder(builder: (context) {
-                          return ElevatedButton.icon(
-                            onPressed: () async {
-                              final oldDest = widget.clinic.destination;
-                              bool isInitial =
-                                  oldDest.lat == 0 && oldDest.lon == 0;
-                              GeoPoint? p = await showSimplePickerLocation(
-                                context: context,
-                                isDismissible: true,
-                                title: "Pick Clinic Location",
-                                textConfirmPicker: "Confirm",
-                                radius: 12,
-                                initPosition: isInitial
-                                    ? GeoPoint(
-                                        latitude: 30,
-                                        longitude: 31,
-                                      )
-                                    : GeoPoint(
-                                        latitude: oldDest.lat,
-                                        longitude: oldDest.lon,
-                                      ),
-                              );
-                              if (p != null && context.mounted) {
-                                final newDest =
-                                    widget.clinic.destination.copyWith(
-                                  lat: p.latitude,
-                                  lon: p.longitude,
-                                );
-                                await shellFunction(
-                                  context,
-                                  toExecute: () async {
-                                    await c.updateClinic(
-                                      widget.clinic.id,
-                                      {
-                                        "destination": newDest.toJson(),
-                                      },
-                                    );
-                                  },
-                                );
-                              }
-                            },
-                            label: const Text('Set Location'),
-                            icon: const Icon(Icons.pin_drop),
-                          );
-                        }),
+                        child: ElevatedButton.icon(
+                          onPressed: () async {
+                            await _setClinicLocation();
+                          },
+                          label: const Text("Clinic Location"),
+                          icon: const Icon(Icons.pin_drop),
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(4.0),

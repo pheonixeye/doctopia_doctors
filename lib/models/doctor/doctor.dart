@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:doctopia_doctors/api/_pocket_main/pocket_main.dart';
 import 'package:doctopia_doctors/models/destination.dart';
 import 'package:equatable/equatable.dart';
 
@@ -93,6 +94,9 @@ class Doctor extends Equatable {
       avatar: avatar ?? this.avatar,
     );
   }
+
+  String get avatarUrl =>
+      "${PocketbaseHelper.pb.baseUrl}/api/files/doctors/$id/$avatar?thumb=200x200";
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{

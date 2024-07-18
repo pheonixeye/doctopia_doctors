@@ -1,5 +1,4 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:doctopia_doctors/api/_pocket_main/pocket_main.dart';
 import 'package:doctopia_doctors/components/main_snackbar.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/models/page_ref/page_ref.dart';
@@ -226,9 +225,9 @@ class _HomePageState extends State<HomePage>
                                                   ),
                                                   shape: BoxShape.circle,
                                                   image: DecorationImage(
-                                                    //http://127.0.0.1:8090/api/files/COLLECTION_ID_OR_NAME/RECORD_ID/FILENAME?thumb=100x300
                                                     image: NetworkImage(
-                                                        "${PocketbaseHelper.pb.baseUrl}/api/files/doctors/${d.doctor?.id}/${d.doctor?.avatar}?thumb=200x200"),
+                                                      d.doctor!.avatarUrl,
+                                                    ),
                                                   ),
                                                 ),
                                               );

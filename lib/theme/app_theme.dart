@@ -16,12 +16,7 @@ class AppTheme {
   );
 
   static AppBarTheme appBarTheme(ColorScheme colorScheme) => AppBarTheme(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadiusDirectional.only(
-            bottomEnd: Radius.circular(20),
-            bottomStart: Radius.circular(20),
-          ),
-        ),
+        elevation: 8,
         color: colorScheme.primaryContainer,
       );
 
