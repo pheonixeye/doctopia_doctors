@@ -1,8 +1,8 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:doctopia_doctors/api/clinic_visits_api/hx_clinic_visits.dart';
-import 'package:doctopia_doctors/models/clinic_visit/clinic_visit.dart';
 import 'package:flutter/foundation.dart';
+import 'package:proklinik_models/proklinik_models.dart';
 
 class PxClinicVisits extends ChangeNotifier {
   final HxClinicVisits visitsService;
@@ -22,8 +22,8 @@ class PxClinicVisits extends ChangeNotifier {
   int _year = DateTime.now().year;
   int get year => _year;
 
-  List<ClinicVisit> _data = [];
-  List<ClinicVisit> get data => _data;
+  List<BookingData> _data = [];
+  List<BookingData> get data => _data;
 
   Future<void> setDate({int? d, int? m, int? y}) async {
     _day = d ?? _day;

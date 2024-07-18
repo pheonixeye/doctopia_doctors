@@ -1,6 +1,6 @@
 import 'package:doctopia_doctors/api/speciality_api/speciality.dart';
-import 'package:doctopia_doctors/models/speciality.dart';
 import 'package:flutter/material.dart';
+import 'package:proklinik_models/models/speciality.dart';
 
 class PxSpeciality extends ChangeNotifier {
   final HxSpeciality specialityService;

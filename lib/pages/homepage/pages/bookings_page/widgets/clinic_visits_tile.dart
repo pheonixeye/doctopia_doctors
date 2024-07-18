@@ -1,8 +1,8 @@
 import 'package:doctopia_doctors/functions/shell_function.dart';
-import 'package:doctopia_doctors/models/clinic_visit/clinic_visit.dart';
 import 'package:doctopia_doctors/providers/px_clinic_visits.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:flutter/material.dart';
+import 'package:proklinik_models/proklinik_models.dart';
 import 'package:provider/provider.dart';
 
 class ClinicVisitsTile extends StatefulWidget {
@@ -11,7 +11,7 @@ class ClinicVisitsTile extends StatefulWidget {
     required this.visit,
     required this.index,
   });
-  final ClinicVisit visit;
+  final BookingData visit;
   final int index;
   @override
   State<ClinicVisitsTile> createState() => _ClinicVisitsTileState();

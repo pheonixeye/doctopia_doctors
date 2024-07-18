@@ -1,6 +1,6 @@
 import 'package:doctopia_doctors/api/scrapper_api/scrapper_api.dart';
-import 'package:doctopia_doctors/models/med_article/med_article.dart';
 import 'package:flutter/foundation.dart';
+import 'package:proklinik_models/models/med_article.dart';
 
 class PxScrapper extends ChangeNotifier {
   final HxScrapper scrapperService;

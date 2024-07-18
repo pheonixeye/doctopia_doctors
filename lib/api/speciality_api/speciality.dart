@@ -1,10 +1,11 @@
 import 'dart:convert';
 
 import 'package:doctopia_doctors/assets/assets.dart';
-import 'package:doctopia_doctors/models/speciality.dart';
 import 'package:flutter/services.dart';
+import 'package:proklinik_models/models/speciality.dart';
 
 class HxSpeciality {
+  const HxSpeciality();
   Future<List<Speciality>> fetchSpecialities() async {
     try {
       final specData = rootBundle.loadString(Assets.specialities);

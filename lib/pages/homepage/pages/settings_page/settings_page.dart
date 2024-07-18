@@ -3,6 +3,7 @@ import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_theme.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:proklinik_models/models/user_preferences.dart';
 import 'package:provider/provider.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -15,53 +16,88 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        const ListTile(
-          leading: CircleAvatar(),
-          title: Text('Settings'),
-        ),
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListTile(
-              title: const Text('Language'),
-              trailing: Consumer<PxLocale>(
-                builder: (context, l, c) {
-                  return FloatingActionButton(
-                    heroTag: 'language',
-                    child: Text(l.locale.languageCode == 'en' ? "AR" : "EN"),
-                    onPressed: () async {
-                      await l.changeLocale();
-                    },
-                  );
-                },
+    return Consumer<PxUserModel>(
+      builder: (context, u, _) {
+        bool isCheckboxTristate = u.model!.preferences == null;
+        return ListView(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: ListTile(
+                leading: CircleAvatar(),
+                title: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text('General Settings'),
+                ),
               ),
             ),
-          ),
-        ),
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListTile(
-              title: const Text('Theme'),
-              trailing: FloatingActionButton(
-                heroTag: 'theme',
-                child: const Icon(Icons.theater_comedy),
-                onPressed: () {
-                  context.read<PxTheme>().changeThemeMode();
-                },
-              ),
-            ),
-          ),
-        ),
-        Consumer<PxUserModel>(
-          builder: (context, u, c) {
-            if (u.isLoggedIn) {
-              return Card(
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card.outlined(
+                elevation: 6,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
+                  child: ListTile(
+                    title: const Text('Language'),
+                    trailing: Consumer<PxLocale>(
+                      builder: (context, l, c) {
+                        return FloatingActionButton(
+                          heroTag: 'language',
+                          child:
+                              Text(l.locale.languageCode == 'en' ? "AR" : "EN"),
+                          onPressed: () async {
+                            await l.changeLocale();
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card.outlined(
+                elevation: 6,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListTile(
+                    title: const Text('Theme'),
+                    trailing: FloatingActionButton(
+                      heroTag: 'theme',
+                      child: const Icon(Icons.theater_comedy),
+                      onPressed: () {
+                        context.read<PxTheme>().changeThemeMode();
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const Divider(),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: ListTile(
+                leading: CircleAvatar(),
+                title: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text('Account Settings'),
+                ),
+              ),
+            ),
+            Row(
+              children: [
+                const Spacer(),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
                   child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      backgroundColor:
+                          Theme.of(context).appBarTheme.backgroundColor,
+                    ),
                     onPressed: () async {
                       await shellFunction(
                         context,
@@ -73,17 +109,172 @@ class _SettingsPageState extends State<SettingsPage> {
                         duration: const Duration(seconds: 15),
                       );
                     },
-                    icon: const Icon(Icons.password),
-                    label: const Text('Change Password'),
+                    icon: Icon(
+                      Icons.password,
+                      color: Theme.of(context).textTheme.headlineMedium?.color,
+                    ),
+                    label: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 12,
+                      ),
+                      child: Text(
+                        'Change Password',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color:
+                              Theme.of(context).textTheme.headlineMedium?.color,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              );
-            } else {
-              return const SizedBox();
-            }
-          },
-        ),
-      ],
+                const Spacer(),
+              ],
+            ),
+            const Divider(),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: ListTile(
+                leading: CircleAvatar(),
+                title: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text('Email Notification Settings'),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card.outlined(
+                elevation: 6,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CheckboxListTile(
+                    tristate: isCheckboxTristate,
+                    title: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text('Bookings'),
+                    ),
+                    value: u.model?.preferences?.mailBookings,
+                    onChanged: (value) async {
+                      late UserPreferences _prefs;
+                      if (u.model!.preferences == null) {
+                        _prefs = UserPreferences.initial().copyWith(
+                          mailBookings: value,
+                        );
+                      } else {
+                        _prefs = u.model!.preferences!.copyWith(
+                          mailBookings: value,
+                        );
+                      }
+                      await shellFunction(
+                        context,
+                        toExecute: () async {
+                          await u.updateUserModel({
+                            'preferences': _prefs.toJson(),
+                          });
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card.outlined(
+                elevation: 6,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CheckboxListTile(
+                    tristate: isCheckboxTristate,
+                    title: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text('Invoices'),
+                    ),
+                    value: u.model?.preferences?.mailInvoices,
+                    onChanged: (value) async {
+                      late UserPreferences _prefs;
+                      if (u.model!.preferences == null) {
+                        _prefs = UserPreferences.initial().copyWith(
+                          mailInvoices: value,
+                        );
+                      } else {
+                        _prefs = u.model!.preferences!.copyWith(
+                          mailInvoices: value,
+                        );
+                      }
+                      await shellFunction(
+                        context,
+                        toExecute: () async {
+                          await u.updateUserModel({
+                            'preferences': _prefs.toJson(),
+                          });
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card.outlined(
+                elevation: 6,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CheckboxListTile(
+                    tristate: isCheckboxTristate,
+                    title: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text('Newsletter'),
+                    ),
+                    value: u.model?.preferences?.mailNews,
+                    onChanged: (value) async {
+                      late UserPreferences _prefs;
+                      if (u.model!.preferences == null) {
+                        if (value != null) {
+                          _prefs = UserPreferences.initial().copyWith(
+                            mailNews: value,
+                          );
+                        }
+                      } else {
+                        if (value != null) {
+                          _prefs = u.model!.preferences!.copyWith(
+                            mailNews: value,
+                          );
+                        }
+                      }
+                      await shellFunction(
+                        context,
+                        toExecute: () async {
+                          await u.updateUserModel({
+                            'preferences': _prefs.toJson(),
+                          });
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+            const Divider(),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: ListTile(
+                title: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'version 0.0.1',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

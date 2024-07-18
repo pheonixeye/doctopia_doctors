@@ -1,5 +1,4 @@
 import 'package:doctopia_doctors/assets/assets.dart';
-import 'package:doctopia_doctors/models/user/user_model.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
 import 'package:doctopia_doctors/routes/routes.dart';
 import 'package:email_validator/email_validator.dart';
@@ -8,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:proklinik_models/models/user_model.dart';
 import 'package:provider/provider.dart';
 
 class RegisterPageBasic extends StatefulWidget {

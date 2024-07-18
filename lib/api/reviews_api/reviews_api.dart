@@ -1,8 +1,8 @@
 // ignore_for_file: library_prefixes, non_constant_identifier_names
 
 import 'package:doctopia_doctors/api/_pocket_main/pocket_main.dart';
-import 'package:doctopia_doctors/models/review/review.dart';
 import 'package:pocketbase/pocketbase.dart';
+import 'package:proklinik_models/models/review.dart';
 
 class HxReviews {
   Future<List<Review>> fetchReviews(String id) async {

@@ -1,5 +1,5 @@
 import 'package:doctopia_doctors/api/_pocket_main/pocket_main.dart';
-import 'package:doctopia_doctors/models/med_article/med_article.dart';
+import 'package:proklinik_models/models/med_article.dart';
 
 class HxScrapper {
   Future<List<MedArticle>> init(int page) async {

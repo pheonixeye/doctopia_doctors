@@ -3,7 +3,7 @@
 import 'package:doctopia_doctors/api/_pocket_main/pocket_main.dart';
 
 class HxServerStatus {
-  HxServerStatus();
+  const HxServerStatus();
 
   Future<String?> checkServerStatus() async {
     try {

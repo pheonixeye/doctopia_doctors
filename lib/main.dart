@@ -88,7 +88,9 @@ class MyApp extends StatelessWidget {
             textTheme: textTheme,
           ),
           darkTheme: AppTheme.theme(
-            colorScheme: const ColorScheme.dark(),
+            colorScheme: const ColorScheme.dark(
+              primary: Colors.green,
+            ),
             // extensions: [darkCustomColors],
             textTheme: textTheme.apply(
               displayColor: Colors.white,

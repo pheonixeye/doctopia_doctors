@@ -1,12 +1,12 @@
 // ignore_for_file: library_prefixes, non_constant_identifier_names
 
 import 'package:doctopia_doctors/api/_pocket_main/pocket_main.dart';
-import 'package:doctopia_doctors/models/clinic_visit/clinic_visit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pocketbase/pocketbase.dart';
+import 'package:proklinik_models/proklinik_models.dart';
 
 class HxClinicVisits {
-  Future<List<ClinicVisit>?> fetchClinicVisits({
+  Future<List<BookingData>?> fetchClinicVisits({
     required String doc_id,
     int? day,
     required int month,
@@ -23,7 +23,7 @@ class HxClinicVisits {
             "HxClinicVisits($doc_id).fetchCinicVisits($day-$month-$year) # [${response.items.map((e) => e.data["user_name"]).toList()}]");
       }
       final visits =
-          response.items.map((e) => ClinicVisit.fromJson(e.toJson())).toList();
+          response.items.map((e) => BookingData.fromJson(e.toJson())).toList();
 
       return visits;
     } on ClientException catch (e) {
@@ -31,7 +31,7 @@ class HxClinicVisits {
     }
   }
 
-  Future<ClinicVisit> updateClinicVisit({
+  Future<BookingData> updateClinicVisit({
     required String id,
     required int month,
     required int year,
@@ -45,7 +45,7 @@ class HxClinicVisits {
           "attended": attended,
         },
       );
-      final visit = ClinicVisit.fromJson(response.toJson());
+      final visit = BookingData.fromJson(response.toJson());
       return visit;
     } on ClientException catch (e) {
       throw Exception(e.response["message"]);

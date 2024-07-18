@@ -1,8 +1,4 @@
 import 'package:doctopia_doctors/functions/shell_function.dart';
-import 'package:doctopia_doctors/models/city.dart';
-import 'package:doctopia_doctors/models/clinic/clinic.dart';
-import 'package:doctopia_doctors/models/governorate.dart';
-import 'package:doctopia_doctors/models/schedule/schedule.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/providers/px_gov.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
@@ -11,6 +7,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:proklinik_models/models/city.dart';
+import 'package:proklinik_models/models/clinic.dart';
+import 'package:proklinik_models/models/governorate.dart';
+import 'package:proklinik_models/models/schedule.dart';
 import 'package:provider/provider.dart';
 
 class CreateClinicPage extends StatefulWidget {

@@ -5,11 +5,11 @@ import 'dart:async';
 import 'package:after_layout/after_layout.dart';
 import 'package:doctopia_doctors/functions/date_functions.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
-import 'package:doctopia_doctors/models/schedule/schedule.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:proklinik_models/models/schedule.dart';
 import 'package:provider/provider.dart';
 
 class ScheduleManagementTab extends StatefulWidget {

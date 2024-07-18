@@ -1,10 +1,10 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:doctopia_doctors/api/doctor_api/hx_doctor.dart';
-import 'package:doctopia_doctors/models/destination.dart';
-import 'package:doctopia_doctors/models/doctor/doctor.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pocketbase/pocketbase.dart';
+import 'package:proklinik_models/models/destination.dart';
+import 'package:proklinik_models/models/doctor.dart';
 
 class PxDoctor extends ChangeNotifier {
   final HxDoctor doctorService;

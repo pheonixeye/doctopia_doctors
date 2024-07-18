@@ -79,6 +79,8 @@ dependencies:
   flutter_svg: ^2.0.9
   screenshot: ^3.0.0
   onmessage: ^0.2.0
+  proklinik_models:
+    path: '../proklinik_models'
  
 
 dev_dependencies:

@@ -1,11 +1,11 @@
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 
+import 'package:doctopia_doctors/extensions/pdf_url_on_invoice_ext.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/invoices_page/widgets/invoice_payment_details_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
-import 'package:doctopia_doctors/models/invoice/detailed_invoice.dart';
+import 'package:proklinik_models/models/detailed_invoice.dart';
 
 class InvoiceCard extends StatelessWidget {
   const InvoiceCard({super.key, required this.detailedInvoice});

@@ -1,9 +1,9 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:doctopia_doctors/api/clinic_api/clinic_api.dart';
-import 'package:doctopia_doctors/models/clinic/clinic.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:proklinik_models/models/clinic.dart';
 
 class PxClinics extends ChangeNotifier {
   final HxClinic clinicService;

@@ -1,8 +1,8 @@
 import 'package:doctopia_doctors/api/_pocket_main/pocket_main.dart';
-import 'package:doctopia_doctors/models/doctor/doctor.dart';
 import 'package:flutter/foundation.dart';
 // import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:proklinik_models/models/doctor.dart';
 // import 'package:http_parser/http_parser.dart' show MediaType;
 
 class HxDoctor {

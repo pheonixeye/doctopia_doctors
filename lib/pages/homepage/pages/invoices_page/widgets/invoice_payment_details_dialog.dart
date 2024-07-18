@@ -1,8 +1,9 @@
-import 'package:doctopia_doctors/models/invoice/invoice.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
+
+import 'package:proklinik_models/models/invoice.dart';
 
 class InvoicePaymentDetailsDialog extends StatelessWidget {
   const InvoicePaymentDetailsDialog({

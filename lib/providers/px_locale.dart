@@ -10,6 +10,8 @@ class PxLocale extends ChangeNotifier {
   Locale _locale = const Locale('en');
   Locale get locale => _locale;
 
+  bool get isEnglish => _locale == const Locale('en');
+
   Future<void> changeLocale() async {
     if (_locale.languageCode == 'en') {
       _locale = const Locale('ar');

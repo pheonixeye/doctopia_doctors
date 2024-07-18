@@ -1,8 +1,8 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:doctopia_doctors/api/invoices_api/invoices_api.dart';
-import 'package:doctopia_doctors/models/invoice/detailed_invoice.dart';
 import 'package:flutter/foundation.dart';
+import 'package:proklinik_models/models/detailed_invoice.dart';
 
 class PxInvoices extends ChangeNotifier {
   final HxInvoices invoicesService;

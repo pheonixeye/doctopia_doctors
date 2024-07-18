@@ -3,7 +3,7 @@
 import 'package:appwrite/appwrite.dart' as clientSDK;
 import 'package:doctopia_doctors/api/servers/servers.dart';
 import 'package:doctopia_doctors/env/env.dart';
-import 'package:doctopia_doctors/models/schedule/schedule.dart';
+import 'package:proklinik_models/models/schedule.dart';
 
 class HxSchedule {
   final ENV env = ENV("dev");

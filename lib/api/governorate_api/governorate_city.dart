@@ -2,11 +2,11 @@
 
 import 'dart:convert';
 import 'package:doctopia_doctors/assets/assets.dart';
-import 'package:doctopia_doctors/models/governorate.dart';
-import 'package:doctopia_doctors/models/governorates.dart';
 import 'package:flutter/services.dart';
+import 'package:proklinik_models/proklinik_models.dart';
 
 class HxGovCity {
+  const HxGovCity();
   Future<Governorates> fetchGovernorates() async {
     final govData = rootBundle.loadString(Assets.governorates);
 

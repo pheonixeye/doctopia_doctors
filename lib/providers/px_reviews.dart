@@ -1,8 +1,8 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:doctopia_doctors/api/reviews_api/reviews_api.dart';
-import 'package:doctopia_doctors/models/review/review.dart';
 import 'package:flutter/foundation.dart';
+import 'package:proklinik_models/models/review.dart';
 
 class PxReviews extends ChangeNotifier {
   final HxReviews reviewsService;

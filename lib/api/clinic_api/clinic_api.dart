@@ -12,13 +12,11 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:doctopia_doctors/api/_pocket_main/pocket_main.dart';
-import 'package:doctopia_doctors/models/clinic/clinic.dart';
-import 'package:doctopia_doctors/models/destination.dart';
-import 'package:doctopia_doctors/models/doctor/doctor.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
+import 'package:proklinik_models/proklinik_models.dart';
 import 'package:provider/provider.dart';
 
 class HxClinic {

@@ -3,17 +3,21 @@
 import 'dart:convert';
 
 import 'package:doctopia_doctors/api/_pocket_main/pocket_main.dart';
+import 'package:doctopia_doctors/api/user_model_api/user_model_api.dart';
 import 'package:doctopia_doctors/functions/dprint.dart';
-import 'package:doctopia_doctors/models/user/user_model.dart';
 import 'package:doctopia_doctors/services/local_database_service/local_database_service.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
+import 'package:proklinik_models/models/user_model.dart';
 import 'package:provider/provider.dart';
 
 class PxUserModel extends ChangeNotifier {
   final BuildContext context;
-  PxUserModel(this.context) {
+  final HxUserModel userService;
+  PxUserModel({
+    required this.context,
+    required this.userService,
+  }) {
     _loginFromAuthStore(context);
   }
 
@@ -31,13 +35,8 @@ class PxUserModel extends ChangeNotifier {
 
   Future<UserModel> createUserAccount(UserModel value) async {
     try {
-      final result = await PocketbaseHelper.pb.collection("users").create(
-            body: value.toPocketbaseJson(),
-          );
-      if (kDebugMode) {
-        // print(result.toJson());
-      }
-      _model = UserModel.fromJson(result.toJson());
+      _model = await userService.createUserAccount(value);
+      notifyListeners();
       return _model!;
     } on ClientException catch (e) {
       throw Exception(e.response["message"]);
@@ -73,11 +72,10 @@ class PxUserModel extends ChangeNotifier {
     bool rememberMe = false,
   ]) async {
     try {
-      final result =
-          await PocketbaseHelper.pb.collection("users").authWithPassword(
-                email,
-                password,
-              );
+      final result = await userService.loginUserByEmailAndPassword(
+        email,
+        password,
+      );
       _model = UserModel.fromJson(result.record!.toJson());
       _id = result.record?.id;
       _token = result.token;
@@ -118,22 +116,6 @@ class PxUserModel extends ChangeNotifier {
     }
   }
 
-  Future<void> confirmResetPassword({
-    required String token,
-    required String password,
-    required String confirm,
-  }) async {
-    try {
-      await PocketbaseHelper.pb.collection("users").confirmPasswordReset(
-            token,
-            password,
-            confirm,
-          );
-    } on ClientException catch (e) {
-      throw Exception(e.response['message']);
-    }
-  }
-
   String? _fcm_token;
   String? get fcm_token => _fcm_token;
 
@@ -145,16 +127,28 @@ class PxUserModel extends ChangeNotifier {
 
   Future<void> saveFcmToken() async {
     if (_token != null && _token != _model!.fcm_token) {
-      final result = await PocketbaseHelper.pb.collection("users").update(
-        id!,
-        body: {
+      final result = await userService.updateUserModel(
+        id: id!,
+        update: {
           "fcm_token": _fcm_token,
         },
       );
-      _model = UserModel.fromJson(result.toJson());
+      _model = result;
       notifyListeners();
     }
     dprint(
         "PxUserModel().saveFcmToken(${_token == _model!.fcm_token ? 'SameToken' : _model?.fcm_token})");
+  }
+
+  Future<UserModel?> updateUserModel(Map<String, dynamic> update) async {
+    try {
+      final result = await userService.updateUserModel(id: id!, update: update);
+      _model = result;
+      notifyListeners();
+      return _model!;
+    } on ClientException catch (e) {
+      dprint(e.response['message']);
+      return null;
+    }
   }
 }

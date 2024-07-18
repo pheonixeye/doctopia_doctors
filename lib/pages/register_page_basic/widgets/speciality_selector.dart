@@ -1,8 +1,8 @@
-import 'package:doctopia_doctors/models/speciality.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_specialities.dart';
 import 'package:flutter/material.dart';
+import 'package:proklinik_models/models/speciality.dart';
 import 'package:provider/provider.dart';
 
 class SpecialitySelector extends StatelessWidget {

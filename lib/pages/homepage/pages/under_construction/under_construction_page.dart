@@ -1,6 +1,6 @@
 // import 'package:doctopia_doctors/api/scrapper_api/scrapper_api.dart';
 import 'package:doctopia_doctors/assets/assets.dart';
-import 'package:doctopia_doctors/extentions/is_mobile_ext.dart';
+import 'package:doctopia_doctors/extensions/is_mobile_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

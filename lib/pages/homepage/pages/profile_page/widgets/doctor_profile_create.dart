@@ -1,7 +1,5 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:doctopia_doctors/models/degree/degree.dart';
-import 'package:doctopia_doctors/models/speciality.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_specialities.dart';
@@ -10,6 +8,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
+import 'package:proklinik_models/models/degree.dart';
+import 'package:proklinik_models/models/speciality.dart';
 import 'package:provider/provider.dart';
 
 class DoctorProfileCreate extends StatefulWidget {

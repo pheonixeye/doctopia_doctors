@@ -1,7 +1,6 @@
 import 'package:doctopia_doctors/components/main_snackbar.dart';
 import 'package:doctopia_doctors/components/prompt_dialog.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
-import 'package:doctopia_doctors/models/clinic/clinic.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/routes/routes.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:proklinik_models/models/clinic.dart';
 import 'package:provider/provider.dart';
 
 class ClinicCard extends StatefulWidget {

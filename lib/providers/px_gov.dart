@@ -1,7 +1,7 @@
 import 'package:doctopia_doctors/api/governorate_api/governorate_city.dart';
-import 'package:doctopia_doctors/models/city.dart';
-import 'package:doctopia_doctors/models/governorate.dart';
 import 'package:flutter/material.dart';
+import 'package:proklinik_models/models/city.dart';
+import 'package:proklinik_models/models/governorate.dart';
 
 class PxGov extends ChangeNotifier {
   final HxGovCity govCityService;

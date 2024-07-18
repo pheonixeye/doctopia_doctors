@@ -1,14 +1,14 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: library_prefixes, non_constant_identifier_names
 
-import 'package:doctopia_doctors/models/invoice/detailed_invoice.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 import 'package:doctopia_doctors/api/_pocket_main/pocket_main.dart';
-import 'package:doctopia_doctors/models/clinic/clinic.dart';
-import 'package:doctopia_doctors/models/clinic_visit/clinic_visit.dart';
-import 'package:doctopia_doctors/models/invoice/invoice.dart';
+import 'package:proklinik_models/models/booking_data.dart';
+import 'package:proklinik_models/models/clinic.dart';
+import 'package:proklinik_models/models/detailed_invoice.dart';
+import 'package:proklinik_models/models/invoice.dart';
 
 class HxInvoices {
   Future<DetailedInvoice?> fetchDoctorInvoice(
@@ -31,12 +31,12 @@ class HxInvoices {
       final _visits = _json['expand']["clinic_visits"];
       final _clinics = _visits.map((e) => e['expand']['clinic_id']).toList();
 
-      List<({ClinicVisit visit, Clinic clinic})> _records = [];
+      List<({BookingData visit, Clinic clinic})> _records = [];
 
       for (int i = 0; i < _visits.length; i++) {
         _records.add((
           clinic: Clinic.fromJson(_clinics[i]),
-          visit: ClinicVisit.fromJson(_visits[i]),
+          visit: BookingData.fromJson(_visits[i]),
         ));
       }
 

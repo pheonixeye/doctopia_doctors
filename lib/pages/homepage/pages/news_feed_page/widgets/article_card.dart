@@ -1,9 +1,9 @@
-import 'package:doctopia_doctors/models/med_article/med_article.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 
+import 'package:proklinik_models/models/med_article.dart';
 
 class ArticleCard extends StatelessWidget {
   const ArticleCard({

@@ -1,11 +1,6 @@
 import 'package:doctopia_doctors/assets/assets.dart';
-import 'package:doctopia_doctors/functions/shell_function.dart';
-import 'package:doctopia_doctors/providers/px_user_model.dart';
-import 'package:doctopia_doctors/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
 class TokenValidationPage extends StatefulWidget {
   const TokenValidationPage({super.key});
@@ -217,20 +212,20 @@ class _TokenValidationPageState extends State<TokenValidationPage> {
                   icon: const Icon(Icons.check),
                   label: const Text('Confirm'),
                   onPressed: () async {
-                    if (_formKey.currentState!.validate() && context.mounted) {
-                      await shellFunction(context, toExecute: () async {
-                        await context.read<PxUserModel>().confirmResetPassword(
-                              token: _tokenController.text,
-                              password: _passwordController.text,
-                              confirm: _confirmController.text,
-                            );
-                        if (context.mounted) {
-                          GoRouter.of(context).goNamed(
-                            AppRouter.login,
-                          );
-                        }
-                      });
-                    }
+                    // if (_formKey.currentState!.validate() && context.mounted) {
+                    //   await shellFunction(context, toExecute: () async {
+                    //     await context.read<PxUserModel>().confirmResetPassword(
+                    //           token: _tokenController.text,
+                    //           password: _passwordController.text,
+                    //           confirm: _confirmController.text,
+                    //         );
+                    //     if (context.mounted) {
+                    //       GoRouter.of(context).goNamed(
+                    //         AppRouter.login,
+                    //       );
+                    //     }
+                    //   });
+                    // }
                   },
                 ),
               ),
