@@ -920,9 +920,11 @@ packages:
   proklinik_models:
     dependency: "direct main"
     description:
-      path: "../proklinik_models"
-      relative: true
-    source: path
+      path: "."
+      ref: master
+      resolved-ref: bb99a00dfdaecd9ed706beccb2bd3be91beef4a6
+      url: "https://github.com/pheonixeye/proklinik_models.git"
+    source: git
     version: "1.0.0"
   provider:
     dependency: "direct main"

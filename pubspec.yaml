@@ -80,7 +80,9 @@ dependencies:
   screenshot: ^3.0.0
   onmessage: ^0.2.0
   proklinik_models:
-    path: '../proklinik_models'
+    git:
+      url: https://github.com/pheonixeye/proklinik_models.git
+      ref: master
  
 
 dev_dependencies:
