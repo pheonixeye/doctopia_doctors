@@ -4,6 +4,7 @@ import 'package:doctopia_doctors/api/speciality_api/speciality.dart';
 import 'package:doctopia_doctors/api/user_model_api/user_model_api.dart';
 import 'package:doctopia_doctors/providers/px_gov.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
+import 'package:doctopia_doctors/providers/px_overlay.dart';
 import 'package:doctopia_doctors/providers/px_server_status.dart';
 import 'package:doctopia_doctors/providers/px_specialities.dart';
 import 'package:doctopia_doctors/providers/px_theme.dart';
@@ -14,6 +15,7 @@ import 'package:provider/single_child_widget.dart';
 
 final List<SingleChildWidget> providers = [
   ChangeNotifierProvider(create: (context) => PxLocalDatabase()),
+  ChangeNotifierProvider(create: (context) => PxOverlay()),
   ChangeNotifierProvider(
     create: (context) => PxUserModel(
       context: context,

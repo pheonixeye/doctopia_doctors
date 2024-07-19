@@ -605,6 +605,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+  idb_shim:
+    dependency: transitive
+    description:
+      name: idb_shim
+      sha256: "33617893a417a26c7bcc2084f8ee9555e0285bfe5a0689c66bc9b00b58cdd74c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.6.0+2"
   image:
     dependency: transitive
     description:
@@ -922,7 +930,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: bb99a00dfdaecd9ed706beccb2bd3be91beef4a6
+      resolved-ref: "57effe26b9ea194407ceed49f1bc7143b32c3a1a"
       url: "https://github.com/pheonixeye/proklinik_models.git"
     source: git
     version: "1.0.0"
@@ -966,6 +974,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
+  sembast:
+    dependency: transitive
+    description:
+      name: sembast
+      sha256: "20990ecc60a83a3ac0633eb42e73b3e8556e1c93399ea963878b7e4ffa7ded6a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.7.1+3"
+  sembast_web:
+    dependency: "direct main"
+    description:
+      name: sembast_web
+      sha256: "6b15b49b2a86214130c25c7bdfb3a76eb0f4dc5e43016087f03870bd0bf9ba07"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.4.0+2"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -1115,6 +1139,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  synchronized:
+    dependency: transitive
+    description:
+      name: synchronized
+      sha256: "539ef412b170d65ecdafd780f924e5be3f60032a1128df156adad6c5b373d558"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.0+1"
   term_glyph:
     dependency: transitive
     description:

@@ -4,6 +4,7 @@ import 'package:doctopia_doctors/api/clinic_api/clinic_api.dart';
 import 'package:doctopia_doctors/api/clinic_visits_api/hx_clinic_visits.dart';
 import 'package:doctopia_doctors/api/doctor_api/hx_doctor.dart';
 import 'package:doctopia_doctors/api/invoices_api/invoices_api.dart';
+import 'package:doctopia_doctors/api/notifications_api/notifications_api.dart';
 import 'package:doctopia_doctors/api/reviews_api/reviews_api.dart';
 import 'package:doctopia_doctors/api/scrapper_api/scrapper_api.dart';
 import 'package:doctopia_doctors/pages/clinic_schedule_page/clinic_schedule_page.dart';
@@ -27,11 +28,13 @@ import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_invoices.dart';
 import 'package:doctopia_doctors/providers/px_nav.dart';
+import 'package:doctopia_doctors/providers/px_notifications.dart';
 import 'package:doctopia_doctors/providers/px_reviews.dart';
 import 'package:doctopia_doctors/providers/px_scrapper.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
 // import 'package:doctopia_doctors/routes/route_page/route_page.dart';
 import 'package:doctopia_doctors/routes/transitions.dart';
+import 'package:doctopia_doctors/utils/navigator_key.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -57,6 +60,7 @@ class AppRouter {
 
   static final GoRouter router = GoRouter(
     initialLocation: loadingscreen,
+    navigatorKey: navigatorKey,
     routes: [
       GoRoute(
         path: loadingscreen,
@@ -269,12 +273,22 @@ class AppRouter {
                 path: notifications,
                 name: notifications,
                 pageBuilder: (context, state) {
+                  final id = state.pathParameters['id'] as String;
+
+                  final key = ValueKey(id);
                   return CustomTransitionPage(
                     transitionDuration: const Duration(milliseconds: 500),
                     name: notifications,
                     transitionsBuilder: fadeTransitionBuilder,
-                    child: NotificationsPage(
-                      key: state.pageKey,
+                    child: ChangeNotifierProvider(
+                      key: key,
+                      create: (context) => PxNotifications(
+                        id: id,
+                        notificationService: const HxNotifications(),
+                      ),
+                      child: NotificationsPage(
+                        key: key,
+                      ),
                     ),
                   );
                 },

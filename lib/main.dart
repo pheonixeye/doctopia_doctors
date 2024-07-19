@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:doctopia_doctors/firebase_options.dart';
 import 'package:doctopia_doctors/functions/dprint.dart';
 import 'package:doctopia_doctors/localization/app_localizations.dart';
@@ -14,46 +12,49 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:onmessage/onmessage.dart';
 import 'package:provider/provider.dart';
 
 //todo: need to switch to asana as it's getting large
 //todo: implement notifications
 //TODO: implement news feed page based on speciality
 
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  dprint('_firebaseMessagingBackgroundHandler(${message.messageId})');
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  // Set the background messaging handler early on, as a named top-level function
-  // FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
-  // if (!kIsWeb) {
-  //   await setupFlutterNotifications();
-  // }
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
   //app closed
-  FirebaseMessaging.onBackgroundMessage(onbackgroundMessage);
-
-  //app opened && in background
-  FirebaseMessaging.onMessageOpenedApp.listen(onMessageOpenedAppBackground);
-
-  //app opened && in foreground
-  FirebaseMessaging.onMessage.listen(onMessageOpenedAppForeground);
-
-  OnMessage.instance.stream.listen((MessageEvent event) {
-    final data = jsonDecode(event.data.toString());
-    dprint("OnMessage.instance.stream.listen()");
-    dprint(data);
-  });
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   runApp(const AppProvider());
 }
 
-class AppProvider extends StatelessWidget {
+class AppProvider extends StatefulWidget {
   const AppProvider({super.key});
+
+  @override
+  State<AppProvider> createState() => _AppProviderState();
+}
+
+class _AppProviderState extends State<AppProvider> {
+  @override
+  void initState() {
+    //app opened && in background
+    FirebaseMessaging.onMessageOpenedApp.listen(onMessageAppOpen);
+
+    //app opened && in foreground
+    FirebaseMessaging.onMessage.listen(onMessageAppOpen);
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

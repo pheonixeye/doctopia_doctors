@@ -1,17 +1,14 @@
-const channel = new BroadcastChannel('sw-messages');
+// const channel = new BroadcastChannel('sw-messages');
 
-function handleClick(event) {
+// function handleClick(event) {
+//   if ('FCM_MSG' in event.notification.data) {
+//     channel.postMessage(
+//       { 'fcm_data': event.notification.data.FCM_MSG, 'clicked': 'true' }
+//     );
+//   }
+// }
 
-  if ('FCM_MSG' in event.notification.data) {
-    channel.postMessage(
-      { 'fcm_data': event.notification.data.FCM_MSG, 'clicked': 'true' }
-    );
-  }
-}
-
-
-
-self.addEventListener('notificationclick', handleClick);
+// self.addEventListener('notificationclick', handleClick);
 
 importScripts("https://www.gstatic.com/firebasejs/9.10.0/firebase-app-compat.js");
 importScripts("https://www.gstatic.com/firebasejs/9.10.0/firebase-messaging-compat.js");
@@ -29,5 +26,12 @@ const messaging = firebase.messaging();
 
 // Optional:
 messaging.onBackgroundMessage((payload) => {
-  channel.postMessage(payload);
+  const title = payload.notification.title;
+  const body = payload.notification.body;
+  self.registration.showNotification(title, {
+    body,
+    icon: '/icons/android-chrome-192x92.png',
+  });
+  console.log('[firebase-messaging-sw.js] Received background message ');
 });
+console.log('firebase-messaging-sw.js => Registered.');

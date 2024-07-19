@@ -1,30 +1,31 @@
-import 'package:doctopia_doctors/firebase_options.dart';
+import 'package:doctopia_doctors/components/notification_overlay.dart';
 import 'package:doctopia_doctors/functions/dprint.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:doctopia_doctors/models/msg.dart';
+import 'package:doctopia_doctors/providers/px_overlay.dart';
+import 'package:doctopia_doctors/utils/navigator_key.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:provider/provider.dart';
 
-@pragma("vm:entry-point")
-Future<void> onbackgroundMessage(RemoteMessage remoteMessage) async {
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  if (remoteMessage.notification != null) {
-    //TODO:
-    dprint("onBackgroudMessage()");
-    dprint(remoteMessage.toString());
+void onMessageAppOpen(RemoteMessage msg) {
+  late final NotMsg notification;
+  dprint("onMessageOpenedAppForeground(${msg.messageId})");
+  final title = msg.notification?.title;
+  final body = msg.notification?.body;
+  try {
+    notification = NotMsg(
+      id: msg.notification.hashCode.toString(),
+      title: title!,
+      body: body!,
+    );
+  } catch (e) {
+    dprint(e);
   }
-}
 
-void onMessageOpenedAppBackground(RemoteMessage remoteMessage) {
-  if (remoteMessage.notification != null) {
-    dprint("onMessageOpenedAppBackground()");
-    dprint(remoteMessage.toString());
-  }
-}
-
-void onMessageOpenedAppForeground(RemoteMessage remoteMessage) {
-  if (remoteMessage.notification != null) {
-    dprint("onMessageOpenedAppForeground()");
-    dprint(remoteMessage.toString());
-  }
+  navigatorKey.currentContext!.read<PxOverlay>().toggleOverlay(
+        id: msg.notification!.hashCode.toString(),
+        child: NotificationOverlayCard(notification: notification),
+        context: navigatorKey.currentContext!,
+      );
 }
 
 class NotificationsService {

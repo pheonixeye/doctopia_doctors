@@ -83,6 +83,11 @@ dependencies:
     git:
       url: https://github.com/pheonixeye/proklinik_models.git
       ref: master
+
+  ###TODO: change pre deployment
+  # proklinik_models:
+  #   path: ../proklinik_models
+  sembast_web: ^2.4.0+2
  
 
 dev_dependencies:
