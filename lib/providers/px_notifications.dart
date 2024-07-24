@@ -1,5 +1,5 @@
 import 'package:doctopia_doctors/api/notifications_api/notifications_api.dart';
-import 'package:doctopia_doctors/models/app_notification.dart';
+import 'package:doctopia_doctors/models/stored_notification.dart';
 import 'package:flutter/foundation.dart';
 
 class PxNotifications extends ChangeNotifier {
@@ -13,8 +13,9 @@ class PxNotifications extends ChangeNotifier {
     fetchNotifications();
   }
 
-  final List<AppNotification>? _notifications = [];
-  List<AppNotification>? get notifications => _notifications;
+  // ignore: unnecessary_nullable_for_final_variable_declarations
+  List<StoredNotification>? _notifications;
+  List<StoredNotification>? get notifications => _notifications;
 
   int _page = 1;
   int get page => _page;
@@ -28,7 +29,19 @@ class PxNotifications extends ChangeNotifier {
   Future<void> fetchNotifications() async {
     try {
       final result = await notificationService.fetchNotifications(id, _page);
+      _notifications ??= [];
       _notifications!.addAll(result);
+      notifyListeners();
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<void> updateSeenState(String id) async {
+    try {
+      final updated = await notificationService.updateNotificationSeenState(id);
+      final index = _notifications!.indexWhere((e) => e.id == updated.id);
+      _notifications![index] = updated;
       notifyListeners();
     } catch (e) {
       throw Exception(e);
