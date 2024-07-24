@@ -79,7 +79,8 @@ class _ClinicCardState extends State<ClinicCard> {
                 textConfirmPicker: "Confirm",
                 radius: 12,
                 zoomOption: const ZoomOption(
-                  minZoomLevel: 10,
+                  minZoomLevel: 2,
+                  initZoom: 14,
                 ),
                 initPosition: isInitial
                     ? GeoPoint(
@@ -87,8 +88,8 @@ class _ClinicCardState extends State<ClinicCard> {
                         longitude: 31,
                       )
                     : GeoPoint(
-                        latitude: oldDest.lat,
-                        longitude: oldDest.lon,
+                        latitude: oldDest.lat.toDouble(),
+                        longitude: oldDest.lon.toDouble(),
                       ),
               );
               if (p != null && context.mounted) {

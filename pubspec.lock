@@ -930,7 +930,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: "57effe26b9ea194407ceed49f1bc7143b32c3a1a"
+      resolved-ref: b66a5a9f6e0cd12243c0aa819e31aaf738102f97
       url: "https://github.com/pheonixeye/proklinik_models.git"
     source: git
     version: "1.0.0"

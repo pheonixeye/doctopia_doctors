@@ -7,8 +7,12 @@ class HxUserModel {
 
   Future<UserModel> createUserAccount(UserModel value) async {
     final result = await PocketbaseHelper.pb.collection("users").create(
-          body: value.toPocketbaseJson(),
-        );
+      body: {
+        ...value.toPocketbaseJson(),
+        //HACK:
+        'emailVisibility': true,
+      },
+    );
 
     final model = UserModel.fromJson(result.toJson());
     return model;
