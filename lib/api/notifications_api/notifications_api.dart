@@ -11,7 +11,7 @@ class HxNotifications {
               filter: "doc_id = '$id'",
               page: page,
               perPage: 10,
-              sort: '+created',
+              sort: '-created',
             );
 
     final appNotifications = result.items

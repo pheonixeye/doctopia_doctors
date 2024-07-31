@@ -51,3 +51,7 @@ ios/firebase_app_id_file.json
 /lib/env/creds.dart
 /lib/env/creds_prod.dart
 /lib/firebase_options.dart
+
+
+.env
+.dev.env

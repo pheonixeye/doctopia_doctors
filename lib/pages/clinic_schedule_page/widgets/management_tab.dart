@@ -3,12 +3,13 @@
 import 'dart:async';
 
 import 'package:after_layout/after_layout.dart';
-import 'package:doctopia_doctors/functions/date_functions.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
+import 'package:doctopia_doctors/pages/clinic_schedule_page/widgets/patient_number_picker_dialog.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:proklinik_models/models/clinic_shift.dart';
 import 'package:proklinik_models/models/schedule.dart';
 import 'package:provider/provider.dart';
 
@@ -30,6 +31,12 @@ class _ScheduleManagementTabState extends State<ScheduleManagementTab>
       _state = clinic!.schedule;
     });
   }
+
+  TextStyle get _clickable => TextStyle(
+        color: Theme.of(context).appBarTheme.backgroundColor,
+        fontSize: 16,
+        decoration: TextDecoration.underline,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +88,18 @@ class _ScheduleManagementTabState extends State<ScheduleManagementTab>
             while (clinic == null) {
               return const SizedBox();
             }
+            Future<void> _updateSchedule() async {
+              await shellFunction(
+                context,
+                toExecute: () async {
+                  c.updateClinic(
+                    c.clinic!.id,
+                    {"schedule": _state.map((e) => e.toJson()).toList()},
+                  );
+                },
+              );
+            }
+
             return ListTile(
               title: const Text('Clinic Shifts'),
               subtitle: Column(
@@ -90,109 +109,229 @@ class _ScheduleManagementTabState extends State<ScheduleManagementTab>
                       padding: const EdgeInsets.all(4.0),
                       child: Card.outlined(
                         child: ListTile(
-                          leading: IconButton.outlined(
-                            onPressed: () {},
-                            icon: Icon(
-                              _state[i].available ? Icons.check : Icons.close,
-                            ),
-                          ),
-                          title: Text(_state[i].weekday),
-                          trailing: Switch(
-                            value: _state[i].available,
-                            onChanged: (value) async {
-                              setState(() {
-                                _state[i] = _state[i].copyWith(
-                                  available: value,
-                                );
-                              });
-                              await shellFunction(
-                                context,
-                                toExecute: () async {
-                                  c.updateClinic(
-                                    clinic.id,
-                                    {
-                                      "schedule":
-                                          _state.map((e) => e.toJson()).toList()
-                                    },
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                          subtitle: ListTile(
-                            title: Text.rich(
-                              TextSpan(
-                                text: "",
-                                style: TextStyle(
-                                  color: Theme.of(context)
-                                      .appBarTheme
-                                      .backgroundColor,
-                                ),
+                          title: Card.outlined(
+                            elevation: 0,
+                            color: Theme.of(context)
+                                .appBarTheme
+                                .backgroundColor
+                                ?.withOpacity(0.2),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
                                 children: [
-                                  TextSpan(
-                                    text:
-                                        "From ${fT(_state[i].startHour, _state[i].startMin)}",
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () async {
-                                        final TimeOfDay? _time =
-                                            await showTimePicker(
-                                          context: context,
-                                          initialTime: TimeOfDay.now(),
+                                  const SizedBox(width: 10),
+                                  Text(_state[i].weekday),
+                                  const Spacer(),
+                                  Switch(
+                                    value: _state[i].available,
+                                    onChanged: (value) async {
+                                      setState(() {
+                                        _state[i] = _state[i].copyWith(
+                                          available: value,
                                         );
-                                        if (_time != null && context.mounted) {
-                                          await shellFunction(context,
-                                              toExecute: () async {
-                                            setState(() {
-                                              _state[i] = _state[i].copyWith(
-                                                startHour: _time.hour,
-                                                startMin: _time.minute,
-                                              );
-                                            });
-                                            await c.updateClinic(clinic.id, {
-                                              "schedule": _state
-                                                  .map((e) => e.toJson())
-                                                  .toList(),
-                                            });
-                                          });
-                                        }
-                                      },
+                                      });
+                                      await _updateSchedule();
+                                    },
                                   ),
-                                  const TextSpan(text: "\n\n"),
-                                  TextSpan(
-                                    text:
-                                        "To ${fT(_state[i].endHour, _state[i].endMin)}",
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () async {
-                                        final TimeOfDay? _time =
-                                            await showTimePicker(
-                                          context: context,
-                                          initialTime: TimeOfDay.now(),
-                                        );
-                                        if (_time != null && context.mounted) {
-                                          await shellFunction(context,
-                                              toExecute: () async {
-                                            setState(() {
-                                              _state[i] = _state[i].copyWith(
-                                                endHour: _time.hour,
-                                                endMin: _time.minute,
-                                              );
-                                            });
-                                            await c.updateClinic(clinic.id, {
-                                              "schedule": _state
-                                                  .map((e) => e.toJson())
-                                                  .toList(),
-                                            });
-                                          });
-                                        }
-                                      },
-                                  ),
+                                  const SizedBox(width: 10),
                                 ],
                               ),
                             ),
                           ),
+                          subtitle: ListTile(
+                            title: Row(
+                              children: [
+                                const SizedBox(width: 10),
+                                const Text("Clinic Shifts"),
+                                const Spacer(),
+                                const SizedBox(width: 10),
+                                FloatingActionButton.small(
+                                  tooltip: 'Add Clinic Shift',
+                                  heroTag: 'add-clinic-shift',
+                                  onPressed: () async {
+                                    setState(() {
+                                      _state[i] = _state[i].copyWith(
+                                        shifts: [
+                                          ..._state[i].shifts,
+                                          ClinicShift.initial(),
+                                        ],
+                                      );
+                                    });
+                                    await _updateSchedule();
+                                  },
+                                  child: const Icon(Icons.add),
+                                )
+                              ],
+                            ),
+                            subtitle: Column(
+                              children: [
+                                for (int j = 0;
+                                    j < _state[i].shifts.length;
+                                    j++,)
+                                  Builder(
+                                    builder: (context) {
+                                      final shift = _state[i].shifts[j];
+                                      return ListTile(
+                                        title: Text.rich(
+                                          TextSpan(
+                                            text: '(${j + 1})\n',
+                                            children: [
+                                              const TextSpan(text: 'From : '),
+                                              TextSpan(
+                                                text: TimeOfDay(
+                                                        hour: shift.startH
+                                                            .toInt(),
+                                                        minute: shift.startM
+                                                            .toInt())
+                                                    .format(context),
+                                                style: _clickable,
+                                                recognizer:
+                                                    TapGestureRecognizer()
+                                                      ..onTap = () async {
+                                                        final TimeOfDay? _time =
+                                                            await showTimePicker(
+                                                          context: context,
+                                                          initialTime:
+                                                              TimeOfDay.now(),
+                                                        );
+                                                        if (_time == null) {
+                                                          return;
+                                                        }
+                                                        final _updatedShift =
+                                                            shift.copyWith(
+                                                          startH: _time.hour,
+                                                          startM: _time.minute,
+                                                        );
+                                                        _state[i].shifts[j] =
+                                                            _updatedShift;
+
+                                                        setState(() {
+                                                          _state[i] = _state[i]
+                                                              .copyWith(
+                                                            shifts: [
+                                                              ..._state[i]
+                                                                  .shifts
+                                                            ],
+                                                          );
+                                                        });
+                                                        await _updateSchedule();
+                                                      },
+                                              ),
+                                              const TextSpan(text: '\n'),
+                                              const TextSpan(text: 'To : '),
+                                              TextSpan(
+                                                text: TimeOfDay(
+                                                        hour:
+                                                            shift.endH.toInt(),
+                                                        minute:
+                                                            shift.endM.toInt())
+                                                    .format(context),
+                                                style: _clickable,
+                                                recognizer:
+                                                    TapGestureRecognizer()
+                                                      ..onTap = () async {
+                                                        final TimeOfDay? _time =
+                                                            await showTimePicker(
+                                                          context: context,
+                                                          initialTime:
+                                                              TimeOfDay.now(),
+                                                        );
+                                                        if (_time == null) {
+                                                          return;
+                                                        }
+                                                        final _updatedShift =
+                                                            shift.copyWith(
+                                                          endH: _time.hour,
+                                                          endM: _time.minute,
+                                                        );
+                                                        _state[i].shifts[j] =
+                                                            _updatedShift;
+
+                                                        setState(() {
+                                                          _state[i] = _state[i]
+                                                              .copyWith(
+                                                            shifts: [
+                                                              ..._state[i]
+                                                                  .shifts
+                                                            ],
+                                                          );
+                                                        });
+                                                        await _updateSchedule();
+                                                      },
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        subtitle: Row(
+                                          children: [
+                                            Text.rich(
+                                              TextSpan(
+                                                text: 'Visits Per Shift : ',
+                                                children: [
+                                                  TextSpan(
+                                                    text: '${shift.patients}',
+                                                    style: _clickable,
+                                                    recognizer:
+                                                        TapGestureRecognizer()
+                                                          ..onTap = () async {
+                                                            final numberOfPatients =
+                                                                await showDialog<
+                                                                    int>(
+                                                              context: context,
+                                                              builder: (context) =>
+                                                                  const PatientNumberPickerDialog(),
+                                                            );
+                                                            if (numberOfPatients ==
+                                                                null) {
+                                                              return;
+                                                            }
+                                                            final _updatedShift =
+                                                                shift.copyWith(
+                                                              patients:
+                                                                  numberOfPatients,
+                                                            );
+                                                            _state[i]
+                                                                    .shifts[j] =
+                                                                _updatedShift;
+                                                            await _updateSchedule();
+                                                          },
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            const SizedBox(width: 10),
+                                            const Expanded(
+                                              child: Divider(),
+                                            ),
+                                            const SizedBox(width: 10),
+                                          ],
+                                        ),
+                                        trailing: FloatingActionButton.small(
+                                          heroTag: shift,
+                                          onPressed: () async {
+                                            setState(() {
+                                              _state[i] = _state[i].copyWith(
+                                                shifts: [
+                                                  ..._state[i].shifts,
+                                                ]..remove(shift),
+                                              );
+                                            });
+                                            await _updateSchedule();
+                                          },
+                                          child: const Icon(
+                                            Icons.delete,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
-                    )
+                    ),
                 ],
               ),
             );

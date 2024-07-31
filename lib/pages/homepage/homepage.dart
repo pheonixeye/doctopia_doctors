@@ -100,6 +100,8 @@ class _HomePageState extends State<HomePage>
               const SizedBox(
                 width: 20,
               ),
+              //TODO: change to a popup menu btn with logout && share page link
+              //with qr code generation
               Consumer<PxUserModel>(
                 builder: (context, u, _) {
                   return FloatingActionButton.small(

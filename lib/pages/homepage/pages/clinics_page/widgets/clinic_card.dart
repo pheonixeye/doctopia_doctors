@@ -79,7 +79,6 @@ class _ClinicCardState extends State<ClinicCard> {
                 textConfirmPicker: "Confirm",
                 radius: 12,
                 zoomOption: const ZoomOption(
-                  minZoomLevel: 2,
                   initZoom: 14,
                 ),
                 initPosition: isInitial
@@ -140,6 +139,79 @@ class _ClinicCardState extends State<ClinicCard> {
                         ),
                       ),
                     const Gap(10),
+                  ],
+                ),
+              ),
+              subtitle: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Wrap(
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  alignment: WrapAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          // navigate to schedule management page
+                          if (context.mounted) {
+                            c.selectClinic(widget.clinic);
+                            GoRouter.of(context).goNamed(
+                              AppRouter.sch,
+                              pathParameters: {
+                                "id": widget.clinic.doc_id,
+                                "clinicid": widget.clinic.id,
+                              },
+                            );
+                          }
+                        },
+                        label: const Text('Schedule'),
+                        icon: const Icon(Icons.calendar_month),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: ElevatedButton.icon(
+                        onPressed: () async {
+                          // check if clinic schedule is created
+                          final _sch = widget.clinic.schedule;
+                          final _hasSchSet =
+                              _sch.map((s) => s.available == true).toList();
+                          if (!_hasSchSet.contains(true) && context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                iInfoSnackbar(
+                                    'Add Clinic Schedule First.', context));
+                          }
+
+                          // testing update algorithm<working>
+                          // publish clinic
+                          else {
+                            if (context.mounted) {
+                              await shellFunction(context, toExecute: () async {
+                                await c.updateClinic(widget.clinic.id, {
+                                  'published': !widget.clinic.published,
+                                });
+                              });
+                            }
+                          }
+                        },
+                        label: !widget.clinic.published
+                            ? const Text('Publish')
+                            : const Text('UnPublish'),
+                        icon: !widget.clinic.published
+                            ? const Icon(Icons.publish)
+                            : const Icon(Icons.unpublished),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: ElevatedButton.icon(
+                        onPressed: () async {
+                          await _setClinicLocation();
+                        },
+                        label: const Text("Clinic Location"),
+                        icon: const Icon(Icons.pin_drop),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -247,111 +319,38 @@ class _ClinicCardState extends State<ClinicCard> {
                   );
                 }).toList(),
                 const Gap(10),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Wrap(
-                    // mainAxisAlignment: MainAxisAlignment.center,
-                    alignment: WrapAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: ElevatedButton.icon(
-                          onPressed: () {
-                            // navigate to schedule management page
-                            if (context.mounted) {
-                              c.selectClinic(widget.clinic);
-                              GoRouter.of(context).goNamed(
-                                AppRouter.sch,
-                                pathParameters: {
-                                  "id": widget.clinic.doc_id,
-                                  "clinicid": widget.clinic.id,
-                                },
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListTile(
+                      title: const Text('Delete Clinic'),
+                      trailing: FloatingActionButton.small(
+                        backgroundColor: Colors.red,
+                        heroTag: 'delete-clinic-btn-${widget.clinic.id}',
+                        onPressed: () async {
+                          // show confirm delete clinic dialog
+                          final bool? result = await showDialog<bool?>(
+                            context: context,
+                            builder: (context) {
+                              return const MainPromptDialog(
+                                title: 'Delete Clinic ?',
+                                body:
+                                    "This is an irreversible action, Are you sure ?",
                               );
-                            }
-                          },
-                          label: const Text('Schedule'),
-                          icon: const Icon(Icons.calendar_month),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: ElevatedButton.icon(
-                          onPressed: () async {
-                            // check if clinic schedule is created
-                            final _sch = widget.clinic.schedule;
-                            final _hasSchSet =
-                                _sch.map((s) => s.available == true).toList();
-                            if (!_hasSchSet.contains(true) && context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  iInfoSnackbar(
-                                      'Add Clinic Schedule First.', context));
-                            }
+                            },
+                          );
 
-                            // testing update algorithm<working>
-                            // publish clinic
-                            else {
-                              if (context.mounted) {
-                                await shellFunction(context,
-                                    toExecute: () async {
-                                  await c.updateClinic(widget.clinic.id, {
-                                    'published': !widget.clinic.published,
-                                  });
-                                });
-                              }
+                          if (result != null && result) {
+                            if (context.mounted) {
+                              await shellFunction(context, toExecute: () async {
+                                await c.deleteClinic(widget.clinic, context);
+                              });
                             }
-                          },
-                          label: !widget.clinic.published
-                              ? const Text('Publish')
-                              : const Text('UnPublish'),
-                          icon: !widget.clinic.published
-                              ? const Icon(Icons.publish)
-                              : const Icon(Icons.unpublished),
-                        ),
+                          }
+                        },
+                        child: const Icon(Icons.delete_forever),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: ElevatedButton.icon(
-                          onPressed: () async {
-                            await _setClinicLocation();
-                          },
-                          label: const Text("Clinic Location"),
-                          icon: const Icon(Icons.pin_drop),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
-                            foregroundColor: Colors.white,
-                          ),
-                          onPressed: () async {
-                            // show confirm delete clinic dialog
-                            final bool? result = await showDialog<bool?>(
-                              context: context,
-                              builder: (context) {
-                                return const MainPromptDialog(
-                                  title: 'Delete Clinic ?',
-                                  body:
-                                      "This is an irreversible action, Are you sure ?",
-                                );
-                              },
-                            );
-
-                            if (result != null && result) {
-                              if (context.mounted) {
-                                await shellFunction(context,
-                                    toExecute: () async {
-                                  await c.deleteClinic(widget.clinic, context);
-                                });
-                              }
-                            }
-                          },
-                          label: const Text('Delete Clinic'),
-                          icon: const Icon(Icons.delete_forever),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
                 const Gap(10),

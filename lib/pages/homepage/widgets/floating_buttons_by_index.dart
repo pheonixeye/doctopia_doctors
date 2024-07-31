@@ -1,6 +1,4 @@
-import 'package:doctopia_doctors/routes/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class FloatingButtonsByIndex extends StatelessWidget {
   const FloatingButtonsByIndex({
@@ -16,19 +14,7 @@ class FloatingButtonsByIndex extends StatelessWidget {
       0 => const SizedBox(),
       1 => const SizedBox(),
       2 => const SizedBox(),
-      3 => FloatingActionButton.extended(
-          heroTag: 'create-clinic',
-          onPressed: () {
-            GoRouter.of(context).goNamed(
-              AppRouter.createclinic,
-              pathParameters: {
-                "id": id,
-              },
-            );
-          },
-          label: const Text('Create Clinic'),
-          icon: const Icon(Icons.add),
-        ),
+      3 => const SizedBox(),
       4 => const SizedBox(),
       5 => const SizedBox(),
       6 => const SizedBox(),
