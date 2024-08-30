@@ -66,6 +66,11 @@ class _ClinicVisitsTileState extends State<ClinicVisitsTile> {
                       children: [
                         Text("${_d.day}-${_d.month}-${_d.year}"),
                         const SizedBox(width: 20),
+                        Text(TimeOfDay(
+                          hour: widget.visit.startH.toInt(),
+                          minute: widget.visit.startM.toInt(),
+                        ).format(context)),
+                        const SizedBox(width: 20),
                         if (widget.visit.type != null &&
                             widget.visit.type!.isNotEmpty)
                           FilterChip.elevated(
@@ -81,12 +86,15 @@ class _ClinicVisitsTileState extends State<ClinicVisitsTile> {
                           widget.visit.attended ? null : Colors.red,
                     ),
                     onPressed: () async {
-                      await shellFunction(context, toExecute: () async {
-                        await v.updateClinicVisit(
-                          widget.visit.id,
-                          !widget.visit.attended,
-                        );
-                      });
+                      await shellFunction(
+                        context,
+                        toExecute: () async {
+                          await v.updateClinicVisit(
+                            widget.visit.id,
+                            !widget.visit.attended,
+                          );
+                        },
+                      );
                     },
                     icon: widget.visit.attended
                         ? const Icon(Icons.airplanemode_inactive)

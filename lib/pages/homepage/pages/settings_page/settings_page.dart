@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:proklinik_models/models/user_preferences.dart';
 import 'package:provider/provider.dart';
 
+import 'dart:html' as html; // ignore: avoid_web_libraries_in_flutter
+
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 
@@ -120,6 +122,61 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                       child: Text(
                         'Change Password',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color:
+                              Theme.of(context).textTheme.headlineMedium?.color,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const Spacer(),
+              ],
+            ),
+            const Divider(),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: ListTile(
+                leading: CircleAvatar(),
+                title: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text('Contract'),
+                ),
+              ),
+            ),
+            Row(
+              children: [
+                const Spacer(),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      backgroundColor:
+                          Theme.of(context).appBarTheme.backgroundColor,
+                    ),
+                    onPressed: () async {
+                      //todo: Create Contract if first time
+                      //todo: opan signature webapp
+                      html.window.open(
+                          'https://contracts-proklinik.pages.dev/#/${u.id}',
+                          '_blank');
+                    },
+                    icon: Icon(
+                      Icons.edit,
+                      color: Theme.of(context).textTheme.headlineMedium?.color,
+                    ),
+                    label: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 12,
+                      ),
+                      child: Text(
+                        'Sign Contract',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,

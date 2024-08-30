@@ -345,8 +345,16 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                     icon: const Icon(Icons.person_add_alt),
                     label: const Text('Register'),
                     onPressed: () async {
+                      //todo: validate form and create a new user account
                       if (_formKey.currentState!.validate()) {
-                        //todo: validate form and create a new user account
+                        if (_service != 'Clinic') {
+                          //TODO: change later
+                          await EasyLoading.showInfo(
+                            'Sorry For The Inconvenience, We Only Provide Clinic Services At The Moment.',
+                            duration: const Duration(seconds: 10),
+                          );
+                          return;
+                        }
                         try {
                           await EasyLoading.show(status: "Loading...");
                           final UserModel _model = UserModel(

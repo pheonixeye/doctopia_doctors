@@ -37,6 +37,7 @@ class HxClinicVisits {
     required int year,
     required bool attended,
   }) async {
+    //TODO: add changing status
     try {
       final response =
           await PocketbaseHelper.pb.collection("visits_${month}_$year").update(
