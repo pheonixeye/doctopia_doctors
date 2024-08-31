@@ -142,47 +142,78 @@ class _SettingsPageState extends State<SettingsPage> {
                 leading: CircleAvatar(),
                 title: Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text('Contract'),
+                  child: Text('Contract & Documents'),
                 ),
               ),
             ),
             Row(
               children: [
                 const Spacer(),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      backgroundColor:
-                          Theme.of(context).appBarTheme.backgroundColor,
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4),
                     ),
-                    onPressed: () async {
-                      //todo: Create Contract if first time
-                      //todo: opan signature webapp
-                      html.window.open(
-                          'https://contracts-proklinik.pages.dev/#/${u.id}',
-                          '_blank');
-                    },
-                    icon: Icon(
-                      Icons.edit,
-                      color: Theme.of(context).textTheme.headlineMedium?.color,
+                    backgroundColor:
+                        Theme.of(context).appBarTheme.backgroundColor,
+                  ),
+                  onPressed: () async {
+                    //todo: Create Contract if first time
+                    //todo: open signature webapp
+                    html.window.open(
+                        'https://contracts-proklinik.pages.dev/#/contract/${u.id}',
+                        '_blank');
+                  },
+                  icon: Icon(
+                    Icons.edit,
+                    color: Theme.of(context).textTheme.headlineMedium?.color,
+                  ),
+                  label: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8.0,
+                      vertical: 12,
                     ),
-                    label: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0,
-                        vertical: 12,
+                    child: Text(
+                      'Sign Contract',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color:
+                            Theme.of(context).textTheme.headlineMedium?.color,
                       ),
-                      child: Text(
-                        'Sign Contract',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color:
-                              Theme.of(context).textTheme.headlineMedium?.color,
-                        ),
+                    ),
+                  ),
+                ),
+                const Spacer(),
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    backgroundColor:
+                        Theme.of(context).appBarTheme.backgroundColor,
+                  ),
+                  onPressed: () async {
+                    html.window.open(
+                        'https://contracts-proklinik.pages.dev/#/document/${u.id}',
+                        '_blank');
+                  },
+                  icon: Icon(
+                    Icons.file_copy,
+                    color: Theme.of(context).textTheme.headlineMedium?.color,
+                  ),
+                  label: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8.0,
+                      vertical: 12,
+                    ),
+                    child: Text(
+                      'Submit Documents',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color:
+                            Theme.of(context).textTheme.headlineMedium?.color,
                       ),
                     ),
                   ),
