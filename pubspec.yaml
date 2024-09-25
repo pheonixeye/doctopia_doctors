@@ -45,23 +45,15 @@ dependencies:
   provider: 
   after_layout: 
   email_validator: ^3.0.0 
-  # crypto: 
   file_picker: 
   go_router:
   equatable:
   uuid:
-  # appwrite: 11.0.1
   sidebarx: 
-  # dart_appwrite: 
-  # dynamic_color:
   permission_handler: 
   firebase_core: 
   firebase_messaging: 
   gap: 
-  # flutter_local_notifications: 
-  # path_provider: 
-  # sembast:
-  # path:
   intl:
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
@@ -69,12 +61,7 @@ dependencies:
   flutter_spinkit:
   pocketbase: ^0.11.0
   animated_text_kit: ^4.2.2
-  shared_preferences: ^2.2.3
-  # open_street_map_search_and_pick:
-  # location_picker_flutter_map:
-  # flutter_map_location_picker: ^0.0.8
-  # open_location_picker: ^1.0.2
-  # map_picker: ^0.0.3
+  shared_preferences: ^2.3.2
   flutter_osm_plugin: ^1.1.0
   flutter_svg: ^2.0.9
   screenshot: ^3.0.0

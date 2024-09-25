@@ -1,7 +1,5 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'dart:convert';
-
 import 'package:doctopia_doctors/api/_pocket_main/pocket_main.dart';
 import 'package:doctopia_doctors/api/user_model_api/user_model_api.dart';
 import 'package:doctopia_doctors/functions/dprint.dart';
@@ -17,20 +15,18 @@ class PxUserModel extends ChangeNotifier {
   PxUserModel({
     required this.context,
     required this.userService,
-  }) {
-    _loginFromAuthStore(context);
-  }
+  });
 
-  UserModel? _model;
+  static UserModel? _model;
   UserModel? get model => _model;
 
-  String? _token;
+  static String? _token;
   String? get token => _token;
 
-  String? _id;
+  static String? _id;
   String? get id => _id;
 
-  bool _isLoggedIn = false;
+  static bool _isLoggedIn = false;
   bool get isLoggedIn => _isLoggedIn;
 
   Future<UserModel> createUserAccount(UserModel value) async {
@@ -43,16 +39,22 @@ class PxUserModel extends ChangeNotifier {
     }
   }
 
-  void _loginFromAuthStore(BuildContext context) {
-    //TODO: route to homepage if user is already authenticated;
-    final localDb = context.read<PxLocalDatabase>();
-    if (localDb.token != null && localDb.userModel != null) {
+  Future<void> loginFromAuthStore(String? token) async {
+    //todo: route to homepage if user is already authenticated;
+    //todo: discard saving user model as a string && refresh auth instead;
+    if (token != null) {
       try {
-        _model = UserModel.fromJson(jsonDecode(localDb.userModel!));
+        PocketbaseHelper.pb.authStore.save(token, null);
+        final refresh =
+            await PocketbaseHelper.pb.collection('users').authRefresh();
+        _model = UserModel.fromJson(refresh.record!.toJson());
+        if (context.mounted) {
+          await context.read<PxLocalDatabase>().saveCredentials(refresh.token);
+        }
+        PocketbaseHelper.pb.authStore.save(refresh.token, refresh.record);
         _id = _model!.id;
-        _token = localDb.token;
+        _token = refresh.token;
         _isLoggedIn = true;
-        PocketbaseHelper.pb.authStore.save(_token!, _model);
         notifyListeners();
       } catch (e) {
         _model = null;
@@ -63,7 +65,7 @@ class PxUserModel extends ChangeNotifier {
         notifyListeners();
       }
     }
-    dprint("PxUserModel()._loginFromAuthStore(${localDb.userModel})");
+    dprint("PxUserModel()._loginFromAuthStore($token)");
   }
 
   Future<String> loginUserByEmailAndPassword(
@@ -86,7 +88,6 @@ class PxUserModel extends ChangeNotifier {
       if (rememberMe && context.mounted) {
         await context.read<PxLocalDatabase>().saveCredentials(
               result.token,
-              result.record!.toString(),
             );
       }
 
@@ -104,8 +105,6 @@ class PxUserModel extends ChangeNotifier {
     PocketbaseHelper.pb.authStore.clear();
     context.read<PxLocalDatabase>().clearCredentials();
     notifyListeners();
-
-    // PocketbaseHelper.pb.authStore.clear();
   }
 
   Future<void> requestPasswordReset(String email) async {

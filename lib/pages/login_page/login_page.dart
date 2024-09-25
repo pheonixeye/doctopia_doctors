@@ -28,14 +28,6 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
     if (_notificationService.token != null) {
       _u.setFcmToken(_notificationService.token);
     }
-    if (_u.isLoggedIn && context.mounted) {
-      GoRouter.of(context).goNamed(
-        AppRouter.home,
-        pathParameters: {
-          'id': _u.id!,
-        },
-      );
-    }
   }
 
   final _formKey = GlobalKey<FormState>();

@@ -146,9 +146,10 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
             ),
-            Row(
+            Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                const Spacer(),
+                const SizedBox(height: 10),
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -184,7 +185,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                   ),
                 ),
-                const Spacer(),
+                const SizedBox(height: 10),
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -218,7 +219,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                   ),
                 ),
-                const Spacer(),
+                const SizedBox(height: 10),
               ],
             ),
             const Divider(),

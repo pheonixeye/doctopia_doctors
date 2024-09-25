@@ -2,58 +2,60 @@
 
 // import 'package:doctopia_doctors/models/clinic_visit/clinic_visit.dart';
 // import 'package:flutter/foundation.dart';
+import 'package:doctopia_doctors/functions/dprint.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PxLocalDatabase extends ChangeNotifier {
-  static late final SharedPreferences prefs;
+  static late final SharedPreferencesAsync _prefs;
 
-  Future<void> initDb() async {
-    prefs = await SharedPreferences.getInstance();
+  PxLocalDatabase._();
+
+  factory PxLocalDatabase._internal() {
+    _prefs = SharedPreferencesAsync();
+    return PxLocalDatabase._();
   }
 
-  String? _theme;
+  static PxLocalDatabase get instance => PxLocalDatabase._internal();
+
+  static String? _theme;
   String get theme => _theme ?? 'light';
 
   Future<void> saveThemeToDb(String theme) async {
-    await prefs.setString("theme", theme);
+    await _prefs.setString("theme", theme);
   }
 
-  void fetchThemeFromDb() {
-    _theme = prefs.getString("theme");
+  Future<void> fetchThemeFromDb() async {
+    _theme = await _prefs.getString("theme");
     notifyListeners();
   }
 
-  String? _language;
+  static String? _language;
   String get language => _language ?? 'en';
 
   Future<void> saveLanguageToDb(String lang) async {
-    await prefs.setString("lang", lang);
+    await _prefs.setString("lang", lang);
   }
 
-  void fetchLanguageFromDb() {
-    _language = prefs.getString("lang");
+  Future<void> fetchLanguageFromDb() async {
+    _language = await _prefs.getString("lang");
     notifyListeners();
   }
 
-  String? _token;
+  static String? _token;
   String? get token => _token;
 
-  String? _userModel;
-  String? get userModel => _userModel;
-
-  Future<void> saveCredentials(String token, String userModel) async {
-    await prefs.setString('token', token);
-    await prefs.setString('userModel', userModel);
+  Future<void> saveCredentials(String token) async {
+    await _prefs.setString('token', token);
   }
 
-  void getCredentials() {
-    _token = prefs.getString('token');
-    _userModel = prefs.getString('userModel');
+  Future<String?> getCredentials() async {
+    _token = await _prefs.getString('token');
+    dprint('PxLocalDb().getCredentials($_token)');
+    return _token;
   }
 
   Future<void> clearCredentials() async {
-    await prefs.setString('token', '');
-    await prefs.setString('userModel', '');
+    await _prefs.setString('token', '');
   }
 }

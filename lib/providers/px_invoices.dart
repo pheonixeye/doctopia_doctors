@@ -40,6 +40,8 @@ class PxInvoices extends ChangeNotifier {
       }
       notifyListeners();
     } catch (e) {
+      _invoice = null;
+      notifyListeners();
       rethrow;
     }
   }

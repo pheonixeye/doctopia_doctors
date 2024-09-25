@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:doctopia_doctors/assets/assets.dart';
+import 'package:doctopia_doctors/functions/dprint.dart';
 import 'package:doctopia_doctors/providers/px_gov.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_server_status.dart';
@@ -9,7 +9,6 @@ import 'package:doctopia_doctors/providers/px_theme.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
 import 'package:doctopia_doctors/routes/routes.dart';
 import 'package:doctopia_doctors/services/local_database_service/local_database_service.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gap/gap.dart';
@@ -55,11 +54,6 @@ class _LoadingScreenState extends State<LoadingScreen>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Spacer(),
-              Image.asset(
-                Assets.icon,
-                width: 100,
-                height: 100,
-              ),
               SpinKitPumpingHeart(
                 color: const Color(0xffFE7800),
                 size: 75.0,
@@ -88,36 +82,35 @@ class _LoadingScreenState extends State<LoadingScreen>
         context.read<PxGov>().loadGovernorates(),
       ]);
     } catch (e) {
-      if (kDebugMode) {
-        print(e.toString());
-      }
+      dprint(e.toString());
       if (context.mounted) {
-        await GoRouter.of(context).pushNamed(AppRouter.offline);
+        context.pushNamed(AppRouter.offline);
       }
     }
     if (context.mounted) {
-      await context.read<PxLocalDatabase>().initDb().whenComplete(() async {
-        context.read<PxLocalDatabase>().fetchLanguageFromDb();
-        context.read<PxLocalDatabase>().fetchThemeFromDb();
-        context.read<PxLocalDatabase>().getCredentials();
+      final _u = context.read<PxUserModel>();
+      context.read<PxLocalDatabase>().fetchLanguageFromDb();
+      context.read<PxLocalDatabase>().fetchThemeFromDb();
+      await context.read<PxUserModel>().loginFromAuthStore(
+          await context.read<PxLocalDatabase>().getCredentials());
+      if (context.mounted) {
         context.read<PxLocale>().setLocaleFromLocalDb();
         context.read<PxTheme>().setThemeModeFromDb();
-
-        //FIXME: navigate based on login status
-        final _u = context.read<PxUserModel>();
-        if (_u.isLoggedIn && context.mounted) {
-          GoRouter.of(context).goNamed(
-            AppRouter.home,
-            pathParameters: {
-              "id": _u.id!,
-            },
-          );
-        } else {
-          if (context.mounted) {
-            GoRouter.of(context).goNamed(AppRouter.login);
-          }
+      }
+      if (context.mounted && context.read<PxUserModel>().isLoggedIn) {
+        dprint('isLoggedIn');
+        context.goNamed(
+          AppRouter.home,
+          pathParameters: {
+            "id": _u.id!,
+          },
+        );
+      } else {
+        dprint('isNotLoggedIn');
+        if (context.mounted) {
+          context.goNamed(AppRouter.login);
         }
-      });
+      }
     }
   }
 }

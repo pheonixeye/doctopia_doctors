@@ -22,7 +22,6 @@ import 'package:doctopia_doctors/pages/loading_screen/loading_screen.dart';
 import 'package:doctopia_doctors/pages/login_page/login_page.dart';
 import 'package:doctopia_doctors/pages/register_page_basic/register_page_basic.dart';
 import 'package:doctopia_doctors/pages/server_offline_page/server_offline_page.dart';
-import 'package:doctopia_doctors/pages/token_validation_page/token_validation_page.dart';
 import 'package:doctopia_doctors/providers/px_clinic_visits.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
@@ -32,7 +31,6 @@ import 'package:doctopia_doctors/providers/px_notifications.dart';
 import 'package:doctopia_doctors/providers/px_reviews.dart';
 import 'package:doctopia_doctors/providers/px_scrapper.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
-// import 'package:doctopia_doctors/routes/route_page/route_page.dart';
 import 'package:doctopia_doctors/routes/transitions.dart';
 import 'package:doctopia_doctors/utils/navigator_key.dart';
 import 'package:flutter/foundation.dart';
@@ -46,8 +44,6 @@ class AppRouter {
   static const String register = 'register';
   static const String createclinic = 'createclinic';
   static const String offline = 'offline';
-  static const String forgotpassword = 'forgotpassword';
-  static const String tokenvalidation = 'tokenvalidation';
   static const String sch = 'sch/:clinicid';
   static const String feed = 'app/:id/feed';
   static const String bookings = 'app/:id/bookings';
@@ -397,20 +393,6 @@ class AppRouter {
                 name: login,
                 transitionsBuilder: fadeTransitionBuilder,
                 child: Loginpage(
-                  key: state.pageKey,
-                ),
-              );
-            },
-          ),
-          GoRoute(
-            path: tokenvalidation,
-            name: tokenvalidation,
-            pageBuilder: (context, state) {
-              return CustomTransitionPage(
-                transitionDuration: const Duration(milliseconds: 500),
-                name: tokenvalidation,
-                transitionsBuilder: fadeTransitionBuilder,
-                child: TokenValidationPage(
                   key: state.pageKey,
                 ),
               );

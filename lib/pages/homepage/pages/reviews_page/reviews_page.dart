@@ -20,6 +20,12 @@ class _ReviewsPageState extends State<ReviewsPage> {
   }
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -32,6 +38,16 @@ class _ReviewsPageState extends State<ReviewsPage> {
         Expanded(
           child: Consumer<PxReviews>(
             builder: (context, r, _) {
+              while (r.reviews.isEmpty) {
+                return const Center(
+                  child: Card.outlined(
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text('No Reviews Yet...'),
+                    ),
+                  ),
+                );
+              }
               return Card(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -40,7 +56,6 @@ class _ReviewsPageState extends State<ReviewsPage> {
                     itemCount: r.reviews.length,
                     itemBuilder: (context, index) {
                       final item = r.reviews[index];
-
                       return ReviewCard(
                         review: item,
                         index: index,

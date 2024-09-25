@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: library_prefixes, non_constant_identifier_names
 
-import 'package:flutter/foundation.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 import 'package:doctopia_doctors/api/_pocket_main/pocket_main.dart';
@@ -44,9 +43,7 @@ class HxInvoices {
         invoice: invoice,
         records: _records,
       );
-      if (kDebugMode) {
-        print(_parsed.toString());
-      }
+
       return _parsed;
     } on ClientException catch (e) {
       throw Exception(e.response['message']);
