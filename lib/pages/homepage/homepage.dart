@@ -1,9 +1,10 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:doctopia_doctors/components/main_snackbar.dart';
+import 'package:doctopia_doctors/components/prompt_dialog.dart';
 import 'package:doctopia_doctors/extensions/avatar_url_doctor_ext.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/components/page_ref.dart';
-import 'package:doctopia_doctors/pages/homepage/widgets/floating_buttons_by_index.dart';
+import 'package:doctopia_doctors/pages/homepage/widgets/sharable_dialog.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_nav.dart';
 import 'package:doctopia_doctors/providers/px_theme.dart';
@@ -63,63 +64,107 @@ class _HomePageState extends State<HomePage>
             actions: [
               Consumer2<PxUserModel, PxDoctor>(
                 builder: (context, u, d, _) {
-                  if (d.doctor == null) {
-                    return SizedBox(
-                      width: 150.0,
-                      child: DefaultTextStyle(
-                        style: const TextStyle(
-                          // fontSize: 35,
-                          color: Colors.white,
-                          shadows: [
-                            Shadow(
-                              blurRadius: 7.0,
+                  return Row(
+                    children: [
+                      if (d.doctor == null)
+                        SizedBox(
+                          width: 150.0,
+                          child: DefaultTextStyle(
+                            style: const TextStyle(
+                              // fontSize: 35,
                               color: Colors.white,
-                              offset: Offset(0, 0),
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 7.0,
+                                  color: Colors.white,
+                                  offset: Offset(0, 0),
+                                ),
+                              ],
                             ),
-                          ],
+                            child: AnimatedTextKit(
+                              repeatForever: true,
+                              animatedTexts: [
+                                FlickerAnimatedText('Complete Your Profile.'),
+                              ],
+                              onTap: () {
+                                n.navToIndex(2); //doctor profile
+                                context.goNamed(
+                                  AppRouter.profile,
+                                  pathParameters: {"id": u.id!},
+                                );
+                              },
+                            ),
+                          ),
                         ),
-                        child: AnimatedTextKit(
-                          repeatForever: true,
-                          animatedTexts: [
-                            FlickerAnimatedText('Complete Your Profile.'),
-                          ],
-                          onTap: () {
-                            n.navToIndex(2); //doctor profile
-                            GoRouter.of(context).goNamed(
-                              AppRouter.profile,
-                              pathParameters: {"id": u.id!},
-                            );
-                          },
-                        ),
+                      const SizedBox(
+                        width: 20,
                       ),
-                    );
-                  }
-                  return const SizedBox();
-                },
-              ),
-              const SizedBox(
-                width: 20,
-              ),
-              //TODO: change to a popup menu btn with logout && share page link
-              //with qr code generation
-              Consumer<PxUserModel>(
-                builder: (context, u, _) {
-                  return FloatingActionButton.small(
-                    heroTag: 'logout-btn',
-                    tooltip: "Logout",
-                    child: const Icon(Icons.logout),
-                    onPressed: () {
-                      n.navToIndex(0);
-                      if (context.mounted) {
-                        u.logout();
-                        Scaffold.of(context).closeDrawer();
-                        GoRouter.of(context).goNamed(AppRouter.login);
-                      }
-                    },
+                      PopupMenuButton<Object>(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        position: PopupMenuPosition.under,
+                        shadowColor: Colors.green,
+                        offset: const Offset(0, 20),
+                        itemBuilder: (context) {
+                          return [
+                            PopupMenuItem(
+                              child: const Row(
+                                children: [
+                                  Text('Share'),
+                                  Spacer(),
+                                  Icon(Icons.share)
+                                ],
+                              ),
+                              onTap: () async {
+                                //TODO: design sharable dialog
+                                //940 x 788 px
+                                await showDialog(
+                                  context: context,
+                                  builder: (context) => SharableDialog(
+                                    doctor: d.doctor!,
+                                  ),
+                                );
+                              },
+                            ),
+                            const PopupMenuDivider(),
+                            PopupMenuItem(
+                              child: const Row(
+                                children: [
+                                  Text('Logout'),
+                                  Spacer(),
+                                  Icon(Icons.logout)
+                                ],
+                              ),
+                              onTap: () async {
+                                //todo: add confirmation dialog
+                                final toLogOut = await showDialog<bool>(
+                                  context: context,
+                                  builder: (context) => const MainPromptDialog(
+                                    title: 'Confirm Logout',
+                                    body: "Are You Sure You Want To Logout ?",
+                                  ),
+                                );
+                                if (toLogOut == true) {
+                                  n.navToIndex(0);
+                                  if (context.mounted) {
+                                    u.logout();
+                                    Scaffold.of(context).closeDrawer();
+                                    context.goNamed(AppRouter.login);
+                                  }
+                                } else {
+                                  return;
+                                }
+                              },
+                            ),
+                          ];
+                        },
+                      ),
+                      const SizedBox(width: 20),
+                    ],
                   );
                 },
               ),
-              const SizedBox(width: 20),
             ],
           ),
           drawer: Consumer2<PxUserModel, PxTheme>(
@@ -146,7 +191,7 @@ class _HomePageState extends State<HomePage>
                           n.collapse();
                         }
                         Scaffold.of(context).closeDrawer();
-                        GoRouter.of(context).goNamed(
+                        context.goNamed(
                           e.path,
                           pathParameters: {"id": u.id!},
                         );
@@ -300,10 +345,6 @@ class _HomePageState extends State<HomePage>
                 child: child,
               );
             },
-          ),
-          floatingActionButton: FloatingButtonsByIndex(
-            id: context.read<PxUserModel>().id!,
-            index: n.index,
           ),
         );
       },

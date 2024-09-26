@@ -13,23 +13,8 @@ class MainPromptDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       shadowColor: Theme.of(context).colorScheme.tertiary,
-      elevation: 10,
-      title: Row(
-        children: [
-          Text(title),
-          const Spacer(),
-          FloatingActionButton.small(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(50),
-            ),
-            heroTag: 'close-dialog',
-            onPressed: () {
-              GoRouter.of(context).pop(false);
-            },
-            child: const Icon(Icons.close),
-          ),
-        ],
-      ),
+      elevation: 8,
+      title: Text(title),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
@@ -42,19 +27,30 @@ class MainPromptDialog extends StatelessWidget {
         ],
       ),
       actions: [
-        FloatingActionButton.small(
-          heroTag: 'confirm-dialog',
-          onPressed: () {
-            GoRouter.of(context).pop(true);
-          },
-          child: const Icon(Icons.check),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: ElevatedButton.icon(
+            onPressed: () {
+              GoRouter.of(context).pop(false);
+            },
+            label: const Text('Cancel'),
+            icon: const Icon(Icons.close),
+          ),
         ),
-        FloatingActionButton.small(
-          heroTag: 'cancel-dialog',
-          onPressed: () {
-            GoRouter.of(context).pop(false);
-          },
-          child: const Icon(Icons.close),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+              foregroundColor:
+                  Theme.of(context).textTheme.headlineMedium?.color,
+            ),
+            onPressed: () {
+              GoRouter.of(context).pop(true);
+            },
+            label: const Text('Confirm'),
+            icon: const Icon(Icons.check),
+          ),
         ),
       ],
     );
