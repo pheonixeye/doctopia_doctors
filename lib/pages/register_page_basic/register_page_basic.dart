@@ -1,10 +1,12 @@
 import 'package:doctopia_doctors/assets/assets.dart';
+import 'package:doctopia_doctors/components/central_loading.dart';
+import 'package:doctopia_doctors/components/main_snackbar.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
 import 'package:doctopia_doctors/routes/routes.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+// import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proklinik_models/models/user_model.dart';
@@ -347,16 +349,29 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                     onPressed: () async {
                       //todo: validate form and create a new user account
                       if (_formKey.currentState!.validate()) {
+                        late BuildContext _loadingContext;
                         if (_service != 'Clinic') {
                           //TODO: change later
-                          await EasyLoading.showInfo(
-                            'Sorry For The Inconvenience, We Only Provide Clinic Services At The Moment.',
-                            duration: const Duration(seconds: 10),
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            iInfoSnackbar(
+                              'Sorry For The Inconvenience, We Only Provide Clinic Services At The Moment.',
+                              context,
+                              Colors.red,
+                            ),
                           );
                           return;
                         }
                         try {
-                          await EasyLoading.show(status: "Loading...");
+                          // await EasyLoading.show(status: "Loading...");
+                          if (context.mounted) {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                _loadingContext = context;
+                                return const CentralLoading();
+                              },
+                            );
+                          }
                           final UserModel _model = UserModel(
                             id: '',
                             username: _usernameController.text
@@ -370,7 +385,10 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                             synd_id: int.parse(_syndIdController.text),
                           );
                           await u.createUserAccount(_model);
-                          await EasyLoading.dismiss();
+                          // await EasyLoading.dismiss();
+                          if (_loadingContext.mounted) {
+                            Navigator.pop(_loadingContext);
+                          }
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -387,7 +405,10 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                             GoRouter.of(context).goNamed(AppRouter.login);
                           }
                         } catch (e) {
-                          await EasyLoading.dismiss();
+                          // await EasyLoading.dismiss();
+                          if (_loadingContext.mounted) {
+                            Navigator.pop(_loadingContext);
+                          }
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text(e.toString())));

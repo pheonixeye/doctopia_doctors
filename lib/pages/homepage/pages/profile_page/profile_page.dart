@@ -1,12 +1,14 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:doctopia_doctors/components/central_loading.dart';
+import 'package:doctopia_doctors/components/main_snackbar.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/profile_page/widgets/doctor_profile_create.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_specialities.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+// import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
 import 'package:proklinik_models/models/degree.dart';
 import 'package:proklinik_models/models/doctor.dart';
@@ -98,16 +100,29 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           IconButton.outlined(
             onPressed: () async {
+              late BuildContext _loadingContext;
               try {
-                await EasyLoading.show(status: "Loading...");
+                // await EasyLoading.show(status: "Loading...");
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    _loadingContext = context;
+                    return const CentralLoading();
+                  },
+                );
 
                 await _UpdateDoctorField(field, controller.text.trim());
-                await EasyLoading.showSuccess("Success...");
+                if (_loadingContext.mounted) {
+                  Navigator.pop(_loadingContext);
+                }
+                // await EasyLoading.showSuccess("Success...");
                 setState(() {
                   _isEditing[field] = false;
                 });
               } catch (e) {
-                await EasyLoading.dismiss();
+                if (_loadingContext.mounted) {
+                  Navigator.pop(_loadingContext);
+                }
 
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -326,19 +341,43 @@ class _ProfilePageState extends State<ProfilePage> {
                                   setState(() {
                                     _degree = value;
                                   });
+                                  late BuildContext _loadingContext;
                                   if (value != null) {
                                     try {
-                                      await EasyLoading.show(
-                                          status: "Loading...");
+                                      // await EasyLoading.show(
+                                      //     status: "Loading...");
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          _loadingContext = context;
+                                          return const CentralLoading();
+                                        },
+                                      );
                                       await _UpdateDoctorField(
                                           "degree_en", value.en);
                                       await _UpdateDoctorField(
                                           "degree_ar", value.ar);
-                                      await EasyLoading.showSuccess(
-                                          "Success...");
+                                      // await EasyLoading.showSuccess(
+                                      //     "Success...");
+                                      if (_loadingContext.mounted) {
+                                        Navigator.pop(_loadingContext);
+                                      }
                                     } catch (e) {
-                                      await EasyLoading.dismiss();
-                                      await EasyLoading.showError(e.toString());
+                                      if (_loadingContext.mounted) {
+                                        Navigator.pop(_loadingContext);
+                                      }
+                                      // await EasyLoading.dismiss();
+                                      if (context.mounted) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          iInfoSnackbar(
+                                            e.toString(),
+                                            context,
+                                            Colors.red,
+                                          ),
+                                        );
+                                      }
+                                      // await EasyLoading.showError(e.toString());
                                       setState(() {
                                         _isEditing["degree_en"] = false;
                                       });

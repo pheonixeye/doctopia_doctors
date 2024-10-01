@@ -1,12 +1,12 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:doctopia_doctors/components/central_loading.dart';
+import 'package:doctopia_doctors/functions/dprint.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_specialities.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
 import 'package:proklinik_models/models/degree.dart';
 import 'package:proklinik_models/models/speciality.dart';
@@ -279,6 +279,7 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
                 child: ElevatedButton.icon(
                   onPressed: () async {
                     if (formKey.currentState!.validate()) {
+                      late BuildContext _loadingContext;
                       d.setDoctor(
                         synd_id: u.model?.synd_id,
                         personal_phone: u.model?.phone,
@@ -294,15 +295,26 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
                         degree_ar: _degree!.ar,
                       );
                       try {
-                        await EasyLoading.show(status: "Loading...");
+                        // await EasyLoading.show(status: "Loading...");
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            _loadingContext = context;
+                            return const CentralLoading();
+                          },
+                        );
                         await d.createDoctor();
-                        await EasyLoading.showSuccess("Success...");
+                        if (_loadingContext.mounted) {
+                          Navigator.pop(_loadingContext);
+                        }
+                        // await EasyLoading.showSuccess("Success...");
                       } catch (e) {
                         d.nullifyDoctor();
-                        await EasyLoading.dismiss();
-                        if (kDebugMode) {
-                          print(e);
+                        if (_loadingContext.mounted) {
+                          Navigator.pop(_loadingContext);
                         }
+                        // await EasyLoading.dismiss();
+                        dprint(e);
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             duration: const Duration(seconds: 10),

@@ -10,7 +10,6 @@ import 'package:doctopia_doctors/theme/app_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -101,11 +100,7 @@ class MyApp extends StatelessWidget {
           themeMode: t.mode,
           //ROUTER
           routerConfig: AppRouter.router,
-          //EASY_LOADING
-          builder: (context, child) {
-            child = EasyLoading.init()(context, child);
-            return child;
-          },
+
           //LOCALIZATION
           locale: l.locale,
           localizationsDelegates: AppLocalizations.localizationsDelegates,

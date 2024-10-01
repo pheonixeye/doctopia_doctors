@@ -1,5 +1,6 @@
 import 'package:after_layout/after_layout.dart';
 import 'package:doctopia_doctors/assets/assets.dart';
+import 'package:doctopia_doctors/components/central_loading.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
 import 'package:doctopia_doctors/routes/routes.dart';
@@ -7,7 +8,7 @@ import 'package:doctopia_doctors/services/notification_service/notification_serv
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+// import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -176,16 +177,29 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
                       icon: const Icon(Icons.login),
                       label: const Text('Login'),
                       onPressed: () async {
+                        late BuildContext _loadingContext;
                         if (_formKey.currentState!.validate()) {
                           try {
-                            await EasyLoading.show(status: "Loading...");
+                            // await EasyLoading.show(status: "Loading...");
+                            if (context.mounted) {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  _loadingContext = context;
+                                  return const CentralLoading();
+                                },
+                              );
+                            }
                             final _id = await u.loginUserByEmailAndPassword(
                               _emailController.text.trim(),
                               _passwordController.text,
                               rememberMe,
                             );
                             await u.saveFcmToken();
-                            await EasyLoading.showSuccess("Success...");
+                            // await EasyLoading.showSuccess("Success...");
+                            if (_loadingContext.mounted) {
+                              Navigator.pop(_loadingContext);
+                            }
                             if (context.mounted) {
                               GoRouter.of(context).goNamed(
                                 AppRouter.home,
@@ -194,7 +208,10 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
                               );
                             }
                           } catch (e) {
-                            await EasyLoading.dismiss();
+                            // await EasyLoading.dismiss();
+                            if (_loadingContext.mounted) {
+                              Navigator.pop(_loadingContext);
+                            }
                             if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(

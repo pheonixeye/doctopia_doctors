@@ -2,6 +2,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:doctopia_doctors/components/main_snackbar.dart';
 import 'package:doctopia_doctors/components/prompt_dialog.dart';
 import 'package:doctopia_doctors/extensions/avatar_url_doctor_ext.dart';
+import 'package:doctopia_doctors/extensions/is_mobile_ext.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/components/page_ref.dart';
 import 'package:doctopia_doctors/pages/homepage/widgets/sharable_dialog.dart';
@@ -123,6 +124,8 @@ class _HomePageState extends State<HomePage>
                                   context: context,
                                   builder: (context) => SharableDialog(
                                     doctor: d.doctor!,
+                                    relativeFactor:
+                                        (context.isMobile ? (2 / 3) : 1),
                                   ),
                                 );
                               },

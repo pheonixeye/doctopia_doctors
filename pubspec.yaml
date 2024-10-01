@@ -40,7 +40,7 @@ dependencies:
   http: 
   # url_launcher: 
   # localstorage: 
-  flutter_easyloading: 
+  # flutter_easyloading: 
   font_awesome_flutter: 
   provider: 
   after_layout: 
@@ -70,11 +70,12 @@ dependencies:
     git:
       url: https://github.com/pheonixeye/proklinik_models.git
       ref: master
+  pretty_qr_code: ^3.3.0
 
   ###TODO: change pre deployment
   # proklinik_models:
   #   path: ../proklinik_models
-  sembast_web: ^2.4.0+2
+  # sembast_web: ^2.4.0+2
  
 
 dev_dependencies:
