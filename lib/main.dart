@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer2<PxLocale, PxTheme>(
-      builder: (context, l, t, c) {
+      builder: (context, l, t, _) {
         final textTheme = GoogleFonts.cairoTextTheme();
         return MaterialApp.router(
           //OPTIONS
@@ -84,14 +84,12 @@ class MyApp extends StatelessWidget {
             colorScheme: const ColorScheme.light(
               primary: Colors.green,
             ),
-            // extensions: [lightCustomColors],
             textTheme: textTheme,
           ),
           darkTheme: AppTheme.theme(
             colorScheme: const ColorScheme.dark(
               primary: Colors.green,
             ),
-            // extensions: [darkCustomColors],
             textTheme: textTheme.apply(
               displayColor: Colors.white,
               bodyColor: Colors.white,

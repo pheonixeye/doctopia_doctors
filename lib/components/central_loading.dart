@@ -1,3 +1,4 @@
+import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:flutter/material.dart';
 
 class CentralLoading extends StatelessWidget {
@@ -23,13 +24,13 @@ class CentralLoading extends StatelessWidget {
           ],
         ),
         alignment: Alignment.center,
-        child: const Column(
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircularProgressIndicator(),
-            SizedBox(height: 10),
-            Text("Loading...")
+            const CircularProgressIndicator(),
+            const SizedBox(height: 10),
+            Text(context.loc.loading)
           ],
         ),
       ),

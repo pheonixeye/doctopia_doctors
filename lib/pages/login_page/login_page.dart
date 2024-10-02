@@ -2,13 +2,13 @@ import 'package:after_layout/after_layout.dart';
 import 'package:doctopia_doctors/assets/assets.dart';
 import 'package:doctopia_doctors/components/central_loading.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
+import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
 import 'package:doctopia_doctors/routes/routes.dart';
 import 'package:doctopia_doctors/services/notification_service/notification_service.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -65,9 +65,9 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
                 ),
               ),
               const SizedBox(height: 5),
-              const Text(
-                "ProKliniK",
-                style: TextStyle(
+              Text(
+                context.loc.proklinik,
+                style: const TextStyle(
                   fontSize: 18,
                   fontStyle: FontStyle.italic,
                   fontWeight: FontWeight.w600,
@@ -88,11 +88,11 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
                       child: TextFormField(
                         key: _emailFieldKey,
                         controller: _emailController,
-                        decoration: const InputDecoration(
-                          labelText: "Email",
+                        decoration: InputDecoration(
+                          labelText: context.loc.email,
                           hintText: "example@domain.com",
-                          border: OutlineInputBorder(),
-                          suffix: SizedBox(
+                          border: const OutlineInputBorder(),
+                          suffix: const SizedBox(
                             height: 24,
                           ),
                         ),
@@ -100,7 +100,7 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
                         validator: (value) {
                           if (value == null ||
                               !EmailValidator.validate(value)) {
-                            return "Kindly Enter a Valid Email Address.";
+                            return context.loc.enterValidEmail;
                           }
                           return null;
                         },
@@ -121,7 +121,7 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
                       child: TextFormField(
                         controller: _passwordController,
                         decoration: InputDecoration(
-                          labelText: "Password",
+                          labelText: context.loc.password,
                           hintText: "********",
                           border: const OutlineInputBorder(),
                           suffix: SizedBox(
@@ -142,7 +142,7 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
                         keyboardType: TextInputType.visiblePassword,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Kindly Enter Password.";
+                            return context.loc.kindlyEnterPassword;
                           }
                           return null;
                         },
@@ -158,7 +158,7 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
                   horizontal: 12,
                 ),
                 child: CheckboxListTile(
-                  title: const Text('Remember me'),
+                  title: Text(context.loc.rememberMe),
                   value: rememberMe,
                   onChanged: (v) {
                     setState(() {
@@ -175,12 +175,11 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
                         vertical: 12.0, horizontal: 24),
                     child: ElevatedButton.icon(
                       icon: const Icon(Icons.login),
-                      label: const Text('Login'),
+                      label: Text(context.loc.login),
                       onPressed: () async {
                         late BuildContext _loadingContext;
                         if (_formKey.currentState!.validate()) {
                           try {
-                            // await EasyLoading.show(status: "Loading...");
                             if (context.mounted) {
                               showDialog(
                                 context: context,
@@ -196,7 +195,6 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
                               rememberMe,
                             );
                             await u.saveFcmToken();
-                            // await EasyLoading.showSuccess("Success...");
                             if (_loadingContext.mounted) {
                               Navigator.pop(_loadingContext);
                             }
@@ -208,7 +206,6 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
                               );
                             }
                           } catch (e) {
-                            // await EasyLoading.dismiss();
                             if (_loadingContext.mounted) {
                               Navigator.pop(_loadingContext);
                             }
@@ -243,7 +240,7 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
                   builder: (context, u, _) {
                     return ElevatedButton.icon(
                       icon: const Icon(Icons.lock_reset),
-                      label: const Text('Forgot Password'),
+                      label: Text(context.loc.forgotPassword),
                       onPressed: () async {
                         //todo: email field is not empty
                         if (_emailFieldKey.currentState != null &&
@@ -256,12 +253,10 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
                               await u.requestPasswordReset(
                                   _emailController.text.trim());
                             },
-                            sucessMsg:
-                                "A Password Reset Link Was Sent To Your Email Address.",
+                            sucessMsg: context.loc.linkSentToEmail,
                             duration: const Duration(seconds: 15),
                           );
                         }
-                        //deferred / no need: send generate doctor token request
                       },
                     );
                   },
@@ -270,14 +265,14 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
               const Gap(20),
               Text.rich(
                 TextSpan(
-                  text: "Not Registered Yet ?  ",
+                  text: context.loc.notRegisteredYet,
                   children: [
                     TextSpan(
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
                           GoRouter.of(context).goNamed(AppRouter.register);
                         },
-                      text: "Create An Account.",
+                      text: context.loc.createAccount,
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         color: Theme.of(context).appBarTheme.backgroundColor,

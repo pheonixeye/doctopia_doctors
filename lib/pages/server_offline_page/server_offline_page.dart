@@ -21,7 +21,6 @@ class _ServerOfflinePageState extends State<ServerOfflinePage>
   @override
   void initState() {
     super.initState();
-    // print('loading screen initState');
     _controller = AnimationController(
       vsync: this,
       duration: _spinnerDuration,

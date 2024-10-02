@@ -1,4 +1,3 @@
-// import 'package:doctopia_doctors/api/scrapper_api/scrapper_api.dart';
 import 'package:doctopia_doctors/assets/assets.dart';
 import 'package:doctopia_doctors/extensions/is_mobile_ext.dart';
 import 'package:flutter/material.dart';
@@ -57,14 +56,6 @@ class UnderConstructionPage extends StatelessWidget {
                   fontSize: 16,
                 ),
               ),
-              const SizedBox(height: 20),
-              // ElevatedButton.icon(
-              //   onPressed: () async {
-              //     final HxScrapper _s = HxScrapper();
-              //     await _s.init();
-              //   },
-              //   label: const Text("test it"),
-              // ),
             ],
           ),
         ),

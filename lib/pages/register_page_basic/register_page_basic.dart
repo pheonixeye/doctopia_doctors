@@ -1,12 +1,12 @@
 import 'package:doctopia_doctors/assets/assets.dart';
 import 'package:doctopia_doctors/components/central_loading.dart';
 import 'package:doctopia_doctors/components/main_snackbar.dart';
+import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
 import 'package:doctopia_doctors/routes/routes.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proklinik_models/models/user_model.dart';
@@ -68,11 +68,12 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                 ),
               ),
               const SizedBox(height: 5),
-              const Text(
-                "ProKliniK",
-                style: TextStyle(
+              Text(
+                context.loc.proklinik,
+                style: const TextStyle(
                   fontSize: 18,
                   fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.w600,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -89,11 +90,11 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                     Expanded(
                       child: TextFormField(
                         controller: _syndIdController,
-                        decoration: const InputDecoration(
-                          labelText: "Syndicate Id",
+                        decoration: InputDecoration(
+                          labelText: context.loc.syndId,
                           hintText: "######",
-                          border: OutlineInputBorder(),
-                          suffix: SizedBox(
+                          border: const OutlineInputBorder(),
+                          suffix: const SizedBox(
                             height: 24,
                           ),
                         ),
@@ -101,7 +102,7 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                         maxLength: 6,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Kindly Enter Syndicate Id Number.";
+                            return context.loc.syndIdValidator;
                           }
                           return null;
                         },
@@ -122,18 +123,18 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                     Expanded(
                       child: TextFormField(
                         controller: _usernameController,
-                        decoration: const InputDecoration(
-                          labelText: "English Name",
+                        decoration: InputDecoration(
+                          labelText: context.loc.engName,
                           hintText: "A - B - C - D",
-                          border: OutlineInputBorder(),
-                          suffix: SizedBox(
+                          border: const OutlineInputBorder(),
+                          suffix: const SizedBox(
                             height: 24,
                           ),
                         ),
                         keyboardType: TextInputType.name,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Kindly Enter Name.";
+                            return context.loc.engNameValidator;
                           }
                           return null;
                         },
@@ -154,19 +155,21 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                     Expanded(
                       child: TextFormField(
                         controller: _phoneController,
-                        decoration: const InputDecoration(
-                          labelText: "Personal Phone",
+                        decoration: InputDecoration(
+                          labelText: context.loc.personalPhone,
                           hintText: "###-####-####",
-                          border: OutlineInputBorder(),
-                          suffix: SizedBox(
+                          border: const OutlineInputBorder(),
+                          suffix: const SizedBox(
                             height: 24,
                           ),
                         ),
                         maxLength: 11,
                         keyboardType: TextInputType.phone,
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Kindly Enter Personal Mobile Number.";
+                          if (value == null ||
+                              value.isEmpty ||
+                              value.length != 11) {
+                            return context.loc.personalPhoneValidator;
                           }
                           return null;
                         },
@@ -187,11 +190,11 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                     Expanded(
                       child: TextFormField(
                         controller: _emailController,
-                        decoration: const InputDecoration(
-                          labelText: "Email",
+                        decoration: InputDecoration(
+                          labelText: context.loc.email,
                           hintText: "example@domain.com",
-                          border: OutlineInputBorder(),
-                          suffix: SizedBox(
+                          border: const OutlineInputBorder(),
+                          suffix: const SizedBox(
                             height: 24,
                           ),
                         ),
@@ -199,7 +202,7 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                         validator: (value) {
                           if (value == null ||
                               !EmailValidator.validate(value)) {
-                            return "Kindly Enter a Valid Email Address.";
+                            return context.loc.enterValidEmail;
                           }
                           return null;
                         },
@@ -215,18 +218,18 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                     child: Text("S"),
                   ),
                   contentPadding: const EdgeInsets.all(0),
-                  title: const Text('Select Service Type'),
+                  title: Text(context.loc.selectServiceType),
                   subtitle: Card(
                     child: DropdownButtonFormField<String>(
                       validator: (value) {
                         if (value == null) {
-                          return 'Kindly Select Service Type.';
+                          return context.loc.selectServiceTypeValidator;
                         }
                         return null;
                       },
                       alignment: Alignment.center,
                       isExpanded: true,
-                      hint: const Text('Service Type...'),
+                      hint: Text(context.loc.selectServiceTypeHint),
                       items: ["Clinic", "Laboratory", "Radiology", "Pharmacy"]
                           .map((e) {
                         return DropdownMenuItem<String>(
@@ -260,7 +263,7 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                       child: TextFormField(
                         controller: _passwordController,
                         decoration: InputDecoration(
-                          labelText: "Password",
+                          labelText: context.loc.password,
                           hintText: "********",
                           border: const OutlineInputBorder(),
                           suffix: SizedBox(
@@ -281,10 +284,10 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                         keyboardType: TextInputType.visiblePassword,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Kindly Enter Password.";
+                            return context.loc.kindlyEnterPassword;
                           }
                           if (value.length < 8) {
-                            return "Minimum Required Length is 8 Characters.";
+                            return context.loc.passwordLengthValidator;
                           }
                           return null;
                         },
@@ -305,7 +308,7 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                       child: TextFormField(
                         controller: _confirmPasswordController,
                         decoration: InputDecoration(
-                          labelText: "Confirm Password",
+                          labelText: context.loc.confirmPassword,
                           hintText: "********",
                           border: const OutlineInputBorder(),
                           suffix: SizedBox(
@@ -327,11 +330,11 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                         keyboardType: TextInputType.visiblePassword,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Kindly Confirm Password.";
+                            return context.loc.confirmPasswordEnterValidator;
                           }
                           if (_passwordController.text !=
                               _confirmPasswordController.text) {
-                            return "Password Not Matching.";
+                            return context.loc.confirmPasswordMatchValidator;
                           }
                           return null;
                         },
@@ -345,7 +348,7 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                 builder: (context, u, _) {
                   return ElevatedButton.icon(
                     icon: const Icon(Icons.person_add_alt),
-                    label: const Text('Register'),
+                    label: Text(context.loc.register),
                     onPressed: () async {
                       //todo: validate form and create a new user account
                       if (_formKey.currentState!.validate()) {
@@ -354,7 +357,7 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                           //TODO: change later
                           ScaffoldMessenger.of(context).showSnackBar(
                             iInfoSnackbar(
-                              'Sorry For The Inconvenience, We Only Provide Clinic Services At The Moment.',
+                              context.loc.onlyClinicServices,
                               context,
                               Colors.red,
                             ),
@@ -362,7 +365,6 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                           return;
                         }
                         try {
-                          // await EasyLoading.show(status: "Loading...");
                           if (context.mounted) {
                             showDialog(
                               context: context,
@@ -391,11 +393,11 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                           }
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                duration: Duration(seconds: 2),
+                              SnackBar(
+                                duration: const Duration(seconds: 2),
                                 content: Text(
-                                  "Success",
-                                  style: TextStyle(
+                                  context.loc.success,
+                                  style: const TextStyle(
                                     color: Colors.green,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -405,7 +407,6 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                             GoRouter.of(context).goNamed(AppRouter.login);
                           }
                         } catch (e) {
-                          // await EasyLoading.dismiss();
                           if (_loadingContext.mounted) {
                             Navigator.pop(_loadingContext);
                           }
@@ -422,14 +423,14 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
               const Gap(20),
               Text.rich(
                 TextSpan(
-                  text: "Already Registered ?  ",
+                  text: context.loc.alreadyRegistered,
                   children: [
                     TextSpan(
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
                           GoRouter.of(context).goNamed(AppRouter.login);
                         },
-                      text: "Login",
+                      text: context.loc.login,
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         color: Theme.of(context).appBarTheme.backgroundColor,

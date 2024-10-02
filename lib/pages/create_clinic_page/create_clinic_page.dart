@@ -3,7 +3,6 @@ import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/providers/px_gov.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/routes/routes.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -120,9 +119,6 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
       default:
         return;
     }
-    if (kDebugMode) {
-      // print(_clinic);
-    }
   }
 
   int? _maxLength(String value) {
@@ -226,10 +222,7 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
                                   },
                                   onChanged: (val) {
                                     g.selectGov(val);
-                                    // c.setClinic(
-                                    //   gov_en: val?.governorate_name_en,
-                                    //   gov_ar: val?.governorate_name_ar,
-                                    // );
+
                                     if (val != null) {
                                       setClinicFromKeyValue(
                                           e, val.governorate_name_en);

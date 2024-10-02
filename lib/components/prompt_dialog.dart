@@ -1,3 +1,4 @@
+import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -33,7 +34,7 @@ class MainPromptDialog extends StatelessWidget {
             onPressed: () {
               GoRouter.of(context).pop(false);
             },
-            label: const Text('Cancel'),
+            label: Text(context.loc.cancel),
             icon: const Icon(Icons.close),
           ),
         ),
@@ -48,7 +49,7 @@ class MainPromptDialog extends StatelessWidget {
             onPressed: () {
               GoRouter.of(context).pop(true);
             },
-            label: const Text('Confirm'),
+            label: Text(context.loc.confirm),
             icon: const Icon(Icons.check),
           ),
         ),

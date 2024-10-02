@@ -1,3 +1,4 @@
+import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -33,12 +34,12 @@ class InformationDialog extends StatelessWidget {
         ],
       ),
       actions: [
-        FloatingActionButton.small(
-          heroTag: 'confirm-dialog',
+        ElevatedButton.icon(
           onPressed: () {
             GoRouter.of(context).pop(true);
           },
-          child: const Icon(Icons.check),
+          label: Text(context.loc.confirm),
+          icon: const Icon(Icons.check),
         ),
       ],
     );

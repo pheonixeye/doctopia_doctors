@@ -34,10 +34,6 @@ class DegreeSelector extends StatelessWidget {
                     child: Text(isEnglish ? e.en : e.ar),
                   );
                 }).toList(),
-                // value: Degree(
-                //   en: context.read<PxDoctorMake>().doctor.degree_en,
-                //   ar: context.read<PxDoctorMake>().doctor.degree_ar,
-                // ),
                 onChanged: (value) {
                   context.read<PxDoctor>().setDoctor(
                         degree_en: value?.en,

@@ -5,6 +5,7 @@ import 'package:doctopia_doctors/extensions/avatar_url_doctor_ext.dart';
 import 'package:doctopia_doctors/extensions/is_mobile_ext.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/components/page_ref.dart';
+import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/pages/homepage/widgets/sharable_dialog.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_nav.dart';
@@ -61,7 +62,7 @@ class _HomePageState extends State<HomePage>
       builder: (context, n, _) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text("ProKliniK"),
+            title: Text(context.loc.proklinik),
             actions: [
               Consumer2<PxUserModel, PxDoctor>(
                 builder: (context, u, d, _) {
@@ -85,7 +86,8 @@ class _HomePageState extends State<HomePage>
                             child: AnimatedTextKit(
                               repeatForever: true,
                               animatedTexts: [
-                                FlickerAnimatedText('Complete Your Profile.'),
+                                FlickerAnimatedText(
+                                    context.loc.completeYourProfile),
                               ],
                               onTap: () {
                                 n.navToIndex(2); //doctor profile
@@ -110,15 +112,15 @@ class _HomePageState extends State<HomePage>
                         itemBuilder: (context) {
                           return [
                             PopupMenuItem(
-                              child: const Row(
+                              child: Row(
                                 children: [
-                                  Text('Share'),
-                                  Spacer(),
-                                  Icon(Icons.share)
+                                  Text(context.loc.share),
+                                  const Spacer(),
+                                  const Icon(Icons.share)
                                 ],
                               ),
                               onTap: () async {
-                                //TODO: design sharable dialog
+                                //todo: design sharable dialog
                                 //940 x 788 px
                                 await showDialog(
                                   context: context,
@@ -132,20 +134,20 @@ class _HomePageState extends State<HomePage>
                             ),
                             const PopupMenuDivider(),
                             PopupMenuItem(
-                              child: const Row(
+                              child: Row(
                                 children: [
-                                  Text('Logout'),
-                                  Spacer(),
-                                  Icon(Icons.logout)
+                                  Text(context.loc.logout),
+                                  const Spacer(),
+                                  const Icon(Icons.logout)
                                 ],
                               ),
                               onTap: () async {
                                 //todo: add confirmation dialog
                                 final toLogOut = await showDialog<bool>(
                                   context: context,
-                                  builder: (context) => const MainPromptDialog(
-                                    title: 'Confirm Logout',
-                                    body: "Are You Sure You Want To Logout ?",
+                                  builder: (context) => MainPromptDialog(
+                                    title: context.loc.confirmLogout,
+                                    body: context.loc.confirmLogoutMessage,
                                   ),
                                 );
                                 if (toLogOut == true) {
@@ -171,12 +173,13 @@ class _HomePageState extends State<HomePage>
             ],
           ),
           drawer: Consumer2<PxUserModel, PxTheme>(
-            builder: (context, u, t, c) {
+            builder: (context, u, t, _) {
               bool isDarkMode = t.mode == ThemeMode.dark;
+              final _pages = SidebarPageRef.homePages(context);
               return SidebarX(
                 animationDuration: const Duration(milliseconds: 300),
                 controller: n.controller,
-                items: loggedInPages.map((e) {
+                items: _pages.map((e) {
                   return SidebarXItem(
                       label: e.name,
                       icon: e.icon,
@@ -189,7 +192,7 @@ class _HomePageState extends State<HomePage>
                             _animationController.forward();
                           }
                         });
-                        n.navToIndex(loggedInPages.indexOf(e));
+                        n.navToIndex(_pages.indexOf(e));
                         if (n.controller.extended) {
                           n.collapse();
                         }
@@ -234,7 +237,7 @@ class _HomePageState extends State<HomePage>
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   iInfoSnackbar(
-                                    "Unknown Error.",
+                                    context.loc.unknownError,
                                     context,
                                     Colors.red,
                                   ),

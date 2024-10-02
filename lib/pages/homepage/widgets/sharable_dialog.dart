@@ -9,7 +9,6 @@ import 'package:doctopia_doctors/extensions/schedule_format_ext.dart';
 import 'package:doctopia_doctors/functions/download_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
-import 'package:proklinik_models/models/doctor.dart';
 import 'package:proklinik_models/proklinik_models.dart';
 import 'package:screenshot/screenshot.dart';
 

@@ -93,17 +93,287 @@ abstract class AppLocalizations {
     Locale('en')
   ];
 
-  /// No description provided for @hi.
+  /// No description provided for @proklinik.
   ///
   /// In en, this message translates to:
-  /// **'hi'**
-  String get hi;
+  /// **'ProKliniK'**
+  String get proklinik;
 
-  /// No description provided for @doctopia.
+  /// No description provided for @email.
   ///
   /// In en, this message translates to:
-  /// **'Doctopia'**
-  String get doctopia;
+  /// **'Email'**
+  String get email;
+
+  /// No description provided for @enterValidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Kindly Enter a Valid Email Address.'**
+  String get enterValidEmail;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
+
+  /// No description provided for @kindlyEnterPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Kindly Enter Password.'**
+  String get kindlyEnterPassword;
+
+  /// No description provided for @rememberMe.
+  ///
+  /// In en, this message translates to:
+  /// **'Remember me'**
+  String get rememberMe;
+
+  /// No description provided for @login.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get login;
+
+  /// No description provided for @forgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password'**
+  String get forgotPassword;
+
+  /// No description provided for @linkSentToEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'A Password Reset Link Was Sent To Your Email Address.'**
+  String get linkSentToEmail;
+
+  /// No description provided for @notRegisteredYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Registered Yet ?  '**
+  String get notRegisteredYet;
+
+  /// No description provided for @createAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Create An Account.'**
+  String get createAccount;
+
+  /// No description provided for @loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get loading;
+
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @syndId.
+  ///
+  /// In en, this message translates to:
+  /// **'Syndicate Id'**
+  String get syndId;
+
+  /// No description provided for @syndIdValidator.
+  ///
+  /// In en, this message translates to:
+  /// **'Kindly Enter Syndicate Id Number.'**
+  String get syndIdValidator;
+
+  /// No description provided for @engName.
+  ///
+  /// In en, this message translates to:
+  /// **'English Name'**
+  String get engName;
+
+  /// No description provided for @engNameValidator.
+  ///
+  /// In en, this message translates to:
+  /// **'Kindly Enter English Name.'**
+  String get engNameValidator;
+
+  /// No description provided for @personalPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Phone'**
+  String get personalPhone;
+
+  /// No description provided for @personalPhoneValidator.
+  ///
+  /// In en, this message translates to:
+  /// **'Kindly Enter Personal Mobile Number.'**
+  String get personalPhoneValidator;
+
+  /// No description provided for @selectServiceType.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Service Type'**
+  String get selectServiceType;
+
+  /// No description provided for @selectServiceTypeValidator.
+  ///
+  /// In en, this message translates to:
+  /// **'Kindly Select Service Type.'**
+  String get selectServiceTypeValidator;
+
+  /// No description provided for @selectServiceTypeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Service Type...'**
+  String get selectServiceTypeHint;
+
+  /// No description provided for @passwordLengthValidator.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum Required Length is 8 Characters.'**
+  String get passwordLengthValidator;
+
+  /// No description provided for @confirmPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get confirmPassword;
+
+  /// No description provided for @confirmPasswordEnterValidator.
+  ///
+  /// In en, this message translates to:
+  /// **'Kindly Confirm Password.'**
+  String get confirmPasswordEnterValidator;
+
+  /// No description provided for @confirmPasswordMatchValidator.
+  ///
+  /// In en, this message translates to:
+  /// **'Password Not Matching.'**
+  String get confirmPasswordMatchValidator;
+
+  /// No description provided for @success.
+  ///
+  /// In en, this message translates to:
+  /// **'Sucess...'**
+  String get success;
+
+  /// No description provided for @register.
+  ///
+  /// In en, this message translates to:
+  /// **'Register'**
+  String get register;
+
+  /// No description provided for @onlyClinicServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Sorry For The Inconvenience, We Only Provide Clinic Services At The Moment.'**
+  String get onlyClinicServices;
+
+  /// No description provided for @alreadyRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'Already Registered ?  '**
+  String get alreadyRegistered;
+
+  /// No description provided for @completeYourProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Your Profile.'**
+  String get completeYourProfile;
+
+  /// No description provided for @share.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get share;
+
+  /// No description provided for @logout.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get logout;
+
+  /// No description provided for @confirmLogout.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Logout'**
+  String get confirmLogout;
+
+  /// No description provided for @confirmLogoutMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are You Sure You Want To Logout ?'**
+  String get confirmLogoutMessage;
+
+  /// No description provided for @unknownError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown Error.'**
+  String get unknownError;
+
+  /// No description provided for @feed.
+  ///
+  /// In en, this message translates to:
+  /// **'Feed'**
+  String get feed;
+
+  /// No description provided for @bookings.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookings'**
+  String get bookings;
+
+  /// No description provided for @clinics.
+  ///
+  /// In en, this message translates to:
+  /// **'Clinics'**
+  String get clinics;
+
+  /// No description provided for @profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// No description provided for @invoices.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoices'**
+  String get invoices;
+
+  /// No description provided for @reviews.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviews'**
+  String get reviews;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @completeProfileForArticles.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Your Profile To Get A Customized News Feed Of Medical Articles.'**
+  String get completeProfileForArticles;
+
+  /// No description provided for @latestFromMedscape.
+  ///
+  /// In en, this message translates to:
+  /// **'Latest From Medscape'**
+  String get latestFromMedscape;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

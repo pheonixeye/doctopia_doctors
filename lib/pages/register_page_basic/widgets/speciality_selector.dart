@@ -38,10 +38,6 @@ class SpecialitySelector extends StatelessWidget {
                     ),
                   );
                 }).toList(),
-                // value: Speciality(
-                //   en: context.read<PxDoctorMake>().doctor.speciality_en,
-                //   ar: context.read<PxDoctorMake>().doctor.speciality_ar,
-                // ),
                 onChanged: (value) {
                   context.read<PxDoctor>().setDoctor(
                         speciality_en: value?.en,

@@ -27,7 +27,7 @@ class ArticleCard extends StatelessWidget {
                 text: item.title,
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
-                    html.window.open(item.url, '', "_blank");
+                    html.window.open(item.url, "_blank");
                   },
                 style: TextStyle(
                   color: Theme.of(context).appBarTheme.backgroundColor,

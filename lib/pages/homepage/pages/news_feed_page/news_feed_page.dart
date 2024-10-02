@@ -1,4 +1,5 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/news_feed_page/widgets/article_card.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_nav.dart';
@@ -46,7 +47,7 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
                       repeatForever: true,
                       animatedTexts: [
                         ColorizeAnimatedText(
-                          'Complete Your Profile To Get A Customized News Feed Of Medical Articles.',
+                          context.loc.completeProfileForArticles,
                           textAlign: TextAlign.center,
                           textStyle: const TextStyle(
                             fontSize: 18,
@@ -91,9 +92,9 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
         }
         return ListView(
           children: [
-            const ListTile(
-              leading: CircleAvatar(),
-              title: Text("Latest From Medscape"),
+            ListTile(
+              leading: const CircleAvatar(),
+              title: Text(context.loc.latestFromMedscape),
             ),
             ...s.pageResults!.map((e) => ArticleCard(item: e)).toList(),
             const Divider(),
