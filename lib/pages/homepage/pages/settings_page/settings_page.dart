@@ -1,4 +1,5 @@
 import 'package:doctopia_doctors/functions/shell_function.dart';
+import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_theme.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
@@ -23,13 +24,13 @@ class _SettingsPageState extends State<SettingsPage> {
         bool isCheckboxTristate = u.model!.preferences == null;
         return ListView(
           children: [
-            const Padding(
-              padding: EdgeInsets.all(8.0),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                leading: CircleAvatar(),
+                leading: const CircleAvatar(),
                 title: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text('General Settings'),
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(context.loc.generalSettings),
                 ),
               ),
             ),
@@ -40,7 +41,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ListTile(
-                    title: const Text('Language'),
+                    title: Text(context.loc.language),
                     trailing: Consumer<PxLocale>(
                       builder: (context, l, c) {
                         return FloatingActionButton(
@@ -64,7 +65,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ListTile(
-                    title: const Text('Theme'),
+                    title: Text(context.loc.theme),
                     trailing: FloatingActionButton(
                       heroTag: 'theme',
                       child: const Icon(Icons.theater_comedy),
@@ -77,13 +78,13 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
             const Divider(),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                leading: CircleAvatar(),
+                leading: const CircleAvatar(),
                 title: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text('Account Settings'),
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(context.loc.accountSettings),
                 ),
               ),
             ),
@@ -106,8 +107,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         toExecute: () async {
                           await u.requestPasswordReset(u.model!.email!);
                         },
-                        sucessMsg:
-                            "A Password Reset Link Was Sent To Your Email Address.",
+                        sucessMsg: context.loc.linkSentToEmail,
                         duration: const Duration(seconds: 15),
                       );
                     },
@@ -121,7 +121,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         vertical: 12,
                       ),
                       child: Text(
-                        'Change Password',
+                        context.loc.changePassword,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -136,13 +136,13 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
             const Divider(),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                leading: CircleAvatar(),
+                leading: const CircleAvatar(),
                 title: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text('Contract & Documents'),
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(context.loc.contractAndDocuments),
                 ),
               ),
             ),
@@ -175,7 +175,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       vertical: 12,
                     ),
                     child: Text(
-                      'Sign Contract',
+                      context.loc.signContract,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -209,7 +209,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       vertical: 12,
                     ),
                     child: Text(
-                      'Submit Documents',
+                      context.loc.submitDocuments,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -223,13 +223,13 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
             const Divider(),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                leading: CircleAvatar(),
+                leading: const CircleAvatar(),
                 title: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text('Email Notification Settings'),
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(context.loc.emailNotificationSettings),
                 ),
               ),
             ),
@@ -241,9 +241,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: CheckboxListTile(
                     tristate: isCheckboxTristate,
-                    title: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text('Bookings'),
+                    title: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(context.loc.myBookings),
                     ),
                     value: u.model?.preferences?.mailBookings,
                     onChanged: (value) async {
@@ -278,9 +278,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: CheckboxListTile(
                     tristate: isCheckboxTristate,
-                    title: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text('Invoices'),
+                    title: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(context.loc.invoices),
                     ),
                     value: u.model?.preferences?.mailInvoices,
                     onChanged: (value) async {
@@ -315,9 +315,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: CheckboxListTile(
                     tristate: isCheckboxTristate,
-                    title: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text('Newsletter'),
+                    title: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(context.loc.newsletter),
                     ),
                     value: u.model?.preferences?.mailNews,
                     onChanged: (value) async {
@@ -349,13 +349,13 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
             const Divider(),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    'version 0.0.1',
+                    '${context.loc.version} - (0.0.1)',
                     textAlign: TextAlign.center,
                   ),
                 ),

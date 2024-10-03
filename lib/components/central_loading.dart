@@ -30,7 +30,12 @@ class CentralLoading extends StatelessWidget {
           children: [
             const CircularProgressIndicator(),
             const SizedBox(height: 10),
-            Text(context.loc.loading)
+            Text(
+              context.loc.loading,
+              style: const TextStyle(
+                color: Colors.black87,
+              ),
+            )
           ],
         ),
       ),

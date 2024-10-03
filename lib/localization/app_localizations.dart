@@ -374,6 +374,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Latest From Medscape'**
   String get latestFromMedscape;
+
+  /// No description provided for @myBookings.
+  ///
+  /// In en, this message translates to:
+  /// **'My Bookings'**
+  String get myBookings;
+
+  /// No description provided for @todayBookings.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s Bookings'**
+  String get todayBookings;
+
+  /// No description provided for @year.
+  ///
+  /// In en, this message translates to:
+  /// **'Year'**
+  String get year;
+
+  /// No description provided for @month.
+  ///
+  /// In en, this message translates to:
+  /// **'Month'**
+  String get month;
+
+  /// No description provided for @day.
+  ///
+  /// In en, this message translates to:
+  /// **'Day'**
+  String get day;
+
+  /// No description provided for @allMonthBookings.
+  ///
+  /// In en, this message translates to:
+  /// **'All Month Bookings'**
+  String get allMonthBookings;
+
+  /// No description provided for @noVisitsInSelectedDate.
+  ///
+  /// In en, this message translates to:
+  /// **'No Visits In Selected Date'**
+  String get noVisitsInSelectedDate;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @generalSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'General Settings'**
+  String get generalSettings;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get theme;
+
+  /// No description provided for @accountSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Settings'**
+  String get accountSettings;
+
+  /// No description provided for @changePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get changePassword;
+
+  /// No description provided for @contractAndDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract & Documents'**
+  String get contractAndDocuments;
+
+  /// No description provided for @signContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Contract'**
+  String get signContract;
+
+  /// No description provided for @submitDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Documents'**
+  String get submitDocuments;
+
+  /// No description provided for @emailNotificationSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Notification Settings'**
+  String get emailNotificationSettings;
+
+  /// No description provided for @newsletter.
+  ///
+  /// In en, this message translates to:
+  /// **'Newsletter'**
+  String get newsletter;
+
+  /// No description provided for @version.
+  ///
+  /// In en, this message translates to:
+  /// **'version'**
+  String get version;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

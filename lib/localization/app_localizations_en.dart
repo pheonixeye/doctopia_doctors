@@ -144,4 +144,61 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get latestFromMedscape => 'Latest From Medscape';
+
+  @override
+  String get myBookings => 'My Bookings';
+
+  @override
+  String get todayBookings => 'Today\'s Bookings';
+
+  @override
+  String get year => 'Year';
+
+  @override
+  String get month => 'Month';
+
+  @override
+  String get day => 'Day';
+
+  @override
+  String get allMonthBookings => 'All Month Bookings';
+
+  @override
+  String get noVisitsInSelectedDate => 'No Visits In Selected Date';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get generalSettings => 'General Settings';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get theme => 'Theme';
+
+  @override
+  String get accountSettings => 'Account Settings';
+
+  @override
+  String get changePassword => 'Change Password';
+
+  @override
+  String get contractAndDocuments => 'Contract & Documents';
+
+  @override
+  String get signContract => 'Sign Contract';
+
+  @override
+  String get submitDocuments => 'Submit Documents';
+
+  @override
+  String get emailNotificationSettings => 'Email Notification Settings';
+
+  @override
+  String get newsletter => 'Newsletter';
+
+  @override
+  String get version => 'version';
 }

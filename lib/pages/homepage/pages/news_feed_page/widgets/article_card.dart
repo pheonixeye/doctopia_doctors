@@ -24,27 +24,34 @@ class ArticleCard extends StatelessWidget {
         child: ListTile(
           title: Text.rich(
             TextSpan(
-                text: item.title,
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () {
-                    html.window.open(item.url, "_blank");
-                  },
-                style: TextStyle(
-                  color: Theme.of(context).appBarTheme.backgroundColor,
-                )),
-          ),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(item.teaser),
-              Text(
-                item.from,
-                style: const TextStyle(
-                  fontSize: 10,
-                  fontStyle: FontStyle.italic,
-                ),
+              text: item.title,
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  html.window.open(item.url, "_blank");
+                },
+              style: TextStyle(
+                color: Theme.of(context).appBarTheme.backgroundColor,
               ),
-            ],
+            ),
+            textDirection: TextDirection.ltr,
+            locale: const Locale('en'),
+          ),
+          subtitle: Text.rich(
+            TextSpan(
+              text: item.teaser,
+              children: [
+                const TextSpan(text: '/n'),
+                TextSpan(
+                  text: item.from,
+                  style: const TextStyle(
+                    fontSize: 10,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ],
+            ),
+            textDirection: TextDirection.ltr,
+            locale: const Locale('en'),
           ),
         ),
       ),

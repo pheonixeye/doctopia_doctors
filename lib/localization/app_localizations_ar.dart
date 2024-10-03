@@ -144,4 +144,61 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get latestFromMedscape => 'اخر المقالات الطبية';
+
+  @override
+  String get myBookings => 'الحجوزات';
+
+  @override
+  String get todayBookings => 'حجوزات اليوم';
+
+  @override
+  String get year => 'السنة';
+
+  @override
+  String get month => 'الشهر';
+
+  @override
+  String get day => 'اليوم';
+
+  @override
+  String get allMonthBookings => 'حجوزات الشهر كله';
+
+  @override
+  String get noVisitsInSelectedDate => 'لا يوجد حجوزات في التاريخ المحدد';
+
+  @override
+  String get save => 'حفظ';
+
+  @override
+  String get generalSettings => 'الاعدادات العامة';
+
+  @override
+  String get language => 'اللغة';
+
+  @override
+  String get theme => 'السمات';
+
+  @override
+  String get accountSettings => 'اعدادات الحساب';
+
+  @override
+  String get changePassword => 'تغيير كلمة السر';
+
+  @override
+  String get contractAndDocuments => 'العقود و المستندات';
+
+  @override
+  String get signContract => 'توقيع العقد';
+
+  @override
+  String get submitDocuments => 'مستندات الطبيب';
+
+  @override
+  String get emailNotificationSettings => 'اعدادات تنبيهات البريد الالكتروني';
+
+  @override
+  String get newsletter => 'النشرة العامة';
+
+  @override
+  String get version => 'اصدار';
 }

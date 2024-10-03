@@ -1,13 +1,17 @@
 import 'dart:async';
 
 import 'package:after_layout/after_layout.dart';
+import 'package:doctopia_doctors/extensions/number_translator.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
+import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/bookings_page/widgets/clinic_visits_tile.dart';
 import 'package:doctopia_doctors/providers/px_clinic_visits.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/bookings_page/logic/date_provider.dart';
+import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class BookingsPage extends StatefulWidget {
@@ -62,8 +66,8 @@ class _BookingsPageState extends State<BookingsPage> with AfterLayoutMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<PxClinicVisits>(
-      builder: (context, v, c) {
+    return Consumer2<PxClinicVisits, PxLocale>(
+      builder: (context, v, l, _) {
         return ListView(
           cacheExtent: 3000,
           children: [
@@ -71,11 +75,25 @@ class _BookingsPageState extends State<BookingsPage> with AfterLayoutMixin {
               leading: const CircleAvatar(),
               title: Row(
                 children: [
-                  const Text('My Bookings'),
+                  Text(context.loc.myBookings),
                   const Spacer(),
                   v.day == 0
-                      ? Text('${v.month} - ${v.year}')
-                      : Text('${v.day} - ${v.month} - ${v.year}'),
+                      ? Text(
+                          DateFormat(
+                            'MM/yyyy',
+                            l.locale.languageCode,
+                          ).format(
+                            DateTime(v.year, v.month),
+                          ),
+                        )
+                      : Text(
+                          DateFormat(
+                            'dd/MM/yyyy',
+                            l.locale.languageCode,
+                          ).format(
+                            DateTime(v.year, v.month, v.day),
+                          ),
+                        ),
                   const Spacer(),
                 ],
               ),
@@ -83,7 +101,7 @@ class _BookingsPageState extends State<BookingsPage> with AfterLayoutMixin {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50),
                 ),
-                tooltip: "Today's Bookings",
+                tooltip: context.loc.todayBookings,
                 heroTag: 'today-bookings',
                 onPressed: () async {
                   final _today = DateTime.now();
@@ -113,9 +131,9 @@ class _BookingsPageState extends State<BookingsPage> with AfterLayoutMixin {
                       child: Row(
                         children: [
                           const Gap(10),
-                          const SizedBox(
+                          SizedBox(
                             width: _textWidth,
-                            child: Text("Year"),
+                            child: Text(context.loc.year),
                           ),
                           const Gap(10),
                           Expanded(
@@ -140,7 +158,9 @@ class _BookingsPageState extends State<BookingsPage> with AfterLayoutMixin {
                                             },
                                           );
                                         },
-                                        child: Text(e.toString()),
+                                        child: Text(e
+                                            .toString()
+                                            .toArabicNumber(context)),
                                       ),
                                     ),
                                   );
@@ -156,9 +176,9 @@ class _BookingsPageState extends State<BookingsPage> with AfterLayoutMixin {
                       child: Row(
                         children: [
                           const Gap(10),
-                          const SizedBox(
+                          SizedBox(
                             width: _textWidth,
-                            child: Text("Month"),
+                            child: Text(context.loc.month),
                           ),
                           const Gap(10),
                           Expanded(
@@ -183,7 +203,8 @@ class _BookingsPageState extends State<BookingsPage> with AfterLayoutMixin {
                                             },
                                           );
                                         },
-                                        child: Text(e.value),
+                                        child: Text(
+                                            e.value.ifMonthTranslate(context)),
                                       ),
                                     ),
                                   );
@@ -199,33 +220,36 @@ class _BookingsPageState extends State<BookingsPage> with AfterLayoutMixin {
                       child: Row(
                         children: [
                           // const Gap(10),
-                          SizedBox(
-                            width: _textWidth,
-                            child: Card.outlined(
-                              elevation: v.day == 0 ? 0 : 6,
-                              child: Center(
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 8.0),
-                                  child: Text.rich(
-                                    TextSpan(
-                                      text: "Day",
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .appBarTheme
-                                            .backgroundColor,
-                                        decoration: TextDecoration.underline,
-                                        fontWeight: FontWeight.w600,
+                          Tooltip(
+                            message: context.loc.allMonthBookings,
+                            child: SizedBox(
+                              width: _textWidth,
+                              child: Card.outlined(
+                                elevation: v.day == 0 ? 0 : 6,
+                                child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
+                                    child: Text.rich(
+                                      TextSpan(
+                                        text: context.loc.day,
+                                        style: TextStyle(
+                                          color: Theme.of(context)
+                                              .appBarTheme
+                                              .backgroundColor,
+                                          decoration: TextDecoration.underline,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () async {
+                                            await shellFunction(
+                                              context,
+                                              toExecute: () async {
+                                                await v.setDate(d: 0);
+                                              },
+                                            );
+                                          },
                                       ),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () async {
-                                          await shellFunction(
-                                            context,
-                                            toExecute: () async {
-                                              await v.setDate(d: 0);
-                                            },
-                                          );
-                                        },
                                     ),
                                   ),
                                 ),
@@ -243,21 +267,20 @@ class _BookingsPageState extends State<BookingsPage> with AfterLayoutMixin {
 
                                   return SizedBox(
                                     width: _daysWidth,
-                                    child: Tooltip(
-                                      message: "All Month Bookings",
-                                      child: Card(
-                                        elevation: isSelected ? 0 : 10,
-                                        child: RadioMenuButton<int>(
-                                          value: e,
-                                          groupValue: v.day,
-                                          onChanged: (value) async {
-                                            await shellFunction(context,
-                                                toExecute: () async {
-                                              await v.setDate(d: value);
-                                            });
-                                          },
-                                          child: Text(e.toString()),
-                                        ),
+                                    child: Card(
+                                      elevation: isSelected ? 0 : 10,
+                                      child: RadioMenuButton<int>(
+                                        value: e,
+                                        groupValue: v.day,
+                                        onChanged: (value) async {
+                                          await shellFunction(context,
+                                              toExecute: () async {
+                                            await v.setDate(d: value);
+                                          });
+                                        },
+                                        child: Text(e
+                                            .toString()
+                                            .toArabicNumber(context)),
                                       ),
                                     ),
                                   );
@@ -276,10 +299,10 @@ class _BookingsPageState extends State<BookingsPage> with AfterLayoutMixin {
             Builder(
               builder: (context) {
                 while (v.data.isEmpty) {
-                  return const Padding(
-                    padding: EdgeInsets.only(top: 60.0),
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 60.0),
                     child: Center(
-                      child: Text("No Visits In Selected Date"),
+                      child: Text(context.loc.noVisitsInSelectedDate),
                     ),
                   );
                 }

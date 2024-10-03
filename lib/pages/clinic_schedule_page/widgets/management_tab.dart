@@ -147,7 +147,7 @@ class _ScheduleManagementTabState extends State<ScheduleManagementTab>
                                 const SizedBox(width: 10),
                                 FloatingActionButton.small(
                                   tooltip: 'Add Clinic Shift',
-                                  heroTag: 'add-clinic-shift',
+                                  heroTag: 'add-clinic-shift$i',
                                   onPressed: () async {
                                     setState(() {
                                       _state[i] = _state[i].copyWith(

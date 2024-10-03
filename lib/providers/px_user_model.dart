@@ -65,7 +65,7 @@ class PxUserModel extends ChangeNotifier {
         notifyListeners();
       }
     }
-    dprint("PxUserModel()._loginFromAuthStore($token)");
+    dprint("PxUserModel()._loginFromAuthStore(${token?.substring(0, 5)})");
   }
 
   Future<String> loginUserByEmailAndPassword(

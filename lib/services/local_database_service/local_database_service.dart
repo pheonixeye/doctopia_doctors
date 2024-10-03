@@ -51,7 +51,7 @@ class PxLocalDatabase extends ChangeNotifier {
 
   Future<String?> getCredentials() async {
     _token = await _prefs.getString('token');
-    dprint('PxLocalDb().getCredentials($_token)');
+    dprint('PxLocalDb().getCredentials(${_token?.substring(0, 5)})');
     return _token;
   }
 

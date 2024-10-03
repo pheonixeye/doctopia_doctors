@@ -1,7 +1,9 @@
 import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/providers/px_clinic_visits.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
+import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:proklinik_models/proklinik_models.dart';
 import 'package:provider/provider.dart';
 
@@ -27,8 +29,8 @@ class _ClinicVisitsTileState extends State<ClinicVisitsTile> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<PxClinicVisits, PxClinics>(
-      builder: (context, v, c, _) {
+    return Consumer3<PxClinicVisits, PxClinics, PxLocale>(
+      builder: (context, v, c, l, _) {
         while (c.clinics.isEmpty) {
           return const Center(
             child: Padding(
@@ -37,8 +39,9 @@ class _ClinicVisitsTileState extends State<ClinicVisitsTile> {
             ),
           );
         }
-        final clinicName =
-            c.clinics.firstWhere((e) => e.id == widget.visit.clinic_id).name_en;
+        final clinic =
+            c.clinics.firstWhere((e) => e.id == widget.visit.clinic_id);
+        final clinicName = l.isEnglish ? clinic.name_en : clinic.name_ar;
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: Card.outlined(
@@ -64,12 +67,19 @@ class _ClinicVisitsTileState extends State<ClinicVisitsTile> {
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: [
-                        Text("${_d.day}-${_d.month}-${_d.year}"),
+                        Text(
+                          DateFormat('dd/MM/yyyy', l.locale.languageCode)
+                              .format(
+                            DateTime(_d.year, _d.month, _d.day),
+                          ),
+                        ),
                         const SizedBox(width: 20),
-                        Text(TimeOfDay(
-                          hour: widget.visit.startH.toInt(),
-                          minute: widget.visit.startM.toInt(),
-                        ).format(context)),
+                        Text(
+                          TimeOfDay(
+                            hour: widget.visit.startH.toInt(),
+                            minute: widget.visit.startM.toInt(),
+                          ).format(context),
+                        ),
                         const SizedBox(width: 20),
                         if (widget.visit.type != null &&
                             widget.visit.type!.isNotEmpty)

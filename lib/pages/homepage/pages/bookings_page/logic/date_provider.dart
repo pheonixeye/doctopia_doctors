@@ -1,3 +1,7 @@
+import 'package:doctopia_doctors/providers/px_locale.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 class WidgetsDateProvider {
   final List<int> _years;
 
@@ -66,6 +70,34 @@ class WidgetsDateProvider {
       return _result;
     } else {
       return [_startingYear];
+    }
+  }
+}
+
+extension TranslateMonth on String {
+  String ifMonthTranslate(BuildContext context) {
+    final isEnglish = context.read<PxLocale>().isEnglish;
+    try {
+      final foundMonth =
+          WidgetsDateProvider._months.values.firstWhere((e) => this == e);
+      final translatedMonth = switch (foundMonth) {
+        "January" => "يناير",
+        "February" => "فبراير",
+        "March" => "مارس",
+        "April" => "ابريل",
+        "May" => "مايو",
+        "June" => "يونيو",
+        "July" => "يوليو",
+        "August" => "اغسطس",
+        "September" => "سبتمبر",
+        "October" => "اكتوبر",
+        "November" => "نوفمبر",
+        "December" => "ديسمبر",
+        _ => throw UnimplementedError(),
+      };
+      return isEnglish ? foundMonth : translatedMonth;
+    } catch (e) {
+      return '';
     }
   }
 }

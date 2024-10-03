@@ -36,7 +36,7 @@ class ImageDownloader {
 
   static Future<void> download({
     required Uint8List uInt8List,
-    double imageQuality = 0.95,
+    double imageQuality = 1.00,
     String? name,
     ImageType imageType = ImageType.png,
   }) async {
