@@ -40,7 +40,7 @@ class ArticleCard extends StatelessWidget {
             TextSpan(
               text: item.teaser,
               children: [
-                const TextSpan(text: '/n'),
+                const TextSpan(text: '\n'),
                 TextSpan(
                   text: item.from,
                   style: const TextStyle(
