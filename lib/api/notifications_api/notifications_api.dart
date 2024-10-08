@@ -30,4 +30,15 @@ class HxNotifications {
     final not = StoredNotification.fromJson(result.toJson());
     return not;
   }
+
+  Future<void> clearDoctorNotification(String docId) async {
+    final result = await PocketbaseHelper.pb
+        .collection('notifications')
+        .getFullList(filter: "doc_id = '$docId'");
+    for (var resultItem in result) {
+      await PocketbaseHelper.pb
+          .collection('notifications')
+          .delete(resultItem.id);
+    }
+  }
 }

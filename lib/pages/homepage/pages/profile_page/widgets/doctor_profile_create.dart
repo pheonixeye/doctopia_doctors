@@ -2,6 +2,7 @@
 
 import 'package:doctopia_doctors/components/central_loading.dart';
 import 'package:doctopia_doctors/functions/dprint.dart';
+import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_specialities.dart';
@@ -63,7 +64,7 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
 
   String? _validator(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return "Empty Inputs Are Not Allowed";
+      return context.loc.emptyInputsNotAllowed;
     }
     return null;
   }
@@ -73,23 +74,8 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
     return Consumer3<PxUserModel, PxDoctor, PxLocale>(
       builder: (context, u, d, l, _) {
         while (u.model == null) {
-          return Center(
-            child: Container(
-              height: 100,
-              width: 100,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(),
-                  SizedBox(height: 10),
-                  Text("Loading..."),
-                ],
-              ),
-            ),
+          return const Center(
+            child: CentralLoading(),
           );
         }
         return Form(
@@ -104,7 +90,7 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
                   children: [
                     ListTile(
                       leading: const CircleAvatar(),
-                      title: const Text("English Name"),
+                      title: Text(context.loc.englishName),
                       subtitle: TextFormField(
                         controller: _name_enController,
                         decoration:
@@ -114,7 +100,7 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
                     ),
                     ListTile(
                       leading: const CircleAvatar(),
-                      title: const Text("Arabic Name"),
+                      title: Text(context.loc.arabicName),
                       subtitle: TextFormField(
                         controller: _name_arController,
                         decoration:
@@ -133,7 +119,7 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
                   children: [
                     ListTile(
                       leading: const CircleAvatar(),
-                      title: const Text("Speciality"),
+                      title: Text(context.loc.speciality),
                       subtitle: Consumer<PxSpeciality>(
                         builder: (context, s, _) {
                           return DropdownButtonHideUnderline(
@@ -144,7 +130,7 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
                               value: _speciality,
                               validator: (value) {
                                 if (value == null) {
-                                  return "Invalid Input, Kindly Select Speciality";
+                                  return context.loc.specialityValidator;
                                 }
                                 return null;
                               },
@@ -180,7 +166,7 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
                   children: [
                     ListTile(
                       leading: const CircleAvatar(),
-                      title: const Text("Medical Degree"),
+                      title: Text(context.loc.medicalDegree),
                       subtitle: DropdownButtonHideUnderline(
                         child: DropdownButtonFormField<Degree>(
                           decoration: const InputDecoration(
@@ -188,7 +174,7 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
                           ),
                           validator: (value) {
                             if (value == null) {
-                              return "Invalid Input, Kindly Select Degree";
+                              return context.loc.medicalDegreeValidator;
                             }
                             return null;
                           },
@@ -223,7 +209,7 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
                   children: [
                     ListTile(
                       leading: const CircleAvatar(),
-                      title: const Text("English Title"),
+                      title: Text(context.loc.englishTitle),
                       subtitle: TextFormField(
                         decoration:
                             const InputDecoration(border: OutlineInputBorder()),
@@ -233,7 +219,7 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
                     ),
                     ListTile(
                       leading: const CircleAvatar(),
-                      title: const Text("Arabic Title"),
+                      title: Text(context.loc.arabicTitle),
                       subtitle: TextFormField(
                         controller: _title_arController,
                         decoration:
@@ -252,7 +238,7 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
                   children: [
                     ListTile(
                       leading: const CircleAvatar(),
-                      title: const Text("English About"),
+                      title: Text(context.loc.englishAbout),
                       subtitle: TextFormField(
                         controller: _about_enController,
                         decoration:
@@ -262,7 +248,7 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
                     ),
                     ListTile(
                       leading: const CircleAvatar(),
-                      title: const Text("Arabic About"),
+                      title: Text(context.loc.arabicAbout),
                       subtitle: TextFormField(
                         controller: _about_arController,
                         decoration:
@@ -295,7 +281,6 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
                         degree_ar: _degree!.ar,
                       );
                       try {
-                        // await EasyLoading.show(status: "Loading...");
                         showDialog(
                           context: context,
                           builder: (context) {
@@ -307,13 +292,11 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
                         if (_loadingContext.mounted) {
                           Navigator.pop(_loadingContext);
                         }
-                        // await EasyLoading.showSuccess("Success...");
                       } catch (e) {
                         d.nullifyDoctor();
                         if (_loadingContext.mounted) {
                           Navigator.pop(_loadingContext);
                         }
-                        // await EasyLoading.dismiss();
                         dprint(e);
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -330,7 +313,7 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
                       }
                     }
                   },
-                  label: const Text("Save"),
+                  label: Text(context.loc.save),
                   icon: const Icon(Icons.save),
                 ),
               )

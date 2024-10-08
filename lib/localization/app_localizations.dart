@@ -488,6 +488,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'version'**
   String get version;
+
+  /// No description provided for @emptyInputsNotAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty Inputs Are Not Allowed.'**
+  String get emptyInputsNotAllowed;
+
+  /// No description provided for @englishName.
+  ///
+  /// In en, this message translates to:
+  /// **'English Name'**
+  String get englishName;
+
+  /// No description provided for @arabicName.
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic Name'**
+  String get arabicName;
+
+  /// No description provided for @speciality.
+  ///
+  /// In en, this message translates to:
+  /// **'Speciality'**
+  String get speciality;
+
+  /// No description provided for @specialityValidator.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid Input, Kindly Select Speciality.'**
+  String get specialityValidator;
+
+  /// No description provided for @medicalDegree.
+  ///
+  /// In en, this message translates to:
+  /// **'Medical Degree'**
+  String get medicalDegree;
+
+  /// No description provided for @medicalDegreeValidator.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid Input, Kindly Select Degree.'**
+  String get medicalDegreeValidator;
+
+  /// No description provided for @englishTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'English Title'**
+  String get englishTitle;
+
+  /// No description provided for @arabicTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic Title'**
+  String get arabicTitle;
+
+  /// No description provided for @englishAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'English About'**
+  String get englishAbout;
+
+  /// No description provided for @arabicAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic About'**
+  String get arabicAbout;
+
+  /// No description provided for @allCaughtUp.
+  ///
+  /// In en, this message translates to:
+  /// **'You Are All Caught Up.'**
+  String get allCaughtUp;
+
+  /// No description provided for @clearNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear Notifications'**
+  String get clearNotifications;
+
+  /// No description provided for @noInvoicesForDate.
+  ///
+  /// In en, this message translates to:
+  /// **'No Invoice For Selected Date.'**
+  String get noInvoicesForDate;
+
+  /// No description provided for @numberOfPatients.
+  ///
+  /// In en, this message translates to:
+  /// **'Number Of Patients'**
+  String get numberOfPatients;
+
+  /// No description provided for @total.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get total;
+
+  /// No description provided for @egp.
+  ///
+  /// In en, this message translates to:
+  /// **'EGP'**
+  String get egp;
+
+  /// No description provided for @isPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Is Paid'**
+  String get isPaid;
+
+  /// No description provided for @unknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get unknown;
+
+  /// No description provided for @consultation.
+  ///
+  /// In en, this message translates to:
+  /// **'Consultation'**
+  String get consultation;
+
+  /// No description provided for @followup.
+  ///
+  /// In en, this message translates to:
+  /// **'Followup'**
+  String get followup;
+
+  /// No description provided for @attended.
+  ///
+  /// In en, this message translates to:
+  /// **'Attended'**
+  String get attended;
+
+  /// No description provided for @fees.
+  ///
+  /// In en, this message translates to:
+  /// **'Fees'**
+  String get fees;
+
+  /// No description provided for @visits.
+  ///
+  /// In en, this message translates to:
+  /// **'Visits'**
+  String get visits;
+
+  /// No description provided for @tax.
+  ///
+  /// In en, this message translates to:
+  /// **'Tax (14%)'**
+  String get tax;
+
+  /// No description provided for @paymentDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Details'**
+  String get paymentDetails;
+
+  /// No description provided for @paymentServiceNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Service Number'**
+  String get paymentServiceNumber;
+
+  /// No description provided for @paymentReferenceNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Reference Number'**
+  String get paymentReferenceNumber;
+
+  /// No description provided for @paymentLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Link'**
+  String get paymentLink;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

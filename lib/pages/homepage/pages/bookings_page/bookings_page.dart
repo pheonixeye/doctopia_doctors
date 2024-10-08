@@ -32,7 +32,7 @@ class _BookingsPageState extends State<BookingsPage> with AfterLayoutMixin {
   late final ScrollController _daysController;
 
   @override
-  FutureOr<void> afterFirstLayout(BuildContext context) async {
+  FutureOr<void> afterFirstLayout(BuildContext context) {
     final cv = context.read<PxClinicVisits>();
 
     _animateToIndex(_monthsController, cv.month, _monthsWidth);

@@ -1,4 +1,6 @@
 import 'package:doctopia_doctors/components/central_loading.dart';
+import 'package:doctopia_doctors/functions/shell_function.dart';
+import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/models/stored_notification.dart';
 import 'package:doctopia_doctors/providers/px_notifications.dart';
 import 'package:flutter/material.dart';
@@ -16,9 +18,27 @@ class _NotificationsPageState extends State<NotificationsPage> {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        const ListTile(
-          leading: CircleAvatar(),
-          title: Text("My Notifications"),
+        ListTile(
+          leading: const CircleAvatar(),
+          title: Text(context.loc.notifications),
+          //todo: Add clear all notifications
+          trailing: Consumer<PxNotifications>(
+            builder: (context, n, _) {
+              return FloatingActionButton.small(
+                tooltip: context.loc.clearNotifications,
+                heroTag: 'clear-notifications',
+                onPressed: () async {
+                  await shellFunction(
+                    context,
+                    toExecute: () async {
+                      await n.clearNotifications();
+                    },
+                  );
+                },
+                child: const Icon(Icons.clear_all),
+              );
+            },
+          ),
         ),
         Consumer<PxNotifications>(
           builder: (context, n, _) {
@@ -29,14 +49,14 @@ class _NotificationsPageState extends State<NotificationsPage> {
               );
             }
             while (n.notifications!.isEmpty) {
-              return const Padding(
-                padding: EdgeInsets.only(top: 200.0),
+              return Padding(
+                padding: const EdgeInsets.only(top: 200.0),
                 child: Center(
                   child: Card.outlined(
                     elevation: 6,
                     child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text("You Are All Caught Up."),
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(context.loc.allCaughtUp),
                     ),
                   ),
                 ),

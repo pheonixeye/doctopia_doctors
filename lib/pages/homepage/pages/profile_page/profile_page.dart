@@ -2,13 +2,13 @@
 
 import 'package:doctopia_doctors/components/central_loading.dart';
 import 'package:doctopia_doctors/components/main_snackbar.dart';
+import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/profile_page/widgets/doctor_profile_create.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_specialities.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
 import 'package:proklinik_models/models/degree.dart';
 import 'package:proklinik_models/models/doctor.dart';
@@ -72,7 +72,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   String? _validator(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return "Empty Inputs Are Not Allowed";
+      return context.loc.emptyInputsNotAllowed;
     }
     return null;
   }
@@ -82,11 +82,6 @@ class _ProfilePageState extends State<ProfilePage> {
     d.setUpdate(key, value);
     await d.updateDoctor();
   }
-
-  // void _RevertUpdate(String key) {
-  //   final d = context.read<PxDoctor>();
-  //   d.revertUpdate(key);
-  // }
 
   Widget _updateBtnsRow(
     String field,
@@ -102,7 +97,6 @@ class _ProfilePageState extends State<ProfilePage> {
             onPressed: () async {
               late BuildContext _loadingContext;
               try {
-                // await EasyLoading.show(status: "Loading...");
                 showDialog(
                   context: context,
                   builder: (context) {
@@ -115,7 +109,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 if (_loadingContext.mounted) {
                   Navigator.pop(_loadingContext);
                 }
-                // await EasyLoading.showSuccess("Success...");
                 setState(() {
                   _isEditing[field] = false;
                 });
@@ -181,7 +174,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     ListTile(
                       leading: const CircleAvatar(),
-                      title: const Text("English Name"),
+                      title: Text(context.loc.englishName),
                       subtitle: (_isEditing["name_en"] == true)
                           ? Column(
                               children: [
@@ -211,7 +204,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     ListTile(
                       leading: const CircleAvatar(),
-                      title: const Text("Arabic Name"),
+                      title: Text(context.loc.arabicName),
                       subtitle: (_isEditing["name_ar"] == true)
                           ? Column(
                               children: [
@@ -250,7 +243,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     ListTile(
                       leading: const CircleAvatar(),
-                      title: const Text("Speciality"),
+                      title: Text(context.loc.speciality),
                       trailing: const IconButton(
                         onPressed: null,
                         icon: Icon(
@@ -269,7 +262,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     value: _speciality,
                                     validator: (value) {
                                       if (value == null) {
-                                        return "Invalid Input, Kindly Select Speciality";
+                                        return context.loc.specialityValidator;
                                       }
                                       return null;
                                     },
@@ -304,7 +297,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     ListTile(
                       leading: const CircleAvatar(),
-                      title: const Text("Medical Degree"),
+                      title: Text(context.loc.medicalDegree),
                       trailing: IconButton.outlined(
                           onPressed: () {
                             setState(() {
@@ -323,7 +316,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                                 validator: (value) {
                                   if (value == null) {
-                                    return "Invalid Input, Kindly Select Degree";
+                                    return context.loc.medicalDegreeValidator;
                                   }
                                   return null;
                                 },
@@ -344,8 +337,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                   late BuildContext _loadingContext;
                                   if (value != null) {
                                     try {
-                                      // await EasyLoading.show(
-                                      //     status: "Loading...");
                                       showDialog(
                                         context: context,
                                         builder: (context) {
@@ -357,8 +348,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           "degree_en", value.en);
                                       await _UpdateDoctorField(
                                           "degree_ar", value.ar);
-                                      // await EasyLoading.showSuccess(
-                                      //     "Success...");
+
                                       if (_loadingContext.mounted) {
                                         Navigator.pop(_loadingContext);
                                       }
@@ -366,7 +356,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       if (_loadingContext.mounted) {
                                         Navigator.pop(_loadingContext);
                                       }
-                                      // await EasyLoading.dismiss();
+
                                       if (context.mounted) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
@@ -377,7 +367,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           ),
                                         );
                                       }
-                                      // await EasyLoading.showError(e.toString());
+
                                       setState(() {
                                         _isEditing["degree_en"] = false;
                                       });
@@ -399,7 +389,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     ListTile(
                       leading: const CircleAvatar(),
-                      title: const Text("English Title"),
+                      title: Text(context.loc.englishTitle),
                       subtitle: (_isEditing["title_en"] == true)
                           ? Column(
                               children: [
@@ -430,7 +420,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     ListTile(
                       leading: const CircleAvatar(),
-                      title: const Text("Arabic Title"),
+                      title: Text(context.loc.arabicTitle),
                       subtitle: (_isEditing["title_ar"] == true)
                           ? Column(
                               children: [
@@ -470,7 +460,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     ListTile(
                       leading: const CircleAvatar(),
-                      title: const Text("English About"),
+                      title: Text(context.loc.englishAbout),
                       subtitle: (_isEditing["about_en"] == true)
                           ? Column(
                               children: [
@@ -501,7 +491,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     ListTile(
                       leading: const CircleAvatar(),
-                      title: const Text("Arabic About"),
+                      title: Text(context.loc.arabicAbout),
                       subtitle: (_isEditing["about_ar"] == true)
                           ? Column(
                               children: [

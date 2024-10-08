@@ -1,12 +1,16 @@
 import 'dart:async';
 
 import 'package:after_layout/after_layout.dart';
+import 'package:doctopia_doctors/extensions/number_translator.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
+import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/bookings_page/logic/date_provider.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/invoices_page/widgets/invoice_card.dart';
 import 'package:doctopia_doctors/providers/px_invoices.dart';
+import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class InvoicesPage extends StatefulWidget {
@@ -49,8 +53,8 @@ class _InvoicesPageState extends State<InvoicesPage> with AfterLayoutMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<PxInvoices>(
-      builder: (context, v, _) {
+    return Consumer2<PxInvoices, PxLocale>(
+      builder: (context, v, l, _) {
         return ListView(
           cacheExtent: 3000,
           children: [
@@ -58,9 +62,16 @@ class _InvoicesPageState extends State<InvoicesPage> with AfterLayoutMixin {
               leading: const CircleAvatar(),
               title: Row(
                 children: [
-                  const Text('My Invoices'),
+                  Text(context.loc.invoices),
                   const Spacer(),
-                  Text('${v.month} - ${v.year}'),
+                  Text(
+                    DateFormat(
+                      'MM/yyyy',
+                      l.locale.languageCode,
+                    ).format(
+                      DateTime(v.year, v.month),
+                    ),
+                  ),
                   const Spacer(),
                 ],
               ),
@@ -77,9 +88,9 @@ class _InvoicesPageState extends State<InvoicesPage> with AfterLayoutMixin {
                       child: Row(
                         children: [
                           const Gap(10),
-                          const SizedBox(
+                          SizedBox(
                             width: _textWidth,
-                            child: Text("Year"),
+                            child: Text(context.loc.year),
                           ),
                           const Gap(10),
                           Expanded(
@@ -104,7 +115,9 @@ class _InvoicesPageState extends State<InvoicesPage> with AfterLayoutMixin {
                                             },
                                           );
                                         },
-                                        child: Text(e.toString()),
+                                        child: Text(e
+                                            .toString()
+                                            .toArabicNumber(context)),
                                       ),
                                     ),
                                   );
@@ -120,9 +133,9 @@ class _InvoicesPageState extends State<InvoicesPage> with AfterLayoutMixin {
                       child: Row(
                         children: [
                           const Gap(10),
-                          const SizedBox(
+                          SizedBox(
                             width: _textWidth,
-                            child: Text("Month"),
+                            child: Text(context.loc.month),
                           ),
                           const Gap(10),
                           Expanded(
@@ -147,7 +160,8 @@ class _InvoicesPageState extends State<InvoicesPage> with AfterLayoutMixin {
                                             },
                                           );
                                         },
-                                        child: Text(e.value),
+                                        child: Text(
+                                            e.value.ifMonthTranslate(context)),
                                       ),
                                     ),
                                   );
@@ -164,15 +178,15 @@ class _InvoicesPageState extends State<InvoicesPage> with AfterLayoutMixin {
             ),
             const Divider(),
             if (v.invoice == null)
-              const Padding(
-                padding: EdgeInsets.all(8.0),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Card(
                   child: Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Center(
                       child: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text('No Invoice For Selected Date.'),
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(context.loc.noInvoicesForDate),
                       ),
                     ),
                   ),

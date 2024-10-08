@@ -47,4 +47,12 @@ class PxNotifications extends ChangeNotifier {
       throw Exception(e);
     }
   }
+
+  Future<void> clearNotifications() async {
+    _page = 1;
+    await notificationService.clearDoctorNotification(id);
+    final result = await notificationService.fetchNotifications(id, page);
+    _notifications = result;
+    notifyListeners();
+  }
 }

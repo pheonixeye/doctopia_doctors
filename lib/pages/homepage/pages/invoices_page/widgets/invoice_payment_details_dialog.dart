@@ -1,3 +1,5 @@
+import 'package:doctopia_doctors/extensions/number_translator.dart';
+import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 // ignore: avoid_web_libraries_in_flutter
@@ -16,7 +18,7 @@ class InvoicePaymentDetailsDialog extends StatelessWidget {
     return AlertDialog(
       title: Row(
         children: [
-          const Text("Payment Details"),
+          Text(context.loc.paymentDetails),
           const Spacer(),
           IconButton.outlined(
             onPressed: () {
@@ -32,20 +34,20 @@ class InvoicePaymentDetailsDialog extends StatelessWidget {
         ),
         child: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.all(8.0),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                leading: FloatingActionButton.small(
+                leading: const FloatingActionButton.small(
                   heroTag: 'service-no',
                   onPressed: null,
                 ),
                 title: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text("Payment Service Number"),
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(context.loc.paymentServiceNumber),
                 ),
                 subtitle: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: SelectableText("767"),
+                  padding: const EdgeInsets.all(8.0),
+                  child: SelectableText("767".toArabicNumber(context)),
                 ),
               ),
             ),
@@ -57,9 +59,9 @@ class InvoicePaymentDetailsDialog extends StatelessWidget {
                   heroTag: 'ref-no',
                   onPressed: null,
                 ),
-                title: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text("Payment Refernce Number"),
+                title: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(context.loc.paymentReferenceNumber),
                 ),
                 subtitle: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -75,9 +77,9 @@ class InvoicePaymentDetailsDialog extends StatelessWidget {
                   heroTag: 'pay-link',
                   onPressed: null,
                 ),
-                title: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text("Payment Link"),
+                title: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(context.loc.paymentLink),
                 ),
                 subtitle: Padding(
                   padding: const EdgeInsets.all(8.0),

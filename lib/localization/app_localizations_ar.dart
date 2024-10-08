@@ -201,4 +201,91 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get version => 'اصدار';
+
+  @override
+  String get emptyInputsNotAllowed => 'لا يمكن قبول ادخال فارغ.';
+
+  @override
+  String get englishName => 'الاسم بالانجليزية';
+
+  @override
+  String get arabicName => 'الاسم بالعربية';
+
+  @override
+  String get speciality => 'التخصص';
+
+  @override
+  String get specialityValidator => 'برجاء اختيار التخصص.';
+
+  @override
+  String get medicalDegree => 'الدرجة العلمية';
+
+  @override
+  String get medicalDegreeValidator => 'برجاء اختيار الدرجة العلمية.';
+
+  @override
+  String get englishTitle => 'اللقب بالانجليزية';
+
+  @override
+  String get arabicTitle => 'اللقب بالعربية';
+
+  @override
+  String get englishAbout => 'عن الطبيب بالانجليزية';
+
+  @override
+  String get arabicAbout => 'عن الطبيب بالعربية';
+
+  @override
+  String get allCaughtUp => 'لا توجد تنبيهات حاليا.';
+
+  @override
+  String get clearNotifications => 'حذف التنبيهات';
+
+  @override
+  String get noInvoicesForDate => 'لا توجد فواتير مستحقة عن المدة المحددة.';
+
+  @override
+  String get numberOfPatients => 'عدد الزيارات';
+
+  @override
+  String get total => 'الاجمالي';
+
+  @override
+  String get egp => 'جنيه';
+
+  @override
+  String get isPaid => 'تم الدفع';
+
+  @override
+  String get unknown => 'غير معروف';
+
+  @override
+  String get consultation => 'كشف';
+
+  @override
+  String get followup => 'استشارة';
+
+  @override
+  String get attended => 'الحضور';
+
+  @override
+  String get fees => 'التكلفة';
+
+  @override
+  String get visits => 'الزيارات';
+
+  @override
+  String get tax => 'الضريبة(14%)';
+
+  @override
+  String get paymentDetails => 'تفاصيل الدفع';
+
+  @override
+  String get paymentServiceNumber => 'رقم خدمة الدفع';
+
+  @override
+  String get paymentReferenceNumber => 'رقم الفاتورة';
+
+  @override
+  String get paymentLink => 'رابط الدفع';
 }

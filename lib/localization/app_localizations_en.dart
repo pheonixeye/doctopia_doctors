@@ -201,4 +201,91 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get version => 'version';
+
+  @override
+  String get emptyInputsNotAllowed => 'Empty Inputs Are Not Allowed.';
+
+  @override
+  String get englishName => 'English Name';
+
+  @override
+  String get arabicName => 'Arabic Name';
+
+  @override
+  String get speciality => 'Speciality';
+
+  @override
+  String get specialityValidator => 'Invalid Input, Kindly Select Speciality.';
+
+  @override
+  String get medicalDegree => 'Medical Degree';
+
+  @override
+  String get medicalDegreeValidator => 'Invalid Input, Kindly Select Degree.';
+
+  @override
+  String get englishTitle => 'English Title';
+
+  @override
+  String get arabicTitle => 'Arabic Title';
+
+  @override
+  String get englishAbout => 'English About';
+
+  @override
+  String get arabicAbout => 'Arabic About';
+
+  @override
+  String get allCaughtUp => 'You Are All Caught Up.';
+
+  @override
+  String get clearNotifications => 'Clear Notifications';
+
+  @override
+  String get noInvoicesForDate => 'No Invoice For Selected Date.';
+
+  @override
+  String get numberOfPatients => 'Number Of Patients';
+
+  @override
+  String get total => 'Total';
+
+  @override
+  String get egp => 'EGP';
+
+  @override
+  String get isPaid => 'Is Paid';
+
+  @override
+  String get unknown => 'Unknown';
+
+  @override
+  String get consultation => 'Consultation';
+
+  @override
+  String get followup => 'Followup';
+
+  @override
+  String get attended => 'Attended';
+
+  @override
+  String get fees => 'Fees';
+
+  @override
+  String get visits => 'Visits';
+
+  @override
+  String get tax => 'Tax (14%)';
+
+  @override
+  String get paymentDetails => 'Payment Details';
+
+  @override
+  String get paymentServiceNumber => 'Payment Service Number';
+
+  @override
+  String get paymentReferenceNumber => 'Payment Reference Number';
+
+  @override
+  String get paymentLink => 'Payment Link';
 }
