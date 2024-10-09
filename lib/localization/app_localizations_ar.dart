@@ -288,4 +288,70 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get paymentLink => 'رابط الدفع';
+
+  @override
+  String get noReviewsYet => 'لا يوجد مراجعات...';
+
+  @override
+  String get waitingTime => 'وقت الانتظار';
+
+  @override
+  String get minutes => 'دقيقة';
+
+  @override
+  String get createClinic => 'اضافة عيادة';
+
+  @override
+  String get noClinicsYet => 'لا يوجد عيادات...';
+
+  @override
+  String get pickClinicLocation => 'اختر موقع العيادة';
+
+  @override
+  String get clinicLocationNotSet => 'لم يتم تحديد موقع العيادة.';
+
+  @override
+  String get schedule => 'المواعيد';
+
+  @override
+  String get addScheduleFirst => 'قم باضافة مواعيد العيادة اولا.';
+
+  @override
+  String get publish => 'نشر';
+
+  @override
+  String get unPublish => 'الغاء النشر';
+
+  @override
+  String get clinicLocation => 'موقع العيادة';
+
+  @override
+  String get update => 'تعديل';
+
+  @override
+  String get deleteClinicTitle => 'الغاء العيادة ؟';
+
+  @override
+  String get deleteClinicMsg => 'برجاء تأكيد الغاء العيادة، هذا الفعل لا يمكن استعادته ؟';
+
+  @override
+  String get selectGov => 'اختر المحافظة';
+
+  @override
+  String get selectArea => 'اختر المنطقة';
+
+  @override
+  String get selectAtt => 'اختر طريقة الدخول';
+
+  @override
+  String get fifo => 'باسبقية الحضور';
+
+  @override
+  String get byTime => 'بالموعد';
+
+  @override
+  String get summary => 'الايام';
+
+  @override
+  String get management => 'المواعيد';
 }

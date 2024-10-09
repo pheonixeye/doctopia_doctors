@@ -1,7 +1,9 @@
 import 'package:doctopia_doctors/components/main_snackbar.dart';
 import 'package:doctopia_doctors/components/prompt_dialog.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
+import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
+import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -51,11 +53,12 @@ class _ClinicCardState extends State<ClinicCard> {
     ),
   );
 
-  final Map<String, String? Function(String?)> _validators = Map.fromEntries(
+  late final Map<String, String? Function(String?)> _validators =
+      Map.fromEntries(
     Clinic.editableStrings.map(
       (e) => MapEntry(e, (value) {
         if (value == null || value.isEmpty) {
-          return 'Empty Fields are not Allowed.';
+          return context.loc.emptyInputsNotAllowed;
         }
         return null;
       }),
@@ -67,16 +70,16 @@ class _ClinicCardState extends State<ClinicCard> {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Consumer<PxClinics>(
-          builder: (context, c, _) {
+        child: Consumer2<PxClinics, PxLocale>(
+          builder: (context, c, l, _) {
             Future<void> _setClinicLocation() async {
               final oldDest = widget.clinic.destination;
               bool isInitial = oldDest.lat == 0 && oldDest.lon == 0;
               GeoPoint? p = await showSimplePickerLocation(
                 context: context,
                 isDismissible: true,
-                title: "Pick Clinic Location",
-                textConfirmPicker: "Confirm",
+                title: context.loc.pickClinicLocation,
+                textConfirmPicker: context.loc.confirm,
                 radius: 12,
                 zoomOption: const ZoomOption(
                   initZoom: 14,
@@ -124,12 +127,14 @@ class _ClinicCardState extends State<ClinicCard> {
                     ),
                     const Gap(10),
                     Expanded(
-                      child: Text(widget.clinic.name_en),
+                      child: Text(l.isEnglish
+                          ? widget.clinic.name_en
+                          : widget.clinic.name_ar),
                     ),
                     if (widget.clinic.destination.lat == 0 ||
                         widget.clinic.destination.lon == 0)
                       IconButton.outlined(
-                        tooltip: "Clinic Location Not Set.",
+                        tooltip: context.loc.clinicLocationNotSet,
                         onPressed: () async {
                           await _setClinicLocation();
                         },
@@ -145,7 +150,6 @@ class _ClinicCardState extends State<ClinicCard> {
               subtitle: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Wrap(
-                  // mainAxisAlignment: MainAxisAlignment.center,
                   alignment: WrapAlignment.center,
                   children: [
                     Padding(
@@ -164,7 +168,7 @@ class _ClinicCardState extends State<ClinicCard> {
                             );
                           }
                         },
-                        label: const Text('Schedule'),
+                        label: Text(context.loc.schedule),
                         icon: const Icon(Icons.calendar_month),
                       ),
                     ),
@@ -177,9 +181,11 @@ class _ClinicCardState extends State<ClinicCard> {
                           final _hasSchSet =
                               _sch.map((s) => s.available == true).toList();
                           if (!_hasSchSet.contains(true) && context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                iInfoSnackbar(
-                                    'Add Clinic Schedule First.', context));
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(iInfoSnackbar(
+                              context.loc.addScheduleFirst,
+                              context,
+                            ));
                           }
 
                           // testing update algorithm<working>
@@ -195,8 +201,8 @@ class _ClinicCardState extends State<ClinicCard> {
                           }
                         },
                         label: !widget.clinic.published
-                            ? const Text('Publish')
-                            : const Text('UnPublish'),
+                            ? Text(context.loc.publish)
+                            : Text(context.loc.unPublish),
                         icon: !widget.clinic.published
                             ? const Icon(Icons.publish)
                             : const Icon(Icons.unpublished),
@@ -208,7 +214,7 @@ class _ClinicCardState extends State<ClinicCard> {
                         onPressed: () async {
                           await _setClinicLocation();
                         },
-                        label: const Text("Clinic Location"),
+                        label: Text(context.loc.clinicLocation),
                         icon: const Icon(Icons.pin_drop),
                       ),
                     ),
@@ -224,7 +230,7 @@ class _ClinicCardState extends State<ClinicCard> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ListTile(
-                        title: Text(Clinic.keyToWidget(x.key, true)),
+                        title: Text(Clinic.keyToWidget(x.key, l.isEnglish)),
                         subtitle: isEditing[x.key]!
                             ? Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -280,7 +286,7 @@ class _ClinicCardState extends State<ClinicCard> {
                                             });
                                           },
                                           icon: const Icon(Icons.update),
-                                          label: const Text("Update"),
+                                          label: Text(context.loc.update),
                                         ),
                                         const Gap(10),
                                         ElevatedButton.icon(
@@ -290,7 +296,7 @@ class _ClinicCardState extends State<ClinicCard> {
                                             });
                                           },
                                           icon: const Icon(Icons.close),
-                                          label: const Text("Cancel"),
+                                          label: Text(context.loc.cancel),
                                         ),
                                       ],
                                     ),
@@ -323,7 +329,7 @@ class _ClinicCardState extends State<ClinicCard> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ListTile(
-                      title: const Text('Delete Clinic'),
+                      title: Text(context.loc.deleteClinicTitle),
                       trailing: FloatingActionButton.small(
                         backgroundColor: Colors.red,
                         heroTag: 'delete-clinic-btn-${widget.clinic.id}',
@@ -332,10 +338,9 @@ class _ClinicCardState extends State<ClinicCard> {
                           final bool? result = await showDialog<bool?>(
                             context: context,
                             builder: (context) {
-                              return const MainPromptDialog(
-                                title: 'Delete Clinic ?',
-                                body:
-                                    "This is an irreversible action, Are you sure ?",
+                              return MainPromptDialog(
+                                title: context.loc.deleteClinicTitle,
+                                body: context.loc.deleteClinicMsg,
                               );
                             },
                           );

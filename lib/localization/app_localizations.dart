@@ -662,6 +662,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Payment Link'**
   String get paymentLink;
+
+  /// No description provided for @noReviewsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No Reviews Yet...'**
+  String get noReviewsYet;
+
+  /// No description provided for @waitingTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting Time'**
+  String get waitingTime;
+
+  /// No description provided for @minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes'**
+  String get minutes;
+
+  /// No description provided for @createClinic.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Clinic'**
+  String get createClinic;
+
+  /// No description provided for @noClinicsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No Clinics Created Yet...'**
+  String get noClinicsYet;
+
+  /// No description provided for @pickClinicLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick Clinic Location'**
+  String get pickClinicLocation;
+
+  /// No description provided for @clinicLocationNotSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Clinic Location Not Set.'**
+  String get clinicLocationNotSet;
+
+  /// No description provided for @schedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule'**
+  String get schedule;
+
+  /// No description provided for @addScheduleFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Clinic Schedule First.'**
+  String get addScheduleFirst;
+
+  /// No description provided for @publish.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish'**
+  String get publish;
+
+  /// No description provided for @unPublish.
+  ///
+  /// In en, this message translates to:
+  /// **'UnPublish'**
+  String get unPublish;
+
+  /// No description provided for @clinicLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Clinic Location'**
+  String get clinicLocation;
+
+  /// No description provided for @update.
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get update;
+
+  /// No description provided for @deleteClinicTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Clinic ?'**
+  String get deleteClinicTitle;
+
+  /// No description provided for @deleteClinicMsg.
+  ///
+  /// In en, this message translates to:
+  /// **'This is an irreversible action, Are you sure ?'**
+  String get deleteClinicMsg;
+
+  /// No description provided for @selectGov.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Governorate'**
+  String get selectGov;
+
+  /// No description provided for @selectArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Area'**
+  String get selectArea;
+
+  /// No description provided for @selectAtt.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Attendance Type'**
+  String get selectAtt;
+
+  /// No description provided for @fifo.
+  ///
+  /// In en, this message translates to:
+  /// **'FiFo'**
+  String get fifo;
+
+  /// No description provided for @byTime.
+  ///
+  /// In en, this message translates to:
+  /// **'By Time'**
+  String get byTime;
+
+  /// No description provided for @summary.
+  ///
+  /// In en, this message translates to:
+  /// **'Summary'**
+  String get summary;
+
+  /// No description provided for @management.
+  ///
+  /// In en, this message translates to:
+  /// **'Management'**
+  String get management;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

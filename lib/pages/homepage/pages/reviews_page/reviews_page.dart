@@ -1,3 +1,4 @@
+import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/reviews_page/widgets/review_card.dart';
 import 'package:doctopia_doctors/providers/px_reviews.dart';
 import 'package:flutter/material.dart';
@@ -31,19 +32,19 @@ class _ReviewsPageState extends State<ReviewsPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const ListTile(
-          leading: CircleAvatar(),
-          title: Text('My Reviews'),
+        ListTile(
+          leading: const CircleAvatar(),
+          title: Text(context.loc.reviews),
         ),
         Expanded(
           child: Consumer<PxReviews>(
             builder: (context, r, _) {
               while (r.reviews.isEmpty) {
-                return const Center(
+                return Center(
                   child: Card.outlined(
                     child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text('No Reviews Yet...'),
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(context.loc.noReviewsYet),
                     ),
                   ),
                 );

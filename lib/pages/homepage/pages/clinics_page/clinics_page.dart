@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_final_fields
 
+import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/clinics_page/widgets/clinic_card.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
@@ -26,7 +27,7 @@ class _ClinicsPageState extends State<ClinicsPage> {
       children: [
         ListTile(
           leading: const CircleAvatar(),
-          title: const Text('My Clinics'),
+          title: Text(context.loc.clinics),
           trailing: Padding(
             padding: const EdgeInsets.all(8.0),
             child: FloatingActionButton.extended(
@@ -39,7 +40,7 @@ class _ClinicsPageState extends State<ClinicsPage> {
                   },
                 );
               },
-              label: const Text('Create Clinic'),
+              label: Text(context.loc.createClinic),
               icon: const Icon(Icons.add),
             ),
           ),
@@ -47,14 +48,14 @@ class _ClinicsPageState extends State<ClinicsPage> {
         Consumer2<PxLocale, PxClinics>(
           builder: (context, l, c, _) {
             while (c.clinics.isEmpty) {
-              return const Padding(
-                padding: EdgeInsets.only(top: 200.0),
+              return Padding(
+                padding: const EdgeInsets.only(top: 200.0),
                 child: Center(
                   child: Card.outlined(
                     elevation: 6,
                     child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text('No Clinics Created Yet.'),
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(context.loc.noClinicsYet),
                     ),
                   ),
                 ),

@@ -288,4 +288,70 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get paymentLink => 'Payment Link';
+
+  @override
+  String get noReviewsYet => 'No Reviews Yet...';
+
+  @override
+  String get waitingTime => 'Waiting Time';
+
+  @override
+  String get minutes => 'Minutes';
+
+  @override
+  String get createClinic => 'Create Clinic';
+
+  @override
+  String get noClinicsYet => 'No Clinics Created Yet...';
+
+  @override
+  String get pickClinicLocation => 'Pick Clinic Location';
+
+  @override
+  String get clinicLocationNotSet => 'Clinic Location Not Set.';
+
+  @override
+  String get schedule => 'Schedule';
+
+  @override
+  String get addScheduleFirst => 'Add Clinic Schedule First.';
+
+  @override
+  String get publish => 'Publish';
+
+  @override
+  String get unPublish => 'UnPublish';
+
+  @override
+  String get clinicLocation => 'Clinic Location';
+
+  @override
+  String get update => 'Update';
+
+  @override
+  String get deleteClinicTitle => 'Delete Clinic ?';
+
+  @override
+  String get deleteClinicMsg => 'This is an irreversible action, Are you sure ?';
+
+  @override
+  String get selectGov => 'Select Governorate';
+
+  @override
+  String get selectArea => 'Select Area';
+
+  @override
+  String get selectAtt => 'Select Attendance Type';
+
+  @override
+  String get fifo => 'FiFo';
+
+  @override
+  String get byTime => 'By Time';
+
+  @override
+  String get summary => 'Summary';
+
+  @override
+  String get management => 'Management';
 }

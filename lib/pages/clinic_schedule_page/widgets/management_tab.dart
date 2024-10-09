@@ -3,7 +3,9 @@
 import 'dart:async';
 
 import 'package:after_layout/after_layout.dart';
+import 'package:doctopia_doctors/extensions/attendance_translation_helper_ext.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
+import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/pages/clinic_schedule_page/widgets/patient_number_picker_dialog.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
@@ -47,7 +49,7 @@ class _ScheduleManagementTabState extends State<ScheduleManagementTab>
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: ListTile(
-              title: const Text('Attendance'),
+              title: Text(context.loc.selectAtt),
               subtitle: Consumer2<PxLocale, PxClinics>(
                 builder: (context, l, c, _) {
                   return Row(
@@ -70,7 +72,7 @@ class _ScheduleManagementTabState extends State<ScheduleManagementTab>
                               },
                             );
                           },
-                          child: Text(_rep[e]!),
+                          child: Text(_rep[e]!.ifAttendanceTransalate(context)),
                         );
                       }).toList(),
                     ],
@@ -92,7 +94,7 @@ class _ScheduleManagementTabState extends State<ScheduleManagementTab>
               await shellFunction(
                 context,
                 toExecute: () async {
-                  c.updateClinic(
+                  await c.updateClinic(
                     c.clinic!.id,
                     {"schedule": _state.map((e) => e.toJson()).toList()},
                   );

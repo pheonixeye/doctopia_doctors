@@ -25,6 +25,9 @@ class _NotificationsPageState extends State<NotificationsPage> {
           trailing: Consumer<PxNotifications>(
             builder: (context, n, _) {
               return FloatingActionButton.small(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
                 tooltip: context.loc.clearNotifications,
                 heroTag: 'clear-notifications',
                 onPressed: () async {

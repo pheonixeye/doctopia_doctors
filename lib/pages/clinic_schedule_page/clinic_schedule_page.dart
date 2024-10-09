@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_final_fields
 
+import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/pages/clinic_schedule_page/widgets/_px_dates.dart';
 import 'package:doctopia_doctors/pages/clinic_schedule_page/widgets/management_tab.dart';
 import 'package:doctopia_doctors/pages/clinic_schedule_page/widgets/summary_tab.dart';
@@ -50,16 +51,16 @@ class _ClinicSchedulePageState extends State<ClinicSchedulePage>
               fontWeight: FontWeight.w600,
               color: Colors.white,
             ),
-            tabs: const [
+            tabs: [
               Tab(
-                key: GlobalObjectKey('1'),
-                text: 'Summary',
-                icon: Icon(Icons.calendar_month),
+                key: const GlobalObjectKey('1'),
+                text: context.loc.summary,
+                icon: const Icon(Icons.calendar_month),
               ),
               Tab(
-                key: GlobalObjectKey('2'),
-                text: 'Management',
-                icon: Icon(Icons.edit_calendar_rounded),
+                key: const GlobalObjectKey('2'),
+                text: context.loc.management,
+                icon: const Icon(Icons.edit_calendar_rounded),
               ),
             ],
             onTap: (value) {

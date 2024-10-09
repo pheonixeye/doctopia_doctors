@@ -1,8 +1,11 @@
 import 'dart:typed_data';
 
+import 'package:doctopia_doctors/extensions/number_translator.dart';
 import 'package:doctopia_doctors/functions/download_image.dart';
+import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:proklinik_models/models/review.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
@@ -53,7 +56,12 @@ class _ReviewCardState extends State<ReviewCard> {
                       Row(
                         children: [
                           Text(
-                            "${_d.day}-${_d.month}-${_d.year}",
+                            DateFormat(
+                              'dd/MM/yyyy',
+                              l.locale.languageCode,
+                            ).format(
+                              DateTime(_d.year, _d.month, _d.day),
+                            ),
                             textAlign: TextAlign.start,
                           ),
                           const Spacer(),
@@ -76,7 +84,7 @@ class _ReviewCardState extends State<ReviewCard> {
                         ],
                       ),
                       Text(
-                        "Waiting Time : ${widget.review.waiting_time} Minutes",
+                        "${context.loc.waitingTime} : ${widget.review.waiting_time.toString().toArabicNumber(context)} ${context.loc.minutes}",
                         textAlign: TextAlign.start,
                       ),
                     ],

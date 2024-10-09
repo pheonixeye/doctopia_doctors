@@ -1,4 +1,6 @@
+import 'package:doctopia_doctors/extensions/attendance_translation_helper_ext.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
+import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/providers/px_gov.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
@@ -150,14 +152,13 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
     return Scaffold(
       body: Consumer2<PxLocale, PxClinics>(
         builder: (context, l, c, _) {
-          final isEnglish = l.locale.languageCode == 'en';
           return Form(
             key: _formKey,
             child: ListView(
               cacheExtent: 5000,
               children: [
-                const ListTile(
-                  title: Text('Create Clinic'),
+                ListTile(
+                  title: Text(context.loc.createClinic),
                 ),
                 ...Clinic.editableStrings.map((e) {
                   return Card(
@@ -165,7 +166,7 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         decoration: InputDecoration(
-                          labelText: Clinic.keyToWidget(e, isEnglish),
+                          labelText: Clinic.keyToWidget(e, l.isEnglish),
                           border: const OutlineInputBorder(),
                           suffix: const SizedBox(
                             height: 24,
@@ -173,7 +174,7 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
                         ),
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
-                            return "Empty Fields are not Allowed.";
+                            return context.loc.emptyInputsNotAllowed;
                           }
                           return null;
                         },
@@ -200,7 +201,7 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ListTile(
-                                title: const Text('Select Governorate'),
+                                title: Text(context.loc.selectGov),
                                 subtitle: DropdownButtonFormField<Governorate>(
                                   isExpanded: true,
                                   items: g.govs?.map((e) {
@@ -208,7 +209,9 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
                                       value: e,
                                       alignment: Alignment.center,
                                       child: Text(
-                                        e.governorate_name_en,
+                                        l.isEnglish
+                                            ? e.governorate_name_en
+                                            : e.governorate_name_ar,
                                         textAlign: TextAlign.center,
                                       ),
                                     );
@@ -216,7 +219,7 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
                                   value: g.selectedGov,
                                   validator: (value) {
                                     if (value == null) {
-                                      return 'Select Governorate.';
+                                      return context.loc.selectGov;
                                     }
                                     return null;
                                   },
@@ -242,7 +245,7 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ListTile(
-                                title: const Text('Select Area'),
+                                title: Text(context.loc.selectArea),
                                 subtitle: DropdownButtonFormField<City>(
                                   isExpanded: true,
                                   items: gov.selectedGov?.cities.map((e) {
@@ -250,7 +253,9 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
                                       value: e,
                                       alignment: Alignment.center,
                                       child: Text(
-                                        e.city_name_en,
+                                        l.isEnglish
+                                            ? e.city_name_en
+                                            : e.city_name_ar,
                                         textAlign: TextAlign.center,
                                       ),
                                     );
@@ -258,7 +263,7 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
                                   value: gov.selectedCity,
                                   validator: (value) {
                                     if (value == null) {
-                                      return 'Select Area.';
+                                      return context.loc.selectArea;
                                     }
                                     return null;
                                   },
@@ -281,7 +286,7 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ListTile(
-                            title: const Text('Select Attendance.'),
+                            title: Text(context.loc.selectAtt),
                             subtitle: DropdownButtonFormField<bool>(
                               isExpanded: true,
                               items: [true, false].map(
@@ -290,7 +295,11 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
                                     value: e,
                                     alignment: Alignment.center,
                                     child: Text(
-                                      e == false ? "FiFo" : "By Time",
+                                      e == false
+                                          ? "FiFo"
+                                              .ifAttendanceTransalate(context)
+                                          : "By Time"
+                                              .ifAttendanceTransalate(context),
                                       textAlign: TextAlign.center,
                                     ),
                                   );
@@ -298,7 +307,7 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
                               ).toList(),
                               validator: (value) {
                                 if (value == null) {
-                                  return 'Select Attendance Type.';
+                                  return context.loc.selectAtt;
                                 }
                                 return null;
                               },
@@ -340,7 +349,7 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
                         }
                       },
                       icon: const Icon(Icons.add),
-                      label: const Text('Create'),
+                      label: Text(context.loc.createClinic),
                     ),
                   ),
                 ),
@@ -351,8 +360,8 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
                       onPressed: () {
                         GoRouter.of(context).pop();
                       },
-                      icon: const Icon(Icons.arrow_back_ios),
-                      label: const Text('Back'),
+                      icon: const Icon(Icons.close),
+                      label: Text(context.loc.cancel),
                     ),
                   ),
                 ),
