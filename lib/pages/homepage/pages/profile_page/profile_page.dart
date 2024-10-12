@@ -137,6 +137,7 @@ class _ProfilePageState extends State<ProfilePage> {
             icon: const Icon(
               Icons.check,
             ),
+            tooltip: context.loc.confirm,
           ),
           const Gap(20),
           IconButton.outlined(
@@ -148,9 +149,24 @@ class _ProfilePageState extends State<ProfilePage> {
             icon: const Icon(
               Icons.close,
             ),
+            tooltip: context.loc.cancel,
           ),
         ],
       ),
+    );
+  }
+
+  Widget _trailingBtn(String key) {
+    return IconButton.outlined(
+      onPressed: () {
+        setState(() {
+          _isEditing[key] = !_isEditing[key]!;
+        });
+      },
+      icon: Icon(
+        !_isEditing[key]! ? Icons.edit : Icons.close,
+      ),
+      tooltip: !_isEditing[key]! ? context.loc.update : context.loc.cancel,
     );
   }
 
@@ -192,15 +208,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ],
                             )
                           : Text(d.doctor!.name_en),
-                      trailing: IconButton.outlined(
-                        onPressed: () {
-                          setState(() {
-                            _isEditing["name_en"] = !_isEditing["name_en"]!;
-                          });
-                        },
-                        icon: Icon(
-                            !_isEditing["name_en"]! ? Icons.edit : Icons.close),
-                      ),
+                      trailing: _trailingBtn('name_en'),
                     ),
                     ListTile(
                       leading: const CircleAvatar(),
@@ -222,15 +230,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ],
                             )
                           : Text(d.doctor!.name_ar),
-                      trailing: IconButton.outlined(
-                        onPressed: () {
-                          setState(() {
-                            _isEditing["name_ar"] = !_isEditing["name_ar"]!;
-                          });
-                        },
-                        icon: Icon(
-                            !_isEditing["name_ar"]! ? Icons.edit : Icons.close),
-                      ),
+                      trailing: _trailingBtn('name_ar'),
                     ),
                   ],
                 ),
@@ -272,7 +272,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       return DropdownMenuItem<Speciality>(
                                         alignment: Alignment.center,
                                         value: e,
-                                        child: Text(e.en),
+                                        child: Text(l.isEnglish ? e.en : e.ar),
                                       );
                                     }).toList(),
                                     onChanged: (value) {
@@ -284,7 +284,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                 );
                               },
                             )
-                          : Text(d.doctor!.speciality_en),
+                          : Text(
+                              l.isEnglish
+                                  ? d.doctor!.speciality_en
+                                  : d.doctor!.speciality_ar,
+                            ),
                     ),
                   ],
                 ),
@@ -327,7 +331,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   return DropdownMenuItem<Degree>(
                                     alignment: Alignment.center,
                                     value: e,
-                                    child: Text(e.en),
+                                    child: Text(l.isEnglish ? e.en : e.ar),
                                   );
                                 }).toList(),
                                 onChanged: (value) async {
@@ -376,7 +380,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                 },
                               ),
                             )
-                          : Text(d.doctor!.degree_en),
+                          : Text(
+                              l.isEnglish
+                                  ? d.doctor!.degree_en
+                                  : d.doctor!.degree_ar,
+                            ),
                     ),
                   ],
                 ),
@@ -407,16 +415,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ],
                             )
                           : Text(d.doctor!.title_en),
-                      trailing: IconButton.outlined(
-                        onPressed: () {
-                          setState(() {
-                            _isEditing["title_en"] = !_isEditing["title_en"]!;
-                          });
-                        },
-                        icon: Icon(!_isEditing["title_en"]!
-                            ? Icons.edit
-                            : Icons.close),
-                      ),
+                      trailing: _trailingBtn('title_en'),
                     ),
                     ListTile(
                       leading: const CircleAvatar(),
@@ -438,16 +437,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ],
                             )
                           : Text(d.doctor!.title_ar),
-                      trailing: IconButton.outlined(
-                        onPressed: () {
-                          setState(() {
-                            _isEditing["title_ar"] = !_isEditing["title_ar"]!;
-                          });
-                        },
-                        icon: Icon(!_isEditing["title_ar"]!
-                            ? Icons.edit
-                            : Icons.close),
-                      ),
+                      trailing: _trailingBtn('title_ar'),
                     ),
                   ],
                 ),
@@ -478,16 +468,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ],
                             )
                           : Text(d.doctor!.about_en),
-                      trailing: IconButton.outlined(
-                        onPressed: () {
-                          setState(() {
-                            _isEditing["about_en"] = !_isEditing["about_en"]!;
-                          });
-                        },
-                        icon: Icon(!_isEditing["about_en"]!
-                            ? Icons.edit
-                            : Icons.close),
-                      ),
+                      trailing: _trailingBtn('about_en'),
                     ),
                     ListTile(
                       leading: const CircleAvatar(),
@@ -510,16 +491,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ],
                             )
                           : Text(d.doctor!.about_ar),
-                      trailing: IconButton.outlined(
-                        onPressed: () {
-                          setState(() {
-                            _isEditing["about_ar"] = !_isEditing["about_ar"]!;
-                          });
-                        },
-                        icon: Icon(!_isEditing["about_ar"]!
-                            ? Icons.edit
-                            : Icons.close),
-                      ),
+                      trailing: _trailingBtn('about_ar'),
                     ),
                   ],
                 ),

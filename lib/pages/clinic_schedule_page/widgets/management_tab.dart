@@ -4,6 +4,8 @@ import 'dart:async';
 
 import 'package:after_layout/after_layout.dart';
 import 'package:doctopia_doctors/extensions/attendance_translation_helper_ext.dart';
+import 'package:doctopia_doctors/extensions/number_translator.dart';
+import 'package:doctopia_doctors/functions/date_functions.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/pages/clinic_schedule_page/widgets/patient_number_picker_dialog.dart';
@@ -103,7 +105,7 @@ class _ScheduleManagementTabState extends State<ScheduleManagementTab>
             }
 
             return ListTile(
-              title: const Text('Clinic Shifts'),
+              title: Text(context.loc.clinicDays),
               subtitle: Column(
                 children: [
                   for (int i = 0; i < _state.length; i++)
@@ -122,7 +124,9 @@ class _ScheduleManagementTabState extends State<ScheduleManagementTab>
                               child: Row(
                                 children: [
                                   const SizedBox(width: 10),
-                                  Text(_state[i].weekday),
+                                  Text(_state[i]
+                                      .weekday
+                                      .ifWeekdayTranslate(context)),
                                   const Spacer(),
                                   Switch(
                                     value: _state[i].available,
@@ -144,12 +148,11 @@ class _ScheduleManagementTabState extends State<ScheduleManagementTab>
                             title: Row(
                               children: [
                                 const SizedBox(width: 10),
-                                const Text("Clinic Shifts"),
+                                Text(context.loc.shiftsPerDay),
                                 const Spacer(),
                                 const SizedBox(width: 10),
-                                FloatingActionButton.small(
-                                  tooltip: 'Add Clinic Shift',
-                                  heroTag: 'add-clinic-shift$i',
+                                IconButton.outlined(
+                                  tooltip: context.loc.addShift,
                                   onPressed: () async {
                                     setState(() {
                                       _state[i] = _state[i].copyWith(
@@ -161,7 +164,7 @@ class _ScheduleManagementTabState extends State<ScheduleManagementTab>
                                     });
                                     await _updateSchedule();
                                   },
-                                  child: const Icon(Icons.add),
+                                  icon: const Icon(Icons.add),
                                 )
                               ],
                             ),
@@ -176,16 +179,20 @@ class _ScheduleManagementTabState extends State<ScheduleManagementTab>
                                       return ListTile(
                                         title: Text.rich(
                                           TextSpan(
-                                            text: '(${j + 1})\n',
+                                            text: '(${j + 1})\n'
+                                                .toArabicNumber(context),
                                             children: [
-                                              const TextSpan(text: 'From : '),
+                                              TextSpan(
+                                                  text:
+                                                      '${context.loc.from} : '),
                                               TextSpan(
                                                 text: TimeOfDay(
                                                         hour: shift.startH
                                                             .toInt(),
                                                         minute: shift.startM
                                                             .toInt())
-                                                    .format(context),
+                                                    .format(context)
+                                                    .toArabicNumber(context),
                                                 style: _clickable,
                                                 recognizer:
                                                     TapGestureRecognizer()
@@ -220,14 +227,16 @@ class _ScheduleManagementTabState extends State<ScheduleManagementTab>
                                                       },
                                               ),
                                               const TextSpan(text: '\n'),
-                                              const TextSpan(text: 'To : '),
+                                              TextSpan(
+                                                  text: '${context.loc.to} : '),
                                               TextSpan(
                                                 text: TimeOfDay(
                                                         hour:
                                                             shift.endH.toInt(),
                                                         minute:
                                                             shift.endM.toInt())
-                                                    .format(context),
+                                                    .format(context)
+                                                    .toArabicNumber(context),
                                                 style: _clickable,
                                                 recognizer:
                                                     TapGestureRecognizer()
@@ -268,10 +277,13 @@ class _ScheduleManagementTabState extends State<ScheduleManagementTab>
                                           children: [
                                             Text.rich(
                                               TextSpan(
-                                                text: 'Visits Per Shift : ',
+                                                text:
+                                                    '${context.loc.visitsPerShift} : ',
                                                 children: [
                                                   TextSpan(
-                                                    text: '${shift.patients}',
+                                                    text: '${shift.patients}'
+                                                        .toArabicNumber(
+                                                            context),
                                                     style: _clickable,
                                                     recognizer:
                                                         TapGestureRecognizer()
@@ -308,8 +320,8 @@ class _ScheduleManagementTabState extends State<ScheduleManagementTab>
                                             const SizedBox(width: 10),
                                           ],
                                         ),
-                                        trailing: FloatingActionButton.small(
-                                          heroTag: shift,
+                                        trailing: IconButton.outlined(
+                                          tooltip: context.loc.deleteShift,
                                           onPressed: () async {
                                             setState(() {
                                               _state[i] = _state[i].copyWith(
@@ -320,7 +332,7 @@ class _ScheduleManagementTabState extends State<ScheduleManagementTab>
                                             });
                                             await _updateSchedule();
                                           },
-                                          child: const Icon(
+                                          icon: const Icon(
                                             Icons.delete,
                                             color: Colors.red,
                                           ),

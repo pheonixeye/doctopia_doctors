@@ -7,6 +7,7 @@ import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 // import 'package:doctopia_doctors/providers/px_schedule.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ScheduleSummaryTab extends StatefulWidget {
@@ -53,10 +54,17 @@ class _ScheduleSummaryTabState extends State<ScheduleSummaryTab> {
               final isOff = c.clinic?.off_dates.contains(_d.toIso8601String());
               return ListTile(
                 leading: const CircleAvatar(),
-                title: Text(getWeekday(_d.weekday)!),
+                title: Text(getWeekday(_d.weekday, l.isEnglish)),
                 subtitle: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text('${_d.day} / ${_d.month} / ${_d.year}'),
+                  child: Text(
+                    DateFormat(
+                      'dd / MM / yyyy',
+                      l.locale.languageCode,
+                    ).format(
+                      DateTime(_d.year, _d.month, _d.day),
+                    ),
+                  ),
                 ),
                 trailing: IconButton.outlined(
                   style: IconButton.styleFrom(

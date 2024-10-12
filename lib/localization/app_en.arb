@@ -131,5 +131,12 @@
     "byTime" : "By Time",
     "@@clinic_schedule_page" : "",
     "summary" : "Summary",
-    "management" : "Management"
+    "management" : "Management",
+    "clinicDays" : "Clinic Days",
+    "shiftsPerDay" : "Shifts Per Day",
+    "addShift" : "Add Shift",
+    "deleteShift" : "Delete Shift",
+    "visitsPerShift" : "Visits Per Shift",
+    "from" : "From",
+    "to" : "To"
 }

@@ -8,6 +8,7 @@ import 'package:doctopia_doctors/components/page_ref.dart';
 import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/pages/homepage/widgets/sharable_dialog.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
+import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_nav.dart';
 import 'package:doctopia_doctors/providers/px_theme.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
@@ -172,8 +173,8 @@ class _HomePageState extends State<HomePage>
               ),
             ],
           ),
-          drawer: Consumer2<PxUserModel, PxTheme>(
-            builder: (context, u, t, _) {
+          drawer: Consumer3<PxUserModel, PxTheme, PxLocale>(
+            builder: (context, u, t, l, _) {
               bool isDarkMode = t.mode == ThemeMode.dark;
               final _pages = SidebarPageRef.homePages(context);
               return SidebarX(
@@ -292,7 +293,9 @@ class _HomePageState extends State<HomePage>
                                         Text(
                                           d.doctor == null
                                               ? ""
-                                              : d.doctor!.name_en,
+                                              : l.isEnglish
+                                                  ? d.doctor!.name_en
+                                                  : d.doctor!.name_ar,
                                           textAlign: TextAlign.center,
                                           style: const TextStyle(
                                             fontSize: 16,

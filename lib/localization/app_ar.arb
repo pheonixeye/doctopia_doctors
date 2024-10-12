@@ -131,5 +131,12 @@
     "byTime" : "بالموعد",
     "@@clinic_schedule_page" : "",
     "summary" : "الايام",
-    "management" : "المواعيد"
+    "management" : "المواعيد",
+    "clinicDays" : "ايام العيادة",
+    "shiftsPerDay" : "المواعيد لليوم",
+    "addShift" : "اضافة موعد",
+    "deleteShift" : "الغاء موعد",
+    "visitsPerShift" : "الزيارات للموعد",
+    "from" : "من",
+    "to" : "الي"
 }

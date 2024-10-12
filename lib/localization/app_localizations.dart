@@ -794,6 +794,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Management'**
   String get management;
+
+  /// No description provided for @clinicDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Clinic Days'**
+  String get clinicDays;
+
+  /// No description provided for @shiftsPerDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Shifts Per Day'**
+  String get shiftsPerDay;
+
+  /// No description provided for @addShift.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Shift'**
+  String get addShift;
+
+  /// No description provided for @deleteShift.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Shift'**
+  String get deleteShift;
+
+  /// No description provided for @visitsPerShift.
+  ///
+  /// In en, this message translates to:
+  /// **'Visits Per Shift'**
+  String get visitsPerShift;
+
+  /// No description provided for @from.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get from;
+
+  /// No description provided for @to.
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get to;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

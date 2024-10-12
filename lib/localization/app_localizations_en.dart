@@ -354,4 +354,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get management => 'Management';
+
+  @override
+  String get clinicDays => 'Clinic Days';
+
+  @override
+  String get shiftsPerDay => 'Shifts Per Day';
+
+  @override
+  String get addShift => 'Add Shift';
+
+  @override
+  String get deleteShift => 'Delete Shift';
+
+  @override
+  String get visitsPerShift => 'Visits Per Shift';
+
+  @override
+  String get from => 'From';
+
+  @override
+  String get to => 'To';
 }

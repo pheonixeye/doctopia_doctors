@@ -354,4 +354,25 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get management => 'المواعيد';
+
+  @override
+  String get clinicDays => 'ايام العيادة';
+
+  @override
+  String get shiftsPerDay => 'المواعيد لليوم';
+
+  @override
+  String get addShift => 'اضافة موعد';
+
+  @override
+  String get deleteShift => 'الغاء موعد';
+
+  @override
+  String get visitsPerShift => 'الزيارات للموعد';
+
+  @override
+  String get from => 'من';
+
+  @override
+  String get to => 'الي';
 }

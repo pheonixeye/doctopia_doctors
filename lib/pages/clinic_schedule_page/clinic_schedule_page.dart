@@ -47,7 +47,7 @@ class _ClinicSchedulePageState extends State<ClinicSchedulePage>
             controller: _tabController,
             indicatorColor: Colors.white,
             labelStyle: const TextStyle(
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.w600,
               color: Colors.white,
             ),
