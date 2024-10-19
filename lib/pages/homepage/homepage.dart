@@ -6,6 +6,7 @@ import 'package:doctopia_doctors/extensions/is_mobile_ext.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/components/page_ref.dart';
 import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
+import 'package:doctopia_doctors/pages/homepage/widgets/feedback_btm_sheet.dart';
 import 'package:doctopia_doctors/pages/homepage/widgets/sharable_dialog.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
@@ -161,6 +162,24 @@ class _HomePageState extends State<HomePage>
                                 } else {
                                   return;
                                 }
+                              },
+                            ),
+                            const PopupMenuDivider(),
+                            PopupMenuItem(
+                              child: const Row(
+                                children: [
+                                  Text('feedback'),
+                                  Spacer(),
+                                  Icon(Icons.feedback)
+                                ],
+                              ),
+                              onTap: () {
+                                showBottomSheet(
+                                  context: context,
+                                  builder: (context) {
+                                    return const FeedbackBottomSheet();
+                                  },
+                                );
                               },
                             ),
                           ];
