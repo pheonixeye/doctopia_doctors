@@ -836,6 +836,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'To'**
   String get to;
+
+  /// No description provided for @shareYourFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Your Feedback'**
+  String get shareYourFeedback;
+
+  /// No description provided for @feedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback'**
+  String get feedback;
+
+  /// No description provided for @shareFeedbackMsg.
+  ///
+  /// In en, this message translates to:
+  /// **'Your insights and suggestions are greatly appreciated. Please take a moment to leave your feedback.'**
+  String get shareFeedbackMsg;
+
+  /// No description provided for @feedbackSubmittedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback submitted successfully.'**
+  String get feedbackSubmittedSuccessfully;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

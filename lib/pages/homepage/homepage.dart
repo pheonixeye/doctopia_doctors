@@ -138,6 +138,24 @@ class _HomePageState extends State<HomePage>
                             PopupMenuItem(
                               child: Row(
                                 children: [
+                                  Text(context.loc.feedback),
+                                  const Spacer(),
+                                  const Icon(Icons.feedback)
+                                ],
+                              ),
+                              onTap: () {
+                                showBottomSheet(
+                                  context: context,
+                                  builder: (context) {
+                                    return const FeedbackBottomSheet();
+                                  },
+                                );
+                              },
+                            ),
+                            const PopupMenuDivider(),
+                            PopupMenuItem(
+                              child: Row(
+                                children: [
                                   Text(context.loc.logout),
                                   const Spacer(),
                                   const Icon(Icons.logout)
@@ -162,24 +180,6 @@ class _HomePageState extends State<HomePage>
                                 } else {
                                   return;
                                 }
-                              },
-                            ),
-                            const PopupMenuDivider(),
-                            PopupMenuItem(
-                              child: const Row(
-                                children: [
-                                  Text('feedback'),
-                                  Spacer(),
-                                  Icon(Icons.feedback)
-                                ],
-                              ),
-                              onTap: () {
-                                showBottomSheet(
-                                  context: context,
-                                  builder: (context) {
-                                    return const FeedbackBottomSheet();
-                                  },
-                                );
                               },
                             ),
                           ];

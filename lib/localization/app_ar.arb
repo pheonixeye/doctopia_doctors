@@ -138,5 +138,11 @@
     "deleteShift" : "الغاء موعد",
     "visitsPerShift" : "الزيارات للموعد",
     "from" : "من",
-    "to" : "الي"
+    "to" : "الي",
+    "@@feedback_bottom_sheet" : "",
+    "shareYourFeedback" : "شاركنا ملاحظاتك",
+    "feedback" : "اكتب رسالتك",
+    "shareFeedbackMsg" : "الافكار و المقترحات الخاصة بك هي موضع ترحيب و تقدير كبير و اضافة عظيمة للمنصة، فضلا خذ بعض الوقت لطرح تعليقاتك.",
+    "feedbackSubmittedSuccessfully" : "تم مشاركة ملاحظاتك بنجاح، شكرا لكم علي وقتكم."
+
 }

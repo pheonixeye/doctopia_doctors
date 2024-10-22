@@ -375,4 +375,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get to => 'الي';
+
+  @override
+  String get shareYourFeedback => 'شاركنا ملاحظاتك';
+
+  @override
+  String get feedback => 'اكتب رسالتك';
+
+  @override
+  String get shareFeedbackMsg => 'الافكار و المقترحات الخاصة بك هي موضع ترحيب و تقدير كبير و اضافة عظيمة للمنصة، فضلا خذ بعض الوقت لطرح تعليقاتك.';
+
+  @override
+  String get feedbackSubmittedSuccessfully => 'تم مشاركة ملاحظاتك بنجاح، شكرا لكم علي وقتكم.';
 }

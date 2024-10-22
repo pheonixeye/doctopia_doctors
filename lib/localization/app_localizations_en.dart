@@ -375,4 +375,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get to => 'To';
+
+  @override
+  String get shareYourFeedback => 'Share Your Feedback';
+
+  @override
+  String get feedback => 'Feedback';
+
+  @override
+  String get shareFeedbackMsg => 'Your insights and suggestions are greatly appreciated. Please take a moment to leave your feedback.';
+
+  @override
+  String get feedbackSubmittedSuccessfully => 'Feedback submitted successfully.';
 }

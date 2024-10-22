@@ -45,7 +45,11 @@ class _FeedbackBottomSheetState extends State<FeedbackBottomSheet>
           child: ListView(
             children: [
               ListTile(
-                title: Text("Share Your Feedback"),
+                leading: const CircleAvatar(),
+                title: Text(
+                  context.loc.shareYourFeedback,
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                ),
                 trailing: IconButton.outlined(
                   onPressed: () {
                     Navigator.pop(context, null);
@@ -55,14 +59,14 @@ class _FeedbackBottomSheetState extends State<FeedbackBottomSheet>
                 subtitle: const Divider(),
               ),
               ListTile(
-                title: Text("Message"),
+                title: Text(context.loc.feedback),
                 subtitle: TextFormField(
                   controller: _textController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    hintText: "Enter Your Message...",
+                    hintText: context.loc.shareFeedbackMsg,
                   ),
                   maxLines: 12,
                   minLines: 8,
@@ -75,7 +79,10 @@ class _FeedbackBottomSheetState extends State<FeedbackBottomSheet>
                   ElevatedButton.icon(
                     onPressed: () async {
                       if (_textController.text.isEmpty) {
-                        showInfoSnackbar(context, 'Empty Feedback.');
+                        showInfoSnackbar(
+                          context,
+                          context.loc.emptyInputsNotAllowed,
+                        );
                         return;
                       }
 
@@ -92,7 +99,7 @@ class _FeedbackBottomSheetState extends State<FeedbackBottomSheet>
                               Navigator.pop(context, true);
                               showInfoSnackbar(
                                 context,
-                                'Feedback submitted successfully.',
+                                context.loc.feedbackSubmittedSuccessfully,
                                 Colors.green,
                               );
                             }

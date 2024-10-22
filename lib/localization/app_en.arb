@@ -138,5 +138,10 @@
     "deleteShift" : "Delete Shift",
     "visitsPerShift" : "Visits Per Shift",
     "from" : "From",
-    "to" : "To"
+    "to" : "To",
+    "@@feedback_bottom_sheet" : "",
+    "shareYourFeedback" : "Share Your Feedback",
+    "feedback" : "Feedback",
+    "shareFeedbackMsg" : "Your insights and suggestions are greatly appreciated. Please take a moment to leave your feedback.",
+    "feedbackSubmittedSuccessfully" : "Feedback submitted successfully."
 }
