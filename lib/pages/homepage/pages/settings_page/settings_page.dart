@@ -21,7 +21,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Consumer<PxUserModel>(
       builder: (context, u, _) {
-        bool isCheckboxTristate = u.model!.preferences == null;
+        bool isCheckboxTristate = u.model!.userModel.preferences == null;
         return ListView(
           children: [
             Padding(
@@ -105,7 +105,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       await shellFunction(
                         context,
                         toExecute: () async {
-                          await u.requestPasswordReset(u.model!.email!);
+                          await u
+                              .requestPasswordReset(u.model!.userModel.email!);
                         },
                         sucessMsg: context.loc.linkSentToEmail,
                         duration: const Duration(seconds: 15),
@@ -245,15 +246,15 @@ class _SettingsPageState extends State<SettingsPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: Text(context.loc.myBookings),
                     ),
-                    value: u.model?.preferences?.mailBookings,
+                    value: u.model?.userModel.preferences?.mailBookings,
                     onChanged: (value) async {
                       late UserPreferences _prefs;
-                      if (u.model!.preferences == null) {
+                      if (u.model!.userModel.preferences == null) {
                         _prefs = UserPreferences.initial().copyWith(
                           mailBookings: value,
                         );
                       } else {
-                        _prefs = u.model!.preferences!.copyWith(
+                        _prefs = u.model!.userModel.preferences!.copyWith(
                           mailBookings: value,
                         );
                       }
@@ -282,15 +283,15 @@ class _SettingsPageState extends State<SettingsPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: Text(context.loc.invoices),
                     ),
-                    value: u.model?.preferences?.mailInvoices,
+                    value: u.model?.userModel.preferences?.mailInvoices,
                     onChanged: (value) async {
                       late UserPreferences _prefs;
-                      if (u.model!.preferences == null) {
+                      if (u.model!.userModel.preferences == null) {
                         _prefs = UserPreferences.initial().copyWith(
                           mailInvoices: value,
                         );
                       } else {
-                        _prefs = u.model!.preferences!.copyWith(
+                        _prefs = u.model!.userModel.preferences!.copyWith(
                           mailInvoices: value,
                         );
                       }
@@ -319,10 +320,10 @@ class _SettingsPageState extends State<SettingsPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: Text(context.loc.newsletter),
                     ),
-                    value: u.model?.preferences?.mailNews,
+                    value: u.model?.userModel.preferences?.mailNews,
                     onChanged: (value) async {
                       late UserPreferences _prefs;
-                      if (u.model!.preferences == null) {
+                      if (u.model!.userModel.preferences == null) {
                         if (value != null) {
                           _prefs = UserPreferences.initial().copyWith(
                             mailNews: value,
@@ -330,7 +331,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         }
                       } else {
                         if (value != null) {
-                          _prefs = u.model!.preferences!.copyWith(
+                          _prefs = u.model!.userModel.preferences!.copyWith(
                             mailNews: value,
                           );
                         }

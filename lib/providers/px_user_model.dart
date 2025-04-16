@@ -3,6 +3,8 @@
 import 'package:doctopia_doctors/api/_pocket_main/pocket_main.dart';
 import 'package:doctopia_doctors/api/user_model_api/user_model_api.dart';
 import 'package:doctopia_doctors/functions/dprint.dart';
+import 'package:doctopia_doctors/models/app_constants_model/_models/site_service.dart';
+import 'package:doctopia_doctors/models/user_model_response.dart';
 import 'package:doctopia_doctors/services/local_database_service/local_database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
@@ -12,16 +14,14 @@ import 'package:provider/provider.dart';
 class PxUserModel extends ChangeNotifier {
   final BuildContext context;
   final HxUserModel userService;
+
   PxUserModel({
     required this.context,
     required this.userService,
   });
 
-  static UserModel? _model;
-  UserModel? get model => _model;
-
-  static String? _token;
-  String? get token => _token;
+  static UserModelResponse? _model;
+  UserModelResponse? get model => _model;
 
   static String? _id;
   String? get id => _id;
@@ -29,7 +29,7 @@ class PxUserModel extends ChangeNotifier {
   static bool _isLoggedIn = false;
   bool get isLoggedIn => _isLoggedIn;
 
-  Future<UserModel> createUserAccount(UserModel value) async {
+  Future<UserModelResponse> createUserAccount(UserModel value) async {
     try {
       _model = await userService.createUserAccount(value);
       notifyListeners();
@@ -42,52 +42,59 @@ class PxUserModel extends ChangeNotifier {
   Future<void> loginFromAuthStore(String? token) async {
     //todo: route to homepage if user is already authenticated;
     //todo: discard saving user model as a string && refresh auth instead;
-    if (token != null) {
+    if (token != null && token.isNotEmpty) {
       try {
         PocketbaseHelper.pb.authStore.save(token, null);
         final refresh =
-            await PocketbaseHelper.pb.collection('users').authRefresh();
-        _model = UserModel.fromJson(refresh.record!.toJson());
+            await PocketbaseHelper.pb.collection('users').authRefresh(
+                  expand: 'service_id',
+                );
+        _model = UserModelResponse(
+          userModel: UserModel.fromJson(refresh.record.toJson()),
+          siteService: SiteService.fromJson(
+              refresh.record.get<RecordModel>('expand.service_id').toJson()),
+          token: refresh.token,
+        );
+
         if (context.mounted) {
           await context.read<PxLocalDatabase>().saveCredentials(refresh.token);
         }
         PocketbaseHelper.pb.authStore.save(refresh.token, refresh.record);
-        _id = _model!.id;
-        _token = refresh.token;
+        _id = _model!.userModel.id;
         _isLoggedIn = true;
         notifyListeners();
       } catch (e) {
         _model = null;
         _id = null;
-        _token = null;
         _isLoggedIn = false;
         PocketbaseHelper.pb.authStore.clear();
         notifyListeners();
       }
     }
-    dprint("PxUserModel()._loginFromAuthStore(${token?.substring(0, 5)})");
+    dprint(
+        "PxUserModel()._loginFromAuthStore(token.isValid:${(token != null && token.isNotEmpty)})");
   }
 
-  Future<String> loginUserByEmailAndPassword(
+  Future<String> loginUserByPassword(
     String email,
     String password, [
     bool rememberMe = false,
   ]) async {
     try {
-      final result = await userService.loginUserByEmailAndPassword(
+      final result = await userService.loginUserByPassword(
         email,
         password,
       );
-      _model = UserModel.fromJson(result.record!.toJson());
-      _id = result.record?.id;
-      _token = result.token;
+      _model = result;
+      _id = result.userModel.id;
       _isLoggedIn = true;
 
       notifyListeners();
-
-      if (rememberMe && context.mounted) {
+      final _toRememberCondition =
+          (rememberMe && _model!.token != null && _model!.token!.isNotEmpty);
+      if (_toRememberCondition && context.mounted) {
         await context.read<PxLocalDatabase>().saveCredentials(
-              result.token,
+              result.token!,
             );
       }
 
@@ -99,7 +106,6 @@ class PxUserModel extends ChangeNotifier {
 
   void logout() {
     _id = null;
-    _token = null;
     _isLoggedIn = false;
     _model = null;
     PocketbaseHelper.pb.authStore.clear();
@@ -125,7 +131,7 @@ class PxUserModel extends ChangeNotifier {
   }
 
   Future<void> saveFcmToken() async {
-    if (_token != null && _token != _model!.fcm_token) {
+    if (_fcm_token != null && _fcm_token != _model!.userModel.fcm_token) {
       final result = await userService.updateUserModel(
         id: id!,
         update: {
@@ -136,12 +142,17 @@ class PxUserModel extends ChangeNotifier {
       notifyListeners();
     }
     dprint(
-        "PxUserModel().saveFcmToken(${_token == _model!.fcm_token ? 'SameToken' : _model?.fcm_token})");
+        "PxUserModel().saveFcmToken(${_fcm_token == _model!.userModel.fcm_token ? 'SameToken' : _model?.userModel.fcm_token})");
   }
 
-  Future<UserModel?> updateUserModel(Map<String, dynamic> update) async {
+  Future<UserModelResponse?> updateUserModel(
+    Map<String, dynamic> update,
+  ) async {
     try {
-      final result = await userService.updateUserModel(id: id!, update: update);
+      final result = await userService.updateUserModel(
+        id: id!,
+        update: update,
+      );
       _model = result;
       notifyListeners();
       return _model!;

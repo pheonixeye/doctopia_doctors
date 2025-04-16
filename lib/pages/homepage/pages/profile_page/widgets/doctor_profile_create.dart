@@ -1,16 +1,16 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:doctopia_doctors/components/central_loading.dart';
-import 'package:doctopia_doctors/functions/dprint.dart';
 import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
+import 'package:doctopia_doctors/models/app_constants_model/_models/degree.dart';
+import 'package:doctopia_doctors/models/app_constants_model/_models/speciality.dart';
+import 'package:doctopia_doctors/providers/px_app_constants.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_specialities.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:proklinik_models/models/degree.dart';
-import 'package:proklinik_models/models/speciality.dart';
 import 'package:provider/provider.dart';
 
 class DoctorProfileCreate extends StatefulWidget {
@@ -29,8 +29,6 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
   late final TextEditingController _title_arController;
   late final TextEditingController _about_enController;
   late final TextEditingController _about_arController;
-  late final TextEditingController _synd_idController;
-  late final TextEditingController _personal_phoneController;
 
   @override
   void initState() {
@@ -40,9 +38,6 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
     _title_arController = TextEditingController();
     _about_enController = TextEditingController();
     _about_arController = TextEditingController();
-    _synd_idController = TextEditingController();
-    _personal_phoneController = TextEditingController();
-
     super.initState();
   }
 
@@ -54,8 +49,6 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
     _title_arController.dispose();
     _about_enController.dispose();
     _about_arController.dispose();
-    _synd_idController.dispose();
-    _personal_phoneController.dispose();
     super.dispose();
   }
 
@@ -71,9 +64,9 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer3<PxUserModel, PxDoctor, PxLocale>(
-      builder: (context, u, d, l, _) {
-        while (u.model == null) {
+    return Consumer4<PxUserModel, PxDoctor, PxLocale, PxAppConstants>(
+      builder: (context, u, d, l, a, _) {
+        while (u.model == null || a.model == null) {
           return const Center(
             child: CentralLoading(),
           );
@@ -81,6 +74,7 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
         return Form(
           key: formKey,
           child: ListView(
+            cacheExtent: 3000,
             children: [
               const Gap(10),
               Card.outlined(
@@ -136,11 +130,12 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
                               },
                               isExpanded: true,
                               alignment: Alignment.center,
-                              items: s.specialities.map((e) {
+                              items: a.model?.specialities.map((e) {
                                 return DropdownMenuItem<Speciality>(
                                   alignment: Alignment.center,
                                   value: e,
-                                  child: Text(e.en),
+                                  child:
+                                      Text(l.isEnglish ? e.name_en : e.name_ar),
                                 );
                               }).toList(),
                               onChanged: (value) {
@@ -166,7 +161,7 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
                   children: [
                     ListTile(
                       leading: const CircleAvatar(),
-                      title: Text(context.loc.medicalDegree),
+                      title: Text(context.loc.practicalDegree),
                       subtitle: DropdownButtonHideUnderline(
                         child: DropdownButtonFormField<Degree>(
                           decoration: const InputDecoration(
@@ -181,11 +176,11 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
                           value: _degree,
                           isExpanded: true,
                           alignment: Alignment.center,
-                          items: Degree.list.map((e) {
+                          items: a.model?.degrees.map((e) {
                             return DropdownMenuItem<Degree>(
                               alignment: Alignment.center,
                               value: e,
-                              child: Text(e.en),
+                              child: Text(l.isEnglish ? e.name_en : e.name_ar),
                             );
                           }).toList(),
                           onChanged: (value) {
@@ -215,6 +210,7 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
                             const InputDecoration(border: OutlineInputBorder()),
                         validator: _validator,
                         controller: _title_enController,
+                        maxLines: 2,
                       ),
                     ),
                     ListTile(
@@ -225,6 +221,7 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
                         decoration:
                             const InputDecoration(border: OutlineInputBorder()),
                         validator: _validator,
+                        maxLines: 2,
                       ),
                     ),
                   ],
@@ -243,7 +240,8 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
                         controller: _about_enController,
                         decoration:
                             const InputDecoration(border: OutlineInputBorder()),
-                        validator: _validator,
+                        // validator: _validator,
+                        maxLines: 4,
                       ),
                     ),
                     ListTile(
@@ -253,7 +251,8 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
                         controller: _about_arController,
                         decoration:
                             const InputDecoration(border: OutlineInputBorder()),
-                        validator: _validator,
+                        // validator: _validator,
+                        maxLines: 4,
                       ),
                     ),
                   ],
@@ -267,18 +266,17 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
                     if (formKey.currentState!.validate()) {
                       late BuildContext _loadingContext;
                       d.setDoctor(
-                        synd_id: u.model?.synd_id,
-                        personal_phone: u.model?.phone,
+                        id: u.model?.userModel.id,
+                        synd_id: u.model?.userModel.synd_id,
+                        personal_phone: u.model?.userModel.phone,
                         name_en: _name_enController.text.trim(),
                         name_ar: _name_arController.text.trim(),
                         title_en: _title_enController.text.trim(),
                         title_ar: _title_arController.text.trim(),
                         about_en: _about_enController.text.trim(),
                         about_ar: _about_arController.text.trim(),
-                        speciality_en: _speciality!.en,
-                        speciality_ar: _speciality!.ar,
-                        degree_en: _degree!.en,
-                        degree_ar: _degree!.ar,
+                        speciality: _speciality,
+                        degree: _degree,
                       );
                       try {
                         showDialog(
@@ -297,7 +295,7 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
                         if (_loadingContext.mounted) {
                           Navigator.pop(_loadingContext);
                         }
-                        dprint(e);
+                        print(e);
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             duration: const Duration(seconds: 10),

@@ -51,7 +51,8 @@ class PxLocalDatabase extends ChangeNotifier {
 
   Future<String?> getCredentials() async {
     _token = await _prefs.getString('token');
-    dprint('PxLocalDb().getCredentials(${_token?.substring(0, 5)})');
+    dprint(
+        'PxLocalDb().getCredentials(token.isValid:${(token != null && token!.isNotEmpty)})');
     return _token;
   }
 

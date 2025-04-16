@@ -55,26 +55,26 @@ dependencies:
   firebase_messaging: 
   gap: 
   intl:
-  freezed_annotation: ^2.4.1
+  freezed_annotation: ^3.0.0
   json_annotation: ^4.8.1
   google_fonts:
   flutter_spinkit:
-  pocketbase: ^0.11.0
+  pocketbase: ^0.22.0
   animated_text_kit: ^4.2.2
   shared_preferences: ^2.3.2
   flutter_osm_plugin: ^1.1.0
   flutter_svg: ^2.0.9
   screenshot: ^3.0.0
   onmessage: ^0.2.0
-  proklinik_models:
-    git:
-      url: https://github.com/pheonixeye/proklinik_models.git
-      ref: master
+  # proklinik_models:
+  #   git:
+  #     url: https://github.com/pheonixeye/proklinik_models.git
+  #     ref: master
   pretty_qr_code: ^3.3.0
 
   ###TODO: change pre deployment
-  # proklinik_models:
-  #   path: ../proklinik_models
+  proklinik_models:
+    path: ../proklinik_models
   # sembast_web: ^2.4.0+2
  
 
@@ -87,11 +87,11 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^5.0.0
   build_runner: ^2.4.7
-  freezed: ^2.4.6
+  freezed: ^3.0.6
   json_serializable: ^6.7.1
-  flutter_launcher_icons: "^0.13.1"
+  flutter_launcher_icons: ^0.14.3
 
 flutter_launcher_icons:
   android: "launcher_icon"

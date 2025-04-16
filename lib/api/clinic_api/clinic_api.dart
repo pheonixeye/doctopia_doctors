@@ -117,7 +117,7 @@ class HxClinic {
 
   Future<void> deleteClinic(Clinic clinic, BuildContext context) async {
     try {
-      final _token = context.read<PxUserModel>().token;
+      final _token = context.read<PxUserModel>().model!.token;
       final _doc_id = context.read<PxUserModel>().id;
       await PocketbaseHelper.pb.collection("clinics").delete(
         clinic.id,

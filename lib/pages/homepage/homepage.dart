@@ -124,6 +124,15 @@ class _HomePageState extends State<HomePage>
                               onTap: () async {
                                 //todo: design sharable dialog
                                 //940 x 788 px
+                                if (d.doctor == null) {
+                                  showInfoSnackbar(
+                                    context,
+                                    context.loc.completeYourProfile,
+                                    null,
+                                    const Duration(seconds: 3),
+                                  );
+                                  return;
+                                }
                                 await showDialog(
                                   context: context,
                                   builder: (context) => SharableDialog(
@@ -246,7 +255,7 @@ class _HomePageState extends State<HomePage>
                                     toExecute: () async {
                                   await d.updateDoctorAvatar(
                                     fileBytes: _image!.files.first.bytes!,
-                                    fileName: "${d.id}_${_image.names[0]}",
+                                    fileName: "${d.doc_id}_${_image.names[0]}",
                                   );
                                 });
                               }
@@ -278,7 +287,7 @@ class _HomePageState extends State<HomePage>
                                         Expanded(
                                           child: Builder(
                                             builder: (context) {
-                                              while (d.doctor!.avatar == null) {
+                                              while (d.doctor!.avatar.isEmpty) {
                                                 return const CircleAvatar(
                                                   radius: 35,
                                                   child: Icon(

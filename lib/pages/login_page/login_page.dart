@@ -189,7 +189,7 @@ class _LoginpageState extends State<Loginpage> with AfterLayoutMixin {
                                 },
                               );
                             }
-                            final _id = await u.loginUserByEmailAndPassword(
+                            final _id = await u.loginUserByPassword(
                               _emailController.text.trim(),
                               _passwordController.text,
                               rememberMe,

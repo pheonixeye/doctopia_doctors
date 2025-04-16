@@ -1,17 +1,21 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:doctopia_doctors/api/doctor_api/hx_doctor.dart';
+import 'package:doctopia_doctors/functions/dprint.dart';
+import 'package:doctopia_doctors/models/app_constants_model/_models/degree.dart';
+import 'package:doctopia_doctors/models/app_constants_model/_models/speciality.dart';
+import 'package:doctopia_doctors/models/doctor_response_model/doctor.dart';
+import 'package:doctopia_doctors/models/doctor_response_model/doctor_response_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:proklinik_models/models/destination.dart';
-import 'package:proklinik_models/models/doctor.dart';
 
 class PxDoctor extends ChangeNotifier {
-  final HxDoctor doctorService;
-  final String id;
+  final HxDoctor service;
+  final String doc_id;
+
   PxDoctor({
-    required this.doctorService,
-    required this.id,
+    required this.service,
+    required this.doc_id,
   }) {
     fetchDoctor();
   }
@@ -19,53 +23,47 @@ class PxDoctor extends ChangeNotifier {
   Doctor? _doctor;
   Doctor? get doctor => _doctor;
 
+  DoctorResponseModel _model = DoctorResponseModel.initial();
+  DoctorResponseModel get model => _model;
+
   void setDoctor({
+    String? id,
     int? synd_id,
-    String? joined_at,
     String? name_en,
     String? name_ar,
     String? personal_phone,
-    String? speciality_en,
-    String? speciality_ar,
-    bool? published,
     String? title_en,
     String? title_ar,
     String? about_en,
     String? about_ar,
-    String? degree_en,
-    String? degree_ar,
-    double? rating,
-    List<String>? tags,
-    int? views,
-    List<Destination>? destinations,
+    Speciality? speciality,
+    Degree? degree,
   }) {
-    _doctor ??= Doctor.emptyForCreate();
-    _doctor = _doctor?.copyWith(
-      id: id,
-      synd_id: synd_id ?? _doctor?.synd_id,
-      joined_at: DateTime.now().toIso8601String(),
-      name_en: name_en ?? _doctor?.name_en,
-      name_ar: name_ar ?? _doctor?.name_ar,
-      personal_phone: personal_phone ?? _doctor?.personal_phone,
-      speciality_en: speciality_en ?? _doctor?.speciality_en,
-      speciality_ar: speciality_ar ?? _doctor?.speciality_ar,
-      degree_en: degree_en ?? _doctor?.degree_en,
-      degree_ar: degree_ar ?? _doctor?.degree_ar,
-      published: published ?? _doctor?.published,
-      title_en: title_en ?? _doctor?.title_en,
-      title_ar: title_ar ?? doctor?.title_ar,
-      about_en: about_en ?? _doctor?.about_en,
-      about_ar: about_ar ?? _doctor?.about_ar,
-      tags: [],
-      views: 0,
-      destinations: [],
+    _model = _model.copyWith(
+      id: id ?? model.id,
+      name_en: name_en ?? _model.name_en,
+      name_ar: name_ar ?? _model.name_ar,
+      title_en: title_en ?? _model.title_en,
+      title_ar: title_ar ?? _model.title_ar,
+      about_en: about_en ?? _model.about_en,
+      about_ar: about_ar ?? _model.about_ar,
+      synd_id: synd_id ?? _model.synd_id,
+      personal_phone: personal_phone ?? _model.personal_phone,
+      speciality_id: speciality?.id ?? _model.speciality_id,
+      degree_id: degree?.id ?? _model.degree_id,
     );
+    _doctor = Doctor.fromResponseModel(
+      model: model,
+      speciality: speciality,
+      degree: degree,
+    );
+
     notifyListeners();
   }
 
   Future<Doctor?> createDoctor() async {
     try {
-      final doc = await doctorService.createDoctor(doctor: doctor!);
+      final doc = await service.createDoctor(doctor: _model);
       await fetchDoctor();
       return doc;
     } on ClientException catch (e) {
@@ -75,26 +73,20 @@ class PxDoctor extends ChangeNotifier {
 
   void nullifyDoctor() {
     _doctor = null;
+    _model = DoctorResponseModel.initial();
     notifyListeners();
   }
 
   Future<Doctor?> fetchDoctor() async {
     try {
-      final serverResult = await doctorService.fetchDoctorById(id: id);
-
-      _doctor = serverResult;
-
+      _doctor = await service.fetchDoctorById(id: doc_id);
       notifyListeners();
-
-      return serverResult;
+      return _doctor;
     } on ClientException catch (e) {
       _doctor = null;
       notifyListeners();
-      if (kDebugMode) {
-        print("PxDoctor().fetchDoctor(${e.response["message"]})");
-      }
+      dprint("PxDoctor().fetchDoctor(${e.response["message"]})");
       return null;
-      // throw Exception(e.response["message"]);
     }
   }
 
@@ -102,8 +94,8 @@ class PxDoctor extends ChangeNotifier {
     required List<int> fileBytes,
     required String? fileName,
   }) async {
-    await doctorService.updateDoctorAvatar(
-      id: id,
+    await service.updateDoctorAvatar(
+      id: doc_id,
       fileBytes: fileBytes,
       fileName: fileName,
     );
@@ -125,8 +117,8 @@ class PxDoctor extends ChangeNotifier {
 
   Future<Doctor?> updateDoctor() async {
     try {
-      final doc = await doctorService.updateDoctor(
-        id: id,
+      final doc = await service.updateDoctor(
+        id: doc_id,
         update: _update,
       );
       _doctor = doc;

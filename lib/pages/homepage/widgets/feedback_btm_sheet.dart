@@ -90,7 +90,7 @@ class _FeedbackBottomSheetState extends State<FeedbackBottomSheet>
                         context,
                         toExecute: () async {
                           final _api = DoctorFeedbackApi(
-                            docId: context.read<PxDoctor>().id,
+                            docId: context.read<PxDoctor>().doc_id,
                           );
                           try {
                             await _api.sendDoctorFeedback(

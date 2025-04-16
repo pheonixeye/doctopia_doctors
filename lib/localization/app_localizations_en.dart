@@ -1,4 +1,8 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
 
 /// The translations for English (`en`).
 class AppLocalizationsEn extends AppLocalizations {
@@ -6,6 +10,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get proklinik => 'ProKliniK';
+
+  @override
+  String get proklinikDoctors => 'ProKliniK Doctors';
 
   @override
   String get email => 'Email';
@@ -86,7 +93,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get confirmPasswordMatchValidator => 'Password Not Matching.';
 
   @override
-  String get success => 'Sucess...';
+  String get success => 'Success...';
 
   @override
   String get register => 'Register';
@@ -219,6 +226,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get medicalDegree => 'Medical Degree';
+
+  @override
+  String get practicalDegree => 'Practical Degree';
 
   @override
   String get medicalDegreeValidator => 'Invalid Input, Kindly Select Degree.';

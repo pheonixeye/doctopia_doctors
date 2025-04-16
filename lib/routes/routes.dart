@@ -76,8 +76,8 @@ class AppRouter {
           //todo: add all home children to be regular routes
           ShellRoute(
             pageBuilder: (context, state, child) {
-              final id = state.pathParameters["id"] as String;
-              final key = ValueKey(id);
+              final doc_id = state.pathParameters["id"] as String;
+              final key = ValueKey(doc_id);
               return CustomTransitionPage(
                 transitionDuration: const Duration(milliseconds: 500),
                 name: "shell",
@@ -87,8 +87,8 @@ class AppRouter {
                     ChangeNotifierProvider(
                       key: key,
                       create: (context) => PxDoctor(
-                        doctorService: HxDoctor(),
-                        id: id,
+                        service: HxDoctor(),
+                        doc_id: doc_id,
                       ),
                     ),
                     ChangeNotifierProvider(

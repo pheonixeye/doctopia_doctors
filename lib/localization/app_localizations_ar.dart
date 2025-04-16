@@ -1,4 +1,8 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
 
 /// The translations for Arabic (`ar`).
 class AppLocalizationsAr extends AppLocalizations {
@@ -6,6 +10,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get proklinik => 'بروكلينيك';
+
+  @override
+  String get proklinikDoctors => 'بروكلينيك للاطباء';
 
   @override
   String get email => 'البريد الالكتروني';
@@ -219,6 +226,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get medicalDegree => 'الدرجة العلمية';
+
+  @override
+  String get practicalDegree => 'الدرجة الوظيفية';
 
   @override
   String get medicalDegreeValidator => 'برجاء اختيار الدرجة العلمية.';

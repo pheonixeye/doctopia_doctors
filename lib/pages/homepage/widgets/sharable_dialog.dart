@@ -7,10 +7,11 @@ import 'package:doctopia_doctors/extensions/number_translator.dart';
 import 'package:doctopia_doctors/extensions/schedule_format_ext.dart';
 import 'package:doctopia_doctors/functions/download_image.dart';
 import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
+import 'package:doctopia_doctors/models/doctor_response_model/doctor.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
-import 'package:proklinik_models/proklinik_models.dart';
+import 'package:proklinik_models/models/clinic.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
 
@@ -132,8 +133,8 @@ class _SharableDialogState extends State<SharableDialog> {
                       child: Center(
                         child: Text(
                           isEnglish
-                              ? widget.doctor.speciality_en
-                              : widget.doctor.speciality_ar,
+                              ? widget.doctor.speciality.name_en
+                              : widget.doctor.speciality.name_ar,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 20 * widget.relativeFactor,

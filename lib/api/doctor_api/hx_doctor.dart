@@ -1,38 +1,60 @@
 import 'package:doctopia_doctors/api/_pocket_main/pocket_main.dart';
-import 'package:flutter/foundation.dart';
-// import 'package:flutter/foundation.dart';
+import 'package:doctopia_doctors/models/app_constants_model/_models/degree.dart';
+import 'package:doctopia_doctors/models/app_constants_model/_models/speciality.dart';
+import 'package:doctopia_doctors/models/doctor_response_model/doctor.dart';
+import 'package:doctopia_doctors/models/doctor_response_model/doctor_response_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:proklinik_models/models/doctor.dart';
-// import 'package:http_parser/http_parser.dart' show MediaType;
+import 'package:pocketbase/pocketbase.dart';
 
 class HxDoctor {
+  const HxDoctor();
+
+  static const String collection = 'doctors';
+  static const String _expand = 'speciality_id, degree_id';
+
   Future<Doctor> createDoctor({
-    required Doctor doctor,
+    required DoctorResponseModel doctor,
   }) async {
     try {
-      final response = await PocketbaseHelper.pb.collection("doctors").create(
+      final response = await PocketbaseHelper.pb.collection(collection).create(
             body: doctor.toJson(),
+            expand: _expand,
           );
 
-      final docModel = Doctor.fromJson(response.toJson());
+      final _model = DoctorResponseModel.fromJson(response.toJson());
+      final _speciality = Speciality.fromJson(
+          response.get<RecordModel>('expand.speciality_id').toJson());
+      final _degree = Degree.fromJson(
+          response.get<RecordModel>('expand.degree_id').toJson());
 
-      return docModel;
+      return Doctor.fromResponseModel(
+        model: _model,
+        speciality: _speciality,
+        degree: _degree,
+      );
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<Doctor> fetchDoctorById({required String id}) async {
+  Future<Doctor?> fetchDoctorById({required String id}) async {
     try {
-      final response =
-          await PocketbaseHelper.pb.collection("doctors").getOne(id);
+      final response = await PocketbaseHelper.pb.collection(collection).getOne(
+            id,
+            expand: _expand,
+          );
 
-      if (kDebugMode) {
-        // print(response.toJson());
-      }
-      final doctor = Doctor.fromJson(response.toJson());
+      final _model = DoctorResponseModel.fromJson(response.toJson());
+      final _speciality = Speciality.fromJson(
+          response.get<RecordModel>('expand.speciality_id').toJson());
+      final _degree = Degree.fromJson(
+          response.get<RecordModel>('expand.degree_id').toJson());
 
-      return doctor;
+      return Doctor.fromResponseModel(
+        model: _model,
+        speciality: _speciality,
+        degree: _degree,
+      );
     } catch (e) {
       rethrow;
     }
@@ -44,23 +66,29 @@ class HxDoctor {
     required String? fileName,
   }) async {
     try {
-      final updateDoctorResponse =
-          await PocketbaseHelper.pb.collection("doctors").update(
-        id,
-        files: [
-          http.MultipartFile.fromBytes(
-            "avatar",
-            fileBytes,
-            filename: fileName,
-          ),
-        ],
-      );
+      final response = await PocketbaseHelper.pb.collection(collection).update(
+            id,
+            files: [
+              http.MultipartFile.fromBytes(
+                "avatar",
+                fileBytes,
+                filename: fileName,
+              ),
+            ],
+            expand: _expand,
+          );
 
-      final doc = Doctor.fromJson(
-        updateDoctorResponse.toJson(),
-      );
+      final _model = DoctorResponseModel.fromJson(response.toJson());
+      final _speciality = Speciality.fromJson(
+          response.get<RecordModel>('expand.speciality_id').toJson());
+      final _degree = Degree.fromJson(
+          response.get<RecordModel>('expand.degree_id').toJson());
 
-      return doc;
+      return Doctor.fromResponseModel(
+        model: _model,
+        speciality: _speciality,
+        degree: _degree,
+      );
     } catch (e) {
       rethrow;
     }
@@ -71,17 +99,23 @@ class HxDoctor {
     required String id,
   }) async {
     try {
-      final updateDoctorResponse =
-          await PocketbaseHelper.pb.collection("doctors").update(
-                id,
-                body: update,
-              );
+      final response = await PocketbaseHelper.pb.collection(collection).update(
+            id,
+            body: update,
+            expand: _expand,
+          );
 
-      final doc = Doctor.fromJson(
-        updateDoctorResponse.toJson(),
+      final _model = DoctorResponseModel.fromJson(response.toJson());
+      final _speciality = Speciality.fromJson(
+          response.get<RecordModel>('expand.speciality_id').toJson());
+      final _degree = Degree.fromJson(
+          response.get<RecordModel>('expand.degree_id').toJson());
+
+      return Doctor.fromResponseModel(
+        model: _model,
+        speciality: _speciality,
+        degree: _degree,
       );
-
-      return doc;
     } catch (e) {
       rethrow;
     }

@@ -6,13 +6,11 @@ import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/profile_page/widgets/doctor_profile_create.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
-import 'package:doctopia_doctors/providers/px_specialities.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:proklinik_models/models/degree.dart';
 import 'package:proklinik_models/models/doctor.dart';
-import 'package:proklinik_models/models/speciality.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -33,10 +31,8 @@ class _ProfilePageState extends State<ProfilePage> {
   late final TextEditingController _title_arController;
   late final TextEditingController _about_enController;
   late final TextEditingController _about_arController;
-  late final TextEditingController _synd_idController;
   late final TextEditingController _personal_phoneController;
 
-  Speciality? _speciality;
   Degree? _degree;
 
   @override
@@ -47,7 +43,6 @@ class _ProfilePageState extends State<ProfilePage> {
     _title_arController = TextEditingController();
     _about_enController = TextEditingController();
     _about_arController = TextEditingController();
-    _synd_idController = TextEditingController();
     _personal_phoneController = TextEditingController();
 
     Doctor.emptyForCreate().toJson().entries.map((e) {
@@ -65,7 +60,6 @@ class _ProfilePageState extends State<ProfilePage> {
     _title_arController.dispose();
     _about_enController.dispose();
     _about_arController.dispose();
-    _synd_idController.dispose();
     _personal_phoneController.dispose();
     super.dispose();
   }
@@ -172,6 +166,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    //TODO: update ui
+    //TODO: update logic
+    //TODO: extract in a separate widget
     return Consumer3<PxUserModel, PxDoctor, PxLocale>(
       builder: (context, u, d, l, _) {
         while (d.doctor == null) {
@@ -189,7 +186,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     ListTile(
-                      leading: const CircleAvatar(),
                       title: Text(context.loc.englishName),
                       subtitle: (_isEditing["name_en"] == true)
                           ? Column(
@@ -211,7 +207,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       trailing: _trailingBtn('name_en'),
                     ),
                     ListTile(
-                      leading: const CircleAvatar(),
                       title: Text(context.loc.arabicName),
                       subtitle: (_isEditing["name_ar"] == true)
                           ? Column(
@@ -242,7 +237,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     ListTile(
-                      leading: const CircleAvatar(),
                       title: Text(context.loc.speciality),
                       trailing: const IconButton(
                         onPressed: null,
@@ -251,44 +245,11 @@ class _ProfilePageState extends State<ProfilePage> {
                           color: Colors.transparent,
                         ),
                       ),
-                      subtitle: (_isEditing["specialty_en"] == true)
-                          ? Consumer<PxSpeciality>(
-                              builder: (context, s, _) {
-                                return DropdownButtonHideUnderline(
-                                  child: DropdownButtonFormField<Speciality>(
-                                    decoration: const InputDecoration(
-                                      border: OutlineInputBorder(),
-                                    ),
-                                    value: _speciality,
-                                    validator: (value) {
-                                      if (value == null) {
-                                        return context.loc.specialityValidator;
-                                      }
-                                      return null;
-                                    },
-                                    isExpanded: true,
-                                    alignment: Alignment.center,
-                                    items: s.specialities.map((e) {
-                                      return DropdownMenuItem<Speciality>(
-                                        alignment: Alignment.center,
-                                        value: e,
-                                        child: Text(l.isEnglish ? e.en : e.ar),
-                                      );
-                                    }).toList(),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _speciality = value;
-                                      });
-                                    },
-                                  ),
-                                );
-                              },
-                            )
-                          : Text(
-                              l.isEnglish
-                                  ? d.doctor!.speciality_en
-                                  : d.doctor!.speciality_ar,
-                            ),
+                      subtitle: Text(
+                        l.isEnglish
+                            ? d.doctor!.speciality.name_en
+                            : d.doctor!.speciality.name_ar,
+                      ),
                     ),
                   ],
                 ),
@@ -300,8 +261,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     ListTile(
-                      leading: const CircleAvatar(),
-                      title: Text(context.loc.medicalDegree),
+                      title: Text(context.loc.practicalDegree),
                       trailing: IconButton.outlined(
                           onPressed: () {
                             setState(() {
@@ -382,8 +342,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             )
                           : Text(
                               l.isEnglish
-                                  ? d.doctor!.degree_en
-                                  : d.doctor!.degree_ar,
+                                  ? d.doctor!.degree.name_en
+                                  : d.doctor!.degree.name_ar,
                             ),
                     ),
                   ],
@@ -396,7 +356,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     ListTile(
-                      leading: const CircleAvatar(),
                       title: Text(context.loc.englishTitle),
                       subtitle: (_isEditing["title_en"] == true)
                           ? Column(
@@ -418,7 +377,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       trailing: _trailingBtn('title_en'),
                     ),
                     ListTile(
-                      leading: const CircleAvatar(),
                       title: Text(context.loc.arabicTitle),
                       subtitle: (_isEditing["title_ar"] == true)
                           ? Column(
@@ -449,7 +407,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     ListTile(
-                      leading: const CircleAvatar(),
                       title: Text(context.loc.englishAbout),
                       subtitle: (_isEditing["about_en"] == true)
                           ? Column(
@@ -471,7 +428,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       trailing: _trailingBtn('about_en'),
                     ),
                     ListTile(
-                      leading: const CircleAvatar(),
                       title: Text(context.loc.arabicAbout),
                       subtitle: (_isEditing["about_ar"] == true)
                           ? Column(

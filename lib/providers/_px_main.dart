@@ -1,7 +1,9 @@
+import 'package:doctopia_doctors/api/app_constants_api/app_constants_api.dart';
 import 'package:doctopia_doctors/api/governorate_api/governorate_city.dart';
 import 'package:doctopia_doctors/api/server_status_api/status_api.dart';
 import 'package:doctopia_doctors/api/speciality_api/speciality.dart';
 import 'package:doctopia_doctors/api/user_model_api/user_model_api.dart';
+import 'package:doctopia_doctors/providers/px_app_constants.dart';
 import 'package:doctopia_doctors/providers/px_gov.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_overlay.dart';
@@ -16,6 +18,11 @@ import 'package:provider/single_child_widget.dart';
 final List<SingleChildWidget> providers = [
   ChangeNotifierProvider(create: (context) => PxLocalDatabase.instance),
   ChangeNotifierProvider(create: (context) => PxOverlay()),
+  ChangeNotifierProvider(
+    create: (context) => PxAppConstants(
+      service: const AppConstantsApi(),
+    ),
+  ),
   ChangeNotifierProvider(
     create: (context) => PxUserModel(
       context: context,

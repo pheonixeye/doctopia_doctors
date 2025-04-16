@@ -8,6 +8,8 @@ import 'package:intl/intl.dart' as intl;
 import 'app_localizations_ar.dart';
 import 'app_localizations_en.dart';
 
+// ignore_for_file: type=lint
+
 /// Callers can lookup localized strings with an instance of AppLocalizations
 /// returned by `AppLocalizations.of(context)`.
 ///
@@ -98,6 +100,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'ProKliniK'**
   String get proklinik;
+
+  /// No description provided for @proklinikDoctors.
+  ///
+  /// In en, this message translates to:
+  /// **'ProKliniK Doctors'**
+  String get proklinikDoctors;
 
   /// No description provided for @email.
   ///
@@ -258,7 +266,7 @@ abstract class AppLocalizations {
   /// No description provided for @success.
   ///
   /// In en, this message translates to:
-  /// **'Sucess...'**
+  /// **'Success...'**
   String get success;
 
   /// No description provided for @register.
@@ -524,6 +532,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Medical Degree'**
   String get medicalDegree;
+
+  /// No description provided for @practicalDegree.
+  ///
+  /// In en, this message translates to:
+  /// **'Practical Degree'**
+  String get practicalDegree;
 
   /// No description provided for @medicalDegreeValidator.
   ///

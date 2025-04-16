@@ -11,6 +11,7 @@ Future<void> shellFunction(
   Function? onCatch,
   Duration duration = const Duration(seconds: 10),
 }) async {
+  //TODO: migrate to overlay logic
   late BuildContext _loadingContext;
   try {
     if (sucessMsg.isEmpty) {

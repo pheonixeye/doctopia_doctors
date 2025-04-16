@@ -1,45 +1,75 @@
 import 'package:doctopia_doctors/api/_pocket_main/pocket_main.dart';
+import 'package:doctopia_doctors/functions/dprint.dart';
+import 'package:doctopia_doctors/models/app_constants_model/_models/site_service.dart';
+import 'package:doctopia_doctors/models/user_model_response.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:proklinik_models/models/user_model.dart';
 
 class HxUserModel {
   const HxUserModel();
 
-  Future<UserModel> createUserAccount(UserModel value) async {
+  static const String _expand = 'service_id';
+
+  Future<UserModelResponse> createUserAccount(UserModel value) async {
     final result = await PocketbaseHelper.pb.collection("users").create(
       body: {
         ...value.toPocketbaseJson(),
-        //HACK:
-        'emailVisibility': true,
       },
+      expand: _expand,
     );
 
     final model = UserModel.fromJson(result.toJson());
-    return model;
+    final siteService = SiteService.fromJson(
+        result.get<RecordModel>('expand.$_expand').toJson());
+    return UserModelResponse(
+      userModel: model,
+      siteService: siteService,
+      token: result.toJson()['token'],
+    );
   }
 
-  Future<RecordAuth> loginUserByEmailAndPassword(
-    String email,
+  Future<UserModelResponse> loginUserByPassword(
+    String syndIdOrEmail,
     String password,
   ) async {
     final result =
         await PocketbaseHelper.pb.collection("users").authWithPassword(
-              email,
+              syndIdOrEmail,
               password,
+              expand: _expand,
             );
-    return result;
+
+    dprint(
+        'UserModelApi().loginUserByPassword(lib/api/user_model_api/user_model_api.dart:42)');
+    dprint(result);
+    final model = UserModel.fromJson(result.record.toJson());
+    final siteService = SiteService.fromJson(
+        result.record.get<RecordModel>('expand.$_expand').toJson());
+    final _userModelResponse = UserModelResponse(
+      userModel: model,
+      siteService: siteService,
+      token: result.toJson()['token'],
+    );
+    return _userModelResponse;
   }
 
-  Future<UserModel> updateUserModel({
+  Future<UserModelResponse> updateUserModel({
     required String id,
     required Map<String, dynamic> update,
   }) async {
     final result = await PocketbaseHelper.pb.collection("users").update(
           id,
           body: update,
+          expand: _expand,
         );
+    final model = UserModel.fromJson(result.toJson());
 
-    final _user = UserModel.fromJson(result.toJson());
-    return _user;
+    final siteService = SiteService.fromJson(
+        result.get<RecordModel>('expand.$_expand').toJson());
+    return UserModelResponse(
+      userModel: model,
+      siteService: siteService,
+      token: result.toJson()['token'],
+    );
   }
 }

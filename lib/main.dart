@@ -78,7 +78,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp.router(
           //OPTIONS
           debugShowCheckedModeBanner: false,
-          title: 'ProKliniK Doctors',
+          title: l.isEnglish ? 'ProKliniK Doctors' : 'بروكلينيك للاطباء',
           //THEMES
           theme: AppTheme.theme(
             colorScheme: const ColorScheme.light(
