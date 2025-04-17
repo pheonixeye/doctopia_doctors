@@ -1,7 +1,8 @@
 import 'package:doctopia_doctors/extensions/number_translator.dart';
+import 'package:doctopia_doctors/models/clinic_response_model/schedule.dart';
+import 'package:doctopia_doctors/models/clinic_response_model/weekdays.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:flutter/material.dart';
-import 'package:proklinik_models/proklinik_models.dart';
 import 'package:provider/provider.dart';
 
 extension ScheduleFormatExt on Schedule {

@@ -2,7 +2,7 @@ import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/models/clinic_response_model/clinic.dart';
 import 'package:doctopia_doctors/models/clinic_response_model/clinic_location.dart';
-import 'package:doctopia_doctors/pages/homepage/pages/clinics_page/widgets/clinic_card/widgets/clinic_location_picker_dialog.dart';
+import 'package:doctopia_doctors/pages/homepage/pages/clinics_page/widgets/dialogs/clinic_location_picker_dialog.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/clinics_page/widgets/clinic_card/widgets/schedule_management_tab.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/clinics_page/widgets/clinic_card/widgets/schedule_summary_tab.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/clinics_page/widgets/clinic_card/widgets/edit_tab.dart';
@@ -152,8 +152,12 @@ class _ClinicCardState extends State<ClinicCard>
                     controller: _tabController,
                     physics: const NeverScrollableScrollPhysics(),
                     children: [
-                      ScheduleSummaryTab(),
-                      ScheduleManagementTab(),
+                      ScheduleSummaryTab(
+                        clinic: widget.clinic,
+                      ),
+                      ScheduleManagementTab(
+                        clinic: widget.clinic,
+                      ),
                       EditClinicDataTab(
                         clinic: widget.clinic,
                       ),

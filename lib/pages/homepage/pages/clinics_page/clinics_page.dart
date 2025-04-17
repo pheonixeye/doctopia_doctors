@@ -2,7 +2,7 @@
 
 import 'package:doctopia_doctors/components/central_loading.dart';
 import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
-import 'package:doctopia_doctors/pages/homepage/pages/clinics_page/widgets/clinic_card/_clinic_card.dart';
+import 'package:doctopia_doctors/pages/homepage/pages/clinics_page/widgets/clinic_card/clinic_card.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/routes/routes.dart';

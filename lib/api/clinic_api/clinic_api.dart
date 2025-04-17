@@ -2,6 +2,7 @@ import 'package:doctopia_doctors/api/_pocket_main/pocket_main.dart';
 import 'package:doctopia_doctors/models/clinic_response_model/clinic.dart';
 import 'package:doctopia_doctors/models/clinic_response_model/clinic_response_model.dart';
 import 'package:pocketbase/pocketbase.dart';
+// import 'package:doctopia_doctors/functions/dprint.dart';
 
 class HxClinic {
   const HxClinic();

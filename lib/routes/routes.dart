@@ -7,7 +7,7 @@ import 'package:doctopia_doctors/api/invoices_api/invoices_api.dart';
 import 'package:doctopia_doctors/api/notifications_api/notifications_api.dart';
 import 'package:doctopia_doctors/api/reviews_api/reviews_api.dart';
 import 'package:doctopia_doctors/api/scrapper_api/scrapper_api.dart';
-import 'package:doctopia_doctors/pages/clinic_schedule_page/clinic_schedule_page.dart';
+import 'package:doctopia_doctors/providers/px_dates.dart';
 import 'package:doctopia_doctors/pages/create_clinic_page/create_clinic_page.dart';
 import 'package:doctopia_doctors/pages/homepage/homepage.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/bookings_page/bookings_page.dart';
@@ -157,15 +157,15 @@ class AppRouter {
                       key: key,
                       providers: [
                         ChangeNotifierProvider(
-                          create: (context) => PxClinicVisits(
-                            doc_id: id,
-                            visitsService: HxClinicVisits(),
-                          ),
-                        ),
-                        ChangeNotifierProvider(
                           create: (context) => PxClinics(
                             doc_id: id,
                             clinicService: HxClinic(),
+                          ),
+                        ),
+                        ChangeNotifierProvider(
+                          create: (context) => PxClinicVisits(
+                            doc_id: id,
+                            visitsService: HxClinicVisits(),
                           ),
                         ),
                       ],
@@ -186,14 +186,21 @@ class AppRouter {
                     transitionDuration: const Duration(milliseconds: 500),
                     name: clinics,
                     transitionsBuilder: fadeTransitionBuilder,
-                    child: ChangeNotifierProvider(
+                    child: MultiProvider(
                       key: key,
-                      create: (context) => PxClinics(
-                        doc_id: id,
-                        clinicService: HxClinic(),
-                      ),
+                      providers: [
+                        ChangeNotifierProvider(
+                          create: (context) => PxDates(),
+                        ),
+                        ChangeNotifierProvider(
+                          create: (context) => PxClinics(
+                            doc_id: id,
+                            clinicService: HxClinic(),
+                          ),
+                        ),
+                      ],
                       child: ClinicsPage(
-                        key: key,
+                        key: state.pageKey,
                       ),
                     ),
                   );
@@ -223,31 +230,31 @@ class AppRouter {
                       );
                     },
                   ),
-                  GoRoute(
-                    path: sch,
-                    name: sch,
-                    pageBuilder: (context, state) {
-                      final id = state.pathParameters["id"] as String;
-                      // final clinicId =
-                      //     state.pathParameters["clinicid"] as String;
-                      final key = ValueKey(id);
-                      return CustomTransitionPage(
-                        transitionDuration: const Duration(milliseconds: 500),
-                        name: sch,
-                        transitionsBuilder: fadeTransitionBuilder,
-                        child: ChangeNotifierProvider(
-                          key: key,
-                          create: (context) => PxClinics(
-                            clinicService: HxClinic(),
-                            doc_id: id,
-                          ),
-                          child: ClinicSchedulePage(
-                            key: key,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                  // GoRoute(
+                  //   path: sch,
+                  //   name: sch,
+                  //   pageBuilder: (context, state) {
+                  //     final id = state.pathParameters["id"] as String;
+                  //     // final clinicId =
+                  //     //     state.pathParameters["clinicid"] as String;
+                  //     final key = ValueKey(id);
+                  //     return CustomTransitionPage(
+                  //       transitionDuration: const Duration(milliseconds: 500),
+                  //       name: sch,
+                  //       transitionsBuilder: fadeTransitionBuilder,
+                  //       child: ChangeNotifierProvider(
+                  //         key: key,
+                  //         create: (context) => PxClinics(
+                  //           clinicService: HxClinic(),
+                  //           doc_id: id,
+                  //         ),
+                  //         child: ClinicSchedulePage(
+                  //           key: key,
+                  //         ),
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
                 ],
               ),
               //# continue shell route

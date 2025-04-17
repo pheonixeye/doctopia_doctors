@@ -9,4 +9,8 @@ class Assets {
   ///json files
   static const String governorates = "assets/json/governorates.json";
   static const String specialities = "assets/json/specialities.json";
+
+  ///non-avatar-having-doctors-avatar
+  static const String male = "assets/images/av_male_.jpeg";
+  static const String female = "assets/images/av_female_.jpeg";
 }

@@ -1,4 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:uuid/uuid.dart';
+
+final _uuid = Uuid();
 
 class ClinicShift extends Equatable {
   final String id;
@@ -58,8 +61,8 @@ class ClinicShift extends Equatable {
   }
 
   factory ClinicShift.initial() {
-    return const ClinicShift(
-      id: '',
+    return ClinicShift(
+      id: _uuid.v4(),
       startH: 0,
       startM: 0,
       endH: 0,

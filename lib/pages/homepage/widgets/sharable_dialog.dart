@@ -7,11 +7,11 @@ import 'package:doctopia_doctors/extensions/number_translator.dart';
 import 'package:doctopia_doctors/extensions/schedule_format_ext.dart';
 import 'package:doctopia_doctors/functions/download_image.dart';
 import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
+import 'package:doctopia_doctors/models/clinic_response_model/clinic.dart';
 import 'package:doctopia_doctors/models/doctor_response_model/doctor.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
-import 'package:proklinik_models/models/clinic.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
 
@@ -50,9 +50,11 @@ class _SharableDialogState extends State<SharableDialog> {
   Future<void> _fetchDoctorClinics() async {
     final data = await _clinicService.fetchDoctorClinics(widget.doctor.id);
     setState(() {
-      // _clinics = data;
+      _clinics = data;
     });
   }
+
+  String _avatar = Assets.male;
 
   @override
   Widget build(BuildContext context) {
@@ -85,13 +87,26 @@ class _SharableDialogState extends State<SharableDialog> {
                     textDirection: TextDirection.ltr,
                     top: 57.5 * widget.relativeFactor,
                     start: 60 * widget.relativeFactor,
-                    child: Container(
-                      width: 152 * widget.relativeFactor,
-                      height: 152 * widget.relativeFactor,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: NetworkImage(widget.doctor.avatarUrl!),
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          _avatar == Assets.male
+                              ? _avatar = Assets.female
+                              : _avatar = Assets.male;
+                        });
+                      },
+                      child: Container(
+                        width: 152 * widget.relativeFactor,
+                        height: 152 * widget.relativeFactor,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: widget.doctor.avatarUrl == null
+                              ? DecorationImage(
+                                  image: AssetImage(_avatar),
+                                )
+                              : DecorationImage(
+                                  image: NetworkImage(widget.doctor.avatarUrl!),
+                                ),
                         ),
                       ),
                     ),
@@ -159,9 +174,7 @@ class _SharableDialogState extends State<SharableDialog> {
                           }
                           final _clinic = _clinics!.first;
                           return Text(
-                            isEnglish
-                                ? _clinic.destination.addressEn
-                                : _clinic.destination.addressAr,
+                            isEnglish ? _clinic.address_en : _clinic.address_ar,
                             textAlign: TextAlign.start,
                             style: TextStyle(
                               fontSize: 16 * widget.relativeFactor,
@@ -276,7 +289,7 @@ class _SharableDialogState extends State<SharableDialog> {
                                     ),
                                     textAlign: TextAlign.start,
                                   );
-                                }).toList(),
+                                }),
                               ],
                             );
                           },

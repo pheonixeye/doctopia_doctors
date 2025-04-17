@@ -1,8 +1,8 @@
 import 'dart:convert';
 
+import 'package:doctopia_doctors/models/clinic_response_model/clinic_shift.dart';
+import 'package:doctopia_doctors/models/clinic_response_model/weekdays.dart';
 import 'package:equatable/equatable.dart';
-import 'package:proklinik_models/models/clinic_shift.dart';
-import 'package:proklinik_models/models/weekdays.dart';
 
 class Schedule extends Equatable {
   final String id;
