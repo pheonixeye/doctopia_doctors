@@ -50,7 +50,7 @@ class _SharableDialogState extends State<SharableDialog> {
   Future<void> _fetchDoctorClinics() async {
     final data = await _clinicService.fetchDoctorClinics(widget.doctor.id);
     setState(() {
-      _clinics = data;
+      // _clinics = data;
     });
   }
 

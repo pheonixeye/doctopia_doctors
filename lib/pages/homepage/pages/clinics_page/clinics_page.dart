@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_final_fields
 
+import 'package:doctopia_doctors/components/central_loading.dart';
 import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
-import 'package:doctopia_doctors/pages/homepage/pages/clinics_page/widgets/clinic_card.dart';
+import 'package:doctopia_doctors/pages/homepage/pages/clinics_page/widgets/clinic_card/_clinic_card.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/routes/routes.dart';
@@ -26,30 +27,33 @@ class _ClinicsPageState extends State<ClinicsPage> {
     return Column(
       children: [
         ListTile(
-          leading: const CircleAvatar(),
           title: Text(context.loc.clinics),
-          trailing: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: FloatingActionButton.extended(
-              heroTag: 'create-clinic',
-              onPressed: () {
-                GoRouter.of(context).goNamed(
-                  AppRouter.createclinic,
-                  pathParameters: {
-                    "id": context.read<PxClinics>().id,
-                  },
-                );
-              },
-              label: Text(context.loc.createClinic),
-              icon: const Icon(Icons.add),
-            ),
+          subtitle: const Divider(),
+          trailing: FloatingActionButton.small(
+            heroTag: 'create-clinic',
+            onPressed: () {
+              GoRouter.of(context).goNamed(
+                AppRouter.createclinic,
+                pathParameters: {
+                  "id": context.read<PxClinics>().doc_id,
+                },
+              );
+            },
+            tooltip: context.loc.createClinic,
+            child: const Icon(Icons.add),
           ),
         ),
         Consumer2<PxLocale, PxClinics>(
           builder: (context, l, c, _) {
-            while (c.clinics.isEmpty) {
+            while (c.clinics == null) {
               return Padding(
-                padding: const EdgeInsets.only(top: 200.0),
+                padding: const EdgeInsets.only(top: 280.0),
+                child: const CentralLoading(),
+              );
+            }
+            while (c.clinics != null && c.clinics!.isEmpty) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 280.0),
                 child: Center(
                   child: Card.outlined(
                     elevation: 6,
@@ -64,9 +68,9 @@ class _ClinicsPageState extends State<ClinicsPage> {
             return Expanded(
               child: ListView.builder(
                 shrinkWrap: true,
-                itemCount: c.clinics.length,
+                itemCount: c.clinics?.length,
                 itemBuilder: (context, index) {
-                  return ClinicCard(clinic: c.clinics[index]);
+                  return ClinicCard(clinic: c.clinics![index]);
                 },
               ),
             );

@@ -32,7 +32,7 @@ class _ScheduleManagementTabState extends State<ScheduleManagementTab>
   FutureOr<void> afterFirstLayout(BuildContext context) {
     final clinic = context.read<PxClinics>().clinic;
     setState(() {
-      _state = clinic!.schedule;
+      // _state = clinic!.schedule;
     });
   }
 
@@ -60,7 +60,7 @@ class _ScheduleManagementTabState extends State<ScheduleManagementTab>
                       ...[true, false].map((e) {
                         return RadioMenuButton<bool>(
                           value: e,
-                          groupValue: c.clinic?.attendance,
+                          groupValue: null,
                           onChanged: (value) async {
                             await shellFunction(
                               context,

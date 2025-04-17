@@ -397,4 +397,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get feedbackSubmittedSuccessfully => 'Feedback submitted successfully.';
+
+  @override
+  String get englishAddress => 'English Address';
+
+  @override
+  String get arabicAddress => 'Arabic Address';
+
+  @override
+  String get mobile => 'Mobile Number';
+
+  @override
+  String get landline => 'Landline Number';
+
+  @override
+  String get consultationFees => 'Consultation Fees';
+
+  @override
+  String get followupFees => 'Followup Fees';
+
+  @override
+  String get followupDuration => 'Followup Duration';
+
+  @override
+  String get discount => 'Discount %';
+
+  @override
+  String get clinicInfo => 'Clinic Info';
 }

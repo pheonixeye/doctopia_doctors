@@ -397,4 +397,31 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get feedbackSubmittedSuccessfully => 'تم مشاركة ملاحظاتك بنجاح، شكرا لكم علي وقتكم.';
+
+  @override
+  String get englishAddress => 'العنوان بالانجليزية';
+
+  @override
+  String get arabicAddress => 'العنوان بالعربية';
+
+  @override
+  String get mobile => 'رقم موبايل العيادة';
+
+  @override
+  String get landline => 'رقم ارضي العيادة';
+
+  @override
+  String get consultationFees => 'سعر الكشف';
+
+  @override
+  String get followupFees => 'سعر الاستشارة';
+
+  @override
+  String get followupDuration => 'مدة الاستشارة';
+
+  @override
+  String get discount => 'الخصم %';
+
+  @override
+  String get clinicInfo => 'بيانات العيادة';
 }

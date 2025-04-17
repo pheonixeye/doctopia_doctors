@@ -115,11 +115,12 @@ class PxDoctor extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Doctor?> updateDoctor() async {
+  //HACK: docUpdate
+  Future<Doctor?> updateDoctor({Map<String, dynamic>? docUpdate}) async {
     try {
       final doc = await service.updateDoctor(
         id: doc_id,
-        update: _update,
+        update: docUpdate ?? _update,
       );
       _doctor = doc;
       _update = {};

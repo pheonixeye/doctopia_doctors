@@ -145,5 +145,17 @@
     "shareYourFeedback" : "Share Your Feedback",
     "feedback" : "Feedback",
     "shareFeedbackMsg" : "Your insights and suggestions are greatly appreciated. Please take a moment to leave your feedback.",
-    "feedbackSubmittedSuccessfully" : "Feedback submitted successfully."
+    "feedbackSubmittedSuccessfully" : "Feedback submitted successfully.",
+    "@@create_clinic_page" : "",
+    "englishAddress" : "English Address",
+    "arabicAddress" : "Arabic Address",
+    "mobile" : "Mobile Number",
+    "landline" : "Landline Number",
+    "consultationFees" : "Consultation Fees",
+    "followupFees" : "Followup Fees",
+    "followupDuration" : "Followup Duration",
+    "discount" : "Discount %",
+    "@@clinics_page" : "",
+    "clinicInfo" : "Clinic Info"
+
 }

@@ -1,3 +1,4 @@
+import 'package:doctopia_doctors/components/central_loading.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/providers/px_clinic_visits.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
@@ -31,7 +32,10 @@ class _ClinicVisitsTileState extends State<ClinicVisitsTile> {
   Widget build(BuildContext context) {
     return Consumer3<PxClinicVisits, PxClinics, PxLocale>(
       builder: (context, v, c, l, _) {
-        while (c.clinics.isEmpty) {
+        while (c.clinics == null) {
+          return const CentralLoading();
+        }
+        while (c.clinics != null && c.clinics!.isEmpty) {
           return const Center(
             child: Padding(
               padding: EdgeInsets.all(8.0),
@@ -40,7 +44,7 @@ class _ClinicVisitsTileState extends State<ClinicVisitsTile> {
           );
         }
         final clinic =
-            c.clinics.firstWhere((e) => e.id == widget.visit.clinic_id);
+            c.clinics!.firstWhere((e) => e.id == widget.visit.clinic_id);
         final clinicName = l.isEnglish ? clinic.name_en : clinic.name_ar;
         return Padding(
           padding: const EdgeInsets.all(8.0),

@@ -51,7 +51,8 @@ class _ScheduleSummaryTabState extends State<ScheduleSummaryTab> {
             itemCount: d.dates.length,
             itemBuilder: (context, index) {
               final _d = d.dates[index];
-              final isOff = c.clinic?.off_dates.contains(_d.toIso8601String());
+              // final isOff = c.clinic?.off_dates.contains(_d.toIso8601String());
+              final isOff = true;
               return ListTile(
                 leading: const CircleAvatar(),
                 title: Text(getWeekday(_d.weekday, l.isEnglish)),
@@ -76,7 +77,8 @@ class _ScheduleSummaryTabState extends State<ScheduleSummaryTab> {
                       context,
                       toExecute: () async {
                         late final Map<String, dynamic> _update;
-                        List<String> clinicOffDates = [...c.clinic!.off_dates];
+                        // List<String> clinicOffDates = [...c.clinic!.off_dates];
+                        List<String> clinicOffDates = [];
                         if (isOff != null && isOff) {
                           clinicOffDates.remove(_d.toIso8601String());
                         } else {

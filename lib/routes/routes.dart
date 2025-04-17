@@ -164,7 +164,7 @@ class AppRouter {
                         ),
                         ChangeNotifierProvider(
                           create: (context) => PxClinics(
-                            id: id,
+                            doc_id: id,
                             clinicService: HxClinic(),
                           ),
                         ),
@@ -189,7 +189,7 @@ class AppRouter {
                     child: ChangeNotifierProvider(
                       key: key,
                       create: (context) => PxClinics(
-                        id: id,
+                        doc_id: id,
                         clinicService: HxClinic(),
                       ),
                       child: ClinicsPage(
@@ -214,7 +214,7 @@ class AppRouter {
                           key: key,
                           create: (context) => PxClinics(
                             clinicService: HxClinic(),
-                            id: id,
+                            doc_id: id,
                           ),
                           child: CreateClinicPage(
                             key: state.pageKey,
@@ -239,7 +239,7 @@ class AppRouter {
                           key: key,
                           create: (context) => PxClinics(
                             clinicService: HxClinic(),
-                            id: id,
+                            doc_id: id,
                           ),
                           child: ClinicSchedulePage(
                             key: key,

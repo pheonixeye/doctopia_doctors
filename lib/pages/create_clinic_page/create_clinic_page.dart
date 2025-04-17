@@ -1,16 +1,15 @@
-import 'package:doctopia_doctors/extensions/attendance_translation_helper_ext.dart';
+import 'package:doctopia_doctors/components/central_loading.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
+import 'package:doctopia_doctors/models/clinic_response_model/clinic_response_model.dart';
+import 'package:doctopia_doctors/providers/px_app_constants.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
-import 'package:doctopia_doctors/providers/px_gov.dart';
+import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:proklinik_models/models/city.dart';
-import 'package:proklinik_models/models/clinic.dart';
-import 'package:proklinik_models/models/governorate.dart';
 import 'package:proklinik_models/models/schedule.dart';
 import 'package:provider/provider.dart';
 
@@ -22,136 +21,72 @@ class CreateClinicPage extends StatefulWidget {
 }
 
 class _CreateClinicPageState extends State<CreateClinicPage> {
-  final _formKey = GlobalKey<FormState>();
+  late final _formKey = GlobalKey<FormState>();
+  late final Map<String, TextEditingController> _controllers;
 
-  Clinic? _clinic;
+  String? _governorate_id;
+  String? _city_id;
+  String? _attendance_type_id;
 
-  void setClinicFromKeyValue(String key, dynamic value) {
-    _clinic ??= Clinic.initial();
-    switch (key) {
-      case 'name_en':
-        _clinic = _clinic?.copyWith(
-          name_en: value,
-        );
-
-        break;
-      case 'name_ar':
-        _clinic = _clinic?.copyWith(
-          name_ar: value,
-        );
-
-        break;
-      case 'address_en':
-        _clinic = _clinic?.copyWith(
-          address_en: value,
-        );
-        break;
-      case 'address_ar':
-        _clinic = _clinic?.copyWith(
-          address_ar: value,
-        );
-        break;
-      case 'gov_en':
-        _clinic = _clinic?.copyWith(
-          gov_en: value,
-        );
-        break;
-      case 'gov_ar':
-        _clinic = _clinic?.copyWith(
-          gov_ar: value,
-        );
-        break;
-      case 'area_en':
-        _clinic = _clinic?.copyWith(
-          city_en: value,
-        );
-        break;
-      case 'area_ar':
-        _clinic = _clinic?.copyWith(
-          city_ar: value,
-        );
-        break;
-      case 'lon':
-        _clinic = _clinic?.copyWith(
-          lon: double.tryParse(value),
-        );
-        break;
-      case 'lat':
-        _clinic = _clinic?.copyWith(
-          lat: double.tryParse(value),
-        );
-        break;
-
-      case 'mobile':
-        _clinic = _clinic?.copyWith(
-          mobile: value,
-        );
-        break;
-      case 'landline':
-        _clinic = _clinic?.copyWith(
-          landline: value,
-        );
-        break;
-
-      case 'consultation_fees':
-        _clinic = _clinic?.copyWith(
-          consultation_fees: value.isEmpty ? 0 : int.tryParse(value),
-        );
-        break;
-      case 'followup_fees':
-        _clinic = _clinic?.copyWith(
-          followup_fees: value.isEmpty ? 0 : int.tryParse(value),
-        );
-        break;
-      case 'followup_duration':
-        _clinic = _clinic?.copyWith(
-          followup_duration: value.isEmpty ? 0 : int.tryParse(value),
-        );
-        break;
-      case 'discount':
-        _clinic = _clinic?.copyWith(
-          discount: value.isEmpty ? 0 : int.tryParse(value),
-        );
-        break;
-      case 'attendance':
-        _clinic = _clinic?.copyWith(
-          attendance: value as bool,
-        );
-        break;
-      default:
-        return;
-    }
+  int? _maxLength(String key) {
+    return switch (key) {
+      'mobile' => 11,
+      'landline' => 8,
+      _ => null,
+    };
   }
 
-  int? _maxLength(String value) {
-    switch (value) {
-      case 'mobile':
-        return 11;
-      case 'landline':
-        return 8;
-      default:
-        return null;
-    }
+  TextInputType? _keyboardType(String key) {
+    return switch (key) {
+      'mobile' ||
+      'landline' ||
+      'consultation_fees' ||
+      'followup_fees' ||
+      'followup_duration' ||
+      'discount' =>
+        TextInputType.number,
+      _ => TextInputType.text,
+    };
   }
 
-  bool _sideValidators(String e) {
-    if (e == 'mobile' ||
-        e == 'landline' ||
-        e == 'consultation_fees' ||
-        e == 'followup_fees' ||
-        e == 'followup_duration' ||
-        e == 'discount') {
-      return true;
-    } else {
-      return false;
-    }
+  bool _inputFormatters(String key) {
+    return switch (key) {
+      'mobile' ||
+      'landline' ||
+      'consultation_fees' ||
+      'followup_fees' ||
+      'followup_duration' ||
+      'discount' =>
+        true,
+      _ => false,
+    };
+  }
+
+  @override
+  void didChangeDependencies() {
+    _controllers = Map.fromEntries(
+      ClinicResponseModel.editableStrings(context).entries.map(
+            (e) => MapEntry<String, TextEditingController>(
+                e.key, TextEditingController()),
+          ),
+    );
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _controllers.entries.map((e) => e.value.dispose());
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer2<PxLocale, PxClinics>(
-        builder: (context, l, c, _) {
+      body: Consumer3<PxLocale, PxClinics, PxAppConstants>(
+        builder: (context, l, c, a, _) {
+          while (a.model == null) {
+            return const CentralLoading();
+          }
           return Form(
             key: _formKey,
             child: ListView(
@@ -159,170 +94,126 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
               children: [
                 ListTile(
                   title: Text(context.loc.createClinic),
+                  subtitle: const Divider(),
                 ),
-                ...Clinic.editableStrings.map((e) {
-                  return Card(
+                ..._controllers.entries.map((entry) {
+                  return Card.outlined(
+                    elevation: 2,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         decoration: InputDecoration(
-                          labelText: Clinic.keyToWidget(e, l.isEnglish),
+                          labelText: ClinicResponseModel.editableStrings(
+                              context)[entry.key],
                           border: const OutlineInputBorder(),
                           suffix: const SizedBox(
                             height: 24,
                           ),
                         ),
+                        controller: entry.value,
+                        maxLines: entry.key.contains('address') ? 3 : null,
+                        validator: entry.key == 'landline'
+                            ? null
+                            : (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return context.loc.emptyInputsNotAllowed;
+                                }
+                                return null;
+                              },
+                        maxLength: _maxLength(entry.key),
+                        keyboardType: _keyboardType(entry.key),
+                        inputFormatters: [
+                          if (_inputFormatters(entry.key))
+                            FilteringTextInputFormatter.digitsOnly,
+                        ],
+                      ),
+                    ),
+                  );
+                }),
+                ...ClinicResponseModel.editableDropdowns(context)
+                    .entries
+                    .map((entry) {
+                  return Card.outlined(
+                    elevation: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: DropdownButtonFormField<String>(
+                        alignment: Alignment.center,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: entry.value,
+                        ),
+                        isExpanded: true,
+                        icon: const Icon(Icons.arrow_drop_down_circle_rounded),
+                        iconEnabledColor: Theme.of(context).primaryColor,
+                        value: switch (entry.key) {
+                          'governorate_id' => _governorate_id,
+                          'city_id' => _city_id,
+                          'attendance_type_id' => _attendance_type_id,
+                          _ => null,
+                        },
                         validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
+                          if (value == null) {
                             return context.loc.emptyInputsNotAllowed;
                           }
                           return null;
                         },
-                        maxLength: _maxLength(e),
-                        keyboardType: _sideValidators(e)
-                            ? TextInputType.phone
-                            : TextInputType.text,
-                        inputFormatters: [
-                          if (_sideValidators(e))
-                            FilteringTextInputFormatter.digitsOnly,
-                        ],
+                        items: switch (entry.key) {
+                          'governorate_id' => a.model?.governorates.map((gov) {
+                              return DropdownMenuItem<String>(
+                                value: gov.id,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  l.isEnglish ? gov.name_en : gov.name_ar,
+                                ),
+                              );
+                            }).toList(),
+                          'city_id' => a.model?.cities
+                                .where(
+                                    (c) => c.governorate_id == _governorate_id)
+                                .map((city) {
+                              return DropdownMenuItem<String>(
+                                value: city.id,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  l.isEnglish ? city.name_en : city.name_ar,
+                                ),
+                              );
+                            }).toList(),
+                          'attendance_type_id' =>
+                            a.model?.attendance_types.map((att) {
+                              return DropdownMenuItem<String>(
+                                value: att.id,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  l.isEnglish ? att.name_en : att.name_ar,
+                                ),
+                              );
+                            }).toList(),
+                          _ => null,
+                        },
                         onChanged: (value) {
-                          setClinicFromKeyValue(e, value.trim());
+                          switch (entry.key) {
+                            case 'governorate_id':
+                              setState(() {
+                                _governorate_id = value;
+                                _city_id = null;
+                              });
+                              break;
+                            case 'city_id':
+                              setState(() {
+                                _city_id = value;
+                              });
+                              break;
+                            case 'attendance_type_id':
+                              _attendance_type_id = value;
+                              break;
+                          }
                         },
                       ),
                     ),
                   );
-                }).toList(),
-                ...Clinic.editableDropdowns.map((e) {
-                  return switch (e) {
-                    'gov_en' => Consumer<PxGov>(
-                        builder: (context, g, _) {
-                          return Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ListTile(
-                                title: Text(context.loc.selectGov),
-                                subtitle: DropdownButtonFormField<Governorate>(
-                                  isExpanded: true,
-                                  items: g.govs?.map((e) {
-                                    return DropdownMenuItem<Governorate>(
-                                      value: e,
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        l.isEnglish
-                                            ? e.governorate_name_en
-                                            : e.governorate_name_ar,
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    );
-                                  }).toList(),
-                                  value: g.selectedGov,
-                                  validator: (value) {
-                                    if (value == null) {
-                                      return context.loc.selectGov;
-                                    }
-                                    return null;
-                                  },
-                                  onChanged: (val) {
-                                    g.selectGov(val);
-
-                                    if (val != null) {
-                                      setClinicFromKeyValue(
-                                          e, val.governorate_name_en);
-                                      setClinicFromKeyValue(
-                                          "gov_ar", val.governorate_name_ar);
-                                    }
-                                  },
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    'area_en' => Consumer<PxGov>(
-                        builder: (context, gov, _) {
-                          return Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ListTile(
-                                title: Text(context.loc.selectArea),
-                                subtitle: DropdownButtonFormField<City>(
-                                  isExpanded: true,
-                                  items: gov.selectedGov?.cities.map((e) {
-                                    return DropdownMenuItem<City>(
-                                      value: e,
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        l.isEnglish
-                                            ? e.city_name_en
-                                            : e.city_name_ar,
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    );
-                                  }).toList(),
-                                  value: gov.selectedCity,
-                                  validator: (value) {
-                                    if (value == null) {
-                                      return context.loc.selectArea;
-                                    }
-                                    return null;
-                                  },
-                                  onChanged: (val) {
-                                    gov.selectCity(val);
-                                    if (val != null) {
-                                      setClinicFromKeyValue(
-                                          e, val.city_name_en);
-                                      setClinicFromKeyValue(
-                                          "area_ar", val.city_name_ar);
-                                    }
-                                  },
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    "attendance" => Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ListTile(
-                            title: Text(context.loc.selectAtt),
-                            subtitle: DropdownButtonFormField<bool>(
-                              isExpanded: true,
-                              items: [true, false].map(
-                                (e) {
-                                  return DropdownMenuItem<bool>(
-                                    value: e,
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      e == false
-                                          ? "FiFo"
-                                              .ifAttendanceTransalate(context)
-                                          : "By Time"
-                                              .ifAttendanceTransalate(context),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  );
-                                },
-                              ).toList(),
-                              validator: (value) {
-                                if (value == null) {
-                                  return context.loc.selectAtt;
-                                }
-                                return null;
-                              },
-                              onChanged: (val) {
-                                if (val != null) {
-                                  setClinicFromKeyValue(e, val);
-                                }
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                    _ => const SizedBox(),
-                  };
-                }).toList(),
+                }),
                 Card(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -330,19 +221,46 @@ class _CreateClinicPageState extends State<CreateClinicPage> {
                       onPressed: () async {
                         // validate fields
                         if (_formKey.currentState!.validate()) {
-                          final _clinic = this._clinic?.copyWith(
-                                doc_id: c.id,
-                                schedule: Schedule.initialClinicSchedule,
-                              );
+                          final _model = ClinicResponseModel(
+                            id: '',
+                            doc_id: c.doc_id,
+                            name_en: _controllers['name_en']!.text,
+                            name_ar: _controllers['name_ar']!.text,
+                            address_en: _controllers['address_en']!.text,
+                            address_ar: _controllers['address_ar']!.text,
+                            location: {},
+                            mobile: _controllers['mobile']!.text,
+                            landline: _controllers['landline']!.text,
+                            consultation_fees: int.parse(
+                                _controllers['consultation_fees']!.text),
+                            followup_fees:
+                                int.parse(_controllers['followup_fees']!.text),
+                            followup_duration: int.parse(
+                                _controllers['followup_duration']!.text),
+                            discount: int.parse(_controllers['discount']!.text),
+                            governorate_id: _governorate_id!,
+                            city_id: _city_id!,
+                            speciality_id:
+                                context.read<PxDoctor>().doctor!.speciality.id,
+                            attendance_type_id: _attendance_type_id!,
+                            venue_id: '',
+                            schedule: Schedule.initialClinicSchedule
+                                .map((e) => e.toJson())
+                                .toList(),
+                            off_dates: [],
+                          );
                           // send create clinic request
-                          await shellFunction(context, toExecute: () async {
-                            await c.createClinic(_clinic!);
-                          });
+                          await shellFunction(
+                            context,
+                            toExecute: () async {
+                              await c.createClinic(_model);
+                            },
+                          );
                           if (context.mounted) {
                             GoRouter.of(context).goNamed(
                               AppRouter.clinics,
                               pathParameters: {
-                                "id": c.id,
+                                "id": c.doc_id,
                               },
                             );
                           }

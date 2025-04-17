@@ -874,6 +874,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Feedback submitted successfully.'**
   String get feedbackSubmittedSuccessfully;
+
+  /// No description provided for @englishAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'English Address'**
+  String get englishAddress;
+
+  /// No description provided for @arabicAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic Address'**
+  String get arabicAddress;
+
+  /// No description provided for @mobile.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile Number'**
+  String get mobile;
+
+  /// No description provided for @landline.
+  ///
+  /// In en, this message translates to:
+  /// **'Landline Number'**
+  String get landline;
+
+  /// No description provided for @consultationFees.
+  ///
+  /// In en, this message translates to:
+  /// **'Consultation Fees'**
+  String get consultationFees;
+
+  /// No description provided for @followupFees.
+  ///
+  /// In en, this message translates to:
+  /// **'Followup Fees'**
+  String get followupFees;
+
+  /// No description provided for @followupDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Followup Duration'**
+  String get followupDuration;
+
+  /// No description provided for @discount.
+  ///
+  /// In en, this message translates to:
+  /// **'Discount %'**
+  String get discount;
+
+  /// No description provided for @clinicInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Clinic Info'**
+  String get clinicInfo;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

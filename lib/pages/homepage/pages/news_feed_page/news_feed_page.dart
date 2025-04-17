@@ -93,10 +93,10 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
         return ListView(
           children: [
             ListTile(
-              leading: const CircleAvatar(),
               title: Text(context.loc.latestFromMedscape),
+              subtitle: const Divider(),
             ),
-            ...s.pageResults!.map((e) => ArticleCard(item: e)).toList(),
+            ...s.pageResults!.map((e) => ArticleCard(item: e)),
             const Divider(),
             Padding(
               padding: const EdgeInsets.symmetric(

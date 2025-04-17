@@ -145,6 +145,17 @@
     "shareYourFeedback" : "شاركنا ملاحظاتك",
     "feedback" : "اكتب رسالتك",
     "shareFeedbackMsg" : "الافكار و المقترحات الخاصة بك هي موضع ترحيب و تقدير كبير و اضافة عظيمة للمنصة، فضلا خذ بعض الوقت لطرح تعليقاتك.",
-    "feedbackSubmittedSuccessfully" : "تم مشاركة ملاحظاتك بنجاح، شكرا لكم علي وقتكم."
+    "feedbackSubmittedSuccessfully" : "تم مشاركة ملاحظاتك بنجاح، شكرا لكم علي وقتكم.",
+    "@@create_clinic_page" : "",
+    "englishAddress" : "العنوان بالانجليزية",
+    "arabicAddress" : "العنوان بالعربية",
+    "mobile" : "رقم موبايل العيادة",
+    "landline" : "رقم ارضي العيادة",
+    "consultationFees" : "سعر الكشف",
+    "followupFees" : "سعر الاستشارة",
+    "followupDuration" : "مدة الاستشارة",
+    "discount" : "الخصم %",
+    "@@clinics_page" : "",
+    "clinicInfo" : "بيانات العيادة"
 
 }

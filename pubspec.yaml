@@ -75,6 +75,7 @@ dependencies:
   ###TODO: change pre deployment
   proklinik_models:
     path: ../proklinik_models
+  pointer_interceptor: ^0.10.1+2
   # sembast_web: ^2.4.0+2
  
 
