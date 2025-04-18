@@ -1,5 +1,9 @@
+import 'dart:math';
+
 import 'package:doctopia_doctors/models/app_constants_model/_models/review_status.dart';
 import 'package:equatable/equatable.dart';
+
+const String _anonymous = 'Anonymous';
 
 class Review extends Equatable {
   final String id;
@@ -100,6 +104,10 @@ class Review extends Equatable {
       created: map['created'] as String,
     );
   }
+
+  String get exposedPatientName => review_status.name_en == _anonymous
+      ? '${_anonymous}_${Random.secure().nextInt(999999)}'
+      : patient_name;
 
   @override
   bool get stringify => true;

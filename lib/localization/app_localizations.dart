@@ -934,6 +934,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'A Verification Email Was Sent.'**
   String get verificationEmailSent;
+
+  /// No description provided for @visitsFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Visits Filter'**
+  String get visitsFilter;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

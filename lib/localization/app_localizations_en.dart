@@ -427,4 +427,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get verificationEmailSent => 'A Verification Email Was Sent.';
+
+  @override
+  String get visitsFilter => 'Visits Filter';
 }

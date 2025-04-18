@@ -158,6 +158,8 @@
     "@@clinics_page" : "",
     "clinicInfo" : "بيانات العيادة",
     "@@register_screen" : "",
-    "verificationEmailSent" : "تم ارسال بريد الكتروني لتأكيد الحساب."
+    "verificationEmailSent" : "تم ارسال بريد الكتروني لتأكيد الحساب.",
+    "@@bookings_page" : "",
+    "visitsFilter" : "فلترة الزيارات"
 
 }

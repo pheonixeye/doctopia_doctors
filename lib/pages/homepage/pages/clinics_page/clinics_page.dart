@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_final_fields
 
 import 'package:doctopia_doctors/components/central_loading.dart';
+import 'package:doctopia_doctors/constants/static_app_constants.dart';
 import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/clinics_page/widgets/clinic_card/clinic_card.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
@@ -47,13 +48,17 @@ class _ClinicsPageState extends State<ClinicsPage> {
           builder: (context, l, c, _) {
             while (c.clinics == null) {
               return Padding(
-                padding: const EdgeInsets.only(top: 280.0),
+                padding: const EdgeInsets.only(
+                  top: StaticAppConstants.midComponentTopPadding,
+                ),
                 child: const CentralLoading(),
               );
             }
             while (c.clinics != null && c.clinics!.isEmpty) {
               return Padding(
-                padding: const EdgeInsets.only(top: 280.0),
+                padding: const EdgeInsets.only(
+                  top: StaticAppConstants.midComponentTopPadding,
+                ),
                 child: Center(
                   child: Card.outlined(
                     elevation: 6,
@@ -68,6 +73,7 @@ class _ClinicsPageState extends State<ClinicsPage> {
             return Expanded(
               child: ListView.builder(
                 shrinkWrap: true,
+                cacheExtent: 3000,
                 itemCount: c.clinics?.length,
                 itemBuilder: (context, index) {
                   return ClinicCard(clinic: c.clinics![index]);

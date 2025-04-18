@@ -1,4 +1,5 @@
 import 'package:doctopia_doctors/components/central_loading.dart';
+import 'package:doctopia_doctors/constants/static_app_constants.dart';
 import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/reviews_page/widgets/review_card.dart';
 import 'package:doctopia_doctors/providers/px_reviews.dart';
@@ -18,14 +19,20 @@ class _ReviewsPageState extends State<ReviewsPage> {
   @override
   void initState() {
     _scrollController = ScrollController();
-    _scrollController.addListener(() {
-      bool _toCall = _scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent;
-      if (_toCall) {
-        context.read<PxReviews>().fetchMoreReviews();
-      }
-    });
+    _scrollController.addListener(_scrollNotificationListener);
     super.initState();
+  }
+
+  Future<void> _scrollNotificationListener() async {
+    final _r = context.read<PxReviews>();
+    final _toCall = _scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent;
+    if (_toCall) {
+      if (_r.isLoading) {
+        return;
+      }
+      await _r.fetchMoreReviews();
+    }
   }
 
   @override
@@ -49,7 +56,9 @@ class _ReviewsPageState extends State<ReviewsPage> {
             builder: (context, r, _) {
               while (r.reviews == null) {
                 return const Padding(
-                  padding: EdgeInsets.only(top: 280),
+                  padding: EdgeInsets.only(
+                    top: StaticAppConstants.midComponentTopPadding,
+                  ),
                   child: CentralLoading(),
                 );
               }
@@ -63,21 +72,22 @@ class _ReviewsPageState extends State<ReviewsPage> {
                   ),
                 );
               }
-              return Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ListView.builder(
-                    controller: _scrollController,
-                    itemCount: r.reviews?.length,
-                    itemBuilder: (context, index) {
-                      final item = r.reviews![index];
-                      return ReviewCard(
-                        review: item,
-                        index: index,
-                      );
-                    },
-                  ),
-                ),
+              return ListView.builder(
+                controller: _scrollController,
+                itemCount:
+                    r.isLoading ? r.reviews!.length + 1 : r.reviews?.length,
+                itemBuilder: (context, index) {
+                  if (index < r.reviews!.length) {
+                    final item = r.reviews![index];
+                    return ReviewCard(
+                      review: item,
+                      index: index,
+                    );
+                  }
+                  return const Center(
+                    child: CircularProgressIndicator.adaptive(),
+                  );
+                },
               );
             },
           ),

@@ -45,7 +45,6 @@ class _FeedbackBottomSheetState extends State<FeedbackBottomSheet>
           child: ListView(
             children: [
               ListTile(
-                leading: const CircleAvatar(),
                 title: Text(
                   context.loc.shareYourFeedback,
                   style: const TextStyle(fontWeight: FontWeight.w600),
@@ -117,6 +116,10 @@ class _FeedbackBottomSheetState extends State<FeedbackBottomSheet>
                     },
                     icon: const Icon(Icons.check),
                     label: Text(context.loc.confirm),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).primaryColor,
+                      foregroundColor: Theme.of(context).canvasColor,
+                    ),
                   ),
                   const SizedBox(width: 10),
                   ElevatedButton.icon(

@@ -9,7 +9,7 @@ class WidgetsDateProvider {
 
   static final _today = DateTime.now();
 
-  static const int _startingYear = 2024;
+  static const int _startingYear = 2025;
 
   static const Map<int, String> _months = {
     1: "January",

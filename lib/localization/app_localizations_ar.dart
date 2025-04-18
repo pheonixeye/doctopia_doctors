@@ -427,4 +427,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get verificationEmailSent => 'تم ارسال بريد الكتروني لتأكيد الحساب.';
+
+  @override
+  String get visitsFilter => 'فلترة الزيارات';
 }

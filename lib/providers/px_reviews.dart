@@ -24,8 +24,13 @@ class PxReviews extends ChangeNotifier {
 
   static const int _perPage = 5;
 
+  static bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
   Future<void> _fetchReviews() async {
     try {
+      _isLoading = true;
+      notifyListeners();
       final response = await reviewsService.fetchReviews(
         doc_id: doc_id,
         page: page,
@@ -34,6 +39,8 @@ class PxReviews extends ChangeNotifier {
       _lastFetchResult = response;
       _reviews ??= [];
       _reviews!.addAll(response);
+      notifyListeners();
+      _isLoading = false;
       notifyListeners();
     } catch (e) {
       rethrow;

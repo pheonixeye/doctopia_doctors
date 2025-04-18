@@ -45,7 +45,27 @@ class _ReviewCardState extends State<ReviewCard> {
                 expandedAlignment:
                     l.isEnglish ? Alignment.centerLeft : Alignment.centerRight,
                 expandedCrossAxisAlignment: CrossAxisAlignment.start,
-                title: Text(widget.review.patient_name),
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(width: 5),
+                    Text(
+                      '(${widget.index + 1})'.toArabicNumber(context),
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    Expanded(
+                      child: Text(
+                        widget.review.exposedPatientName,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
                 subtitle: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
