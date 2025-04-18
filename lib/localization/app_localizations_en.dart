@@ -424,4 +424,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get clinicInfo => 'Clinic Info';
+
+  @override
+  String get verificationEmailSent => 'A Verification Email Was Sent.';
 }

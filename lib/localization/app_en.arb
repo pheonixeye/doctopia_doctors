@@ -156,6 +156,8 @@
     "followupDuration" : "Followup Duration",
     "discount" : "Discount %",
     "@@clinics_page" : "",
-    "clinicInfo" : "Clinic Info"
+    "clinicInfo" : "Clinic Info",
+    "@@register_screen" : "",
+    "verificationEmailSent" : "A Verification Email Was Sent."
 
 }

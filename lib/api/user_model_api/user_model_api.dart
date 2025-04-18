@@ -1,5 +1,5 @@
 import 'package:doctopia_doctors/api/_pocket_main/pocket_main.dart';
-import 'package:doctopia_doctors/functions/dprint.dart';
+// import 'package:doctopia_doctors/functions/dprint.dart';
 import 'package:doctopia_doctors/models/app_constants_model/_models/site_service.dart';
 import 'package:doctopia_doctors/models/user_model_response.dart';
 import 'package:pocketbase/pocketbase.dart';
@@ -39,9 +39,9 @@ class HxUserModel {
               expand: _expand,
             );
 
-    dprint(
-        'UserModelApi().loginUserByPassword(lib/api/user_model_api/user_model_api.dart:42)');
-    dprint(result);
+    // dprint(
+    //     'UserModelApi().loginUserByPassword(lib/api/user_model_api/user_model_api.dart:42)');
+    // dprint(result);
     final model = UserModel.fromJson(result.record.toJson());
     final siteService = SiteService.fromJson(
         result.record.get<RecordModel>('expand.$_expand').toJson());
@@ -71,5 +71,12 @@ class HxUserModel {
       siteService: siteService,
       token: result.toJson()['token'],
     );
+  }
+
+  Future<void> requestEmailVerification(String? email) async {
+    if (email == null) {
+      return;
+    }
+    await PocketbaseHelper.pb.collection('users').requestVerification(email);
   }
 }

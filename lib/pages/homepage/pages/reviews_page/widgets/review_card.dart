@@ -3,10 +3,10 @@ import 'dart:typed_data';
 import 'package:doctopia_doctors/extensions/number_translator.dart';
 import 'package:doctopia_doctors/functions/download_image.dart';
 import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
+import 'package:doctopia_doctors/models/review_response_model/review.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:proklinik_models/models/review.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
 
@@ -23,13 +23,11 @@ class ReviewCard extends StatefulWidget {
 }
 
 class _ReviewCardState extends State<ReviewCard> {
-  late final DateTime _d;
   late final ScreenshotController _controller;
   Uint8List? _image;
 
   @override
   void initState() {
-    _d = DateTime.parse(widget.review.date_time);
     _controller = ScreenshotController();
     super.initState();
   }
@@ -47,7 +45,7 @@ class _ReviewCardState extends State<ReviewCard> {
                 expandedAlignment:
                     l.isEnglish ? Alignment.centerLeft : Alignment.centerRight,
                 expandedCrossAxisAlignment: CrossAxisAlignment.start,
-                title: Text(widget.review.user_name),
+                title: Text(widget.review.patient_name),
                 subtitle: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -55,16 +53,6 @@ class _ReviewCardState extends State<ReviewCard> {
                     children: [
                       Row(
                         children: [
-                          Text(
-                            DateFormat(
-                              'dd/MM/yyyy',
-                              l.locale.languageCode,
-                            ).format(
-                              DateTime(_d.year, _d.month, _d.day),
-                            ),
-                            textAlign: TextAlign.start,
-                          ),
-                          const Spacer(),
                           ...List.generate(
                             widget.review.stars,
                             (index) => const Padding(
@@ -87,6 +75,14 @@ class _ReviewCardState extends State<ReviewCard> {
                         "${context.loc.waitingTime} : ${widget.review.waiting_time.toString().toArabicNumber(context)} ${context.loc.minutes}",
                         textAlign: TextAlign.start,
                       ),
+                      Text(
+                        DateFormat('dd / MM / yyyy - hh:mm:ss',
+                                l.locale.languageCode)
+                            .format(DateTime.parse(widget.review.created)),
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -104,7 +100,7 @@ class _ReviewCardState extends State<ReviewCard> {
                   Padding(
                     padding: const EdgeInsets.all(24.0),
                     child: Text(
-                      widget.review.body,
+                      widget.review.review,
                       textAlign: TextAlign.start,
                     ),
                   ),

@@ -1,3 +1,4 @@
+import 'package:doctopia_doctors/components/central_loading.dart';
 import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/pages/homepage/pages/reviews_page/widgets/review_card.dart';
 import 'package:doctopia_doctors/providers/px_reviews.dart';
@@ -17,6 +18,13 @@ class _ReviewsPageState extends State<ReviewsPage> {
   @override
   void initState() {
     _scrollController = ScrollController();
+    _scrollController.addListener(() {
+      bool _toCall = _scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent;
+      if (_toCall) {
+        context.read<PxReviews>().fetchMoreReviews();
+      }
+    });
     super.initState();
   }
 
@@ -33,13 +41,19 @@ class _ReviewsPageState extends State<ReviewsPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ListTile(
-          leading: const CircleAvatar(),
           title: Text(context.loc.reviews),
+          subtitle: const Divider(),
         ),
         Expanded(
           child: Consumer<PxReviews>(
             builder: (context, r, _) {
-              while (r.reviews.isEmpty) {
+              while (r.reviews == null) {
+                return const Padding(
+                  padding: EdgeInsets.only(top: 280),
+                  child: CentralLoading(),
+                );
+              }
+              while (r.reviews != null && r.reviews!.isEmpty) {
                 return Center(
                   child: Card.outlined(
                     child: Padding(
@@ -54,9 +68,9 @@ class _ReviewsPageState extends State<ReviewsPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: ListView.builder(
                     controller: _scrollController,
-                    itemCount: r.reviews.length,
+                    itemCount: r.reviews?.length,
                     itemBuilder: (context, index) {
-                      final item = r.reviews[index];
+                      final item = r.reviews![index];
                       return ReviewCard(
                         review: item,
                         index: index,

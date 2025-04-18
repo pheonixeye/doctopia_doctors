@@ -156,6 +156,8 @@
     "followupDuration" : "مدة الاستشارة",
     "discount" : "الخصم %",
     "@@clinics_page" : "",
-    "clinicInfo" : "بيانات العيادة"
+    "clinicInfo" : "بيانات العيادة",
+    "@@register_screen" : "",
+    "verificationEmailSent" : "تم ارسال بريد الكتروني لتأكيد الحساب."
 
 }

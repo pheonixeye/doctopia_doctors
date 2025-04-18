@@ -33,6 +33,7 @@ class PxUserModel extends ChangeNotifier {
     try {
       _model = await userService.createUserAccount(value);
       notifyListeners();
+      await userService.requestEmailVerification(_model?.userModel.email);
       return _model!;
     } on ClientException catch (e) {
       throw Exception(e.response["message"]);

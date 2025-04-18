@@ -928,6 +928,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Clinic Info'**
   String get clinicInfo;
+
+  /// No description provided for @verificationEmailSent.
+  ///
+  /// In en, this message translates to:
+  /// **'A Verification Email Was Sent.'**
+  String get verificationEmailSent;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

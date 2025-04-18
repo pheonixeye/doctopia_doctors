@@ -424,4 +424,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get clinicInfo => 'بيانات العيادة';
+
+  @override
+  String get verificationEmailSent => 'تم ارسال بريد الكتروني لتأكيد الحساب.';
 }

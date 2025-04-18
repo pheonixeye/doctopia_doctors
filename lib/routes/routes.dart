@@ -324,8 +324,8 @@ class AppRouter {
                 path: reviews,
                 name: reviews,
                 pageBuilder: (context, state) {
-                  final id = state.pathParameters["id"] as String;
-                  final key = ValueKey(id);
+                  final doc_id = state.pathParameters["id"] as String;
+                  final key = ValueKey(doc_id);
 
                   return CustomTransitionPage(
                     transitionDuration: const Duration(milliseconds: 500),
@@ -334,7 +334,7 @@ class AppRouter {
                     child: ChangeNotifierProvider(
                       key: key,
                       create: (context) => PxReviews(
-                        id: id,
+                        doc_id: doc_id,
                         reviewsService: HxReviews(),
                       ),
                       child: ReviewsPage(

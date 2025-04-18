@@ -378,8 +378,8 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                           //todo: validate form and create a new user account
                           if (_formKey.currentState!.validate()) {
                             late BuildContext _loadingContext;
+                            //TODO: change later
                             if (_service!.name_en != 'Clinic') {
-                              //TODO: change later
                               ScaffoldMessenger.of(context).showSnackBar(
                                 iInfoSnackbar(
                                   context.loc.onlyClinicServices,
@@ -410,16 +410,16 @@ class _RegisterPageBasicState extends State<RegisterPageBasic> {
                                 synd_id: int.parse(_syndIdController.text),
                               );
                               await u.createUserAccount(_model);
-                              // await EasyLoading.dismiss();
+
                               if (_loadingContext.mounted) {
                                 Navigator.pop(_loadingContext);
                               }
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    duration: const Duration(seconds: 2),
+                                    duration: const Duration(seconds: 5),
                                     content: Text(
-                                      context.loc.success,
+                                      context.loc.verificationEmailSent,
                                       style: const TextStyle(
                                         color: Colors.green,
                                         fontWeight: FontWeight.w600,

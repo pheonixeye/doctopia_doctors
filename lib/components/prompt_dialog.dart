@@ -13,23 +13,29 @@ class MainPromptDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      insetPadding: const EdgeInsets.all(0),
+      contentPadding: const EdgeInsets.all(0),
+      alignment: Alignment.center,
       shadowColor: Theme.of(context).colorScheme.tertiary,
       elevation: 8,
       title: Text(title),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
-      content: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(body),
-        ],
+      content: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(body),
+          ],
+        ),
       ),
       actions: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          padding: const EdgeInsets.all(8.0),
           child: ElevatedButton.icon(
             onPressed: () {
               GoRouter.of(context).pop(false);
@@ -39,7 +45,7 @@ class MainPromptDialog extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          padding: const EdgeInsets.all(8.0),
           child: ElevatedButton.icon(
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.green,

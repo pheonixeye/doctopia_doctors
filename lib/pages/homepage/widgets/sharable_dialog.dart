@@ -35,6 +35,8 @@ class _SharableDialogState extends State<SharableDialog> {
 
   List<Clinic>? _clinics;
 
+  Clinic? _clinic;
+
   late final ScreenshotController _screenshotController;
 
   @override
@@ -51,7 +53,21 @@ class _SharableDialogState extends State<SharableDialog> {
     final data = await _clinicService.fetchDoctorClinics(widget.doctor.id);
     setState(() {
       _clinics = data;
+      _clinic = _clinics?.first;
     });
+  }
+
+  void _changeClinic() {
+    if (_clinics != null && _clinics!.length > 1 && _clinic != null) {
+      final _index = _clinics!.indexOf(_clinic!);
+      setState(() {
+        try {
+          _clinic = _clinics![_index + 1];
+        } catch (e) {
+          _clinic = _clinics![0];
+        }
+      });
+    }
   }
 
   String _avatar = Assets.male;
@@ -169,12 +185,15 @@ class _SharableDialogState extends State<SharableDialog> {
                       width: 195 * widget.relativeFactor,
                       child: Builder(
                         builder: (context) {
-                          while (_clinics == null || _clinics!.isEmpty) {
+                          while (_clinics == null ||
+                              _clinics!.isEmpty ||
+                              _clinic == null) {
                             return const SizedBox();
                           }
-                          final _clinic = _clinics!.first;
                           return Text(
-                            isEnglish ? _clinic.address_en : _clinic.address_ar,
+                            isEnglish
+                                ? _clinic!.address_en
+                                : _clinic!.address_ar,
                             textAlign: TextAlign.start,
                             style: TextStyle(
                               fontSize: 16 * widget.relativeFactor,
@@ -196,12 +215,13 @@ class _SharableDialogState extends State<SharableDialog> {
                       width: 195 * widget.relativeFactor,
                       child: Builder(
                         builder: (context) {
-                          while (_clinics == null || _clinics!.isEmpty) {
+                          while (_clinics == null ||
+                              _clinics!.isEmpty ||
+                              _clinic == null) {
                             return const SizedBox();
                           }
-                          final _clinic = _clinics!.first;
                           return Text(
-                            _clinic.mobile.toArabicNumber(context),
+                            _clinic!.mobile.toArabicNumber(context),
                             textAlign: TextAlign.start,
                             style: TextStyle(
                               fontSize: 14 * widget.relativeFactor,
@@ -269,28 +289,34 @@ class _SharableDialogState extends State<SharableDialog> {
                       child: Center(
                         child: Builder(
                           builder: (context) {
-                            while (_clinics == null || _clinics!.isEmpty) {
+                            while (_clinics == null ||
+                                _clinics!.isEmpty ||
+                                _clinic == null) {
                               return const SizedBox();
                             }
-                            final _clinic = _clinics!.first;
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ..._clinic.schedule.map<Widget>((s) {
-                                  if (!s.available) {
-                                    return const SizedBox();
-                                  }
-                                  return Text(
-                                    s.toFormattedScheduleString(context),
-                                    style: TextStyle(
-                                      fontSize: 12 * widget.relativeFactor,
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FontStyle.italic,
-                                    ),
-                                    textAlign: TextAlign.start,
-                                  );
-                                }),
-                              ],
+                            return InkWell(
+                              onTap: () {
+                                _changeClinic();
+                              },
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ..._clinic!.schedule.map<Widget>((s) {
+                                    if (!s.available) {
+                                      return const SizedBox();
+                                    }
+                                    return Text(
+                                      s.toFormattedScheduleString(context),
+                                      style: TextStyle(
+                                        fontSize: 12 * widget.relativeFactor,
+                                        fontWeight: FontWeight.w500,
+                                        fontStyle: FontStyle.italic,
+                                      ),
+                                      textAlign: TextAlign.start,
+                                    );
+                                  }),
+                                ],
+                              ),
                             );
                           },
                         ),
