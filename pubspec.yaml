@@ -76,6 +76,7 @@ dependencies:
   proklinik_models:
     path: ../proklinik_models
   pointer_interceptor: ^0.10.1+2
+  scrollable_positioned_list: ^0.3.8
   # sembast_web: ^2.4.0+2
  
 

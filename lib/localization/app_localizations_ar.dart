@@ -429,5 +429,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get verificationEmailSent => 'تم ارسال بريد الكتروني لتأكيد الحساب.';
 
   @override
-  String get visitsFilter => 'فلترة الزيارات';
+  String get visitsFilter => 'فلترة الحجوزات';
+
+  @override
+  String get cannotUpdateVisitNotInSameMonth => 'لا يمكن تعديل حالة زيارة في غير الشهر الموافق لتاريخ الزيارة.';
 }

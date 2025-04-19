@@ -33,12 +33,12 @@ class _BookingsPageState extends State<BookingsPage> {
   }
 
   Future<void> _visitsScrollListenter() async {
+    await Future.delayed(const Duration(milliseconds: 10));
     final _toCall = _visitsScrollController.position.pixels ==
         _visitsScrollController.position.maxScrollExtent;
-    if (_toCall) {
-      if (cv.isLoading) {
-        return;
-      }
+    if (_toCall && !cv.isLoading) {
+      print(
+          '_visitsScrollListener(toCall: $_toCall, isLoading: ${cv.isLoading})');
       await cv.fetchMoreVisits();
     }
   }
@@ -53,74 +53,87 @@ class _BookingsPageState extends State<BookingsPage> {
   Widget build(BuildContext context) {
     return Consumer2<PxClinicVisits, PxLocale>(
       builder: (context, v, l, _) {
-        return ListView(
-          cacheExtent: 3000,
+        return Column(
           children: [
             ListTile(
               contentPadding: const EdgeInsets.all(0),
-              title: Row(
-                children: [
-                  Text(context.loc.myBookings),
-                  Expanded(
-                    child: Text(
-                      switch (v.filter) {
-                        VisitFilter.year_month_day =>
-                          DateFormat('dd / MM / yyyy', l.locale.languageCode)
-                              .format(DateTime(v.year, v.month!, v.day!)),
-                        VisitFilter.year_month =>
-                          DateFormat('MM / yyyy', l.locale.languageCode)
-                              .format(DateTime(v.year, v.month!)),
-                        VisitFilter.year =>
-                          DateFormat('yyyy', l.locale.languageCode)
-                              .format(DateTime(v.year)),
-                      },
-                      textAlign: TextAlign.center,
+              title: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 8.0,
+                  horizontal: 16,
+                ),
+                child: Row(
+                  children: [
+                    Text(context.loc.myBookings),
+                    Expanded(
+                      child: Text(
+                        switch (v.filter) {
+                          VisitFilter.year_month_day =>
+                            DateFormat('dd / MM / yyyy', l.locale.languageCode)
+                                .format(DateTime(v.year, v.month!, v.day!)),
+                          VisitFilter.year_month =>
+                            DateFormat('MM / yyyy', l.locale.languageCode)
+                                .format(DateTime(v.year, v.month!)),
+                          VisitFilter.year =>
+                            DateFormat('yyyy', l.locale.languageCode)
+                                .format(DateTime(v.year)),
+                        },
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                  ),
-                ],
+                    v.dataTotalCount == null
+                        ? const CircularProgressIndicator(
+                            padding: EdgeInsets.all(0),
+                          )
+                        : Text('(${v.dataTotalCount ?? ''})'),
+                    const SizedBox(width: 5),
+                  ],
+                ),
               ),
               subtitle: const VisitsFilterSection(),
             ),
-            Builder(
-              builder: (context) {
-                while (v.data == null) {
-                  return const Padding(
-                    padding: EdgeInsets.only(
-                      top: StaticAppConstants.midComponentTopPadding,
-                    ),
-                    child: CentralLoading(),
-                  );
-                }
-                while (v.data != null && v.data!.isEmpty) {
-                  return Padding(
-                    padding: const EdgeInsets.only(
-                      top: StaticAppConstants.midComponentTopPadding,
-                    ),
-                    child: Center(
-                      child: Text(context.loc.noVisitsInSelectedDate),
-                    ),
-                  );
-                }
-                return ListView.builder(
-                  shrinkWrap: true,
-                  primary: false,
-                  controller: _visitsScrollController,
-                  cacheExtent: 3000,
-                  itemCount: v.isLoading ? v.data!.length + 1 : v.data?.length,
-                  itemBuilder: (context, index) {
-                    if (index < v.data!.length) {
-                      final _item = v.data![index];
-                      return ClinicVisitsTile(
-                        index: index,
-                        visit: _item,
-                      );
-                    }
-                    return const Center(
-                      child: CircularProgressIndicator.adaptive(),
+            Expanded(
+              child: Builder(
+                builder: (context) {
+                  while (v.data == null) {
+                    return const Padding(
+                      padding: EdgeInsets.only(
+                        top: StaticAppConstants.midComponentTopPadding,
+                      ),
+                      child: CentralLoading(),
                     );
-                  },
-                );
-              },
+                  }
+                  while (v.data != null && v.data!.isEmpty) {
+                    return Padding(
+                      padding: const EdgeInsets.only(
+                        top: StaticAppConstants.midComponentTopPadding,
+                      ),
+                      child: Center(
+                        child: Text(context.loc.noVisitsInSelectedDate),
+                      ),
+                    );
+                  }
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    controller: _visitsScrollController,
+                    cacheExtent: 3000,
+                    itemCount:
+                        v.isLoading ? v.data!.length + 1 : v.data?.length,
+                    itemBuilder: (context, index) {
+                      if (index < v.data!.length) {
+                        final _item = v.data![index];
+                        return ClinicVisitsTile(
+                          index: index,
+                          visit: _item,
+                        );
+                      }
+                      return const Center(
+                        child: CircularProgressIndicator.adaptive(),
+                      );
+                    },
+                  );
+                },
+              ),
             ),
           ],
         );

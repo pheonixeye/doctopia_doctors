@@ -16,15 +16,16 @@ class ReviewsPage extends StatefulWidget {
 class _ReviewsPageState extends State<ReviewsPage> {
   late final ScrollController _scrollController;
 
+  late final PxReviews _r;
   @override
   void initState() {
+    _r = context.read<PxReviews>();
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollNotificationListener);
     super.initState();
   }
 
   Future<void> _scrollNotificationListener() async {
-    final _r = context.read<PxReviews>();
     final _toCall = _scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent;
     if (_toCall) {

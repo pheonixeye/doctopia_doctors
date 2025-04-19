@@ -938,8 +938,14 @@ abstract class AppLocalizations {
   /// No description provided for @visitsFilter.
   ///
   /// In en, this message translates to:
-  /// **'Visits Filter'**
+  /// **'Bookings Filter'**
   String get visitsFilter;
+
+  /// No description provided for @cannotUpdateVisitNotInSameMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot Update a Visit Status That Is Not In The Same Month.'**
+  String get cannotUpdateVisitNotInSameMonth;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

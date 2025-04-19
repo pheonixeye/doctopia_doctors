@@ -429,5 +429,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get verificationEmailSent => 'A Verification Email Was Sent.';
 
   @override
-  String get visitsFilter => 'Visits Filter';
+  String get visitsFilter => 'Bookings Filter';
+
+  @override
+  String get cannotUpdateVisitNotInSameMonth => 'Cannot Update a Visit Status That Is Not In The Same Month.';
 }

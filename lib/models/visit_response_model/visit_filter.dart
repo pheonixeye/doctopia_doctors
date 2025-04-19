@@ -11,7 +11,7 @@ enum VisitFilter {
   ),
   year(
     en: 'Yearly',
-    ar: 'يومى',
+    ar: 'سنوى',
   );
 
   final String en;

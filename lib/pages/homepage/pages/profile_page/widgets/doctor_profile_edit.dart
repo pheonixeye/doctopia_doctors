@@ -92,6 +92,10 @@ class _DoctorProfileEditState extends State<DoctorProfileEdit> {
           child: ListView(
             cacheExtent: 3000,
             children: [
+              ListTile(
+                title: Text(context.loc.profile),
+                subtitle: const Divider(),
+              ),
               ...DoctorResponseModel.initial()
                   .editableStrings(context)
                   .entries

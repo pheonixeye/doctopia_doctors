@@ -2,6 +2,7 @@ import 'package:doctopia_doctors/components/central_loading.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/models/clinic_response_model/clinic_response_model.dart';
+import 'package:doctopia_doctors/models/clinic_response_model/schedule.dart';
 import 'package:doctopia_doctors/providers/px_app_constants.dart';
 import 'package:doctopia_doctors/providers/px_clinics.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
@@ -10,7 +11,6 @@ import 'package:doctopia_doctors/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:proklinik_models/models/schedule.dart';
 import 'package:provider/provider.dart';
 
 class CreateClinicPage extends StatefulWidget {

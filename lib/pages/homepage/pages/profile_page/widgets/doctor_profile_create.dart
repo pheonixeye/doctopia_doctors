@@ -76,7 +76,10 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
           child: ListView(
             cacheExtent: 3000,
             children: [
-              const Gap(10),
+              ListTile(
+                title: Text(context.loc.profile),
+                subtitle: const Divider(),
+              ),
               Card.outlined(
                 elevation: 2,
                 child: Column(

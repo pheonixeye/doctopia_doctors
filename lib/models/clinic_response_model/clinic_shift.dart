@@ -40,7 +40,7 @@ class ClinicShift extends Equatable {
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      '_id': id,
+      'id': id,
       'startH': startH,
       'startM': startM,
       'endH': endH,
@@ -51,7 +51,7 @@ class ClinicShift extends Equatable {
 
   factory ClinicShift.fromJson(Map<String, dynamic> map) {
     return ClinicShift(
-      id: map['_id'] as String,
+      id: map['id'] as String,
       startH: map['startH'] as num,
       startM: map['startM'] as num,
       endH: map['endH'] as num,

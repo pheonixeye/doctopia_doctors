@@ -37,7 +37,7 @@ class Schedule extends Equatable {
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      '_id': id,
+      'id': id,
       'weekday': weekday,
       'intday': intday,
       'available': available,
@@ -52,7 +52,7 @@ class Schedule extends Equatable {
 
   factory Schedule.fromJson(Map<String, dynamic> map) {
     return Schedule(
-      id: map['_id'] as String,
+      id: map['id'] as String,
       weekday: map['weekday'] as String,
       intday: map['intday'] as int,
       available: map['available'] as bool,

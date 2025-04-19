@@ -14,7 +14,7 @@ class VisitResponseModel extends Equatable {
   final int month;
   final int year;
   final String visit_date;
-  final Map<String, dynamic> clinic_shift;
+  final Map<String, dynamic> visit_shift;
   final String created;
 
   const VisitResponseModel({
@@ -31,7 +31,7 @@ class VisitResponseModel extends Equatable {
     required this.month,
     required this.year,
     required this.visit_date,
-    required this.clinic_shift,
+    required this.visit_shift,
     required this.created,
   });
 
@@ -49,7 +49,7 @@ class VisitResponseModel extends Equatable {
     int? month,
     int? year,
     String? visit_date,
-    Map<String, dynamic>? clinic_shift,
+    Map<String, dynamic>? visit_shift,
     String? created,
   }) {
     return VisitResponseModel(
@@ -66,7 +66,7 @@ class VisitResponseModel extends Equatable {
       month: month ?? this.month,
       year: year ?? this.year,
       visit_date: visit_date ?? this.visit_date,
-      clinic_shift: clinic_shift ?? this.clinic_shift,
+      visit_shift: visit_shift ?? this.visit_shift,
       created: created ?? this.created,
     );
   }
@@ -86,7 +86,7 @@ class VisitResponseModel extends Equatable {
       'month': month,
       'year': year,
       'visit_date': visit_date,
-      'clinic_shift': clinic_shift,
+      'visit_shift': visit_shift,
       'created': created,
     };
   }
@@ -106,8 +106,8 @@ class VisitResponseModel extends Equatable {
       month: map['month'] as int,
       year: map['year'] as int,
       visit_date: map['visit_date'] as String,
-      clinic_shift: Map<String, dynamic>.from(
-          (map['clinic_shift'] as Map<String, dynamic>)),
+      visit_shift: Map<String, dynamic>.from(
+          (map['visit_shift'] as Map<String, dynamic>)),
       created: map['created'] as String,
     );
   }
@@ -131,7 +131,7 @@ class VisitResponseModel extends Equatable {
       month,
       year,
       visit_date,
-      clinic_shift,
+      visit_shift,
       created,
     ];
   }

@@ -39,7 +39,16 @@ class PxClinicVisits extends ChangeNotifier {
   List<Visit>? _data;
   List<Visit>? get data => _data;
 
+  static int? _dataTotalCount;
+  int? get dataTotalCount => _dataTotalCount;
+
   Future<void> setDate({int? d, int? m, required int y}) async {
+    // if (d != _day || m != _month || y != _year) {
+    _data?.clear();
+    _dataTotalCount = null;
+    _page = 1;
+    notifyListeners();
+    // }
     _day = d;
     _month = m;
     _year = y;
@@ -48,32 +57,67 @@ class PxClinicVisits extends ChangeNotifier {
   }
 
   Future<void> selectFilter(VisitFilter f) async {
-    if (f != _filter) {
-      switch (f) {
-        case VisitFilter.year_month_day:
-          _day ??= DateTime.now().day;
-          _month ??= DateTime.now().month;
-          break;
-        case VisitFilter.year_month:
-          _day = null;
-          _month ??= DateTime.now().month;
-          break;
-        case VisitFilter.year:
-          _day = null;
-          _month = null;
-          break;
-      }
+    if (f == _filter) {
+      return;
+    }
+    switch (f) {
+      case VisitFilter.year_month_day:
+        _day ??= DateTime.now().day;
+        _month ??= DateTime.now().month;
+        notifyListeners();
+        break;
+      case VisitFilter.year_month:
+        _day = null;
+        _month ??= DateTime.now().month;
+        notifyListeners();
+        break;
+      case VisitFilter.year:
+        _day = null;
+        _month = null;
+        notifyListeners();
+        break;
+    }
+    if (_data != null) {
+      _data!.clear();
+      _dataTotalCount = null;
+      _page = 1;
+      notifyListeners();
     }
     _filter = f;
-    notifyListeners();
-    if (_data != null) {
-      _data?.clear();
-    }
     notifyListeners();
     await fetchClinicVisits();
   }
 
   Future<void> fetchClinicVisits() async {
+    try {
+      _isLoading = true;
+      notifyListeners();
+      final result = await visitsService.fetchClinicVisits(
+        doc_id: doc_id,
+        day: day,
+        month: month,
+        year: year,
+        page: 1,
+        perPage: _perPage,
+      );
+      _isLoading = false;
+      notifyListeners();
+      _data = result!.$2;
+      _dataTotalCount = result.$1;
+      notifyListeners();
+      _lastFetchResult = result.$2;
+      print('PxClinicVisits().fetchClinicVisits($_page)');
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> fetchMoreVisits() async {
+    if (_lastFetchResult.length < _perPage) {
+      return;
+    }
+    _page++;
+    print('PxClinicVisits().fetchMoreVisits($_page)');
     try {
       _isLoading = true;
       notifyListeners();
@@ -88,21 +132,13 @@ class PxClinicVisits extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
       _data ??= [];
-      _data?.addAll(result!);
+      _data!.addAll(result!.$2);
+      _dataTotalCount = result.$1;
       notifyListeners();
-      _lastFetchResult = _data ?? [];
+      _lastFetchResult = result.$2;
     } catch (e) {
       rethrow;
     }
-  }
-
-  Future<void> fetchMoreVisits() async {
-    if (_data != null && _lastFetchResult.length < _perPage) {
-      return;
-    }
-    print('PxClinicVisits().fetchMoreVisits($_page)');
-    _page++;
-    await fetchClinicVisits();
   }
 
   Future<void> updateClinicVisit(String id, Map<String, dynamic> update) async {

@@ -33,7 +33,7 @@ class VisitShift extends Equatable {
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      '_id': id,
+      'id': id,
       'start_hour': start_hour,
       'start_minute': start_minute,
       'end_hour': end_hour,
@@ -43,7 +43,7 @@ class VisitShift extends Equatable {
 
   factory VisitShift.fromJson(Map<String, dynamic> map) {
     return VisitShift(
-      id: map['_id'] as String,
+      id: map['id'] as String,
       start_hour: map['start_hour'] as int,
       start_minute: map['start_minute'] as int,
       end_hour: map['end_hour'] as int,

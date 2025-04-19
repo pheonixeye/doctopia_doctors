@@ -160,6 +160,7 @@
     "@@register_screen" : "",
     "verificationEmailSent" : "تم ارسال بريد الكتروني لتأكيد الحساب.",
     "@@bookings_page" : "",
-    "visitsFilter" : "فلترة الزيارات"
+    "visitsFilter" : "فلترة الحجوزات",
+    "cannotUpdateVisitNotInSameMonth" : "لا يمكن تعديل حالة زيارة في غير الشهر الموافق لتاريخ الزيارة."
 
 }
