@@ -61,7 +61,7 @@ class HxClinic {
 
       return _clinics;
     } on ClientException catch (e) {
-      print(e.toString());
+      // print(e.toString());
       throw Exception(e.response['message']);
     }
   }

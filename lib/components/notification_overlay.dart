@@ -99,7 +99,7 @@ class _NotificationOverlayCardState extends State<NotificationOverlayCard> {
                         backgroundColor: Theme.of(context)
                             .appBarTheme
                             .backgroundColor!
-                            .withOpacity(0.3),
+                            .withValues(alpha: 0.3),
                         valueColor: AlwaysStoppedAnimation<Color>(
                           Theme.of(context).appBarTheme.backgroundColor!,
                         ),

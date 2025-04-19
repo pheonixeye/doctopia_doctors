@@ -4,11 +4,11 @@ import 'package:doctopia_doctors/api/_pocket_main/pocket_main.dart';
 import 'package:doctopia_doctors/api/user_model_api/user_model_api.dart';
 import 'package:doctopia_doctors/functions/dprint.dart';
 import 'package:doctopia_doctors/models/app_constants_model/_models/site_service.dart';
-import 'package:doctopia_doctors/models/user_model_response.dart';
+import 'package:doctopia_doctors/models/user_response_model/user_model.dart';
+import 'package:doctopia_doctors/models/user_response_model/user_response_model.dart';
 import 'package:doctopia_doctors/services/local_database_service/local_database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:proklinik_models/models/user_model.dart';
 import 'package:provider/provider.dart';
 
 class PxUserModel extends ChangeNotifier {
@@ -20,8 +20,8 @@ class PxUserModel extends ChangeNotifier {
     required this.userService,
   });
 
-  static UserModelResponse? _model;
-  UserModelResponse? get model => _model;
+  static UserResponseModel? _model;
+  UserResponseModel? get model => _model;
 
   static String? _id;
   String? get id => _id;
@@ -29,7 +29,7 @@ class PxUserModel extends ChangeNotifier {
   static bool _isLoggedIn = false;
   bool get isLoggedIn => _isLoggedIn;
 
-  Future<UserModelResponse> createUserAccount(UserModel value) async {
+  Future<UserResponseModel> createUserAccount(UserModel value) async {
     try {
       _model = await userService.createUserAccount(value);
       notifyListeners();
@@ -50,7 +50,7 @@ class PxUserModel extends ChangeNotifier {
             await PocketbaseHelper.pb.collection('users').authRefresh(
                   expand: 'service_id',
                 );
-        _model = UserModelResponse(
+        _model = UserResponseModel(
           userModel: UserModel.fromJson(refresh.record.toJson()),
           siteService: SiteService.fromJson(
               refresh.record.get<RecordModel>('expand.service_id').toJson()),
@@ -146,7 +146,7 @@ class PxUserModel extends ChangeNotifier {
         "PxUserModel().saveFcmToken(${_fcm_token == _model!.userModel.fcm_token ? 'SameToken' : _model?.userModel.fcm_token})");
   }
 
-  Future<UserModelResponse?> updateUserModel(
+  Future<UserResponseModel?> updateUserModel(
     Map<String, dynamic> update,
   ) async {
     try {

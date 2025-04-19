@@ -102,28 +102,13 @@ class PxDoctor extends ChangeNotifier {
     await fetchDoctor();
   }
 
-  Map<String, dynamic> _update = {};
-  Map<String, dynamic> get update => _update;
-
-  void setUpdate(String key, dynamic value) {
-    _update[key] = value;
-    notifyListeners();
-  }
-
-  void revertUpdate(String key) {
-    _update.remove(key);
-    notifyListeners();
-  }
-
-  //HACK: docUpdate
-  Future<Doctor?> updateDoctor({Map<String, dynamic>? docUpdate}) async {
+  Future<Doctor?> updateDoctor(Map<String, dynamic> update) async {
     try {
       final doc = await service.updateDoctor(
         id: doc_id,
-        update: docUpdate ?? _update,
+        update: update,
       );
       _doctor = doc;
-      _update = {};
       notifyListeners();
       return doc;
     } on ClientException catch (e) {

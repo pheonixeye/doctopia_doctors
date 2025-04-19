@@ -1,8 +1,8 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:doctopia_doctors/api/invoices_api/invoices_api.dart';
+import 'package:doctopia_doctors/models/invoice_response_model/invoice.dart';
 import 'package:flutter/foundation.dart';
-import 'package:proklinik_models/models/detailed_invoice.dart';
 
 class PxInvoices extends ChangeNotifier {
   final HxInvoices invoicesService;
@@ -20,8 +20,11 @@ class PxInvoices extends ChangeNotifier {
   int _year = DateTime.now().year;
   int get year => _year;
 
-  DetailedInvoice? _invoice;
-  DetailedInvoice? get invoice => _invoice;
+  Invoice? _invoice;
+  Invoice? get invoice => _invoice;
+
+  static bool _isLoading = false;
+  bool get isLoading => _isLoading;
 
   Future<void> setDate({int? m, int? y}) async {
     _month = m ?? _month;
@@ -32,12 +35,16 @@ class PxInvoices extends ChangeNotifier {
 
   Future<void> fetchInvoice() async {
     try {
-      final response =
-          await invoicesService.fetchDoctorInvoice(doc_id, month, year);
+      _isLoading = true;
+      notifyListeners();
+      final response = await invoicesService.fetchDoctorInvoice(
+        doc_id,
+        month: _month,
+        year: _year,
+      );
+      _isLoading = false;
+      notifyListeners();
       _invoice = response;
-      if (kDebugMode) {
-        print("PxInvoices().fetchInvoice()");
-      }
       notifyListeners();
     } catch (e) {
       _invoice = null;

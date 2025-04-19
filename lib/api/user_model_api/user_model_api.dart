@@ -1,16 +1,16 @@
 import 'package:doctopia_doctors/api/_pocket_main/pocket_main.dart';
 // import 'package:doctopia_doctors/functions/dprint.dart';
 import 'package:doctopia_doctors/models/app_constants_model/_models/site_service.dart';
-import 'package:doctopia_doctors/models/user_model_response.dart';
+import 'package:doctopia_doctors/models/user_response_model/user_model.dart';
+import 'package:doctopia_doctors/models/user_response_model/user_response_model.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:proklinik_models/models/user_model.dart';
 
 class HxUserModel {
   const HxUserModel();
 
   static const String _expand = 'service_id';
 
-  Future<UserModelResponse> createUserAccount(UserModel value) async {
+  Future<UserResponseModel> createUserAccount(UserModel value) async {
     final result = await PocketbaseHelper.pb.collection("users").create(
       body: {
         ...value.toPocketbaseJson(),
@@ -21,14 +21,14 @@ class HxUserModel {
     final model = UserModel.fromJson(result.toJson());
     final siteService = SiteService.fromJson(
         result.get<RecordModel>('expand.$_expand').toJson());
-    return UserModelResponse(
+    return UserResponseModel(
       userModel: model,
       siteService: siteService,
       token: result.toJson()['token'],
     );
   }
 
-  Future<UserModelResponse> loginUserByPassword(
+  Future<UserResponseModel> loginUserByPassword(
     String syndIdOrEmail,
     String password,
   ) async {
@@ -45,7 +45,7 @@ class HxUserModel {
     final model = UserModel.fromJson(result.record.toJson());
     final siteService = SiteService.fromJson(
         result.record.get<RecordModel>('expand.$_expand').toJson());
-    final _userModelResponse = UserModelResponse(
+    final _userModelResponse = UserResponseModel(
       userModel: model,
       siteService: siteService,
       token: result.toJson()['token'],
@@ -53,7 +53,7 @@ class HxUserModel {
     return _userModelResponse;
   }
 
-  Future<UserModelResponse> updateUserModel({
+  Future<UserResponseModel> updateUserModel({
     required String id,
     required Map<String, dynamic> update,
   }) async {
@@ -66,7 +66,7 @@ class HxUserModel {
 
     final siteService = SiteService.fromJson(
         result.get<RecordModel>('expand.$_expand').toJson());
-    return UserModelResponse(
+    return UserResponseModel(
       userModel: model,
       siteService: siteService,
       token: result.toJson()['token'],

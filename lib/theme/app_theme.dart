@@ -87,7 +87,7 @@ class AppTheme {
             color: Theme.of(context)
                 .colorScheme
                 .onPrimaryContainer
-                .withOpacity(0.37),
+                .withValues(alpha: 0.37),
           ),
           gradient: LinearGradient(
             colors: [
@@ -97,13 +97,13 @@ class AppTheme {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.28),
+              color: Colors.black.withValues(alpha: 0.28),
               blurRadius: 30,
             )
           ],
         ),
         iconTheme: IconThemeData(
-          color: Colors.white.withOpacity(0.7),
+          color: Colors.white.withValues(alpha: 0.7),
           size: 20,
         ),
         selectedIconTheme: const IconThemeData(
@@ -174,7 +174,7 @@ class AppTheme {
             ),
           ],
         ),
-        hoverColor: Colors.orange.shade500,
+        hoverColor: Colors.amber.shade500,
         hoverTextStyle: const TextStyle(
           color: Colors.white,
         ),

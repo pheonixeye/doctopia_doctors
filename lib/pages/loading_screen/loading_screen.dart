@@ -1,10 +1,8 @@
 import 'dart:async';
 
 import 'package:doctopia_doctors/functions/dprint.dart';
-import 'package:doctopia_doctors/providers/px_gov.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_server_status.dart';
-import 'package:doctopia_doctors/providers/px_specialities.dart';
 import 'package:doctopia_doctors/providers/px_theme.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
 import 'package:doctopia_doctors/routes/routes.dart';
@@ -78,8 +76,6 @@ class _LoadingScreenState extends State<LoadingScreen>
     try {
       await Future.wait([
         context.read<PxServerStatus>().checkServerStatus(),
-        context.read<PxSpeciality>().fetchSpecialities(),
-        context.read<PxGov>().loadGovernorates(),
       ]);
     } catch (e) {
       dprint(e.toString());

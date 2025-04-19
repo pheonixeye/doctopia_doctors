@@ -1,4 +1,3 @@
-import 'package:doctopia_doctors/assets/assets.dart';
 import 'package:doctopia_doctors/providers/px_server_status.dart';
 import 'package:doctopia_doctors/routes/routes.dart';
 import 'package:flutter/material.dart';
@@ -42,9 +41,8 @@ class _ServerOfflinePageState extends State<ServerOfflinePage>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Spacer(),
-            Image.asset(Assets.icon),
             SpinKitPouringHourGlassRefined(
-              color: const Color(0xffFE7800),
+              color: Colors.amber,
               size: 75.0,
               controller: _controller,
             ),

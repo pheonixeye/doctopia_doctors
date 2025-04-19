@@ -66,18 +66,10 @@ dependencies:
   flutter_svg: ^2.0.9
   screenshot: ^3.0.0
   onmessage: ^0.2.0
-  # proklinik_models:
-  #   git:
-  #     url: https://github.com/pheonixeye/proklinik_models.git
-  #     ref: master
   pretty_qr_code: ^3.3.0
-
-  ###TODO: change pre deployment
-  proklinik_models:
-    path: ../proklinik_models
   pointer_interceptor: ^0.10.1+2
   scrollable_positioned_list: ^0.3.8
-  # sembast_web: ^2.4.0+2
+  web: ^1.1.1
  
 
 dev_dependencies:

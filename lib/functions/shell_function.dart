@@ -161,7 +161,7 @@ Future<void> shellFunction(
         return;
       }
 
-      print(e);
+      debugPrint(e.toString());
       if (onCatch != null) {
         onCatch();
       }

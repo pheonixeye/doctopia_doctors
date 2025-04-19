@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 // ignore: avoid_web_libraries_in_flutter
-import 'dart:html' as html;
+import 'package:web/web.dart' as html;
 
 import 'package:flutter/painting.dart';
 
@@ -42,10 +42,9 @@ class ImageDownloader {
   }) async {
     final image = await decodeImageFromList(uInt8List);
 
-    final html.CanvasElement canvas = html.CanvasElement(
-      height: image.height,
-      width: image.width,
-    );
+    final html.HTMLCanvasElement canvas = html.HTMLCanvasElement()
+      ..width = image.width
+      ..height = image.height;
 
     final ctx = canvas.context2D;
 
@@ -59,7 +58,7 @@ class ImageDownloader {
 
     final base64 = html.window.btoa(data);
 
-    final img = html.ImageElement();
+    final img = html.HTMLImageElement();
 
     img.src = "data:${imageType.format};base64,$base64";
 
@@ -68,8 +67,8 @@ class ImageDownloader {
     loadStream.listen((event) {
       ctx.drawImage(img, 0, 0);
       final dataUrl = canvas.toDataUrl(imageType.format, imageQuality);
-      final html.AnchorElement anchorElement =
-          html.AnchorElement(href: dataUrl);
+      final html.HTMLAnchorElement anchorElement = html.HTMLAnchorElement()
+        ..href = dataUrl;
       anchorElement.download = name ?? dataUrl;
       anchorElement.click();
     });

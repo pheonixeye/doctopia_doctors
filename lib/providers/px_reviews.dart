@@ -51,7 +51,7 @@ class PxReviews extends ChangeNotifier {
     if (_reviews != null && _lastFetchResult.length < _perPage) {
       return;
     }
-    print('PxReviews().fetchMoreReviews($_page)');
+    debugPrint('PxReviews().fetchMoreReviews($_page)');
     _page++;
     notifyListeners();
     await _fetchReviews();

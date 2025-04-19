@@ -106,7 +106,7 @@ class PxClinicVisits extends ChangeNotifier {
       _dataTotalCount = result.$1;
       notifyListeners();
       _lastFetchResult = result.$2;
-      print('PxClinicVisits().fetchClinicVisits($_page)');
+      debugPrint('PxClinicVisits().fetchClinicVisits($_page)');
     } catch (e) {
       rethrow;
     }
@@ -117,7 +117,7 @@ class PxClinicVisits extends ChangeNotifier {
       return;
     }
     _page++;
-    print('PxClinicVisits().fetchMoreVisits($_page)');
+    debugPrint('PxClinicVisits().fetchMoreVisits($_page)');
     try {
       _isLoading = true;
       notifyListeners();

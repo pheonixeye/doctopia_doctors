@@ -3,6 +3,7 @@
 import 'package:doctopia_doctors/api/_pocket_main/pocket_main.dart';
 // import 'package:doctopia_doctors/functions/dprint.dart';
 import 'package:doctopia_doctors/models/visit_response_model/visit.dart';
+import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:pocketbase/pocketbase.dart';
 
 class HxClinicVisits {
@@ -31,7 +32,7 @@ class HxClinicVisits {
             expand: _expand,
             sort: '-created',
           );
-      print(
+      debugPrint(
           'HxClinicVisits($day / $month / $year, page: $page).fetchClinicVisits(total_items: ${response.totalItems}, total_pages: ${response.totalPages})');
       final visits = response.items
           .map((item) => Visit.fromJson({

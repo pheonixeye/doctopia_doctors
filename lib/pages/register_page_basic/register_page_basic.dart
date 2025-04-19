@@ -3,6 +3,7 @@ import 'package:doctopia_doctors/components/central_loading.dart';
 import 'package:doctopia_doctors/components/main_snackbar.dart';
 import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/models/app_constants_model/_models/site_service.dart';
+import 'package:doctopia_doctors/models/user_response_model/user_model.dart';
 import 'package:doctopia_doctors/providers/px_app_constants.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
@@ -12,7 +13,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:proklinik_models/models/user_model.dart';
 import 'package:provider/provider.dart';
 
 class RegisterPageBasic extends StatefulWidget {

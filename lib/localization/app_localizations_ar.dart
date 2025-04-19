@@ -433,4 +433,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get cannotUpdateVisitNotInSameMonth => 'لا يمكن تعديل حالة زيارة في غير الشهر الموافق لتاريخ الزيارة.';
+
+  @override
+  String get invoiceStatus => 'حالة الفاتورة';
 }

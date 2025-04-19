@@ -1,4 +1,5 @@
 import 'package:doctopia_doctors/components/central_loading.dart';
+import 'package:doctopia_doctors/extensions/number_translator.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/models/visit_response_model/visit.dart';
@@ -54,7 +55,7 @@ class _ClinicVisitsTileState extends State<ClinicVisitsTile> {
                 child: Text(widget.visit.patient_phone),
               ),
               leading: CircleAvatar(
-                child: Text("${widget.index + 1}"),
+                child: Text("${widget.index + 1}".toArabicNumber(context)),
               ),
               children: [
                 ListTile(

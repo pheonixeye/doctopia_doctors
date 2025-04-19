@@ -1,11 +1,10 @@
 import 'package:doctopia_doctors/extensions/number_translator.dart';
 import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
+import 'package:doctopia_doctors/models/invoice_response_model/invoice.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 // ignore: avoid_web_libraries_in_flutter
-import 'dart:html' as html;
-
-import 'package:proklinik_models/models/invoice.dart';
+import 'package:web/web.dart' as html;
 
 class InvoicePaymentDetailsDialog extends StatelessWidget {
   const InvoicePaymentDetailsDialog({
@@ -65,7 +64,7 @@ class InvoicePaymentDetailsDialog extends StatelessWidget {
                 ),
                 subtitle: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: SelectableText(invoice.payment_reference),
+                  child: SelectableText(invoice.payment_reference_number),
                 ),
               ),
             ),

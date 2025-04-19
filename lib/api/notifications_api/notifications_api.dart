@@ -5,7 +5,9 @@ class HxNotifications {
   const HxNotifications();
 
   Future<List<StoredNotification>> fetchNotifications(
-      String id, int page) async {
+    String id,
+    int page,
+  ) async {
     final result =
         await PocketbaseHelper.pb.collection('notifications').getList(
               filter: "doc_id = '$id'",

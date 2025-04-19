@@ -946,6 +946,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cannot Update a Visit Status That Is Not In The Same Month.'**
   String get cannotUpdateVisitNotInSameMonth;
+
+  /// No description provided for @invoiceStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice Status'**
+  String get invoiceStatus;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

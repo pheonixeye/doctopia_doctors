@@ -1,13 +1,14 @@
 import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
+import 'package:doctopia_doctors/models/user_response_model/user_preferences.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
 import 'package:doctopia_doctors/providers/px_theme.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:proklinik_models/models/user_preferences.dart';
 import 'package:provider/provider.dart';
 
-import 'dart:html' as html; // ignore: avoid_web_libraries_in_flutter
+// ignore: avoid_web_libraries_in_flutter
+import 'package:web/web.dart' as html;
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -197,8 +198,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   onPressed: () async {
                     html.window.open(
-                        'https://contracts-proklinik.pages.dev/#/document/${u.id}',
-                        '_blank');
+                      'https://contracts-proklinik.pages.dev/#/document/${u.id}',
+                      '_blank',
+                    );
                   },
                   icon: Icon(
                     Icons.file_copy,

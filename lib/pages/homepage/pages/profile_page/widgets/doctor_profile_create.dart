@@ -1,13 +1,13 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:doctopia_doctors/components/central_loading.dart';
+import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
 import 'package:doctopia_doctors/models/app_constants_model/_models/degree.dart';
 import 'package:doctopia_doctors/models/app_constants_model/_models/speciality.dart';
 import 'package:doctopia_doctors/providers/px_app_constants.dart';
 import 'package:doctopia_doctors/providers/px_doctor.dart';
 import 'package:doctopia_doctors/providers/px_locale.dart';
-import 'package:doctopia_doctors/providers/px_specialities.dart';
 import 'package:doctopia_doctors/providers/px_user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -117,8 +117,8 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
                     ListTile(
                       leading: const CircleAvatar(),
                       title: Text(context.loc.speciality),
-                      subtitle: Consumer<PxSpeciality>(
-                        builder: (context, s, _) {
+                      subtitle: Builder(
+                        builder: (context) {
                           return DropdownButtonHideUnderline(
                             child: DropdownButtonFormField<Speciality>(
                               decoration: const InputDecoration(
@@ -267,7 +267,6 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
                 child: ElevatedButton.icon(
                   onPressed: () async {
                     if (formKey.currentState!.validate()) {
-                      late BuildContext _loadingContext;
                       d.setDoctor(
                         id: u.model?.userModel.id,
                         synd_id: u.model?.userModel.synd_id,
@@ -281,37 +280,12 @@ class _DoctorProfileCreateState extends State<DoctorProfileCreate> {
                         speciality: _speciality,
                         degree: _degree,
                       );
-                      try {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            _loadingContext = context;
-                            return const CentralLoading();
-                          },
-                        );
-                        await d.createDoctor();
-                        if (_loadingContext.mounted) {
-                          Navigator.pop(_loadingContext);
-                        }
-                      } catch (e) {
-                        d.nullifyDoctor();
-                        if (_loadingContext.mounted) {
-                          Navigator.pop(_loadingContext);
-                        }
-                        print(e);
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            duration: const Duration(seconds: 10),
-                            content: Text(
-                              e.toString(),
-                              style: const TextStyle(
-                                color: Colors.red,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ));
-                        }
-                      }
+                      await shellFunction(
+                        context,
+                        toExecute: () async {
+                          await d.createDoctor();
+                        },
+                      );
                     }
                   },
                   label: Text(context.loc.save),

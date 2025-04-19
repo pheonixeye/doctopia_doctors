@@ -161,6 +161,8 @@
     "verificationEmailSent" : "تم ارسال بريد الكتروني لتأكيد الحساب.",
     "@@bookings_page" : "",
     "visitsFilter" : "فلترة الحجوزات",
-    "cannotUpdateVisitNotInSameMonth" : "لا يمكن تعديل حالة زيارة في غير الشهر الموافق لتاريخ الزيارة."
+    "cannotUpdateVisitNotInSameMonth" : "لا يمكن تعديل حالة زيارة في غير الشهر الموافق لتاريخ الزيارة.",
+    "@@invoices_page" : "",
+    "invoiceStatus" : "حالة الفاتورة"
 
 }

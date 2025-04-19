@@ -137,7 +137,7 @@ class _DoctorProfileEditState extends State<DoctorProfileEdit> {
                                               context,
                                               toExecute: () async {
                                                 await d.updateDoctor(
-                                                  docUpdate: {
+                                                  {
                                                     entry.key: value?.id,
                                                   },
                                                 );
@@ -189,7 +189,7 @@ class _DoctorProfileEditState extends State<DoctorProfileEdit> {
                                             context,
                                             toExecute: () async {
                                               await d.updateDoctor(
-                                                docUpdate: {
+                                                {
                                                   entry.key:
                                                       _controllers[entry.key]
                                                           ?.text,

@@ -37,7 +37,7 @@ class _BookingsPageState extends State<BookingsPage> {
     final _toCall = _visitsScrollController.position.pixels ==
         _visitsScrollController.position.maxScrollExtent;
     if (_toCall && !cv.isLoading) {
-      print(
+      debugPrint(
           '_visitsScrollListener(toCall: $_toCall, isLoading: ${cv.isLoading})');
       await cv.fetchMoreVisits();
     }

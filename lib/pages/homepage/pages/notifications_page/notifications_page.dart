@@ -77,7 +77,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                         selectedTileColor: Theme.of(context)
                             .appBarTheme
                             .backgroundColor
-                            ?.withOpacity(0.2),
+                            ?.withValues(alpha: 0.2),
                         onTap: () {
                           //TODO: Navigate according to notification type to coresponding page with
                           //emphasis on data eg: booking => nav to booking with selected date
@@ -85,19 +85,13 @@ class _NotificationsPageState extends State<NotificationsPage> {
                         leading: Checkbox(
                           value: e.seen,
                           onChanged: (value) async {
-                            //TODO: change seen state
-                            BuildContext? dialogContext;
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  dialogContext = context;
-                                  return const CentralLoading();
-                                });
-                            await n.updateSeenState(e.id);
-                            if (dialogContext != null &&
-                                dialogContext!.mounted) {
-                              Navigator.pop(dialogContext!);
-                            }
+                            //todo: change seen state
+                            await shellFunction(
+                              context,
+                              toExecute: () async {
+                                await n.updateSeenState(e.id);
+                              },
+                            );
                           },
                         ),
                         title: Padding(

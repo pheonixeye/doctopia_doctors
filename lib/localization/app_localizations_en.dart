@@ -433,4 +433,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cannotUpdateVisitNotInSameMonth => 'Cannot Update a Visit Status That Is Not In The Same Month.';
+
+  @override
+  String get invoiceStatus => 'Invoice Status';
 }

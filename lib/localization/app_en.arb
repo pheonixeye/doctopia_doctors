@@ -161,6 +161,8 @@
     "verificationEmailSent" : "A Verification Email Was Sent.",
     "@@bookings_page" : "",
     "visitsFilter" : "Bookings Filter",
-    "cannotUpdateVisitNotInSameMonth" : "Cannot Update a Visit Status That Is Not In The Same Month."
+    "cannotUpdateVisitNotInSameMonth" : "Cannot Update a Visit Status That Is Not In The Same Month.",
+    "@@invoices_page" : "",
+    "invoiceStatus" : "Invoice Status"
 
 }

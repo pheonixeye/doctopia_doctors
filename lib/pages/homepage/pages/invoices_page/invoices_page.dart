@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:after_layout/after_layout.dart';
+import 'package:doctopia_doctors/constants/static_app_constants.dart';
 import 'package:doctopia_doctors/extensions/number_translator.dart';
 import 'package:doctopia_doctors/functions/shell_function.dart';
 import 'package:doctopia_doctors/localization/loc_ext_fns.dart';
@@ -59,14 +60,13 @@ class _InvoicesPageState extends State<InvoicesPage> with AfterLayoutMixin {
           cacheExtent: 3000,
           children: [
             ListTile(
-              leading: const CircleAvatar(),
               title: Row(
                 children: [
                   Text(context.loc.invoices),
                   const Spacer(),
                   Text(
                     DateFormat(
-                      'MM/yyyy',
+                      'MM / yyyy',
                       l.locale.languageCode,
                     ).format(
                       DateTime(v.year, v.month),
@@ -75,6 +75,7 @@ class _InvoicesPageState extends State<InvoicesPage> with AfterLayoutMixin {
                   const Spacer(),
                 ],
               ),
+              subtitle: const Divider(),
             ),
             Card(
               //extract this into another widget
@@ -104,9 +105,12 @@ class _InvoicesPageState extends State<InvoicesPage> with AfterLayoutMixin {
                                     width: _yearsWidth,
                                     child: Card(
                                       elevation: isSelected ? 0 : 10,
-                                      child: RadioMenuButton<int>(
+                                      child: RadioListTile<int>(
+                                        contentPadding: const EdgeInsets.all(0),
+                                        dense: true,
                                         value: e,
                                         groupValue: v.year,
+                                        selected: isSelected,
                                         onChanged: (value) async {
                                           await shellFunction(
                                             context,
@@ -115,13 +119,13 @@ class _InvoicesPageState extends State<InvoicesPage> with AfterLayoutMixin {
                                             },
                                           );
                                         },
-                                        child: Text(e
+                                        title: Text(e
                                             .toString()
                                             .toArabicNumber(context)),
                                       ),
                                     ),
                                   );
-                                }).toList(),
+                                }),
                               ],
                             ),
                           ),
@@ -149,7 +153,10 @@ class _InvoicesPageState extends State<InvoicesPage> with AfterLayoutMixin {
                                     width: _monthsWidth,
                                     child: Card(
                                       elevation: isSelected ? 0 : 10,
-                                      child: RadioMenuButton<int>(
+                                      child: RadioListTile<int>(
+                                        contentPadding: const EdgeInsets.all(0),
+                                        dense: true,
+                                        selected: isSelected,
                                         value: e.key,
                                         groupValue: v.month,
                                         onChanged: (value) async {
@@ -160,12 +167,12 @@ class _InvoicesPageState extends State<InvoicesPage> with AfterLayoutMixin {
                                             },
                                           );
                                         },
-                                        child: Text(
+                                        title: Text(
                                             e.value.ifMonthTranslate(context)),
                                       ),
                                     ),
                                   );
-                                }).toList(),
+                                }),
                               ],
                             ),
                           ),
@@ -177,9 +184,20 @@ class _InvoicesPageState extends State<InvoicesPage> with AfterLayoutMixin {
               ),
             ),
             const Divider(),
-            if (v.invoice == null)
+            if (v.isLoading)
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(
+                  top: StaticAppConstants.midComponentTopPadding,
+                ),
+                child: Center(
+                  child: CircularProgressIndicator.adaptive(),
+                ),
+              )
+            else if (v.invoice == null && !v.isLoading)
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: StaticAppConstants.midComponentTopPadding,
+                ),
                 child: Card(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -193,7 +211,7 @@ class _InvoicesPageState extends State<InvoicesPage> with AfterLayoutMixin {
                 ),
               )
             else
-              InvoiceCard(detailedInvoice: v.invoice!),
+              InvoiceCard(invoice: v.invoice!),
           ],
         );
       },
