@@ -24,6 +24,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 Future<void> main() async {
+  //TODO: migrate project to new repo
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(

@@ -55,3 +55,6 @@ ios/firebase_app_id_file.json
 
 .env
 .dev.env
+
+cloudflare_deployment/
+_web/

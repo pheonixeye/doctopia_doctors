@@ -21,6 +21,16 @@ class HxDoctor {
             expand: _expand,
           );
 
+      //todo: add reference to doctor_website_info collection
+      await PocketbaseHelper.pb.collection('doctor_website_info').create(
+        body: {
+          'doc_id': response.id,
+          'views_count': 0,
+          'average_rating': 0,
+          'reviews_count': 0,
+          'tags': const {},
+        },
+      );
       final _model = DoctorResponseModel.fromJson(response.toJson());
       final _speciality = Speciality.fromJson(
           response.get<RecordModel>('expand.speciality_id').toJson());

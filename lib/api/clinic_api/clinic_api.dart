@@ -19,6 +19,14 @@ class HxClinic {
             expand: _expand,
           );
 
+      //todo: add reference to clinic_waiting_time collection
+      await PocketbaseHelper.pb.collection('clinic_waiting_time').create(
+        body: {
+          'clinic_id': response.id,
+          'waiting_time': 0,
+        },
+      );
+
       final _clinic = Clinic.fromJson({
         ...response.toJson(),
         'governorate':

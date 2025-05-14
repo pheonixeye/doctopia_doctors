@@ -118,11 +118,6 @@
     if ("serviceWorker" in navigator) {
       window.addEventListener('load', function (ev) {
         var loading = document.querySelector('#loading');
-
-        navigator.serviceWorker.register("/firebase-messaging-sw.js", {
-          scope: '/firebase-cloud-messaging-push-scope',
-        });
-
         // Download main.dart.js
         _flutter.loader.loadEntrypoint({
           serviceWorker: {
@@ -143,32 +138,10 @@
           }
         });
       });
-      // const channel = new BroadcastChannel('sw-messages');
-      // channel.addEventListener("message", function (event) {
-      //   localStorage.setItem('flutter.notificationExist', true);
-      //   window.postMessage(JSON.stringify(event.data));
-      // });
+
     }
   </script>
-  <script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
 
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyB8zG45ojV_GHfInJfi8nSsSR8vAfDAE5E",
-      authDomain: "proklinik.firebaseapp.com",
-      projectId: "proklinik",
-      storageBucket: "proklinik.appspot.com",
-      messagingSenderId: "996546589832",
-      appId: "1:996546589832:web:77721870dbe02c42079b3d"
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-  </script>
 </body>
 
 </html>
