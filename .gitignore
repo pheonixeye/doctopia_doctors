@@ -58,3 +58,7 @@ ios/firebase_app_id_file.json
 
 cloudflare_deployment/
 _web/
+
+/linux
+/windows
+/macos
