@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sidebarx/sidebarx.dart';
 
 class AppTheme {
-  static CardTheme cardTheme = CardTheme(
+  static CardThemeData cardTheme = CardThemeData(
     elevation: 6,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(8),

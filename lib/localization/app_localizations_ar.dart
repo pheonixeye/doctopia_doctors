@@ -36,7 +36,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get forgotPassword => 'نسيان كلمة السر';
 
   @override
-  String get linkSentToEmail => 'تم ارسال رابط تعديل كلمة السر علي البريد الالكتروني';
+  String get linkSentToEmail =>
+      'تم ارسال رابط تعديل كلمة السر علي البريد الالكتروني';
 
   @override
   String get notRegisteredYet => 'ليس لديك حساب ؟  ';
@@ -99,7 +100,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get register => 'انشاء حساب';
 
   @override
-  String get onlyClinicServices => 'نعتذر علي الازعاج، يمكننا تقديم خدمات العيادات فقط في الوقت الحالي.';
+  String get onlyClinicServices =>
+      'نعتذر علي الازعاج، يمكننا تقديم خدمات العيادات فقط في الوقت الحالي.';
 
   @override
   String get alreadyRegistered => 'هل لديك حساب ؟  ';
@@ -147,7 +149,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get settings => 'الاعدادات';
 
   @override
-  String get completeProfileForArticles => 'أكمل ملفك الشخصي للحصول على موجز أخبار مخصص للمقالات الطبية.';
+  String get completeProfileForArticles =>
+      'أكمل ملفك الشخصي للحصول على موجز أخبار مخصص للمقالات الطبية.';
 
   @override
   String get latestFromMedscape => 'اخر المقالات الطبية';
@@ -342,7 +345,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get deleteClinicTitle => 'الغاء العيادة ؟';
 
   @override
-  String get deleteClinicMsg => 'برجاء تأكيد الغاء العيادة، هذا الفعل لا يمكن استعادته ؟';
+  String get deleteClinicMsg =>
+      'برجاء تأكيد الغاء العيادة، هذا الفعل لا يمكن استعادته ؟';
 
   @override
   String get selectGov => 'اختر المحافظة';
@@ -393,10 +397,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get feedback => 'اكتب رسالتك';
 
   @override
-  String get shareFeedbackMsg => 'الافكار و المقترحات الخاصة بك هي موضع ترحيب و تقدير كبير و اضافة عظيمة للمنصة، فضلا خذ بعض الوقت لطرح تعليقاتك.';
+  String get shareFeedbackMsg =>
+      'الافكار و المقترحات الخاصة بك هي موضع ترحيب و تقدير كبير و اضافة عظيمة للمنصة، فضلا خذ بعض الوقت لطرح تعليقاتك.';
 
   @override
-  String get feedbackSubmittedSuccessfully => 'تم مشاركة ملاحظاتك بنجاح، شكرا لكم علي وقتكم.';
+  String get feedbackSubmittedSuccessfully =>
+      'تم مشاركة ملاحظاتك بنجاح، شكرا لكم علي وقتكم.';
 
   @override
   String get englishAddress => 'العنوان بالانجليزية';
@@ -432,7 +438,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get visitsFilter => 'فلترة الحجوزات';
 
   @override
-  String get cannotUpdateVisitNotInSameMonth => 'لا يمكن تعديل حالة زيارة في غير الشهر الموافق لتاريخ الزيارة.';
+  String get cannotUpdateVisitNotInSameMonth =>
+      'لا يمكن تعديل حالة زيارة في غير الشهر الموافق لتاريخ الزيارة.';
 
   @override
   String get invoiceStatus => 'حالة الفاتورة';

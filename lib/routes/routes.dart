@@ -357,6 +357,10 @@ class AppRouter {
                     ),
                   );
                 },
+                routes: [
+                  //TODO: contracts
+                  //TODO: documents
+                ],
               ),
             ],
           ),

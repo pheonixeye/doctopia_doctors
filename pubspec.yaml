@@ -48,7 +48,7 @@ dependencies:
   file_picker: 
   go_router:
   equatable:
-  uuid:
+  uuid: ^4.5.1
   sidebarx: 
   permission_handler: 
   firebase_core: 
@@ -70,6 +70,11 @@ dependencies:
   pointer_interceptor: ^0.10.1+2
   scrollable_positioned_list: ^0.3.8
   web: ^1.1.1
+  signature: ^6.0.0
+  pdf: ^3.11.3
+  printing: ^5.14.2
+  http_parser: ^4.1.2
+  cached_network_image: ^3.4.1
  
 
 dev_dependencies:

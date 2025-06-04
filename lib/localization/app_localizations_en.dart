@@ -36,7 +36,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get forgotPassword => 'Forgot Password';
 
   @override
-  String get linkSentToEmail => 'A Password Reset Link Was Sent To Your Email Address.';
+  String get linkSentToEmail =>
+      'A Password Reset Link Was Sent To Your Email Address.';
 
   @override
   String get notRegisteredYet => 'Not Registered Yet ?  ';
@@ -81,7 +82,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectServiceTypeHint => 'Service Type...';
 
   @override
-  String get passwordLengthValidator => 'Minimum Required Length is 8 Characters.';
+  String get passwordLengthValidator =>
+      'Minimum Required Length is 8 Characters.';
 
   @override
   String get confirmPassword => 'Confirm Password';
@@ -99,7 +101,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get register => 'Register';
 
   @override
-  String get onlyClinicServices => 'Sorry For The Inconvenience, We Only Provide Clinic Services At The Moment.';
+  String get onlyClinicServices =>
+      'Sorry For The Inconvenience, We Only Provide Clinic Services At The Moment.';
 
   @override
   String get alreadyRegistered => 'Already Registered ?  ';
@@ -147,7 +150,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings => 'Settings';
 
   @override
-  String get completeProfileForArticles => 'Complete Your Profile To Get A Customized News Feed Of Medical Articles.';
+  String get completeProfileForArticles =>
+      'Complete Your Profile To Get A Customized News Feed Of Medical Articles.';
 
   @override
   String get latestFromMedscape => 'Latest From Medscape';
@@ -342,7 +346,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deleteClinicTitle => 'Delete Clinic ?';
 
   @override
-  String get deleteClinicMsg => 'This is an irreversible action, Are you sure ?';
+  String get deleteClinicMsg =>
+      'This is an irreversible action, Are you sure ?';
 
   @override
   String get selectGov => 'Select Governorate';
@@ -393,10 +398,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get feedback => 'Feedback';
 
   @override
-  String get shareFeedbackMsg => 'Your insights and suggestions are greatly appreciated. Please take a moment to leave your feedback.';
+  String get shareFeedbackMsg =>
+      'Your insights and suggestions are greatly appreciated. Please take a moment to leave your feedback.';
 
   @override
-  String get feedbackSubmittedSuccessfully => 'Feedback submitted successfully.';
+  String get feedbackSubmittedSuccessfully =>
+      'Feedback submitted successfully.';
 
   @override
   String get englishAddress => 'English Address';
@@ -432,7 +439,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get visitsFilter => 'Bookings Filter';
 
   @override
-  String get cannotUpdateVisitNotInSameMonth => 'Cannot Update a Visit Status That Is Not In The Same Month.';
+  String get cannotUpdateVisitNotInSameMonth =>
+      'Cannot Update a Visit Status That Is Not In The Same Month.';
 
   @override
   String get invoiceStatus => 'Invoice Status';

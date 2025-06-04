@@ -163,6 +163,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   onPressed: () async {
                     //todo: Create Contract if first time
                     //todo: open signature webapp
+                    //TODO: NO NEED FOR ANOTHER APP
                     html.window.open(
                         'https://contracts-proklinik.pages.dev/#/contract/${u.id}',
                         '_blank');
@@ -197,6 +198,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         Theme.of(context).appBarTheme.backgroundColor,
                   ),
                   onPressed: () async {
+                    //TODO: NO NEED FOR ANOTHER APP
                     html.window.open(
                       'https://contracts-proklinik.pages.dev/#/document/${u.id}',
                       '_blank',
